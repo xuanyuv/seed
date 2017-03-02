@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html>
+<head th:replace="header"/>
+<body>
+<div th:replace="body_menu"/>
+<div class="c_main_r">
+	<div th:replace="body_topBar"/>
+	<div class="c_nav">
+		<div class="ti">粉丝列表</div>
+	</div>
+	<!--Content-->
+	<div class="c_content">
+		<!--Table list-->
+		<table class="tab_list" width="100%">
+			<tr>
+				<th>头像</th>
+				<th>昵称</th>
+				<th>国家</th>
+				<th>城市</th>
+				<th>性别</th>
+				<th>关注</th>
+			</tr>
+			<tr th:each="fans:${session.fansList}" th:if="${not #lists.isEmpty(session.fansList)}" th:inline="text">
+				<td><span><img alt="头像" th:src="${fans.headimgurl}" height="30px" width="30px"/></span></td>
+				<td><span>[[${fans.nickname}]]</span></td>
+				<td><span>[[${fans.country}==null ? '' : ${fans.country}]]</span></td>
+				<td><span th:text="${fans.city}"/></td>
+				<td>
+					<span th:if="${fans.sex!=null}" th:switch="${fans.sex.toString()}">
+						<span th:case="'1'">男</span>
+						<span th:case="'2'">女</span>
+						<span th:case="*">未知</span>
+					</span>
+				</td>
+				<td>
+					<span th:if="${fans.subscribe!=null}" th:switch="${fans.subscribe.toString()}">
+						<span th:case="'0'" class="cf30 fw">未关注</span>
+						<span th:case="*" class="cgre fw">已关注</span>
+					</span>
+				</td>
+			</tr>
+		</table>
+		<!--/Table list-->
+	</div>
+	<!--/Content-->
+	<div th:replace="footer"/>
+</div>
+</body>
+</html>

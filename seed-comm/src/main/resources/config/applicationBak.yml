@@ -1,0 +1,77 @@
+scan:
+  base:
+    packages: com.jadyer.demo
+
+redis:
+  connectionTimeout: 2000
+  soTimeout: 5000
+  maxRedirections: 5
+  maxTotal: 16
+  maxIdle: 8
+  minIdle: 0
+  nodes:
+    - 192.168.2.210:7000
+    - 192.168.2.210:7001
+    - 192.168.2.210:7002
+    - 192.168.2.210:7003
+    - 192.168.2.210:7004
+    - 192.168.2.210:7005
+
+auth:
+  anonymousList:
+    - /
+    - /js/**
+    - /css/**
+    - /img/**
+    - /info
+    - /health
+    - /druid/**
+    - /apidoc/**
+    - /demo/notfound
+    - /demo/properties
+    - /demo/servererror
+    - /demo/jspLogin/**
+    - /login.jsp
+    - /captcha.jsp
+    - /favicon.ico
+    - /building.jsp
+
+---
+spring:
+  profiles: local
+server:
+  port: 80
+jasypt:
+  file: classpath:config/config.properties
+
+---
+spring:
+  profiles: dev
+server:
+  port: 8088
+jasypt:
+  file: file:/app/config/demo.boot.dev/config.properties
+
+---
+spring:
+  profiles: test
+server:
+  port: 8089
+jasypt:
+  file: file:/app/config/demo.boot.test/config.properties
+
+---
+spring:
+  profiles: prod
+server:
+  port: 8090
+jasypt:
+  file: file:/app/config/demo.boot.prod/config.properties
+redis:
+  nodes:
+    - Redis.xuanyu.db:7000
+    - Redis.xuanyu.db:7001
+    - Redis.xuanyu.db:7002
+    - Redis.xuanyu.db:7003
+    - Redis.xuanyu.db:7004
+    - Redis.xuanyu.db:7005
