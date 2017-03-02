@@ -1,4 +1,4 @@
-package com.jadyer.seed.comm.util;
+package com.jadyer.seed.open.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
