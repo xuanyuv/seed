@@ -41,7 +41,7 @@ public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Int
 	@Modifying
 	@Transactional(timeout=10)
 	@Query("UPDATE ScheduleTask SET status=?1 WHERE id=?2")
-	int updateStatusById(String status, int id);
+	int updateStatusById(int status, int id);
 	
 	/**
 	 * 更新定时任务的CronExpression

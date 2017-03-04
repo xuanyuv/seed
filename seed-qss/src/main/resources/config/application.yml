@@ -1,6 +1,6 @@
 scan:
   base:
-    packages: com.jadyer.seed.qss
+    packages: com.jadyer.seed
 
 logging:
   path: /home/seed/Logs

@@ -21,35 +21,6 @@ public class QssController {
 	@Resource
 	private QssService qssService;
 	
-	/**
-	 * http://127.0.0.1:8088/seed/quartz/schedule/task/getByIds?ids=1,2
-	 * <p>
-	 *     这里只做演示用
-	 * </p>
-	 */
-	@ResponseBody
-	@RequestMapping(value="/getByIds")
-	public CommonResult getByIds(String ids){
-		return new CommonResult(qssService.getByIds(ids));
-	}
-	
-	/**
-	 * http://127.0.0.1:8088/seed/quartz/schedule/task/update?id=16
-	 * <p>
-	 *     这里只做演示用
-	 * </p>
-	 */
-	@ResponseBody
-	@RequestMapping(value="/update")
-	public CommonResult update(int id){
-		ScheduleTask task = qssService.getTaskById(id);
-		task.setComment("testComment");
-		task.setName("testName");
-		ScheduleTask obj = qssService.saveTask(task);
-		return new CommonResult(CodeEnum.SUCCESS, obj);
-	}
-
-
 	@RequestMapping(value="/list")
 	public String list(HttpServletRequest request){
 		request.setAttribute("taskList", qssService.getAllTask());
@@ -81,7 +52,7 @@ public class QssController {
 
 	@ResponseBody
 	@RequestMapping(value="/updateStatus")
-	public CommonResult updateStatus(int id, String status, String dynamicPassword){
+	public CommonResult updateStatus(int id, int status, String dynamicPassword){
 		if(!this.verifyDynamicPassword(dynamicPassword)){
 			return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "动态密码不正确");
 		}

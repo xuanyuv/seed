@@ -2,8 +2,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<jsp:include page="/header.jsp"/>
+<c:set var="ctx" value="${pageContext.request.contextPath}" scope="session"/>
 
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>EngineDemo</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="${ctx}/css/common.css"/>
+	<script src="${ctx}/js/common.js"></script>
+	<script src="${ctx}/js/jquery-1.11.3.min.js"></script>
+</head>
 <script>
 /**
  * 新增定时任务时的表单校验
@@ -132,7 +141,7 @@ function inputDynamicPassword(){
 	}
 }
 </script>
-
+<body>
 <div align="center">
 	<table border="9">
 		<tr>
@@ -148,31 +157,31 @@ function inputDynamicPassword(){
 		<c:forEach items="${taskList}" var="task">
 			<tr>
 				<td>${task.name}</td>
-				<td>${task.status eq '1' ? '已启动' : task.status eq '2' ? '已挂起' : task.status eq '3' ? '已恢复':'已停止'}</td>
-				<td>${task.concurrent eq 'Y' ? '允许' : '不允许'}</td>
+				<td>${task.status eq 1 ? '已启动' : task.status eq 2 ? '已挂起' : task.status eq 3 ? '已恢复':'已停止'}</td>
+				<td>${task.concurrent eq 1 ? '允许' : '不允许'}</td>
 				<td style="word-break:break-all;">${task.url}</td>
 				<td>${task.cron}</td>
 				<td><fmt:formatDate value="${task.nextFireTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 				<td><fmt:formatDate value="${task.previousFireTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 				<td>
 					<c:if test="${task.status eq '0'}">
-						<a href="javascript:updateStatus('${task.id}','1');">开启</a>
+						<a href="javascript:updateStatus('${task.id}',1);">开启</a>
 						挂起
 						立即执行
 					</c:if>
 					<c:if test="${task.status eq '1'}">
-						<a href="javascript:updateStatus('${task.id}','0');">停止</a>
-						<a href="javascript:updateStatus('${task.id}','2');">挂起</a>
+						<a href="javascript:updateStatus('${task.id}',0);">停止</a>
+						<a href="javascript:updateStatus('${task.id}',2);">挂起</a>
 						<a href="javascript:triggerJob('${task.id}');">立即执行</a>
 					</c:if>
 					<c:if test="${task.status eq '2'}">
 						停止
-						<a href="javascript:updateStatus('${task.id}','3');">恢复</a>
+						<a href="javascript:updateStatus('${task.id}',3);">恢复</a>
 						立即执行
 					</c:if>
 					<c:if test="${task.status eq '3'}">
-						<a href="javascript:updateStatus('${task.id}','0');">停止</a>
-						<a href="javascript:updateStatus('${task.id}','2');">挂起</a>
+						<a href="javascript:updateStatus('${task.id}',0);">停止</a>
+						<a href="javascript:updateStatus('${task.id}',2);">挂起</a>
 						<a href="javascript:triggerJob('${task.id}');">立即执行</a>
 					</c:if>
 					<a href="javascript:updateCron('${task.id}','${task.cron}');">更新Cron</a>
@@ -187,8 +196,8 @@ function inputDynamicPassword(){
 				<td>停止</td>
 				<td>
 					<select name="concurrent" id="concurrent">
-							<option value="N" selected="selected">不允许</option>
-							<option value="Y">允许</option>
+							<option value="0" selected="selected">不允许</option>
+							<option value="1">允许</option>
 					</select>
 				</td>
 				<td><input type="text" name="url" id="url" size="32"/></td>
@@ -199,5 +208,5 @@ function inputDynamicPassword(){
 		</tr>
 	</table>
 </div>
-
-<jsp:include page="/footer.jsp"/>
+</body>
+</html>

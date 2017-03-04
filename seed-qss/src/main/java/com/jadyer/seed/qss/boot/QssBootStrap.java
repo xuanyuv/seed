@@ -3,11 +3,16 @@ package com.jadyer.seed.qss.boot;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4;
+import org.quartz.Scheduler;
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.servlet.Filter;
@@ -18,6 +23,8 @@ import java.util.List;
 /**
  * Created by 玄玉<https://jadyer.github.io/> on 2017/3/4 18:39.
  */
+@EntityScan(basePackages="${scan.base.packages}")
+@EnableJpaRepositories(basePackages="${scan.base.packages}")
 @SpringBootApplication(scanBasePackages="${scan.base.packages}")
 public class QssBootStrap extends SpringBootServletInitializer {
     @Override
@@ -30,6 +37,10 @@ public class QssBootStrap extends SpringBootServletInitializer {
         return new CharacterEncodingFilter("UTF-8", true);
     }
 
+    @Bean
+    public FactoryBean<Scheduler> getSchedulerFactoryBean(){
+        return new SchedulerFactoryBean();
+    }
 
     @Bean
     public HttpMessageConverters fastjsonConverter(){

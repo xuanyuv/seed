@@ -126,16 +126,16 @@ public class QssService {
 	/**
 	 * 更改QuartzJob和数据库任务状态
 	 */
-	boolean updateStatus(int taskId, String status){
+	boolean updateStatus(int taskId, int status){
 		ScheduleTask task = this.getTaskById(taskId);
 		task.setStatus(status);
-		if(ScheduleTask.STATUS_NOT_RUNNING.equals(status)){
+		if(ScheduleTask.STATUS_NOT_RUNNING == status){
 			this.deleteJob(task);
-		}else if(ScheduleTask.STATUS_RUNNING.equals(status)){
+		}else if(ScheduleTask.STATUS_RUNNING == status){
 			this.addJob(task);
-		}else if(ScheduleTask.STATUS_PAUSE.equals(status)){
+		}else if(ScheduleTask.STATUS_PAUSE == status){
 			this.pauseJob(task);
-		}else if(ScheduleTask.STATUS_RESUME.equals(status)){
+		}else if(ScheduleTask.STATUS_RESUME == status){
 			this.resumeJob(task);
 		}
 		return 1==scheduleTaskDao.updateStatusById(status, taskId);
@@ -151,7 +151,7 @@ public class QssService {
 		}
 		ScheduleTask task = this.getTaskById(taskId);
 		task.setCron(cron);
-		if(ScheduleTask.STATUS_RUNNING.equals(task.getStatus())){
+		if(ScheduleTask.STATUS_RUNNING == task.getStatus()){
 			this.updateJobCron(task);
 		}
 		return 1==scheduleTaskDao.updateCronById(cron, taskId);
@@ -184,7 +184,7 @@ public class QssService {
 					task.setNextFireTime(trigger.getNextFireTime());         //下次触发时间
 					task.setPreviousFireTime(trigger.getPreviousFireTime()); //上次触发时间
 					Trigger.TriggerState triggerState = scheduler.getTriggerState(trigger.getKey());
-					task.setStatus(triggerState.name());
+					task.setStatus("N".equals(triggerState.name()) ? 0 : 1);
 					if(trigger instanceof CronTrigger){
 						task.setCron(((CronTrigger)trigger).getCronExpression());
 					}
@@ -234,7 +234,7 @@ public class QssService {
 	 * 添加QuartzJob
 	 */
 	private void addJob(ScheduleTask task){
-		if(null==task || (!ScheduleTask.STATUS_RUNNING.equals(task.getStatus()) && !ScheduleTask.STATUS_RESUME.equals(task.getStatus()))){
+		if(null==task || (ScheduleTask.STATUS_RUNNING != task.getStatus() && ScheduleTask.STATUS_RESUME != task.getStatus())){
 			return;
 		}
 		TriggerKey triggerKey = TriggerKey.triggerKey(task.getName());
@@ -242,7 +242,7 @@ public class QssService {
 			CronTrigger trigger = (CronTrigger)scheduler.getTrigger(triggerKey);
 			if(null == trigger){
 				//Trigger不存在就创建一个
-				Class<? extends Job> clazz = ScheduleTask.CONCURRENT_YES.equals(task.getConcurrent()) ? JobFactory.class : JobDisallowConcurrentFactory.class;
+				Class<? extends Job> clazz = ScheduleTask.CONCURRENT_YES == task.getConcurrent() ? JobFactory.class : JobDisallowConcurrentFactory.class;
 				JobDetail jobDetail = JobBuilder.newJob(clazz).withIdentity(task.getName()).build();
 				jobDetail.getJobDataMap().put(ScheduleTask.JOB_DATAMAP_KEY, task);
 				//表达式调度构建器

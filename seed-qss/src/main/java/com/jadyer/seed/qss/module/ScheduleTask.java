@@ -37,13 +37,13 @@ import java.util.Date;
 @Table(name="t_schedule_task")
 public class ScheduleTask extends BaseEntity<Long> {
 	private static final long serialVersionUID = 6239479172908393534L;
-	public static final String STATUS_RUNNING     = "1"; //启动
-	public static final String STATUS_NOT_RUNNING = "0"; //停止
-	public static final String STATUS_PAUSE       = "2"; //暂停
-	public static final String STATUS_RESUME      = "3"; //暂停后恢复
-	public static final String CONCURRENT_YES     = "Y"; //允许并发执行
-	public static final String CONCURRENT_NO      = "N"; //不允许并发执行
-	public static final String JOB_DATAMAP_KEY    = "scheduleTask"; //存放在Quartz测JobDataMap中的key
+	public static final int STATUS_RUNNING     = 1; //启动
+	public static final int STATUS_NOT_RUNNING = 0; //停止
+	public static final int STATUS_PAUSE       = 2; //暂停
+	public static final int STATUS_RESUME      = 3; //暂停后恢复
+	public static final int CONCURRENT_YES     = 1; //允许并发执行
+	public static final int CONCURRENT_NO      = 0; //不允许并发执行
+	public static final String JOB_DATAMAP_KEY = "scheduleTask"; //存放在Quartz测JobDataMap中的key
 
 	/** 定时任务名称 */
 	private String name;
@@ -51,11 +51,11 @@ public class ScheduleTask extends BaseEntity<Long> {
 	/** 定时任务执行的CronExpression */
 	private String cron;
 	
-	/** 定时任务状态：0--停止,1--启动 */
-	private String status;
+	/** 定时任务状态：0--停止，1--启动，2--挂起，3--恢复 */
+	private int status;
 	
-	/** 定时任务是否允许并行执行：Y--允许,N--不允许 */
-	private String concurrent;
+	/** 定时任务是否允许并行执行：0--不允许，1--允许 */
+	private int concurrent;
 	
 	/** 定时任务URL */
 	private String url;
@@ -85,16 +85,16 @@ public class ScheduleTask extends BaseEntity<Long> {
 	public void setCron(String cron) {
 		this.cron = cron;
 	}
-	public String getStatus() {
+	public int getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
-	public String getConcurrent() {
+	public int getConcurrent() {
 		return concurrent;
 	}
-	public void setConcurrent(String concurrent) {
+	public void setConcurrent(int concurrent) {
 		this.concurrent = concurrent;
 	}
 	public String getUrl() {
