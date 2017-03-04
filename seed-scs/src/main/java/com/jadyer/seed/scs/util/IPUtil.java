@@ -1,4 +1,4 @@
-package com.jadyer.seed.boot.util;
+package com.jadyer.seed.scs.util;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.Inet4Address;

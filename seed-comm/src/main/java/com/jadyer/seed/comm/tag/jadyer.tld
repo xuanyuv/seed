@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee web-jsptaglibrary_2_1.xsd"
+	version="2.1">
+	<tlib-version>1.0</tlib-version>
+	<short-name>jadyer</short-name>
+	<uri>http://www.jadyer.com/tag</uri>
+	<tag>
+		<name>hasPermission</name>
+		<tag-class>com.jadyer.engine.common.tag.HasPermissionTag</tag-class>
+		<body-content>JSP</body-content>
+	</tag>
+	<tag>
+		<name>lacksPermission</name>
+		<tag-class>com.jadyer.engine.common.tag.LacksPermissionTag</tag-class>
+		<body-content>JSP</body-content>
+	</tag>
+</taglib>

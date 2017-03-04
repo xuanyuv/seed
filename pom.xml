@@ -9,22 +9,33 @@
 	<modules>
 		<module>seed-boot</module>
 		<module>seed-comm</module>
-		<module>seed-qss</module>
 		<module>seed-open</module>
+		<module>seed-qss</module>
+		<module>seed-scs</module>
 	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<commons-io.version>2.5</commons-io.version>
+		<commons-net.version>3.4</commons-net.version>
 		<commons-lang3.version>3.5</commons-lang3.version>
 		<commons-codec.version>1.10</commons-codec.version>
 		<commons-fileupload.version>1.3.2</commons-fileupload.version>
+		<apache.poi.version>3.14</apache.poi.version>
+		<apache.mina.version>2.0.13</apache.mina.version>
+        <apache.httpclient.version>4.5.2</apache.httpclient.version>
+        <google.zxing.version>2.2</google.zxing.version>
+        <google.guice.version>4.0</google.guice.version>
+        <google.guava.version>19.0</google.guava.version>
+		<alibaba.druid.version>1.0.27</alibaba.druid.version>
+		<alibaba.fastjson.version>1.2.23</alibaba.fastjson.version>
+		<jsch.version>0.1.53</jsch.version>
 		<jedis.version>2.9.0</jedis.version>
-		<druid.version>1.0.27</druid.version>
+		<jcifs.version>1.3.17</jcifs.version>
+		<jsoup.version>1.10.2</jsoup.version>
 		<jasypt.version>1.9.2</jasypt.version>
-		<fastjson.version>1.2.23</fastjson.version>
-		<springfox.version>2.5.0</springfox.version>
-		<httpclient.version>4.5.2</httpclient.version>
+		<quartz.version>2.2.3</quartz.version>
+		<swagger.version>2.5.0</swagger.version>
 		<bouncycastle.version>1.54</bouncycastle.version>
 	</properties>
 
@@ -96,23 +107,25 @@
 			<artifactId>jstl</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<!--<scope>runtime</scope>-->
-		</dependency>
-		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-			<version>${jedis.version}</version>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<!--<scope>runtime</scope>-->
 		</dependency>
+
+		<!-- Apache -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>${commons-io.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>${commons-net.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -130,56 +143,166 @@
 			<version>${commons-fileupload.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>${springfox.version}</version>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>${apache.poi.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>${springfox.version}</version>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${apache.poi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.mina</groupId>
+			<artifactId>mina-core</artifactId>
+			<version>${apache.mina.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>${httpclient.version}</version>
+			<version>${apache.httpclient.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient-cache</artifactId>
-			<version>${httpclient.version}</version>
+			<version>${apache.httpclient.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpmime</artifactId>
-			<version>${httpclient.version}</version>
+			<version>${apache.httpclient.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>fluent-hc</artifactId>
-			<version>${httpclient.version}</version>
+			<version>${apache.httpclient.version}</version>
 		</dependency>
+
+		<!-- Google -->
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>${google.zxing.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>${google.zxing.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>${google.guice.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${google.guava.version}</version>
+		</dependency>
+
+		<!-- Alibaba -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
-			<version>${druid.version}</version>
+			<version>${alibaba.druid.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
-			<version>${fastjson.version}</version>
+			<version>${alibaba.fastjson.version}</version>
 		</dependency>
+
+		<!-- Other -->
+		<dependency>
+			<groupId>com.jcraft</groupId>
+			<artifactId>jsch</artifactId>
+			<version>${jsch.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>${jedis.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>jcifs</groupId>
+			<artifactId>jcifs</artifactId>
+			<version>${jcifs.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.servlet</groupId>
+					<artifactId>servlet-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>${jsoup.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt</artifactId>
+			<version>${jasypt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>${quartz.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>c3p0</groupId>
+					<artifactId>c3p0</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+		<dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk15on</artifactId>
 			<version>${bouncycastle.version}</version>
 		</dependency>
-        <dependency>
-            <groupId>org.jasypt</groupId>
-            <artifactId>jasypt</artifactId>
-            <version>${jasypt.version}</version>
-        </dependency>
 	</dependencies>
+
+	<!-- Maven在使用第三方构件和插件时是分开来配置的,所以如果我们希望插件也通过本地仓库来下载,则需配置pluginRepository -->
+	<!--
+	<repositories>
+		<repository>
+			<id>central</id>
+			<url>http://192.168.2.41:8081/nexus/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>central</id>
+			<url>http://192.168.2.41:8081/nexus/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+	 -->
 
 	<build>
 		<plugins>
@@ -199,8 +322,29 @@
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
+					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+
+	<!--
+	<server>
+		<id>jadyer-nexus-release</id>
+		<username>admin</username>
+		<password>admin123</password>
+	</server>
+	1.将工具包编译发布到私服的命令：[call mvn clean deploy -DskipTests]
+	2.将jar包发布到本地仓库的命令是：mvn install:install-file -DgroupId=com.jadyer -DartifactId=Jadyer-tag -Dversion=1.0 -Dpackaging=jar -Dfile=D:/mytaglib/Jadyer-tag-1.0.jar
+	3.将第三方jar发布到私服的命令是：mvn deploy:deploy-file -Dversion=11.2.0.4 -Dfile=ojdbc6-11.2.0.4.jar -Dsources=ojdbc6-11.2.0.4-sources.jar -DgroupId=com.jadyer.oracle -DartifactId=ojdbc6 -Dpackaging=jar -DrepositoryId=jadyer-nexus-release -Durl=http://192.168.2.41:8081/nexus/content/repositories/releases
+	4.在私服手工发布第三方jar的操作：Repositories===Releases===Artifact Upload===GAV Definition===GAV Parameters===Select Artifact(s) to Upload===Upload Artifact(s)
+	 -->
+	<!--
+	<distributionManagement>
+		<repository>
+			<id>jadyer-nexus-release</id>
+			<url>http://192.168.2.41:8081/nexus/content/repositories/releases</url>
+		</repository>
+	</distributionManagement>
+	 -->
 </project>

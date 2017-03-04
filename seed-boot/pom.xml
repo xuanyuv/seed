@@ -12,4 +12,12 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.jadyer</groupId>
+			<artifactId>seed-comm</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+	</dependencies>
 </project>
