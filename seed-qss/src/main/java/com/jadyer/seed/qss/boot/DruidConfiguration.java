@@ -1,4 +1,4 @@
-package com.jadyer.seed.boot;
+package com.jadyer.seed.qss.boot;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.ResourceServlet;
@@ -8,16 +8,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
-/**
- * 有时间研究研究这里面的属性https://github.com/alibaba/druid/issues/1344
- * 另经测试：当应用正常运行过程中，数据库突然宕掉后过一段时间又恢复，druid会自动重连
- * Created by 玄玉<https://jadyer.github.io/> on 2016/01/24 12:09.
- */
-//@Configuration
+@Configuration
 public class DruidConfiguration {
 	@Value("${spring.datasource.url}")
 	private String url;

@@ -107,7 +107,7 @@ public class DemoController {
         if(!session.getAttribute("rand").equals(captcha)){
             return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "无效的验证码");
         }
-        LogUtil.getAppLogger().info("验证码校验-->通过");
+        LogUtil.getLogger().info("验证码校验-->通过");
         for(Map.Entry<String, String> entry : userInfoMap.entrySet()){
             if(entry.getKey().equals(username) && entry.getValue().equals(password)){
                 session.setAttribute("userinfo", "伪用户");

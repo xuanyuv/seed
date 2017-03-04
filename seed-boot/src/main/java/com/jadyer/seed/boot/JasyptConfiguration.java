@@ -54,7 +54,7 @@ public class JasyptConfiguration implements EnvironmentAware {
 
     private String getProperty(Environment environment, String key, String defaultValue){
         if(null == environment.getProperty(key)){
-            LogUtil.getAppLogger().info("Encryptor config not found for property {}, using default value: {}", key, defaultValue);
+            LogUtil.getLogger().info("Encryptor config not found for property {}, using default value: {}", key, defaultValue);
         }
         return environment.getProperty(key, defaultValue);
     }

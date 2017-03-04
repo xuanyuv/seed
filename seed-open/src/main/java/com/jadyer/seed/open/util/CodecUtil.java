@@ -80,7 +80,7 @@ public final class CodecUtil {
 		try {
 			kg = KeyGenerator.getInstance(algorithm);
 		} catch (NoSuchAlgorithmException e) {
-			LogUtil.getAppLogger().error("实例化密钥生成器失败,系统不支持给定的[" + algorithm + "]算法,堆栈轨迹如下", e);
+			LogUtil.getLogger().error("实例化密钥生成器失败,系统不支持给定的[" + algorithm + "]算法,堆栈轨迹如下", e);
 			return "";
 		}
 		//初始化密钥生成器:AES要求密钥长度为128,192,256位
@@ -298,7 +298,7 @@ public final class CodecUtil {
 			//将Base64中的URL非法字符如'+','/','='转为其他字符,详见RFC3548
 			return Base64.encodeBase64URLSafeString(cipher.doFinal(data.getBytes(CHARSET)));
 		}catch(Exception e){
-			LogUtil.getAppLogger().error("加密字符串[" + data + "]时遇到异常,堆栈轨迹如下", e);
+			LogUtil.getLogger().error("加密字符串[" + data + "]时遇到异常,堆栈轨迹如下", e);
 			return "";
 		}
 	}
@@ -316,7 +316,7 @@ public final class CodecUtil {
 			cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(Base64.decodeBase64(key), ALGORITHM_AES));
 			return new String(cipher.doFinal(Base64.decodeBase64(data)), CHARSET);
 		}catch(Exception e){
-			LogUtil.getAppLogger().error("解密字符串[" + data + "]时遇到异常,堆栈轨迹如下", e);
+			LogUtil.getLogger().error("解密字符串[" + data + "]时遇到异常,堆栈轨迹如下", e);
 			return "";
 		}
 	}
@@ -340,10 +340,10 @@ public final class CodecUtil {
 			mac = Mac.getInstance(algorithm);
 			mac.init(secretKey);
 		} catch (InvalidKeyException e) {
-			LogUtil.getAppLogger().error("签名字符串[" + data + "]时发生异常:InvalidKey[" + key + "]");
+			LogUtil.getLogger().error("签名字符串[" + data + "]时发生异常:InvalidKey[" + key + "]");
 			return "";
 		} catch (NoSuchAlgorithmException e) {
-			LogUtil.getAppLogger().error("签名字符串[" + data + "]时发生异常:System doesn't support this algorithm[" + algorithm + "]");
+			LogUtil.getLogger().error("签名字符串[" + data + "]时发生异常:System doesn't support this algorithm[" + algorithm + "]");
 			return "";
 		}
 		return Hex.encodeHexString(mac.doFinal(OpenUtil.getBytes(data, CHARSET)));

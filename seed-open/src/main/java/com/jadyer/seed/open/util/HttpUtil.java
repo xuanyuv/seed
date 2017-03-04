@@ -87,7 +87,7 @@ public final class HttpUtil {
 	 * @return 远程主机响应正文
 	 */
 	public static String post(String reqURL, String reqData, String contentType) {
-		LogUtil.getAppLogger().info("请求{}的报文为-->>[{}]", reqURL, reqData);
+		LogUtil.getLogger().info("请求{}的报文为-->>[{}]", reqURL, reqData);
 		String respData = "";
 		HttpClient httpClient = new DefaultHttpClient();
 		httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, DEFAULT_CONNECTION_TIMEOUT);
@@ -137,7 +137,7 @@ public final class HttpUtil {
 			if (null != entity) {
 				respData = EntityUtils.toString(entity, DEFAULT_CHARSET);
 			}
-			LogUtil.getAppLogger().info("请求{}得到应答<<--[{}]", reqURL, respData);
+			LogUtil.getLogger().info("请求{}得到应答<<--[{}]", reqURL, respData);
 			return respData;
 		} catch (ConnectTimeoutException cte) {
 			throw new RuntimeException("请求通信[" + reqURL + "]时连接超时", cte);
@@ -165,7 +165,7 @@ public final class HttpUtil {
 	 * @return 远程主机响应正文
 	 */
 	public static String post(String reqURL, Map<String, String> params) {
-		LogUtil.getAppLogger().info("请求{}的报文为-->>{}", reqURL, OpenUtil.buildStringFromMap(params));
+		LogUtil.getLogger().info("请求{}的报文为-->>{}", reqURL, OpenUtil.buildStringFromMap(params));
 		String respData = "";
 		HttpClient httpClient = new DefaultHttpClient();
 		httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, DEFAULT_CONNECTION_TIMEOUT);
@@ -217,7 +217,7 @@ public final class HttpUtil {
 			if (null != entity) {
 				respData = EntityUtils.toString(entity, DEFAULT_CHARSET);
 			}
-			LogUtil.getAppLogger().info("请求{}得到应答<<--[{}]", reqURL, respData);
+			LogUtil.getLogger().info("请求{}得到应答<<--[{}]", reqURL, respData);
 			return respData;
 		} catch (ConnectTimeoutException cte) {
 			throw new RuntimeException("请求通信[" + reqURL + "]时连接超时", cte);
@@ -247,7 +247,7 @@ public final class HttpUtil {
 	 * @return 远程主机响应正文
 	 */
 	public static String postWithUpload(String reqURL, String filename, InputStream is, String fileBodyName, Map<String, String> params) {
-		LogUtil.getAppLogger().info("请求"+reqURL+"的报文为-->>"+OpenUtil.buildStringFromMap(params));
+		LogUtil.getLogger().info("请求"+reqURL+"的报文为-->>"+OpenUtil.buildStringFromMap(params));
 		String respData = "";
 		HttpClient httpClient = new DefaultHttpClient();
 		httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, DEFAULT_CONNECTION_TIMEOUT);
@@ -298,7 +298,7 @@ public final class HttpUtil {
 			if (null != entity) {
 				respData = EntityUtils.toString(entity, DEFAULT_CHARSET);
 			}
-			LogUtil.getAppLogger().info("请求"+reqURL+"得到应答<<--["+respData+"]");
+			LogUtil.getLogger().info("请求"+reqURL+"得到应答<<--["+respData+"]");
 			return respData;
 		} catch (ConnectTimeoutException cte) {
 			throw new RuntimeException("请求通信[" + reqURL + "]时连接超时", cte);

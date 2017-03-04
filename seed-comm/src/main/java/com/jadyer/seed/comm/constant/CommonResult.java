@@ -21,14 +21,25 @@ public class CommonResult {
 	public CommonResult() {}
 
 	/**
-	 * 默认返回的操作码为CodeEnum.SUCCESS
+	 * 返回的操作码为CodeEnum.SUCCESS
 	 */
 	public CommonResult(Object data) {
-		this(CodeEnum.SUCCESS.getCode(), CodeEnum.SUCCESS.getMsg(), data);
+		this(CodeEnum.SUCCESS, data);
+	}
+
+	public CommonResult(CodeEnum codeEnum, Object data) {
+		this(codeEnum.getCode(), codeEnum.getMsg(), data);
 	}
 
 	/**
-	 * 默认返回的data=""
+	 * 返回的data=""
+	 */
+	public CommonResult(CodeEnum codeEnum) {
+		this(codeEnum.getCode(), codeEnum.getMsg());
+	}
+
+	/**
+	 * 返回的data=""
 	 */
 	public CommonResult(int code, String msg) {
 		this(code, msg, "");

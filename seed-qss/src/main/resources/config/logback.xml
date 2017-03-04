@@ -1,52 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
-<!-- 日志组件启动时,以60秒周期监控此文件变化,并打印logback内部日志信息以达到实时查看logback运行状态的目的 -->
-<!-- <configuration scan="true" scanPeriod="60 seconds" debug="true"> -->
 <configuration>
-	<!--
-	<if condition='isDefined("tomcat.port")'>
-		<then>
-			<property name="PROJECT_NAME" value="demo-boot-${tomcat.port}"/>
-		</then>
-		<else>
-			<property name="PROJECT_NAME" value="demo-boot"/>
-		</else>
-	</if>
-	<if condition='property("os.name").toUpperCase().contains("WINDOWS")'>
-		<then>
-			<property name="PROJECT_PATH" value="/app/logs/demo-boot"/>
-		</then>
-		<else>
-			<property name="PROJECT_PATH" value="${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}"/>
-		</else>
-	</if>
-    -->
-	<!-- 项目名称及日志目录定义 -->
-	<property name="PROJECT_NAME" value="demo-boot"/>
-	
-	<!-- ${LOG_PATH}取到的就是application.properties里面配置的logging.path -->
-	<!-- 注意SpringBoot中的logging.path和logging.file必须配置一个 -->
-	<!-- 否则日志会写到工程根目录下的LOG_PATH_IS_UNDEFINED目录下 -->
-	<!-- 但要是换成yml文件,测试发现怎么配置都会生成LOG_PATH_IS_UNDEFINED目录 -->
+	<property name="PROJECT_NAME" value="qss"/>
 	<property name="LOG_HOME" value="${LOG_PATH}"/>
-
-	<!-- 每个logger都关联到logger上下文,默认上下文名称为"default" -->
-	<!-- 可以使用<contextName>设置成其他名字,用于区分不同应用程序的记录 -->
-	<!-- 一旦设置,不能修改 -->
 	<contextName>${PROJECT_NAME}</contextName>
 
-	<!-- RollingFileAppender用于滚动记录文件,先将日志记录到指定文件,当符合某个条件时,将日志记录到其他文件 -->
-	<appender name="APP_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<appender name="DEFAULT_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${LOG_HOME}/${PROJECT_NAME}.log</file>
 		<encoder>
 			<pattern>[%d{yyyyMMddHHmmssSSS}][%t][%C{0}.%M]%m%n</pattern>
 		</encoder>
-		<!-- rollingPolicy用于设置当发生滚动时,决定RollingFileAppender的行为,涉及文件移动和重命名 -->
-		<!-- TimeBasedRollingPolicy是最常用的滚动策略,它根据时间来制定滚动策略,既负责滚动也负责出发滚动 -->
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>${LOG_HOME}/archive/${PROJECT_NAME}.log.%d{yyyyMMdd}</fileNamePattern>
 		</rollingPolicy>
 	</appender>
-
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
 			<pattern>[%d{yyyyMMddHHmmssSSS}][%t][%C{0}.%M]%m%n</pattern>
@@ -58,9 +24,8 @@
 	<logger name="org.hibernate" level="WARN"/>
 	<logger name="org.thymeleaf" level="WARN"/>
 	<logger name="org.springframework" level="WARN"/>
-
-	<logger name="appLogger" level="INFO" additivity="true">
-		<appender-ref ref="APP_LOG"/>
+	<logger name="defaultLogger" level="INFO" additivity="true">
+		<appender-ref ref="DEFAULT_LOG"/>
 	</logger>
 
 	<root level="DEBUG">

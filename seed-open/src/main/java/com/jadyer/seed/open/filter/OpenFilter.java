@@ -77,11 +77,11 @@ public class OpenFilter extends OncePerRequestFilter {
         String method = request.getParameter("method");
         if(StringUtils.isNotBlank(method) && (method.endsWith("file.upload")||method.endsWith("h5"))){
             reqDataStr = OpenUtil.buildStringFromMapWithStringArray(request.getParameterMap());
-            LogUtil.getAppLogger().debug("收到客户端IP=[{}]的请求报文为-->{}", IPUtil.getClientIP(request), reqDataStr);
+            LogUtil.getLogger().debug("收到客户端IP=[{}]的请求报文为-->{}", IPUtil.getClientIP(request), reqDataStr);
             reqData = OpenUtil.requestToBean(request, ReqData.class);
         }else{
             reqDataStr = IOUtils.toString(request.getInputStream(), OpenConstant.CHARSET_UTF8);
-            LogUtil.getAppLogger().debug("收到客户端IP=[{}]的请求报文为-->[{}]", IPUtil.getClientIP(request), reqDataStr);
+            LogUtil.getLogger().debug("收到客户端IP=[{}]的请求报文为-->[{}]", IPUtil.getClientIP(request), reqDataStr);
             reqData = JSON.parseObject(reqDataStr, ReqData.class);
             method = reqData.getMethod();
         }
@@ -94,7 +94,7 @@ public class OpenFilter extends OncePerRequestFilter {
             this.verifyTimestamp(reqData.getTimestamp(), 600000);
             //识别合作方
             String appsecret = appsecretMap.get(reqData.getAppid());
-            LogUtil.getAppLogger().debug("通过appid=[{}]读取到合作方密钥{}", reqData.getAppid(), appsecret);
+            LogUtil.getLogger().debug("通过appid=[{}]读取到合作方密钥{}", reqData.getAppid(), appsecret);
             if(appsecretMap.isEmpty() || StringUtils.isBlank(appsecret)){
                 throw new SeedException(OpenCodeEnum.UNKNOWN_APPID.getCode(), OpenCodeEnum.UNKNOWN_APPID.getMsg());
             }
@@ -115,7 +115,7 @@ public class OpenFilter extends OncePerRequestFilter {
             ResponseContentWrapper responseWrapper = new ResponseContentWrapper(response);
             filterChain.doFilter(requestWrapper, responseWrapper);
             String content = responseWrapper.getContent();
-            LogUtil.getAppLogger().info("返回客户端IP=["+IPUtil.getClientIP(request)+"]的应答明文为-->[{}]", content);
+            LogUtil.getLogger().info("返回客户端IP=["+IPUtil.getClientIP(request)+"]的应答明文为-->[{}]", content);
             if(method.endsWith("h5") || method.endsWith("agree") || method.endsWith("download")){
                 response.getOutputStream().write(content.getBytes(OpenConstant.CHARSET_UTF8));
             }else{
@@ -130,7 +130,7 @@ public class OpenFilter extends OncePerRequestFilter {
                     }
                 }
                 String respDataJson = JSON.toJSONString(respData);
-                LogUtil.getAppLogger().debug("返回客户端IP=["+IPUtil.getClientIP(request)+"]的应答密文为-->[{}]", respDataJson);
+                LogUtil.getLogger().debug("返回客户端IP=["+IPUtil.getClientIP(request)+"]的应答密文为-->[{}]", respDataJson);
                 response.getOutputStream().write(respDataJson.getBytes(OpenConstant.CHARSET_UTF8));
             }
             //异步记录接口访问日志
@@ -203,13 +203,13 @@ public class OpenFilter extends OncePerRequestFilter {
         if(OpenConstant.SIGN_TYPE_md5.equals(signType)){
             String data = sb.append(appsecret).toString();
             String sign = DigestUtils.md5Hex(data);
-            LogUtil.getAppLogger().debug("请求参数签名原文-->[{}]", data);
-            LogUtil.getAppLogger().debug("请求参数签名得到-->[{}]", sign);
+            LogUtil.getLogger().debug("请求参数签名原文-->[{}]", data);
+            LogUtil.getLogger().debug("请求参数签名得到-->[{}]", sign);
             verfiyResult = sign.equals(paramMap.get("sign")[0]);
         }else{
             String sign = CodecUtil.buildHmacSign(sb.toString(), appsecret, "HmacMD5");
-            LogUtil.getAppLogger().debug("请求参数签名原文-->[{}]", sb.toString());
-            LogUtil.getAppLogger().debug("请求参数签名得到-->[{}]", sign);
+            LogUtil.getLogger().debug("请求参数签名原文-->[{}]", sb.toString());
+            LogUtil.getLogger().debug("请求参数签名得到-->[{}]", sign);
             verfiyResult = sign.equals(paramMap.get("sign")[0]);
         }
         if(!verfiyResult){
@@ -240,7 +240,7 @@ public class OpenFilter extends OncePerRequestFilter {
                 throw new SeedException(OpenCodeEnum.SIGN_ERROR.getCode(), OpenCodeEnum.SIGN_ERROR.getMsg());
             }
         }
-        LogUtil.getAppLogger().info("请求参数解密得到dataPlain=[{}]", dataPlain);
+        LogUtil.getLogger().info("请求参数解密得到dataPlain=[{}]", dataPlain);
         reqData.setData(dataPlain);
         Map<String, Object> allParams = new HashMap<>();
         for(Field field : reqData.getClass().getDeclaredFields()){
@@ -270,9 +270,9 @@ public class OpenFilter extends OncePerRequestFilter {
             @Override
             public void run() {
                 try {
-                    LogUtil.getAppLogger().info("记录日志到Database或MongoDB等等");
+                    LogUtil.getLogger().info("记录日志到Database或MongoDB等等");
                 } catch (Exception e) {
-                    LogUtil.getAppLogger().info("记录appid=["+appid+"]的接口["+method+"]访问日志时发生异常, 堆栈轨迹如下", e);
+                    LogUtil.getLogger().info("记录appid=["+appid+"]的接口["+method+"]访问日志时发生异常, 堆栈轨迹如下", e);
                 }
             }
         });

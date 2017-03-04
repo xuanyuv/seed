@@ -1,4 +1,4 @@
-package com.jadyer.seed.comm.base;
+package com.jadyer.seed.comm.jpa;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;

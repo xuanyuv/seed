@@ -48,7 +48,7 @@ class SessionRedisRepository {
      */
     long delete(String sessionId){
         if(StringUtils.isBlank(sessionId)){
-            LogUtil.getAppLogger().warn("sessionId is blank");
+            LogUtil.getLogger().warn("sessionId is blank");
             return 0;
         }
         return jedisCluster.del(this.getByteKey(sessionId));
@@ -78,10 +78,10 @@ class SessionRedisRepository {
         if(StringUtils.isBlank(sessionId)){
             throw new NullPointerException("sessionId is blank");
         }
-        LogUtil.getAppLogger().debug("get session-->[{}]", sessionId);
+        LogUtil.getLogger().debug("get session-->[{}]", sessionId);
         byte[] sessionData = jedisCluster.get(this.getByteKey(sessionId));
         if(null == sessionData){
-            LogUtil.getAppLogger().debug("get session-->[{}]-->session data not found", sessionId);
+            LogUtil.getLogger().debug("get session-->[{}]-->session data not found", sessionId);
             return null;
         }
         return SerializationUtils.deserialize(sessionData);
@@ -94,10 +94,10 @@ class SessionRedisRepository {
      */
     void save(MapSession session){
         if(null==session || null==session.getId()){
-            LogUtil.getAppLogger().warn("session or sessionId is null");
+            LogUtil.getLogger().warn("session or sessionId is null");
             return;
         }
-        LogUtil.getAppLogger().debug("save session-->[{}]", session.getId());
+        LogUtil.getLogger().debug("save session-->[{}]", session.getId());
         byte[] key = this.getByteKey(session.getId());
         byte[] value = SerializationUtils.serialize(session);
         if(this.expireSeconds > 0){

@@ -37,7 +37,7 @@ public final class OpenUtil {
         try {
             return data.getBytes(charset);
         } catch (UnsupportedEncodingException e) {
-            LogUtil.getAppLogger().error("将字符串[" + data + "]转为byte[]时发生异常:系统不支持该字符集[" + charset + "]");
+            LogUtil.getLogger().error("将字符串[" + data + "]转为byte[]时发生异常:系统不支持该字符集[" + charset + "]");
             return data.getBytes();
         }
     }

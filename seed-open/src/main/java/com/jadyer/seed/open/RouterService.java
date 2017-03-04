@@ -62,9 +62,9 @@ class RouterService {
         } catch (IOException e) {
             return new CommonResult(OpenCodeEnum.SYSTEM_BUSY.getCode(), "文件流获取失败-->"+e.getMessage());
         }
-        LogUtil.getAppLogger().info("文档类型：" + fileData.getContentType());
-        LogUtil.getAppLogger().info("文件大小：" + fileData.getSize()); // 2667993=2.54MB=2,667,993字节
-        LogUtil.getAppLogger().info("文件原名：" + fileData.getOriginalFilename());
+        LogUtil.getLogger().info("文档类型：" + fileData.getContentType());
+        LogUtil.getLogger().info("文件大小：" + fileData.getSize()); // 2667993=2.54MB=2,667,993字节
+        LogUtil.getLogger().info("文件原名：" + fileData.getOriginalFilename());
         try {
             String desktop = FileSystemView.getFileSystemView().getHomeDirectory().getPath() + System.getProperty("file.separator");
             String separator = System.getProperty("file.separator");
