@@ -8,7 +8,6 @@
 		<version>1.1</version>
 	</parent>
 	<artifactId>seed-scs</artifactId>
-	<name>Sample Code System</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
