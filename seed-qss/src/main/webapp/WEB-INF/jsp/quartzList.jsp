@@ -7,7 +7,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<title>EngineDemo</title>
+	<title>定时系统</title>
 	<meta charset="UTF-8">
 	<link href="${ctx}/css/common.css" rel="stylesheet"/>
 	<script src="${ctx}/js/common.js"></script>
@@ -143,6 +143,8 @@ function inputDynamicPassword(){
 </script>
 <body>
 <div align="center">
+    <h1><span style="color:red;">定时系统(QSS--Quartz Scheduler System)</span></h1>
+    <br>
 	<table border="9">
 		<tr>
 			<th style="width:12%;">任务名</th>
@@ -201,7 +203,7 @@ function inputDynamicPassword(){
 					</select>
 				</td>
 				<td><input type="text" name="url" id="url" size="32"/></td>
-				<td><input type="text" name="cron" id="cron" value="0/10 * * * * ?" size="12"/></td>
+				<td><input type="text" name="cron" id="cron" value="0 0/10 * * * ?" size="12"/></td>
 				<td colspan="2"><input type="text" name="dynamicPassword" id="dynamicPassword" value="请输入动态密码（动态密码索取请联系玄玉）" size="34"/></td>
 				<td><input type="button" onclick="addTask()" value="保存"/></td>
 			</form>

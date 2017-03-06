@@ -13,6 +13,7 @@ public class MVCConfiguration extends WebMvcConfigurerAdapter {
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/").setViewName("forward:/qss/list");
 		registry.addViewController("/index").setViewName("forward:/list.jsp");
+		registry.addViewController("/druid").setViewName("forward:/druid/index.html");
 	}
 
 	@Override
