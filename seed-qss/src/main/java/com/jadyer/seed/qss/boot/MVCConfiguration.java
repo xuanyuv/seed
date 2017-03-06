@@ -19,7 +19,7 @@ public class MVCConfiguration extends WebMvcConfigurerAdapter {
 	@Override
 	public void configureViewResolvers(ViewResolverRegistry registry) {
 		InternalResourceViewResolver irvr = new InternalResourceViewResolver();
-		irvr.setPrefix("/WEB-INF/jsp/");
+		irvr.setPrefix("/");
 		irvr.setSuffix(".jsp");
 		irvr.setViewClass(JstlView.class);
 		registry.viewResolver(irvr);

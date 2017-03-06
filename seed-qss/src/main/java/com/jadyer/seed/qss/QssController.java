@@ -24,7 +24,7 @@ public class QssController {
 	@RequestMapping(value="/list")
 	public String list(HttpServletRequest request){
 		request.setAttribute("taskList", qssService.getAllTask());
-		return "quartzList";
+		return "qss";
 	}
 
 
