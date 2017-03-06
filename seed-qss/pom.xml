@@ -21,4 +21,16 @@
 			<version>${project.parent.version}</version>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>com.jadyer.seed.qss.boot.QssBootStrap</mainClass>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

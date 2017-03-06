@@ -28,6 +28,12 @@ import java.util.List;
 @EnableJpaRepositories(basePackages="${scan.base.packages}")
 @SpringBootApplication(scanBasePackages="${scan.base.packages}")
 public class QssBootStrap extends SpringBootServletInitializer {
+    //启动时不能直接执行main
+    //具体启动方式见https://jadyer.github.io/2016/07/29/idea-springboot-jsp/
+    public static void main(String[] args) {
+        new SpringApplicationBuilder().sources(QssBootStrap.class).profiles("local").run(args);
+    }
+
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return builder.sources(getClass());
