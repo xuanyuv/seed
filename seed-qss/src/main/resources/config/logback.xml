@@ -7,7 +7,7 @@
 	<appender name="DEFAULT_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${LOG_HOME}/${PROJECT_NAME}.log</file>
 		<encoder>
-			<pattern>[%d{yyyyMMddHHmmssSSS}][%t][%C{0}.%M]%m%n</pattern>
+			<pattern>[%d{yyMMddHHmmss}][%t][%C{0}.%M]%m%n</pattern>
 		</encoder>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>${LOG_HOME}/archive/${PROJECT_NAME}.log.%d{yyyyMMdd}</fileNamePattern>
@@ -15,7 +15,7 @@
 	</appender>
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<pattern>[%d{yyyyMMddHHmmssSSS}][%t][%C{0}.%M]%m%n</pattern>
+			<pattern>[%d{yyMMddHHmmss}][%t][%C{0}.%M]%m%n</pattern>
 		</encoder>
 	</appender>
 

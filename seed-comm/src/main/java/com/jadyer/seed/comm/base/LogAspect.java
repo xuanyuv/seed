@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class LogAspect {
 	@Around("execution(public * com.jadyer.seed..*Controller.*(..))")
-	public Object process(ProceedingJoinPoint joinPoint) throws Throwable {
+	public Object log(ProceedingJoinPoint joinPoint) throws Throwable {
 		Object respData;
 		long startTime = System.currentTimeMillis();
 		String className = joinPoint.getTarget().getClass().getSimpleName(); //获取类名(这里只切面了Controller类)
