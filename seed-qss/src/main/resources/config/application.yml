@@ -3,7 +3,7 @@ scan:
     packages: com.jadyer.seed
 
 logging:
-  path: /home/seed/Logs
+  path: /home/seed/log
   config: classpath:config/logback.xml
 
 spring:
