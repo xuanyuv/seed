@@ -29,6 +29,13 @@ import java.util.Date;
  * 从动态生成的UPDATE语句可以看出：其默认会更新所有字段，而使用了@DynamicUpdate就只会更新上一步对比的不一样值的字段
  * 但若待更新的Entity属性值与查询到的字段值都一样的话，那么无论请求多少次，Sping-Data-JPA都不会向数据库发起更新请求
  * -----------------------------------------------------------------------------------------------------------
+ * 关于Lombok
+ * 通过lombok可以让pojo不用写setter和getter，用法如下
+ * 1、引入https://mvnrepository.com/artifact/org.projectlombok/lombok
+ * 2、pojo使用@lombok.Data注解，举例：public @Data class ScheduleTask extends BaseEntity<Long> {}
+ * 3、IntelliJ IDEA 需要安装 Lombok Plugin
+ * 接下来就可以在其它地方直接调用setter或者getter
+ * -----------------------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.github.io/> on 2015/08/08 20:18.
  */
 @Entity
@@ -76,48 +83,63 @@ public class ScheduleTask extends BaseEntity<Long> {
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getCron() {
 		return cron;
 	}
+
 	public void setCron(String cron) {
 		this.cron = cron;
 	}
+
 	public int getStatus() {
 		return status;
 	}
+
 	public void setStatus(int status) {
 		this.status = status;
 	}
+
 	public int getConcurrent() {
 		return concurrent;
 	}
+
 	public void setConcurrent(int concurrent) {
 		this.concurrent = concurrent;
 	}
+
 	public String getUrl() {
 		return url;
 	}
+
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
 	public String getComment() {
 		return comment;
 	}
+
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+
 	public Date getNextFireTime() {
 		return nextFireTime;
 	}
+
 	public void setNextFireTime(Date nextFireTime) {
 		this.nextFireTime = nextFireTime;
 	}
+
 	public Date getPreviousFireTime() {
 		return previousFireTime;
 	}
+
 	public void setPreviousFireTime(Date previousFireTime) {
 		this.previousFireTime = previousFireTime;
 	}
