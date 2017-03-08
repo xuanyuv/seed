@@ -12,12 +12,26 @@ import org.slf4j.LoggerFactory;
  * Java日志性能那些事------http://www.infoq.com/cn/articles/things-of-java-log-performance
  * -----------------------------------------------------------------------------------------------------------
  * 邮件发送
- * 0、发邮件的话，由于配置日志级别是ERROR，所以执行LogUtil.getLogger().error("....")时，邮件就会被发出去
- *    前提条件是在log4j.properties中配置了邮件发送的一些参数（被注释的话，就不会自动发邮件了）
- * 1、log4j-1.2.14之后才支持SMTP认证，否则会报告异常
+ * 1、log4j邮件发送的前提条件：是在log4j.properties中配置了邮件发送的一些参数，参数举例如下
+ *    log4j.rootLogger=DEBUG,CONSOLE,EMAILSEND
+ *    log4j.appender.EMAILSEND=org.apache.log4j.net.SMTPAppender
+ *    log4j.appender.EMAILSEND.SMTPDebug=false
+ *    log4j.appender.EMAILSEND.Threshold=ERROR
+ *    log4j.appender.EMAILSEND.BufferSize=10
+ *    log4j.appender.EMAILSEND.SMTPHost=smtp.yeah.net
+ *    log4j.appender.EMAILSEND.SMTPUsername=jadyer
+ *    log4j.appender.EMAILSEND.SMTPPassword=jady*****er
+ *    log4j.appender.EMAILSEND.From=jadyer@yeah.net
+ *    log4j.appender.EMAILSEND.To=log4j001@yeah.net,log4j002@yeah.net,log4j003@yeah.net
+ *    log4j.appender.EMAILSEND.Cc=log4j004@yeah.net
+ *    log4j.appender.EMAILSEND.Bcc=log4j005@yeah.net
+ *    log4j.appender.EMAILSEND.Subject=【提醒】交易前置系统遇到异常
+ *    log4j.appender.EMAILSEND.layout=org.apache.log4j.PatternLayout
+ *    log4j.appender.EMAILSEND.layout.ConversionPattern=[%d{yyyyMMdd HH:mm:ss}][%t][%C{1}.%M]%m%n
+ *    上面的配置中，由于配置日志级别是ERROR，所以执行LogUtil.getLogger().error("....")时，邮件就会被自动发出去
  * 2、这里用到的smtp.yeah.net属于第三方的SMTP服务，我们也可以在本机上装一个SMTP服务，比如：IMail/Postfix
  * 3、网上很多人说发出去的邮件，如果主题和正文有中文的话，对方收到的是乱码，不过我没遇到，可能是因为我所有地方都用的UTF-8
- * 4、程序运行时，需导入mail.jar，可通过Oracle官网下载javamail-1.4.5.zip取得
+ * 4、log4j-1.2.14之后才支持SMTP认证，否则会报告异常，且需导入mail.jar（可通过Oracle官网下载javamail-1.4.5.zip取得）
  * 5、若报告该异常Exception in thread "main" java.lang.NoClassDefFoundError: com/sun/mail/util/LineInputStream
  *   通常是由于MyEclipse6.5自带的javaee.jar中的mail包，与我们导入的mail.jar冲突
  *   解决办法就是在myeclipse安装目录下找到javaee.jar，用WinRAR打开，删除里面的mail文件夹即可
@@ -30,6 +44,19 @@ import org.slf4j.LoggerFactory;
  *   220 bjgg-kfvm-31.localdomain ESMTP Postfix
  *   这就表示其已经开启了SMTP服务了，不过若看到类似下面的字样，则表示其没有开启SMTP服务
  *   正在连接到127.0.0.1...无法打开到主机的连接 在端口 25 : 连接失败
+ * -----------------------------------------------------------------------------------------------------------
+ * 另附log4j数据库保存日志的配置
+ * log4j.rootLogger=DEBUG,CONSOLE
+ * log4j.logger.databaseLogger=DEBUG,DATABASE_LOG
+ * log4j.additivity.databaseLogger=true
+ * log4j.appender.DATABASE_LOG=org.apache.log4j.jdbc.JDBCAppender
+ * log4j.appender.DATABASE_LOG.URL=jdbc:mysql://127.0.0.1:3306/jadyer?characterEncoding=UTF-8
+ * log4j.appender.DATABASE_LOG.driver=com.mysql.jdbc.Driver
+ * log4j.appender.DATABASE_LOG.user=root
+ * log4j.appender.DATABASE_LOG.password=jadyer
+ * log4j.appender.DATABASE_LOG.sql=INSERT INTO t_operate_log(message) VALUES('[%d{yyyyMMdd HH:mm:ss}][%t][%C{1}.%M]%m%n')
+ * log4j.appender.DATABASE_LOG.layout=org.apache.log4j.PatternLayout
+ * log4j.appender.DATABASE_LOG.layout.ConversionPattern=[%d{yyyyMMdd HH:mm:ss}][%t][%C{1}.%M]%m%n
  * -----------------------------------------------------------------------------------------------------------
  * @version v2.3
  * @history v2.3-->修复获取logger方法中，可能会获取到其它线程绑定的logger，导致获取到的不是想要的logger
