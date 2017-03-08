@@ -46,14 +46,38 @@ import java.util.Set;
  * @Future      限制必须是一个将来的日期
  * @Pattern     限制必须符合指定的正则表达式
  * -------------------------------------------------------------------------------------------
- * 除了以上列出的JSR-303原生支持的限制类型之外,还可以定义自己的限制类型
+ * 常用的pojo配置例子
+ * @Min(value=3)
+ * private int id;
+ * @NotBlank
+ * @Size(max=10)
+ * @Pattern(regexp="^[\\u4e00-\\u9fa5]+(·[\\u4e00-\\u9fa5]+)*$", message="不合法的中文姓名")
+ * private String username;
+ * @Size(min=6, max=16)
+ * private String password;
+ * @Pattern(regexp="(^$)|(^0|50|100$)", message="只能为0或50或100或不传值(建议传100)")
+ * private String resize;
+ * @Pattern(regexp="^\\b[1-9]\\d{0,1}\\b$", message="pageNo只能为1--99之间的数字")
+ * private String pageNo;
+ * @Pattern(regexp="^1\\d{1}|2\\d[0,1,2,3,4,5]{1}", message="pageSize只能为10--25之间的数字")
+ * private String pageSize;
+ * @Pattern(regexp="^(([1-9]\\d*)|0)(\\.\\d{1,2})?$", message="金额必须大于0且最多2位小数")
+ * private String amount;
+ * @NotBlank
+ * @Pattern(regexp="^\\d{3,4}$", message="贷款金额超限(最少100,最多9999)")
+ * private String loanAmount;
+ * @NotBlank
+ * @Pattern(regexp="^\\d{2}$", message="贷款期数无效(必须是固长2位整数,比如03或12)")
+ * private String loanPeriod;
+ * -------------------------------------------------------------------------------------------
+ * 除了以上列出的JSR-303原生支持的限制类型之外，还可以定义自己的限制类型
  * 本工具类最下方的注释部分是一个例子（也可参考此文http://haohaoxuexi.iteye.com/blog/1812584）
  * -------------------------------------------------------------------------------------------
- * @version v1.2
+ * @version v1.3
+ * @history v1.3-->增加一些常用的pojo配置例子
  * @history v1.2-->部分细节优化及增加描述：验证对象若其父类的属性也有验证注解则会一并验证
  * @history v1.1-->增加将验证的错误信息存入Map<String,String>后返回的<code>validateToMap()<code>方法
  * @history v1.0-->新建
- * @update 2016-5-11 下午13:12:18
  * Created by 玄玉<https://jadyer.github.io/> on 2015/06/09 23:25.
  */
 public final class ValidatorUtil {
