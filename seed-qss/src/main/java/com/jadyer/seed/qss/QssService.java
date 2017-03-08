@@ -62,15 +62,23 @@ public class QssService {
 			this.addJob(task);
 		}
 	}
-	
-	
-	Object[] getByIds(String ids) {
+
+
+	List<ScheduleTask> getByIds(String ids) {
 		List<String> idstr = Arrays.asList(ids.split(","));
-		List<Integer> idList = new ArrayList<>();
+		List<Long> idList = new ArrayList<>();
 		for(String obj : idstr){
-			idList.add(Integer.parseInt(obj));
+			idList.add(Long.parseLong(obj));
 		}
-		return scheduleTaskDao.getByIds(idList);
+		List<ScheduleTask> taskList = new ArrayList<>();
+		Object[] objs = scheduleTaskDao.getByIds(idList);
+		for(Object obj : objs){
+			ScheduleTask task = new ScheduleTask();
+			task.setName(((Object[])obj)[0].toString());
+			task.setUrl(((Object[])obj)[1].toString());
+			taskList.add(task);
+		}
+		return taskList;
 	}
 
 
@@ -108,7 +116,7 @@ public class QssService {
 	/**
 	 * 移除QuartzJob和数据库中的任务
 	 */
-	void deleteTask(int taskId){
+	void deleteTask(long taskId){
 		ScheduleTask task = this.getTaskById(taskId);
 		this.deleteJob(task);
 		scheduleTaskDao.delete(taskId);
@@ -118,7 +126,7 @@ public class QssService {
 	/**
 	 * 从数据库中查询指定的任务信息
 	 */
-	ScheduleTask getTaskById(int taskId) {
+	ScheduleTask getTaskById(long taskId) {
 		return scheduleTaskDao.findOne(taskId);
 	}
 
@@ -126,7 +134,7 @@ public class QssService {
 	/**
 	 * 更改QuartzJob和数据库任务状态
 	 */
-	boolean updateStatus(int taskId, int status){
+	boolean updateStatus(long taskId, int status){
 		ScheduleTask task = this.getTaskById(taskId);
 		task.setStatus(status);
 		if(ScheduleTask.STATUS_NOT_RUNNING == status){
@@ -145,7 +153,7 @@ public class QssService {
 	/**
 	 * 更新CronExpression
 	 */
-	boolean updateCron(int taskId, String cron){
+	boolean updateCron(long taskId, String cron){
 		if(!CronExpression.isValidExpression(cron)){
 			throw new IllegalArgumentException("CronExpression不正确");
 		}

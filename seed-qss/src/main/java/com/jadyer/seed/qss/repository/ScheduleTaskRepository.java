@@ -20,7 +20,7 @@ import java.util.List;
  * -----------------------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.github.io/> on 2015/08/29 18:04.
  */
-public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Integer> {
+public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Long> {
 	/**
 	 * 通过SQL的IN()函数批量查询定时任务
 	 * <p>
@@ -28,7 +28,7 @@ public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Int
 	 * </p>
 	 */
 	@Query("SELECT st.name, st.url FROM ScheduleTask st WHERE st.id IN (?1)")
-	Object[] getByIds(List<Integer> idList);
+	Object[] getByIds(List<Long> idList);
 	
 	/**
 	 * 更新定时任务的状态
@@ -41,7 +41,7 @@ public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Int
 	@Modifying
 	@Transactional(timeout=10)
 	@Query("UPDATE ScheduleTask SET status=?1 WHERE id=?2")
-	int updateStatusById(int status, int id);
+	int updateStatusById(int status, long id);
 	
 	/**
 	 * 更新定时任务的CronExpression
@@ -50,5 +50,5 @@ public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Int
 	@Modifying
 	@Transactional(timeout=10)
 	@Query(value="UPDATE t_schedule_task SET cron=?1 WHERE id=?2", nativeQuery=true)
-	int updateCronById(String cron, int id);
+	int updateCronById(String cron, long id);
 }

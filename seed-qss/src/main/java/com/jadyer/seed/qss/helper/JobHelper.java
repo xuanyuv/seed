@@ -7,8 +7,6 @@ import com.jadyer.seed.qss.module.ScheduleTask;
 class JobHelper {
 //	/**
 //	 * 通过反射调用task中的方法
-//	 * @create Aug 8, 2015 8:33:11 PM
-//	 * @author 玄玉<http://blog.csdn.net/jadyer>
 //	 */
 //	public static void invokMethod(ScheduleTask task){
 //		Object obj = null;

@@ -20,6 +20,17 @@ import java.util.Date;
 public class QssController {
 	@Resource
 	private QssService qssService;
+
+	/**
+	 * http://127.0.0.1:8088/engine/quartz/schedule/task/getByIds?ids=1,2
+	 * @see 这里只做演示用
+	 */
+	@ResponseBody
+	@RequestMapping(value="/getByIds")
+	public CommonResult getByIds(String ids){
+		return new CommonResult(qssService.getByIds(ids));
+	}
+
 	
 	@RequestMapping(value="/list")
 	public String list(HttpServletRequest request){
@@ -41,7 +52,7 @@ public class QssController {
 
 	@ResponseBody
 	@RequestMapping(value="/delete/{id}/{dynamicPassword}")
-	public CommonResult delete(@PathVariable int id, @PathVariable String dynamicPassword){
+	public CommonResult delete(@PathVariable long id, @PathVariable String dynamicPassword){
 		if(!this.verifyDynamicPassword(dynamicPassword)){
 			return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "动态密码不正确");
 		}
@@ -52,7 +63,7 @@ public class QssController {
 
 	@ResponseBody
 	@RequestMapping(value="/updateStatus")
-	public CommonResult updateStatus(int id, int status, String dynamicPassword){
+	public CommonResult updateStatus(long id, int status, String dynamicPassword){
 		if(!this.verifyDynamicPassword(dynamicPassword)){
 			return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "动态密码不正确");
 		}
@@ -66,7 +77,7 @@ public class QssController {
 
 	@ResponseBody
 	@RequestMapping(value="/updateCron")
-	public CommonResult updateCron(int id, String cron, String dynamicPassword){
+	public CommonResult updateCron(long id, String cron, String dynamicPassword){
 		if(!this.verifyDynamicPassword(dynamicPassword)){
 			return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "动态密码不正确");
 		}
@@ -83,7 +94,7 @@ public class QssController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/triggerJob/{id}/{dynamicPassword}")
-	public CommonResult triggerJob(@PathVariable int id, @PathVariable String dynamicPassword){
+	public CommonResult triggerJob(@PathVariable long id, @PathVariable String dynamicPassword){
 		if(!this.verifyDynamicPassword(dynamicPassword)){
 			return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "动态密码不正确");
 		}
