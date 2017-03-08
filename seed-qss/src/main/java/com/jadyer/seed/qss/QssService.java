@@ -5,6 +5,7 @@ import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.qss.helper.JobDisallowConcurrentFactory;
 import com.jadyer.seed.qss.helper.JobFactory;
 import com.jadyer.seed.qss.module.ScheduleTask;
+import com.jadyer.seed.qss.repository.ScheduleTaskDaoJdbc;
 import com.jadyer.seed.qss.repository.ScheduleTaskRepository;
 import org.quartz.CronExpression;
 import org.quartz.CronScheduleBuilder;
@@ -54,6 +55,9 @@ public class QssService {
 	@Resource
 	private ScheduleTaskRepository scheduleTaskDao;
 
+	@Resource
+	private ScheduleTaskDaoJdbc scheduleTaskDaoJdbc;
+
 
 	@PostConstruct
 	public void init() throws Exception {
@@ -61,6 +65,11 @@ public class QssService {
 		for(ScheduleTask task : taskList){
 			this.addJob(task);
 		}
+	}
+
+
+	ScheduleTask getById(long id){
+		return scheduleTaskDaoJdbc.getById(id);
 	}
 
 

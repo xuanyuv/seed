@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
 
 @Controller
 @RequestMapping(value="/qss")
@@ -22,13 +23,18 @@ public class QssController {
 	private QssService qssService;
 
 	/**
-	 * http://127.0.0.1:8088/engine/quartz/schedule/task/getByIds?ids=1,2
-	 * @see 这里只做演示用
+	 * 这里只做演示用：http://127.0.0.1/qss/getByIds?ids=1,2
 	 */
 	@ResponseBody
 	@RequestMapping(value="/getByIds")
-	public CommonResult getByIds(String ids){
-		return new CommonResult(qssService.getByIds(ids));
+	public CommonResult getByIds(final String ids){
+		return new CommonResult(new HashMap<String, Object>(){
+			private static final long serialVersionUID = 2518882720835440047L;
+			{
+				put("taskInfo", qssService.getById(Long.parseLong(ids.split(",")[0])));
+				put("taskList", qssService.getByIds(ids));
+			}
+		});
 	}
 
 	
