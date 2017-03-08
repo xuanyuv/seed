@@ -28,7 +28,7 @@ public abstract class PermissionTag extends TagSupport {
 		}
 	}
 	
-	protected boolean isPermitted(String permission){
+	boolean isPermitted(String permission){
 //		org.apache.shiro.subject.Subject subject = org.apache.shiro.SecurityUtils.getSubject();
 //		if(null == subject){
 //			return false;

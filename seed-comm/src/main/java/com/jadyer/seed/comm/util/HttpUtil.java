@@ -73,7 +73,7 @@ import java.util.Map;
  * @see 1.测试服务器没有有效的HTTPS证书,客户端连接时就会抛异常
  * @see   javax.net.ssl.SSLPeerUnverifiedException: peer not authenticated
  * @see 2.测试服务器有HTTPS证书,但可能由于各种不知名的原因,它还是会抛一堆烂码七糟的异常,诸如下面这两种
- * @see   SSLException: hostname in certificate didn't match: <123.125.97.66> != <123.125.97.241>
+ * @see   javax.net.ssl.SSLException: hostname in certificate didn't match: <123.125.97.66> != <123.125.97.241>
  * @see   javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
  * @see -----------------------------------------------------------------------------------------------------------
  * @see 在使用HttpComponents-Client-4.2.1创建连接时,针对HTTPS请求就要告诉它使用一个不同的TrustManager
@@ -537,7 +537,7 @@ public final class HttpUtil {
 	 * @see 4)解码响应正文时,默认取响应头[Content-Type=text/html; charset=GBK]字符集
 	 * @see   若无Content-Type,则使用本工具类设置的全局DEFAULT_CHARSET解码
 	 * @see 5)本方法的美中不足是:服务器返回500时,它会直接抛出类似下面的异常
-	 * @see   IOException: Server returned HTTP response code: 500 for URL: http://xxxx/xxxx
+	 * @see   java.io.IOException: Server returned HTTP response code: 500 for URL: http://xxxx/xxxx
 	 * @see   原因是这里用到了SUN提供的基于HTTP协议的框架实现
 	 * @param reqURL  请求地址
 	 * @param reqData 请求报文,多个参数则应拼接为param11=value11&22=value22&33=value33的形式
@@ -697,7 +697,7 @@ public final class HttpUtil {
 	 * @see 
 	 * @see   cooBankNo=GDB_CREDIT&signType=MD5&orderValidityNum=30&amount=1&CVVNo=695&merReqSerial=merReqSerial&validityYear=17&orderValidityUnits=m&merNo=301900100000521&customerName=%C0%EE%D6%CE%CC%EC&interfaceVersion=1.0.0.0&customerType=02&orderDate=20130405&validityMonth=05&merUserId=merUserId&goodId=goodId&creditCardNo=6225xxxx1548&orderNo=90020120914015860583&signMsg=This+is+RequestParam+sign&busChannel=02&serverCallUrl=http%3A%2F%2Fblog.csdn.net%2Fjadyer&merExtend=merExtend&merReqTime=010452&goodsDesc=goodsDesc&customerID=5137xxxx4811&goodsName=Tea&mobileNo=135xxxx8084
 	 * @see   =============================================================================
-	 * @see   HTTP /1.1 200 OK
+	 * @see   HTTP/1.1 200 OK
 	 * @see   Content-Type:text/html; charset=GBK
 	 * @see 
 	 * @see   amount=
