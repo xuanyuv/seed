@@ -32,24 +32,24 @@ import java.util.List;
 
 /**
  * FTP工具类
- * @see -----------------------------------------------------------------------------------------------------------
- * @see 1.登出时要注意ftpClient.disconnect()的时机,ftpClient.logout()也会抛异常
- * @see   所要注意避免FTPClient对象退出异常,连接没有释放,最后积少成多直至阻塞FTP服务器的连接,进而引发连接异常
- * @see 2.FTP response 421 received.  Server closed connection.
- * @see   这个错误的原因就是FTP服务器端连接数满了
- * @see 3.Connection closed without indication.
- * @see   这个错误的原因就是FTP服务器端发生故障或者网络出现问题
- * @see -----------------------------------------------------------------------------------------------------------
- * @version v2.1
+ * -----------------------------------------------------------------------------------------------------------
+ * 1.登出时要注意ftpClient.disconnect()的时机,ftpClient.logout()也会抛异常
+ *   所要注意避免FTPClient对象退出异常,连接没有释放,最后积少成多直至阻塞FTP服务器的连接,进而引发连接异常
+ * 2.FTP response 421 received.  Server closed connection.
+ *   这个错误的原因就是FTP服务器端连接数满了
+ * 3.Connection closed without indication.
+ *   这个错误的原因就是FTP服务器端发生故障或者网络出现问题
+ * -----------------------------------------------------------------------------------------------------------
+ * @version v2.2
+ * @history v2.2-->校验文件是否存在时，传入的文件名编码由ISO-8859-1改为系统默认编码，以解决明明有文件却取到空数组的问题
  * @history v2.1-->FTP文件下载后增加传输成功与否的校验,否则会导致同一FTP连接下载第二个文件时找不到文件
  * @history v2.0-->增加JSch实现的SFTP上传和下载等静态方法
  * @history v1.3-->增加FTP传输进度显示[    0%   101890  33KB/s  58351458   3s]
  * @history v1.2-->增加防止重复登录FTP的判定以及上传和下载文件时支持断点续传的备用注释代码
  * @history v1.1-->增加<code>deleteFileAndLogout(String, String, String, String)<code>删除FTP文件的方法
  * @history v1.0-->新建并提供了上传和下载文件的方法,以及操作完成后自动logout并释放连接
- * @update Dec 22, 2015 6:45:34 PM
- * @create 2015-6-22 上午11:22:34
- * @author 玄玉<http://blog.csdn.net/jadyer>
+ * -----------------------------------------------------------------------------------------------------------
+ * Created by 玄玉<https://jadyer.github.io/> on 2015/06/22 11:22.
  */
 public final class FtpUtil {
 	private static final String DEFAULT_CHARSET = "UTF-8";
@@ -57,13 +57,15 @@ public final class FtpUtil {
 	private static final int DEFAULT_CONNECT_TIMEOUT = 1000;
 	private static final int DEFAULT_DATA_TIMEOUT = 0;
 	private static final int DEFAULT_SFTP_TIMEOUT = 0;
-	public static ThreadLocal<FTPClient> ftpClientMap = new ThreadLocal<FTPClient>();
-	public static ThreadLocal<ChannelSftp> channelSftpMap = new ThreadLocal<ChannelSftp>();
+	public static ThreadLocal<FTPClient> ftpClientMap = new ThreadLocal<>();
+	public static ThreadLocal<ChannelSftp> channelSftpMap = new ThreadLocal<>();
 	private FtpUtil(){}
 
 	/**
 	 * 连接并登录FTP服务器
-	 * @see 可以在该方法中配置一些连接FTP的属性
+	 * <p>
+	 *     可以在该方法中配置一些连接FTP的属性
+	 * </p>
 	 * @param hostname FTP地址
 	 * @param username FTP登录用户
 	 * @param password FTP登录密码
@@ -93,7 +95,7 @@ public final class FtpUtil {
 			LogUtil.getLogger().error("FTP服务器["+hostname+"]无法连接,堆栈轨迹如下", e);
 			return false;
 		}
-		//FTP服务器连接应答码-->2开头表示连接成功 
+		//FTP服务器连接应答码-->2开头表示连接成功
 		if(!FTPReply.isPositiveCompletion(ftpClient.getReplyCode())){
 			LogUtil.getLogger().error("FTP服务器["+hostname+"]连接失败,FTP连接应答码为" + ftpClient.getReplyCode());
 			try {
@@ -130,21 +132,21 @@ public final class FtpUtil {
 				ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 			}
 			/**
-			 * @see ----------------------------------------------------------------------------------------------------
-			 * @see FTP协议的两种工作方式,即PORT(主动式)和PASV(被动式)
-			 * @see PORT
-			 * @see PORT(主动式)的连接过程是:客户端向服务器的FTP端口(默认是21)发送连接请求,服务器接受连接,建立一条命令链路
-			 * @see 当需要传送数据时,客户端在命令链路上用PORT命令告诉服务器:"我打开了xxx端口,你过来连接我"
-			 * @see 于是服务器从20端口向客户端的 xxx端口发送连接请求,建立一条数据链路来传送数据
-			 * @see PASV
-			 * @see PASV(被动式)的连接过程是:客户端向服务器的FTP端口(默认是21)发送连接请 求,服务器接受连接,建立一条命令链路
-			 * @see 当需要传送数据时,服务器在命令链路上用PASV命令告诉客户端:"我打开了xxx端口,你过来连接我"
-			 * @see 于是客户端向服务器的xxx端口发送连接请求,建立一条数据链路来传送数据
-			 * @see ----------------------------------------------------------------------------------------------------
-			 * @see 有时执行到FTPClient.listFiles()或者FTPClient.retrieveFile()就停住了,什么反应都没有,呈现假死状态
-			 * @see 这时通过enterLocalPassiveMode()就可以在每次数据连接之前,ftpClient告诉ftpServer开通一个端口来传输数据
-			 * @see 主要因为ftpServer可能每次开启不同的端口来传输数据,但linux上由于安全限制,可能某些端口没开启,所以出现阻塞
-			 * @see ----------------------------------------------------------------------------------------------------
+			 * ----------------------------------------------------------------------------------------------------
+			 * FTP协议的两种工作方式，即PORT（主动式）和PASV（被动式）
+			 * PORT
+			 * PORT（主动式）的连接过程是:客户端向服务器的FTP端口(默认是21)发送连接请求,服务器接受连接,建立一条命令链路
+			 * 当需要传送数据时,客户端在命令链路上用PORT命令告诉服务器:"我打开了xxx端口,你过来连接我"
+			 * 于是服务器从20端口向客户端的 xxx端口发送连接请求,建立一条数据链路来传送数据
+			 * PASV
+			 * PASV（被动式）的连接过程是:客户端向服务器的FTP端口(默认是21)发送连接请 求,服务器接受连接,建立一条命令链路
+			 * 当需要传送数据时,服务器在命令链路上用PASV命令告诉客户端:"我打开了xxx端口,你过来连接我"
+			 * 于是客户端向服务器的xxx端口发送连接请求,建立一条数据链路来传送数据
+			 * ----------------------------------------------------------------------------------------------------
+			 * 有时执行到FTPClient.listFiles()或者FTPClient.retrieveFile()就停住了,什么反应都没有,呈现假死状态
+			 * 这时通过enterLocalPassiveMode()就可以在每次数据连接之前,ftpClient告诉ftpServer开通一个端口来传输数据
+			 * 主要因为ftpServer可能每次开启不同的端口来传输数据,但linux上由于安全限制,可能某些端口没开启,所以出现阻塞
+			 * ----------------------------------------------------------------------------------------------------
 			 */
 			ftpClient.enterLocalPassiveMode();
 			ftpClientMap.set(ftpClient);
@@ -158,7 +160,9 @@ public final class FtpUtil {
 
 	/**
 	 * 登出FTP服务器
-	 * @see 由于FtpUtil会自动维护FTPClient连接,故调用该方法便可直接登出FTP
+	 * <p>
+	 *     由于本工具类会自动维护FTPClient连接，故调用该方法便可直接登出FTP
+	 * </p>
 	 */
 	public static void logout(){
 		FTPClient ftpClient = ftpClientMap.get();
@@ -207,8 +211,11 @@ public final class FtpUtil {
 
 	/**
 	 * 上传文件
-	 * @see 该方法与{@link FtpUtil#uploadAndLogout(String, String, String, String, InputStream)}的区别是,上传完文件后没有登出服务器及释放连接,但会关闭输入流
-	 * @see 之所以提供该方法是用于同时上传多个文件的情况下,使之能够共用一个FTP连接
+	 * <p>
+	 *     该方法与{@link FtpUtil#uploadAndLogout(String, String, String, String, InputStream)}的区别是
+	 *     上传完文件后没有登出服务器及释放连接，但会关闭输入流
+	 *     之所以提供该方法是用于同时上传多个文件的情况下，使之能够共用一个FTP连接
+	 * </p>
 	 * @param hostname  目标主机地址
 	 * @param username  FTP登录用户
 	 * @param password  FTP登录密码
@@ -241,7 +248,9 @@ public final class FtpUtil {
 
 	/**
 	 * 上传文件
-	 * @see 该方法会在上传完文件后,自动登出服务器,并释放FTP连接,同时关闭输入流
+	 * <p>
+	 *     该方法会在上传完文件后，自动登出服务器，并释放FTP连接，同时关闭输入流
+	 * </p>
 	 * @param hostname  目标主机地址
 	 * @param username  FTP登录用户
 	 * @param password  FTP登录密码
@@ -260,8 +269,10 @@ public final class FtpUtil {
 
 	/**
 	 * 文件下载
-	 * @see 文件下载失败时,该方法会自动登出服务器并释放FTP连接,然后抛出RuntimeException
-	 * @see 读取文件流后,一定要调用completePendingCommand()告诉FTP传输完毕,否则会导致该FTP连接在下一次读取不到文件
+	 * <p>
+	 *     文件下载失败时，该方法会自动登出服务器并释放FTP连接，然后抛出RuntimeException
+	 *     读取文件流后，一定要调用completePendingCommand()告诉FTP传输完毕，否则会导致该FTP连接在下一次读取不到文件
+	 * </p>
 	 * @param hostname  目标主机地址
 	 * @param username  FTP登录用户
 	 * @param password  FTP登录密码
@@ -273,7 +284,9 @@ public final class FtpUtil {
 		}
 		FTPClient ftpClient = ftpClientMap.get();
 		try{
-			FTPFile[] files = ftpClient.listFiles(new String(remoteURL.getBytes(DEFAULT_CHARSET), "ISO-8859-1"));
+			//注意这里没有写成new String(remoteURL.getBytes(DEFAULT_CHARSET), "ISO-8859-1")
+			//这是因为有时会因为编码的问题导致明明ftp上面有文件，但读到的是空数组，所以我们就使用默认编码
+			FTPFile[] files = ftpClient.listFiles(new String(remoteURL.getBytes(DEFAULT_CHARSET)));
 			if(1 != files.length){
 				logout();
 				throw new SeedException(CodeEnum.FILE_NOT_FOUND.getCode(), "远程文件["+remoteURL+"]不存在");
@@ -294,7 +307,9 @@ public final class FtpUtil {
 
 	/**
 	 * 文件下载
-	 * @see 该方法会在下载完文件后,自动登出服务器,并释放FTP连接,同时关闭输入流
+	 * <p>
+	 *     该方法会在下载完文件后，自动登出服务器，并释放FTP连接，同时关闭输入流
+	 * </p>
 	 * @param hostname  目标主机地址
 	 * @param username  FTP登录用户
 	 * @param password  FTP登录密码
@@ -307,6 +322,8 @@ public final class FtpUtil {
 		}
 		FTPClient ftpClient = ftpClientMap.get();
 		try{
+			//注意这里没有写成new String(remoteURL.getBytes(DEFAULT_CHARSET), "ISO-8859-1")
+			//这是因为有时会因为编码的问题导致明明ftp上面有文件，但读到的是空数组，所以我们就使用默认编码
 			FTPFile[] files = ftpClient.listFiles(new String(remoteURL.getBytes(DEFAULT_CHARSET), "ISO-8859-1"));
 			if(1 != files.length){
 				throw new SeedException(CodeEnum.FILE_NOT_FOUND.getCode(), "远程文件["+remoteURL+"]不存在");
@@ -325,7 +342,9 @@ public final class FtpUtil {
 
 	/**
 	 * 文件删除
-	 * @see 该方法会在删除完文件后,自动登出服务器,并释放FTP连接
+	 * <p>
+	 *     该方法会在删除完文件后，自动登出服务器，并释放FTP连接
+	 * </p>
 	 * @param hostname  目标主机地址
 	 * @param username  FTP登录用户
 	 * @param password  FTP登录密码
@@ -354,7 +373,7 @@ public final class FtpUtil {
 	 * @param hostname FTP地址
 	 * @param username FTP登录用户
 	 * @param password FTP登录密码
-	 * @param timeout  超时时间,单位ms,it use java.net.Socket.setSoTimeout(timeout) 
+	 * @param timeout  超时时间,单位ms,it use java.net.Socket.setSoTimeout(timeout)
 	 * @return True if successfully completed, false if not.
 	 */
 	private static boolean loginViaSFTP(String hostname, int port, String username, String password, int timeout){
@@ -364,8 +383,8 @@ public final class FtpUtil {
 		}
 		channelSftpMap.remove();
 		JSch jsch = new JSch();
-		Session session = null;
-		Channel channel = null;
+		Session session;
+		Channel channel;
 		channelSftp = null;
 		try {
 			session = jsch.getSession(username, hostname, port);
@@ -400,7 +419,9 @@ public final class FtpUtil {
 
 	/**
 	 * 登出SFTP服务器
-	 * @see 由于FtpUtil会自动维护ChannelSftp,故调用该方法便可直接登出SFTP
+	 * <p>
+	 *     由于本工具类会自动维护ChannelSftp，故调用该方法便可直接登出SFTP
+	 * </p>
 	 */
 	public static void logoutViaSFTP(){
 		ChannelSftp channelSftp = channelSftpMap.get();
@@ -451,8 +472,10 @@ public final class FtpUtil {
 
 	/**
 	 * upload Via SFTP without auto logout
-	 * @see 1.写文件到不存在的目录会报告[2: No such file]
-	 * @see 2.写文件到未授权的目录会报告[3: Permission denied]
+	 * <p>
+	 *     1.写文件到不存在的目录会报告[2: No such file]
+	 *     2.写文件到未授权的目录会报告[3: Permission denied]
+	 * </p>
 	 * @param hostname  SFTP地址
 	 * @param port      SFTP端口(通常为22)
 	 * @param username  SFTP登录用户
@@ -494,7 +517,9 @@ public final class FtpUtil {
 
 	/**
 	 * upload Via SFTP and auto logout
-	 * @see 该方法会在上传完文件后,自动登出服务器,并释放FTP连接,同时关闭输入流
+	 * <p>
+	 *     该方法会在上传完文件后，自动登出服务器，并释放FTP连接，同时关闭输入流
+	 * </p>
 	 * @param hostname  SFTP地址
 	 * @param port      SFTP端口(通常为22)
 	 * @param username  SFTP登录用户
@@ -514,7 +539,9 @@ public final class FtpUtil {
 
 	/**
 	 * download Via SFTP
-	 * @see 文件下载失败时,该方法会自动登出服务器并释放SFTP连接,然后抛出RuntimeException
+	 * <p>
+	 *     文件下载失败时，该方法会自动登出服务器并释放SFTP连接，然后抛出RuntimeException
+	 * </p>
 	 * @param hostname  SFTP地址
 	 * @param port      SFTP端口(通常为22)
 	 * @param username  SFTP登录用户
@@ -536,7 +563,9 @@ public final class FtpUtil {
 
 	/**
 	 * download Via SFTP and auto logout
-	 * @see 该方法会在下载完文件后,自动登出服务器,并释放SFTP连接,同时关闭输入流
+	 * <p>
+	 *     该方法会在下载完文件后，自动登出服务器，并释放SFTP连接，同时关闭输入流
+	 * </p>
 	 * @param hostname  SFTP地址
 	 * @param port      SFTP端口(通常为22)
 	 * @param username  SFTP登录用户
@@ -561,7 +590,9 @@ public final class FtpUtil {
 
 	/**
 	 * delete file Via SFTP and auto logout
-	 * @see 该方法会在删除完文件后,自动登出服务器,并释放FTP连接
+	 * <p>
+	 *     该方法会在删除完文件后，自动登出服务器，并释放FTP连接
+	 * </p>
 	 * @param hostname  SFTP地址
 	 * @param port      SFTP端口(通常为22)
 	 * @param username  SFTP登录用户
@@ -711,7 +742,9 @@ public final class FtpUtil {
 
 	/**
 	 * 回写succ文件
-	 * <p>该方法只有在处理完毕readFileData()文件后，再执行以示这一日的FTP交换文件已处理过</p>
+	 * <p>
+	 *     该方法只有在处理完毕readFileData()文件后，再执行以示这一日的FTP交换文件已处理过
+	 * </p>
 	 * @param bizDate  业务日期，传空则默认读取前一天的文件
 	 * @param filename FTP交换的文件完整名称，例如：/payBatch/payBatch-yyyyMMdd.data
 	 * @param hostname FTP地址
@@ -728,15 +761,14 @@ public final class FtpUtil {
 
 /**
  * FTP传输进度显示
- * @see     0%   101890  33KB/s  58351458   3s
- * @see     0%   101891  33KB/s  58351458   3s
- * @see     0%   101892  33KB/s  58351458   3s
- * @see     0%   101893  33KB/s  58351458   3s
- * @see     0%   101894  33KB/s  58351458   3s
- * @see     0%   101895  33KB/s  58351458   3s
- * @see     0%   101896  33KB/s  58351458   3s
- * @create Oct 22, 2015 9:42:16 AM
- * @author 玄玉<http://blog.csdn.net/jadyer>
+ *     0%   101890  33KB/s  58351458   3s
+ *     0%   101891  33KB/s  58351458   3s
+ *     0%   101892  33KB/s  58351458   3s
+ *     0%   101893  33KB/s  58351458   3s
+ *     0%   101894  33KB/s  58351458   3s
+ *     0%   101895  33KB/s  58351458   3s
+ *     0%   101896  33KB/s  58351458   3s
+ * Created by 玄玉<https://jadyer.github.io/> on 2015/10/22 09:42.
  */
 class FTPProcess implements CopyStreamListener {
 	private long fileSize;
@@ -774,14 +806,13 @@ class FTPProcess implements CopyStreamListener {
 
 /**
  * SFTP传输进度显示
- * @see 每次传输count字节时,就会调用new SFTPProcess(fileSize, startTime)对象的count()方法
- * @see     92%   18311601  17882KB/s  19903865   1s
- * @see     92%   18344242  17914KB/s  19903865   1s
- * @see     92%   18376883  17946KB/s  19903865   1s
- * @see     92%   18409524  17978KB/s  19903865   1s
- * @see     92%   18442165  18009KB/s  19903865   1s
- * @create Oct 22, 2015 10:46:01 AM
- * @author 玄玉<http://blog.csdn.net/jadyer>
+ * 每次传输count字节时，就会调用new SFTPProcess(fileSize, startTime)对象的count()方法
+ *     92%   18311601  17882KB/s  19903865   1s
+ *     92%   18344242  17914KB/s  19903865   1s
+ *     92%   18376883  17946KB/s  19903865   1s
+ *     92%   18409524  17978KB/s  19903865   1s
+ *     92%   18442165  18009KB/s  19903865   1s
+ * Created by 玄玉<https://jadyer.github.io/> on 2015/10/22 10:46.
  */
 class SFTPProcess implements SftpProgressMonitor {
 	private long fileSize;
