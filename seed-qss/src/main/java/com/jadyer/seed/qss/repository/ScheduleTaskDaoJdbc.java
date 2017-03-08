@@ -10,6 +10,9 @@ import javax.annotation.Resource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * SpringBoot在配置完datasource之后，可直接注入并使用JdbcTemplate
+ */
 @Repository
 public class ScheduleTaskDaoJdbc {
 	@Resource
