@@ -4,6 +4,9 @@ import com.jadyer.seed.boot.BootStrap;
 import com.jadyer.seed.boot.ratelimiter.RateLimiterLua;
 import com.jadyer.seed.boot.ratelimiter.RateLimiterLuaV2;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
+import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +28,28 @@ public class BootTest {
 	private JedisCluster jedisCluster;
 	@Resource
 	private RateLimiterLuaV2 rateLimiterLuaV2;
+
+	/**
+	 * Jasypt加解密屬性文件
+	 */
+	@Test
+	public void jasyptTest(){
+		PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
+		SimpleStringPBEConfig config = new SimpleStringPBEConfig();
+		config.setPassword("https://jadyer.github.io/");
+		config.setAlgorithm("PBEWithMD5AndDES");
+		config.setKeyObtentionIterations("1000");
+		config.setPoolSize("1");
+		config.setProviderName("SunJCE");
+		config.setSaltGeneratorClassName("org.jasypt.salt.RandomSaltGenerator");
+		config.setStringOutputType("hexadecimal");
+		encryptor.setConfig(config);
+		String encryptStr = encryptor.encrypt("xuanyu");
+		System.out.println("encryptStr=" + encryptStr);
+		String decryptStr = encryptor.decrypt(encryptStr);
+		Assert.assertEquals("xuanyu", decryptStr);
+	}
+
 
 	/**
 	 * 测试redis3.x的几个操作

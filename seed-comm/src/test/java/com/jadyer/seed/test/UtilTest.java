@@ -54,6 +54,31 @@ public class UtilTest {
 
 
 	/**
+	 * 生成AES密钥
+	 */
+	@Test
+	public void initAESKey(){
+		for(int i=0; i<6; i++){
+			System.out.println(CodecUtil.initKey(CodecUtil.ALGORITHM_AES, true));
+		}
+	}
+
+
+	/**
+	 * 生成RSA公私钥
+	 */
+	@Test
+	public void initRSAKey(){
+		Map<String, String> keyMap = CodecUtil.initRSAKey(2048);
+		System.out.println("public11-->[" + keyMap.get("publicKey") + "]");
+		System.out.println("private11-->[" + keyMap.get("privateKey") + "]");
+		keyMap = CodecUtil.initRSAKey(2048);
+		System.out.println("public22-->[" + keyMap.get("publicKey") + "]");
+		System.out.println("private22-->[" + keyMap.get("privateKey") + "]");
+	}
+
+
+	/**
 	 * 加解密工具类之RSA算法测试用例
 	 */
 	@Test
