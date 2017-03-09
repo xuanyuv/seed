@@ -5,6 +5,7 @@ import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomi
 import org.springframework.boot.web.servlet.ErrorPage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -33,14 +34,14 @@ public class MVCConfiguration extends WebMvcConfigurerAdapter {
 	public void addViewControllers(ViewControllerRegistry registry) {
 		//registry.addViewController("/apidoc").setViewName("forward:/apidoc/index.jsp");
 		//registry.addViewController("/apidoc/").setViewName("forward:/apidoc/index.jsp");
-		registry.addViewController("/").setViewName("forward:/building.jsp");
+		//registry.addViewController("/").setViewName("forward:/building.jsp");
 		registry.addViewController("/login").setViewName("forward:/login.jsp");
 	}
 
-	//@Override
-	//public void addResourceHandlers(ResourceHandlerRegistry registry) {
-	//	registry.addResourceHandler("/apidoc/**").addResourceLocations("/apidoc/");
-	//}
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		//registry.addResourceHandler("/apidoc/**").addResourceLocations("/apidoc/");
+	}
 
 	@Override
 	public void configureViewResolvers(ViewResolverRegistry registry) {

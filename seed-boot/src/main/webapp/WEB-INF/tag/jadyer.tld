@@ -13,7 +13,7 @@
 
     <tag>
         <name>dateTime</name><!--标记名称-->
-        <tag-class>com.jadyer.demo.controller.DateTimeTag</tag-class><!--设定标记名称所对应的标记处理类-->
+        <tag-class>com.jadyer.seed.controller.DateTimeTag</tag-class><!--设定标记名称所对应的标记处理类-->
         <body-content>empty</body-content><!--表示<util:dateTime>标记中不包含内容-->
         <attribute><!--使用<attribute>元素为<util:dateTime>标记设定了两个可选属性-->
             <name>date</name><!--设定属性的名字-->

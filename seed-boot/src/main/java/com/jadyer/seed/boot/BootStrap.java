@@ -89,4 +89,8 @@ public class BootStrap extends SpringBootServletInitializer {
 	public Filter characterEncodingFilter(){
 		return new CharacterEncodingFilter("UTF-8", true);
 	}
+
+	//public static void main(String[] args) {
+	//	new SpringApplicationBuilder().sources(BootStrap.class).profiles("local").run(args);
+	//}
 }
