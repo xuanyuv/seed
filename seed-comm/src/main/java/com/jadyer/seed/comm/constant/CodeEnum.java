@@ -9,12 +9,24 @@ import java.util.List;
  * Created by 玄玉<https://jadyer.github.io/> on 2015/6/3 21:26.
  */
 public enum CodeEnum {
-	SUCCESS        (0,    "成功"),
-	SYSTEM_OK      (1000, "保留码"),
-	SYSTEM_BUSY    (1001, "系统繁忙"),
-	SYSTEM_ERROR   (1002, "系统错误"),
-	FILE_NOT_FOUND (1003, "文件未找到");
-	
+	SUCCESS              (0,    "成功"),
+	SYSTEM_OK            (1000, "保留码"),
+	SYSTEM_BUSY          (1001, "系统繁忙"),
+	SYSTEM_ERROR         (1002, "系统错误"),
+	FILE_NOT_FOUND       (1003, "文件未找到"),
+	FILE_TRANSFER_FAIL   (1004, "文件传输失败"),
+	OPEN_UNKNOWN_APPID   (2001, "未知的合作方"),
+	OPEN_UNKNOWN_VERSION (2002, "未知的协议版本"),
+	OPEN_UNKNOWN_SIGN    (2003, "未知的签名算法"),
+	OPEN_UNKNOWN_METHOD  (2004, "未知的接口请求"),
+	OPEN_TIMESTAMP_ERROR (2005, "时间戳异常"),
+	OPEN_SIGN_ERROR      (2006, "验签拒绝"),
+	OPEN_DECRYPT_FAIL    (2007, "解密失败"),
+	OPEN_FORM_ILLEGAL    (2008, "表单验证未通过"),
+	OPEN_UNGRANT_API     (2009, "未授权的接口"),
+	OPEN_UNGRANT_DATA    (2010, "未授权的数据访问"),
+	OPEN_PROCESSING      (2011, "请求处理中");
+
 	private final int code;
 	private final String msg;
 	
