@@ -250,10 +250,11 @@ public final class HttpUtil {
 	 * @see 5)该方法在解码响应报文时所采用的编码,取自响应消息头中的[Content-Type:text/html; charset=GBK]的charset值
 	 * @see   若响应消息头中未指定Content-Type属性,则会使用HttpClient内部默认的ISO-8859-1
 	 * @param reqURL  请求地址
-	 * @param reqData 请求报文,无参数时传null即可,多个参数则应拼接为param11=value11&22=value22&33=value33的形式
+	 * @param reqData 请求报文，无参数时传null即可，多个参数则应拼接为param11=value11&22=value22&33=value33的形式
+	 * @param contentType 设置请求头的contentType，传空则默认使用application/x-www-form-urlencoded; charset=UTF-8
 	 * @return 远程主机响应正文
 	 */
-	public static String post(String reqURL, String reqData){
+	public static String post(String reqURL, String reqData, String contentType){
 		LogUtil.getLogger().info("请求{}的报文为-->>[{}]", reqURL, reqData);
 		String respData = "";
 		HttpClient httpClient = new DefaultHttpClient();
@@ -285,7 +286,11 @@ public final class HttpUtil {
 		HttpPost httpPost = new HttpPost(reqURL);
 		//由于下面使用的是new StringEntity(....),所以默认发出去的请求报文头中CONTENT_TYPE值为text/plain; charset=ISO-8859-1
 		//这就有可能会导致服务端接收不到POST过去的参数,比如运行在Tomcat6.0.36中的Servlet,所以我们手工指定CONTENT_TYPE头消息
-		httpPost.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded; charset=" + DEFAULT_CHARSET);
+		if(StringUtils.isBlank(contentType)){
+			httpPost.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded; charset=" + DEFAULT_CHARSET);
+		}else{
+			httpPost.setHeader(HTTP.CONTENT_TYPE, contentType);
+		}
 		try{
 			httpPost.setEntity(new StringEntity(null==reqData?"":reqData, DEFAULT_CHARSET));
 			HttpResponse response = httpClient.execute(httpPost);

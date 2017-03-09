@@ -6,12 +6,12 @@ import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
 import com.jadyer.seed.comm.constant.Constants;
 import com.jadyer.seed.comm.exception.SeedException;
+import com.jadyer.seed.comm.util.CodecUtil;
 import com.jadyer.seed.comm.util.IPUtil;
+import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.open.model.ReqData;
 import com.jadyer.seed.open.model.RespData;
-import com.jadyer.seed.open.util.CodecUtil;
-import com.jadyer.seed.open.util.OpenUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -76,9 +76,9 @@ public class OpenFilter extends OncePerRequestFilter {
         String reqDataStr;
         String method = request.getParameter("method");
         if(StringUtils.isNotBlank(method) && (method.endsWith("file.upload")||method.endsWith("h5"))){
-            reqDataStr = OpenUtil.buildStringFromMapWithStringArray(request.getParameterMap());
+            reqDataStr = JadyerUtil.buildStringFromMapWithStringArray(request.getParameterMap());
             LogUtil.getLogger().debug("收到客户端IP=[{}]的请求报文为-->{}", IPUtil.getClientIP(request), reqDataStr);
-            reqData = OpenUtil.requestToBean(request, ReqData.class);
+            reqData = JadyerUtil.requestToBean(request, ReqData.class);
         }else{
             reqDataStr = IOUtils.toString(request.getInputStream(), Constants.OPEN_CHARSET_UTF8);
             LogUtil.getLogger().debug("收到客户端IP=[{}]的请求报文为-->[{}]", IPUtil.getClientIP(request), reqDataStr);

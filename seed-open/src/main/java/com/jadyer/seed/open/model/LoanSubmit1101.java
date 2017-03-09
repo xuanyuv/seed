@@ -136,8 +136,6 @@ public class LoanSubmit1101 extends LoanSubmit {
 
     /**
      * 申请单文件
-     * @create Jan 13, 2016 5:48:58 PM
-     * @author 玄玉<https://jadyer.github.io/>
      */
     public static class LoanFile{
         private String fileId;
@@ -158,8 +156,6 @@ public class LoanSubmit1101 extends LoanSubmit {
 
     /**
      * 申请单联系人
-     * @create Jan 13, 2016 5:50:00 PM
-     * @author 玄玉<https://jadyer.github.io/>
      */
     public static class LoanContact{
         private String name;
@@ -194,8 +190,6 @@ public class LoanSubmit1101 extends LoanSubmit {
 
     /**
      * 申请单附加信息
-     * @create Jan 17, 2016 6:45:46 PM
-     * @author 玄玉<https://jadyer.github.io/>
      */
     public static class LoanAddons{
         private String type;
