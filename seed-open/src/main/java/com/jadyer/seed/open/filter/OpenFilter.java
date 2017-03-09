@@ -39,15 +39,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * 开放平台Filter
- * <p>负责解析请求参数以及加解密等操作</p>
+ * <p>
+ *     负责解析请求参数以及加解密等操作
+ * </p>
  * Created by 玄玉<https://jadyer.github.io/> on 2016/5/8 19:34.
  */
 public class OpenFilter extends OncePerRequestFilter {
+    private static final int TIMESTAMP_VALID_MILLISECONDS = 1000 * 60 * 10; //时间戳验证：服务端允许客户端请求最大时间误差为10分钟
     private String filterURL;
     private Map<String, String> appsecretMap = new HashMap<>();
     private Map<String, List<String>> apiGrantMap = new HashMap<>();
@@ -74,14 +75,18 @@ public class OpenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         ReqData reqData;
         String reqDataStr;
+        String respDataStr;
+        String reqIp = IPUtil.getClientIP(request);
+        long startTime = System.currentTimeMillis();
+        //将请求入参解析到ReqData
         String method = request.getParameter("method");
         if(StringUtils.isNotBlank(method) && (method.endsWith("file.upload")||method.endsWith("h5"))){
             reqDataStr = JadyerUtil.buildStringFromMapWithStringArray(request.getParameterMap());
-            LogUtil.getLogger().debug("收到客户端IP=[{}]的请求报文为-->{}", IPUtil.getClientIP(request), reqDataStr);
+            LogUtil.getLogger().debug("收到客户端IP=[{}]的请求报文为-->{}", reqIp, reqDataStr);
             reqData = JadyerUtil.requestToBean(request, ReqData.class);
         }else{
             reqDataStr = IOUtils.toString(request.getInputStream(), Constants.OPEN_CHARSET_UTF8);
-            LogUtil.getLogger().debug("收到客户端IP=[{}]的请求报文为-->[{}]", IPUtil.getClientIP(request), reqDataStr);
+            LogUtil.getLogger().debug("收到客户端IP=[{}]的请求报文为-->[{}]", reqIp, reqDataStr);
             reqData = JSON.parseObject(reqDataStr, ReqData.class);
             method = reqData.getMethod();
         }
@@ -91,7 +96,7 @@ public class OpenFilter extends OncePerRequestFilter {
                 throw new SeedException(CodeEnum.OPEN_UNKNOWN_METHOD.getCode(), String.format("%s-->[%s]", CodeEnum.OPEN_UNKNOWN_METHOD.getMsg(), reqData.getMethod()));
             }
             //验证时间戳
-            this.verifyTimestamp(reqData.getTimestamp(), 600000);
+            this.verifyTimestamp(reqData.getTimestamp());
             //识别合作方
             String appsecret = appsecretMap.get(reqData.getAppid());
             LogUtil.getLogger().debug("通过appid=[{}]读取到合作方密钥{}", reqData.getAppid(), appsecret);
@@ -109,17 +114,19 @@ public class OpenFilter extends OncePerRequestFilter {
             //	this.verifySign(request.getParameterMap(), apiApplication.getAppSecret());
             //	filterChain.doFilter(request, response);
             //}
-            //解密并处理
+            //解密并处理（返回诸如html或txt内容时，就不用先得到字符串再转成字节数组输出，这会影响性能，尤其对账文件下载）
             RequestParameterWrapper requestWrapper = new RequestParameterWrapper(request);
             requestWrapper.addAllParameters(this.decrypt(reqData, appsecret));
-            ResponseContentWrapper responseWrapper = new ResponseContentWrapper(response);
-            filterChain.doFilter(requestWrapper, responseWrapper);
-            String content = responseWrapper.getContent();
-            LogUtil.getLogger().info("返回客户端IP=["+IPUtil.getClientIP(request)+"]的应答明文为-->[{}]", content);
             if(method.endsWith("h5") || method.endsWith("agree") || method.endsWith("download")){
-                response.getOutputStream().write(content.getBytes(Constants.OPEN_CHARSET_UTF8));
+                filterChain.doFilter(requestWrapper, response);
+                respDataStr = method + "...";
+                LogUtil.getLogger().info("返回客户端IP=[{}]的应答明文为-->[{}]，Duration[{}]ms", reqIp, respDataStr, (System.currentTimeMillis()-startTime));
             }else{
-                RespData respData = JSON.parseObject(content, RespData.class);
+                ResponseContentWrapper responseWrapper = new ResponseContentWrapper(response);
+                filterChain.doFilter(requestWrapper, responseWrapper);
+                respDataStr = responseWrapper.getContent();
+                LogUtil.getLogger().info("返回客户端IP=[{}]的应答明文为-->[{}]", reqIp, respDataStr);
+                RespData respData = JSON.parseObject(respDataStr, RespData.class);
                 if(CodeEnum.SUCCESS.getCode() == Integer.parseInt(respData.getCode())){
                     if(Constants.OPEN_VERSION_21.equals(reqData.getVersion())){
                         respData.setData(CodecUtil.buildAESEncrypt(respData.getData(), appsecret));
@@ -130,29 +137,28 @@ public class OpenFilter extends OncePerRequestFilter {
                     }
                 }
                 String respDataJson = JSON.toJSONString(respData);
-                LogUtil.getLogger().debug("返回客户端IP=["+IPUtil.getClientIP(request)+"]的应答密文为-->[{}]", respDataJson);
+                LogUtil.getLogger().debug("返回客户端IP=[{}]的应答密文为-->[{}]，Duration[{}]ms", reqIp, respDataJson, (System.currentTimeMillis()-startTime));
                 response.getOutputStream().write(respDataJson.getBytes(Constants.OPEN_CHARSET_UTF8));
             }
-            //异步记录接口访问日志
-            this.apilog(reqData.getAppid(), method, IPUtil.getClientIP(request), reqDataStr, content);
         }catch(SeedException e){
+            respDataStr = JSON.toJSONString(new CommonResult(e.getCode(), e.getMessage()), true);
+            LogUtil.getLogger().info("返回客户端IP=[{}]的应答明文为-->[{}]，Duration[{}]ms", reqIp, respDataStr, (System.currentTimeMillis()-startTime));
             response.setHeader("Content-Type", "application/json;charset=" + Constants.OPEN_CHARSET_UTF8);
-            response.getOutputStream().write(JSON.toJSONString(new CommonResult(e.getCode(), e.getMessage()), true).getBytes(Constants.OPEN_CHARSET_UTF8));
+            response.getOutputStream().write(respDataStr.getBytes(Constants.OPEN_CHARSET_UTF8));
         }
     }
 
 
     /**
      * 验证时间戳
-     * @param milliseconds 有效期毫秒数,10分钟即为600000
      */
-    private void verifyTimestamp(String timestamp, long milliseconds){
+    private void verifyTimestamp(String timestamp){
         if(StringUtils.isBlank(timestamp)){
             throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "timestamp is blank");
         }
         try {
             long reqTime = DateUtils.parseDate(timestamp, "yyyy-MM-dd HH:mm:ss").getTime();
-            if(Math.abs(System.currentTimeMillis()-reqTime) >= milliseconds){
+            if(Math.abs(System.currentTimeMillis()-reqTime) >= TIMESTAMP_VALID_MILLISECONDS){
                 throw new SeedException(CodeEnum.OPEN_TIMESTAMP_ERROR.getCode(), CodeEnum.OPEN_TIMESTAMP_ERROR.getMsg());
             }
         } catch (ParseException e) {
@@ -260,27 +266,6 @@ public class OpenFilter extends OncePerRequestFilter {
 
 
     /**
-     * 异步记录接口访问日志
-     * @create Jan 15, 2016 10:02:49 PM
-     * @author 玄玉<https://jadyer.github.io/>
-     */
-    private void apilog(final String appid, final String method, final String reqIp, final String reqData, final String respData){
-        ExecutorService threadPool = Executors.newSingleThreadExecutor();
-        threadPool.execute(new Runnable(){
-            @Override
-            public void run() {
-                try {
-                    LogUtil.getLogger().info("记录日志到Database或MongoDB等等");
-                } catch (Exception e) {
-                    LogUtil.getLogger().info("记录appid=["+appid+"]的接口["+method+"]访问日志时发生异常, 堆栈轨迹如下", e);
-                }
-            }
-        });
-        threadPool.shutdown();
-    }
-
-
-    /**
      * 可手工设置HttpServletRequest入参的Wrapper
      * ---------------------------------------------------------------------------------------
      * 由于HttpServletRequest.getParameterMap()得到的Map是immutable的,不可更改的
@@ -290,8 +275,6 @@ public class OpenFilter extends OncePerRequestFilter {
      * requestWrapper.addAllParameters(Map<String, Object> allParams);
      * filterChain.doFilter(requestWrapper, response);
      * ---------------------------------------------------------------------------------------
-     * @create Dec 19, 2015 9:06:04 PM
-     * @author 玄玉<https://jadyer.github.io/>
      */
     private class RequestParameterWrapper extends HttpServletRequestWrapper {
         private Map<String, String[]> paramMap = new HashMap<>();
@@ -352,8 +335,6 @@ public class OpenFilter extends OncePerRequestFilter {
      * response.getOutputStream().write(("{\"code\":\"102\", \"msg\":\"重复请求\"}").getBytes("UTF-8"));
      * return;
      * ---------------------------------------------------------------------------------------
-     * @create Dec 19, 2015 9:07:09 PM
-     * @author 玄玉<https://jadyer.github.io/>
      */
     private class ResponseContentWrapper extends HttpServletResponseWrapper {
         private ResponsePrintWriter writer;
@@ -374,7 +355,7 @@ public class OpenFilter extends OncePerRequestFilter {
         public ServletOutputStream getOutputStream() throws IOException {
             return outputWrapper;
         }
-        public String getContent() {
+        String getContent() {
             try {
                 writer.flush();
                 return writer.getByteArrayOutputStream().toString(Constants.OPEN_CHARSET_UTF8);

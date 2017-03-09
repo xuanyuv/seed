@@ -30,13 +30,13 @@ public class RedisFilter extends OncePerRequestFilter {
 	private static final int EXPIRE_TIME_SECONDS = 60 * 12;          //12分钟过期
 	private static final String REDIS_DATA_KEY = "data-key";         //请求应答内容的RedisKey
 	private static final String REDIS_DATA_CONTENT = "data-content"; //请求应答内容
-	private static final String RESP_CONTENT_TYPE = "application/json;charset=UTF-8";
+	private static final String RESP_CONTENT_TYPE = "application/json; charset=UTF-8";
 	private JedisCluster jedisCluster;
 	private List<String> filterMethodList = new ArrayList<>();
 
 	/**
 	 * @param jedisCluster      redis集群对象
-	 * @param _filterMethodList 指定该Filter拦截的开放平台方法名,null表示拦截所有
+	 * @param _filterMethodList 指定该Filter拦截的开放平台方法名，null表示拦截所有
 	 */
 	public RedisFilter(JedisCluster jedisCluster, List<String> _filterMethodList){
 		this.jedisCluster = jedisCluster;
@@ -71,7 +71,7 @@ public class RedisFilter extends OncePerRequestFilter {
 			response.getOutputStream().write(content.getBytes(Constants.OPEN_CHARSET_UTF8));
 			return;
 		}
-		//返回0表示非首次请求,此时会计算应答哪些内容
+		//返回0表示非首次请求，此时会计算应答哪些内容
 		Map<String, String> values = jedisCluster.hgetAll(redisKey);
 		if(null!=values && values.containsKey(REDIS_DATA_KEY) && !REDIS_DATA_CONTENT.equals(values.get(REDIS_DATA_KEY))){
 			response.setHeader("Content-Type", RESP_CONTENT_TYPE);
@@ -85,8 +85,6 @@ public class RedisFilter extends OncePerRequestFilter {
 
 	/**
 	 * 可手工设置HttpServletResponse出参的Wrapper
-	 * @create Dec 19, 2015 9:07:09 PM
-	 * @author 玄玉<https://jadyer.github.io/>
 	 */
 	private class ResponseContentWrapper extends HttpServletResponseWrapper {
 		private ResponsePrintWriter writer;
@@ -107,7 +105,7 @@ public class RedisFilter extends OncePerRequestFilter {
 		public ServletOutputStream getOutputStream() throws IOException {
 			return outputWrapper;
 		}
-		public String getContent() {
+		String getContent() {
 			try {
 				writer.flush();
 				return writer.getByteArrayOutputStream().toString(Constants.OPEN_CHARSET_UTF8);
