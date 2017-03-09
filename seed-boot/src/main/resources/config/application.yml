@@ -124,8 +124,6 @@ auth:
 ---
 spring:
   profiles: local
-server:
-  port: 80
 jasypt:
   file: classpath:config/config.properties
 
@@ -157,9 +155,9 @@ jasypt:
   file: file:/app/config/demo.boot.prod/config.properties
 redis:
   nodes:
-    - Redis.xuanyu.db:7000
-    - Redis.xuanyu.db:7001
-    - Redis.xuanyu.db:7002
-    - Redis.xuanyu.db:7003
-    - Redis.xuanyu.db:7004
-    - Redis.xuanyu.db:7005
+    - seed.xuanyu.redis:7000
+    - seed.xuanyu.redis:7001
+    - seed.xuanyu.redis:7002
+    - seed.xuanyu.redis:7003
+    - seed.xuanyu.redis:7004
+    - seed.xuanyu.redis:7005

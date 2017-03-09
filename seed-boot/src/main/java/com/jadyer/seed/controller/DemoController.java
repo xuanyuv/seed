@@ -3,8 +3,6 @@ package com.jadyer.seed.controller;
 import com.jadyer.seed.boot.BootProperties;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
-import com.jadyer.seed.comm.util.LogUtil;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -25,7 +23,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,11 +33,8 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value="/demo")
-//它就相当于@Controller和@ResponseBody注解
-//@RestController
+//@RestController//它就相当于@Controller和@ResponseBody注解
 public class DemoController {
-    //初始化登录用户
-    private static final Map<String, String> userInfoMap = Collections.singletonMap("jadyer", DigestUtils.md5Hex("xuanyu"));
     //若配置文件中未找到该属性，则为其赋默认值为冒号后面的字符串
     @Value("${user.blog:https://jadyer.github.io/}")
     private String blog;
@@ -95,26 +89,6 @@ public class DemoController {
     @RequestMapping(value="/servererror")
     void servererror(){
         throw new RuntimeException("這是玄玉自定義的異常提示信息");
-    }
-
-
-    /**
-     * JSP页面点击登录按钮
-     */
-    @ResponseBody
-    @RequestMapping(value="/jspLogin")
-    public CommonResult jspLogin(String username, String password, String captcha, HttpSession session){
-        if(!session.getAttribute("rand").equals(captcha)){
-            return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "无效的验证码");
-        }
-        LogUtil.getLogger().info("验证码校验-->通过");
-        for(Map.Entry<String, String> entry : userInfoMap.entrySet()){
-            if(entry.getKey().equals(username) && entry.getValue().equals(password)){
-                session.setAttribute("userinfo", "伪用户");
-                return new CommonResult();
-            }
-        }
-        return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "用户名或密码不正确");
     }
 
 
@@ -207,10 +181,9 @@ public class DemoController {
 
     /**
      * 直接访问页面资源
-     * @see 可以在URL上传参
-     * @see 比如http://127.0.0.1/demo/view?url=user/userInfo&id=3,则参数id=3会被放到request中
-     * @create Nov 3, 2015 5:50:54 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * <p>
+     *     可以url传参，比如http://127.0.0.1/demo/view?url=user/userInfo&id=3，则参数id=3会被放到request中
+     * </p>
      */
     @RequestMapping(value="/view", method= RequestMethod.GET)
     String view(String url, HttpServletRequest request){
