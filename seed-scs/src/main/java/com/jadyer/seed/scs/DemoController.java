@@ -29,11 +29,13 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- * ## 复制工程时修改点如下
-
- 1. pom.xml 中的 artifactId 修改为工程名
- 2. logback.xml 中的 PROJECT_NAME 修改为 工程名
- 3. 放置业务代码的包名由 com.jadyer.demo 修改为 com.jadyer.工程名
+ * --------------------------------------------------------------------
+ * 复制脚手架时修改点如下
+ * 1、pom.xml 中的 artifactId 修改为工程名
+ * 2、logback.xml 中的 PROJECT_NAME 修改为 工程名
+ * 3、放置业务代码的包名由 com.jadyer.seed 修改为 com.jadyer.工程名
+ * --------------------------------------------------------------------
+ * Created by 玄玉<https://jadyer.github.io/> on 2017/3/10 6:00.
  */
 @Controller
 @RequestMapping(value="/demo")
