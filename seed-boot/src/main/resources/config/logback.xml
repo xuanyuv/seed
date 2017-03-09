@@ -13,7 +13,7 @@
 	</if>
 	<if condition='property("os.name").toUpperCase().contains("WINDOWS")'>
 		<then>
-			<property name="PROJECT_PATH" value="/app/logs/demo-boot"/>
+			<property name="PROJECT_PATH" value="/app/logs/seed-boot"/>
 		</then>
 		<else>
 			<property name="PROJECT_PATH" value="${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}"/>

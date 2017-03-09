@@ -9,7 +9,7 @@
     <uri>http://www.jadyer.com/tag/jadyer</uri><!--设定在JSP页面使用该标记库的引用地址-->
     <!--<uri>/WEB-INF/tag/jadyer.tld</uri>-->
     <!--<%@ taglib prefix="jadyer" uri="/WEB-INF/tag/jadyer.tld"%>-->
-    <!--http://127.0.0.1/boot/demo/view?url=user/userInfo&uname=%E7%8E%84%E7%8E%89&token=https://github.com/jadyer&mpurl=https://jadyer.github.io/-->
+    <!--http://127.0.0.1/boot/view?url=user/userInfo&uname=%E7%8E%84%E7%8E%89&token=https://github.com/jadyer&mpurl=https://jadyer.github.io/-->
 
     <tag>
         <name>dateTime</name><!--标记名称-->

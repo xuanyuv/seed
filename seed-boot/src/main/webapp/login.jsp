@@ -36,7 +36,7 @@
 $(function(){
     //已登录状态下自动跳转默认首页
     if("" != "${userinfo}"){
-        window.location.href = "${pageContext.request.contextPath}/demo/view?url=wangEditorDemo";
+        window.location.href = "${pageContext.request.contextPath}/view?url=wangEditorDemo";
     }
     $("#username").focus();
     $.setBox("div.box_login");
@@ -92,11 +92,11 @@ function login(){
     }
     flag = false;
     o.attr("disabled", true).text("登录中...").css({"background":"#28b779", "cursor":"auto"});
-    $.post("${pageContext.request.contextPath}/demo/jspLogin",
+    $.post("${pageContext.request.contextPath}/jspLogin",
         {username:username, password:MD5(password), captcha:captcha},
         function(data){
             if(0 == data.code){
-                window.location.href = "${pageContext.request.contextPath}/demo/view?url=wangEditorDemo";
+                window.location.href = "${pageContext.request.contextPath}/view?url=wangEditorDemo";
             }else{
                 o.attr("disabled", false).text("登录").css({"background":"#5bb75b", "cursor":"auto"});
                  $.promptBox(data.msg, "#ffb848");

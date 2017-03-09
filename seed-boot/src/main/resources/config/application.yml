@@ -42,27 +42,18 @@ multipart:
 
 
 # 屬性加密文件
-#encrypt:
-#  file: file:/app/config/seed.jadyer.com/config.properties
 jasypt:
+  #file: file:/app/config/seed.jadyer.com/config.properties
   file: classpath:config/config.properties
 
 
-# 啟用H2控制台並自定義訪問地址
 spring:
+  thymeleaf:
+      cache: false   # 禁用Thymeleaf页面缓存
   h2:
     console:
       path: /myh2
-      enabled: true
-
-
-# 禁用Thymeleaf页面缓存
-spring:
-  thymeleaf:
-    cache: false
-
-
-spring:
+      enabled: true  # 啟用H2控制台並自定義訪問地址
   datasource:
     #url: jdbc:h2:mem:jadyer;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     url: jdbc:mysql://127.0.0.1:3306/qss?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
@@ -110,23 +101,14 @@ auth:
     - /info
     - /health
     - /druid/**
-    - /apidoc/**
-    - /demo/notfound
-    - /demo/properties
-    - /demo/servererror
-    - /demo/jspLogin/**
+    - /login/**
+    - /prop
     - /login.jsp
-    - /captcha.jsp
-    - /favicon.ico
-    - /building.jsp
 
 
 ---
 spring:
   profiles: local
-jasypt:
-  file: classpath:config/config.properties
-
 
 ---
 spring:
@@ -134,8 +116,7 @@ spring:
 server:
   port: 8088
 jasypt:
-  file: file:/app/config/demo.boot.dev/config.properties
-
+  file: file:/app/config/boot.seed.dev/config.properties
 
 ---
 spring:
@@ -143,8 +124,7 @@ spring:
 server:
   port: 8089
 jasypt:
-  file: file:/app/config/demo.boot.test/config.properties
-
+  file: file:/app/config/boot.seed.test/config.properties
 
 ---
 spring:
@@ -152,7 +132,7 @@ spring:
 server:
   port: 8090
 jasypt:
-  file: file:/app/config/demo.boot.prod/config.properties
+  file: file:/app/config/boot.seed.prod/config.properties
 redis:
   nodes:
     - seed.xuanyu.redis:7000

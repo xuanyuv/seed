@@ -76,11 +76,11 @@ function login(){
 	}
 	flag = false;
 	o.attr("disabled", true).text("登录中...").css({"background":"#28b779", "cursor":"auto"});
-	$.get([[@{/demo/thymeleafLogin/}]] + username + '/' + password,
+	$.get([[@{/login/}]] + username + '/' + password,
 		function(data){
 			if(0 == data.code){
-				//window.location.href = [[@{/demo/view?url=admin/userInfo}]];
-				window.location.href = [[@{/demo/view(url='admin/userInfo',token='https://github.com/jadyer',mpurl='https://jadyer.github.io/')}]];
+				//window.location.href = [[@{/view?url=admin/info}]];
+				window.location.href = [[@{/view(url='admin/info',token='https://github.com/jadyer',mpurl='https://jadyer.github.io/')}]];
 			}else{
 				o.attr("disabled", false).text("登录").css({"background":"#5bb75b", "cursor":"auto"});
  				$.promptBox(data.msg, "#ffb848");

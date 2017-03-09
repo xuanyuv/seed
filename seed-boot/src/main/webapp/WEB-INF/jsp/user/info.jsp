@@ -63,8 +63,8 @@ function uploadIcons(){
     //$("#loading").ajaxStart(function(){$(this).show();}).ajaxComplete(function(){$(this).hide();});
     //执行上传文件操作的函数
     $.ajaxFileUpload({
-        //处理文件上传操作的服务器端地址（可以传参数，比如/demo/uploadImg?username=jadyer，已亲测可用）
-        url:'${ctx}/demo/uploadImg/1024',
+        //处理文件上传操作的服务器端地址（可以传参数，比如/uploadImg?username=jadyer，已亲测可用）
+        url:'${ctx}/uploadImg/1024',
         secureuri:false,                          //是否启用安全提交，默认为false
         fileElementId:'id_imgData',               //文件选择框的id属性
         dataType:'text',                          //服务器返回的格式，可以是json或xml等

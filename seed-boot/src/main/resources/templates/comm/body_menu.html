@@ -19,13 +19,13 @@
 			</div>
 		</li>
 		<li th:class="${session.currentMenu eq 'menu_fans'}? 'on' : ''">
-			<a th:href="@{/demo/view?url=admin/fansList}"><span>粉丝管理</span><i></i></a>
+			<a th:href="@{/view?url=admin/fans}"><span>粉丝管理</span><i></i></a>
 		</li>
 		<li th:class="${session.currentMenu eq 'menu_sys'}? 'on' : ''">
 			<a href="#"><span>平台设置</span><i></i></a>
 			<div>
 				<a href="javascript:alert('暂未开放');"><span>公众菜单</span></a>
-				<a href="javascript:alert('这是一个Thymeleaf示例页面');"><span>个人资料</span></a>
+				<a th:href="@{/view?url=admin/info}"><span>个人资料</span></a>
 				<a href="javascript:alert('暂未开放');"><span>修改密码</span></a>
 			</div>
 		</li>
