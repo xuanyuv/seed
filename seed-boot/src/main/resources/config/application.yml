@@ -48,18 +48,18 @@ jasypt:
   file: classpath:config/config.properties
 
 
-## 啟用H2控制台並自定義訪問地址
-#spring:
-#  h2:
-#    console:
-#      path: /myh2
-#      enabled: true
+# 啟用H2控制台並自定義訪問地址
+spring:
+  h2:
+    console:
+      path: /myh2
+      enabled: true
 
 
-## 禁用Thymeleaf页面缓存
-#spring:
-#  thymeleaf:
-#    cache: false
+# 禁用Thymeleaf页面缓存
+spring:
+  thymeleaf:
+    cache: false
 
 
 spring:
