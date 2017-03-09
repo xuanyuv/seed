@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="jadyer" uri="http://www.jadyer.com/tag/jadyer"%>
 
 <jsp:include page="../common/header.jsp"/>
 
@@ -129,8 +128,6 @@ function submit(){
 		</tr>
 		<tr><th>绑解状态：</th><td>${userInfo.bindStatus eq 0 ? '<span class="cf30 fw">未绑定</span>' : '<span class="cgre fw">已绑定</span>'}</td></tr>
 		<tr><th>绑解时间：</th><td><fmt:formatDate value="${userInfo.bindTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td></tr>
-		<tr><th>当前时间：</th><td><jadyer:dateTime/></td></tr>
-		<tr><th>过去时间：</th><td><jadyer:dateTime pattern="yyyy年MM月dd日 HH:mm:ss" date="<%=new java.util.Date(109,11,19)%>"/></td></tr>
 	</table>
 	<!--/Table order list-->
 	<form id="userBindForm">

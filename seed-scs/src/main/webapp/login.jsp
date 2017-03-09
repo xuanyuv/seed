@@ -92,7 +92,7 @@ function login(){
     }
     flag = false;
     o.attr("disabled", true).text("登录中...").css({"background":"#28b779", "cursor":"auto"});
-    $.post("${pageContext.request.contextPath}/demo/jspLogin",
+    $.post("${pageContext.request.contextPath}/demo/login",
         {username:username, password:MD5(password), captcha:captcha},
         function(data){
             if(0 == data.code){
