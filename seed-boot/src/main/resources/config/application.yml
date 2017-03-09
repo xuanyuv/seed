@@ -1,6 +1,88 @@
+server:
+  port: 80
+  contextPath: /boot
+  sessionTimeout: 3000
+  tomcat:
+    uriEncoding: UTF-8
+
+
+# 此配置仅供http://127.0.0.1/info使用
+info:
+  myversion: 8.7.0
+  myblogurl: https://jadyer.github.io/
+
+
+# 配置文件属性读取之扫描包、多属性、随机数（各参数间也可直接引用来使用，且随机数支持随机字符串和数字）
 scan:
   base:
-    packages: com.jadyer.demo
+    packages: com.jadyer.seed
+    detailInfo: 本工程扫描的包名为：${scan.base.packages}
+    addressList:
+      - Haerbin
+      - Chongqing
+      - ${random.value}
+user:
+  height: ${random.int}
+  weight: ${random.long}
+  sex: ${random.int(10)}
+  age: ${random.int[30,100]}
+
+
+# 日志配置这俩属性足矣
+logging:
+  path: /home/seed/log/boot
+  config: classpath:config/logback.xml
+
+
+# 文件上传限制
+multipart:
+  enabled: true
+  maxFileSize: 10Mb
+  maxRequestSize: 10Mb
+
+
+# 屬性加密文件
+#encrypt:
+#  file: file:/app/config/seed.jadyer.com/config.properties
+jasypt:
+  file: classpath:config/config.properties
+
+
+## 啟用H2控制台並自定義訪問地址
+#spring:
+#  h2:
+#    console:
+#      path: /myh2
+#      enabled: true
+
+
+## 禁用Thymeleaf页面缓存
+#spring:
+#  thymeleaf:
+#    cache: false
+
+
+spring:
+  datasource:
+    #url: jdbc:h2:mem:jadyer;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:mysql://127.0.0.1:3306/qss?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
+    username: root
+    password: xuanyu
+    minIdle: 5
+    maxActive: 50
+    initialSize: 5
+    maxWait: 60000
+    minEvictableIdleTimeMillis: 300000
+    timeBetweenEvictionRunsMillis: 60000
+  jpa:
+    showSql: true
+    database: MYSQL
+    generateDdl: false
+    databasePlatform: org.hibernate.dialect.MySQL5InnoDBDialect
+    properties:
+      hibernate:
+        format_sql: true
+
 
 redis:
   connectionTimeout: 2000
@@ -17,6 +99,8 @@ redis:
     - 192.168.2.210:7004
     - 192.168.2.210:7005
 
+
+# 允许匿名访问的资源列表
 auth:
   anonymousList:
     - /
@@ -36,6 +120,7 @@ auth:
     - /favicon.ico
     - /building.jsp
 
+
 ---
 spring:
   profiles: local
@@ -43,6 +128,7 @@ server:
   port: 80
 jasypt:
   file: classpath:config/config.properties
+
 
 ---
 spring:
@@ -52,6 +138,7 @@ server:
 jasypt:
   file: file:/app/config/demo.boot.dev/config.properties
 
+
 ---
 spring:
   profiles: test
@@ -59,6 +146,7 @@ server:
   port: 8089
 jasypt:
   file: file:/app/config/demo.boot.test/config.properties
+
 
 ---
 spring:
