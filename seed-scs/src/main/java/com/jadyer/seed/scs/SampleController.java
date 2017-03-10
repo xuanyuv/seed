@@ -3,7 +3,6 @@ package com.jadyer.seed.scs;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
 import com.jadyer.seed.comm.util.LogUtil;
-import com.jadyer.seed.scs.util.ScsHelper;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
