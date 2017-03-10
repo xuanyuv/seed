@@ -4,7 +4,7 @@ scan:
 
 logging:
   path: /home/seed/log/open
-  config: classpath:config/logback.xml
+  config: classpath:logback.xml
 
 ---
 spring:
