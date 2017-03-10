@@ -38,8 +38,8 @@ import java.util.Map;
  * Created by 玄玉<https://jadyer.github.io/> on 2017/3/10 6:00.
  */
 @Controller
-@RequestMapping(value="/demo")
-public class DemoController {
+@RequestMapping(value="/sample")
+public class SampleController {
     //初始化登录用户
     private static final Map<String, String> userInfoMap = Collections.singletonMap("jadyer", DigestUtils.md5Hex("xuanyu"));
     @Resource
@@ -149,7 +149,7 @@ public class DemoController {
         //文件的名字会被wangEditor重命名为一个长度为16的数字，所以getOriginalFilename得到的并非真实原文件名
         String filePath = scsHelper.buildUploadFilePath(minefile.getOriginalFilename(), true);
         FileUtils.copyInputStreamToFile(minefile.getInputStream(), new File(filePath));
-        out.write(request.getContextPath() + "/demo/file/get?filePath=" + FilenameUtils.getName(filePath));
+        out.write(request.getContextPath() + "/sample/file/get?filePath=" + FilenameUtils.getName(filePath));
         out.flush();
         out.close();
     }
@@ -169,7 +169,7 @@ public class DemoController {
     /**
      * 直接访问页面资源
      * <p>
-     *     可以url传参，比如http://127.0.0.1/demo/view?url=user/userInfo&id=3，则参数id=3会被放到request中
+     *     可以url传参，比如http://127.0.0.1/sample/view?url=user/userInfo&id=3，则参数id=3会被放到request中
      * </p>
      */
     @RequestMapping(value="/view", method= RequestMethod.GET)

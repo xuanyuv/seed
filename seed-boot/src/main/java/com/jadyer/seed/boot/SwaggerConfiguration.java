@@ -25,7 +25,7 @@ public class SwaggerConfiguration {
                 .title("SpringBoot集成Swagger2的示例")
                 .description("REST风格的APIs")
                 .termsOfServiceUrl("https://jadyer.github.io/")
-                .contact(new Contact("玄玉", "https://github.com/jadyer/demo-boot", "jadyer@yeah.net"))
+                .contact(new Contact("玄玉", "https://github.com/jadyer/seed", "jadyer@yeah.net"))
                 .version("1.0")
                 .build();
     }

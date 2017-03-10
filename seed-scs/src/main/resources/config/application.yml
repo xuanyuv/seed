@@ -43,7 +43,7 @@ auth:
     - /img/**
     - /health
     - /druid/**
-    - /demo/login/**
+    - /sample/login/**
     - /login.jsp
     - /captcha.jsp
     - /favicon.ico

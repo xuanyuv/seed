@@ -76,7 +76,7 @@ editor.config.menus = [
 //隐藏掉插入网络图片功能（该配置仅在配置了图片上传功能后才可用）
 //editor.config.hideLinkImg = true;
 //上传图片的配置（支持自定义参数）
-editor.config.uploadImgUrl = '${ctx}/demo/wangEditor/uploadImg';
+editor.config.uploadImgUrl = '${ctx}/sample/wangEditor/uploadImg';
 editor.config.uploadImgFileName = 'minefile';
 editor.config.uploadParams = {
     username: 'jadyer',
@@ -92,7 +92,7 @@ function submit(){
     var html = editor.$txt.html();
     //赋值（使用富文本编辑器时，就不能再用传统的$("mpname").val("赋值的内容")赋值了）
     //editor.$txt.html("赋值的内容");
-    $.post("${ctx}/demo/wangEditor/submit",
+    $.post("${ctx}/sample/wangEditor/submit",
         {mpno:$('#mpno').val(), mpname:html},
         function(data){
             alert(data.msg);
