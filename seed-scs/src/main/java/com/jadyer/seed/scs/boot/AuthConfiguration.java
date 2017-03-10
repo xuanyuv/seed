@@ -60,6 +60,9 @@ public class AuthConfiguration {
                     break;
                 }
             }
+            if(request.getServletPath().contains("/portal/")){
+                disallowAnonymousVisit = false;
+            }
             if(disallowAnonymousVisit && null==request.getSession().getAttribute(Constants.WEB_SESSION_USER)){
                 response.sendRedirect(request.getContextPath() + this.url);
             }else{

@@ -90,6 +90,11 @@ public class AuthConfiguration {
                     break;
                 }
             }
+            //前后台同时存在的项目，默认/portal/为所有前台资源的前缀
+            if(request.getServletPath().contains("/portal/")){
+                disallowAnonymousVisit = false;
+            }
+            //处理权限访问
             if(disallowAnonymousVisit && null==request.getSession().getAttribute(Constants.WEB_SESSION_USER)){
                 response.sendRedirect(request.getContextPath() + this.url);
             }else{
