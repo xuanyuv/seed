@@ -2,8 +2,8 @@ package com.jadyer.seed.scs;
 
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
+import com.jadyer.seed.comm.constant.Constants;
 import com.jadyer.seed.comm.util.LogUtil;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
@@ -24,7 +24,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URL;
-import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -39,8 +38,6 @@ import java.util.Map;
 @Controller
 @RequestMapping(value="/sample")
 public class SampleController {
-    //初始化登录用户
-    private static final Map<String, String> userInfoMap = Collections.singletonMap("jadyer", DigestUtils.md5Hex("xuanyu"));
     @Resource
     private ScsHelper scsHelper;
 
@@ -54,11 +51,9 @@ public class SampleController {
             return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "无效的验证码");
         }
         LogUtil.getLogger().info("验证码校验-->通过");
-        for(Map.Entry<String, String> entry : userInfoMap.entrySet()){
-            if(entry.getKey().equals(username) && entry.getValue().equals(password)){
-                session.setAttribute("userinfo", "伪用户");
-                return new CommonResult();
-            }
+        if("jadyer".equals(username) && "xuanyu".equals(password)){
+            session.setAttribute(Constants.WEB_SESSION_USER, username);
+            return new CommonResult();
         }
         return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "用户名或密码不正确");
     }

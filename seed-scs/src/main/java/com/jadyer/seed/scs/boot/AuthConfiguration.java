@@ -30,7 +30,7 @@ public class AuthConfiguration {
 
     @Bean
     public Filter authenticationFilter(){
-        return new AuthFilter("/", this.anonymousList);
+        return new AuthFilter("/login", this.anonymousList);
     }
 
 
