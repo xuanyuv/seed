@@ -44,6 +44,7 @@ auth:
     - /health
     - /druid/**
     - /sample/login/**
+    - /login
     - /login.jsp
     - /captcha.jsp
     - /favicon.ico

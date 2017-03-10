@@ -4,6 +4,7 @@ import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
 import com.jadyer.seed.comm.constant.Constants;
 import com.jadyer.seed.comm.util.LogUtil;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
@@ -46,12 +47,12 @@ public class SampleController {
      */
     @ResponseBody
     @RequestMapping(value="/login")
-    public CommonResult jspLogin(String username, String password, String captcha, HttpSession session){
+    public CommonResult login(String username, String password, String captcha, HttpSession session){
         if(!session.getAttribute("rand").equals(captcha)){
             return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "无效的验证码");
         }
         LogUtil.getLogger().info("验证码校验-->通过");
-        if("jadyer".equals(username) && "xuanyu".equals(password)){
+        if("jadyer".equals(username) && DigestUtils.md5Hex("xuanyu").equals(password)){
             session.setAttribute(Constants.WEB_SESSION_USER, username);
             return new CommonResult();
         }
