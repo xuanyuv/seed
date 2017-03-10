@@ -8,12 +8,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
-@Configuration
+//@Configuration
 public class DruidConfiguration {
 	@Value("${spring.datasource.url}")
 	private String url;

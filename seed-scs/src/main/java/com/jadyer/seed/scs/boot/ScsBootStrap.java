@@ -4,12 +4,12 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.servlet.Filter;
@@ -20,9 +20,9 @@ import java.util.List;
 /**
  * Created by 玄玉<https://jadyer.github.io/> on 2017/3/10 5:27.
  */
-@EntityScan(basePackages="${scan.base.packages}")
-@EnableJpaRepositories(basePackages="${scan.base.packages}")
-@SpringBootApplication(scanBasePackages="${scan.base.packages}")
+//@EntityScan(basePackages="${scan.base.packages}")
+//@EnableJpaRepositories(basePackages="${scan.base.packages}")
+@SpringBootApplication(scanBasePackages="${scan.base.packages}", exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class ScsBootStrap extends SpringBootServletInitializer {
     //启动时不能直接执行main
     //具体启动方式见https://jadyer.github.io/2016/07/29/idea-springboot-jsp/
