@@ -7,12 +7,13 @@ package com.jadyer.seed.comm.constant;
  */
 public interface Constants {
     /**
-     * Web应用的会话标志
+     * Web应用的会话标志，及后台的焦点菜单
      */
     String WEB_SESSION_USER = "user";
+    String WEB_CURRENT_MENU = "currentMenu";
 
     /**
-     * 下面是seed-open用到的常量
+     * seed-open用到的常量
      */
     //seed-open的全局编码
     String OPEN_CHARSET_UTF8 = "UTF-8";
