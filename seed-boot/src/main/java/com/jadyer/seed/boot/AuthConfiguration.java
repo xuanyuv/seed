@@ -3,7 +3,6 @@ package com.jadyer.seed.boot;
 import com.jadyer.seed.comm.constant.Constants;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.Filter;
@@ -18,7 +17,7 @@ import java.util.List;
 /**
  * Created by 玄玉<https://jadyer.github.io/> on 2016/6/26 11:03.
  */
-@Configuration
+//@Configuration
 @ConfigurationProperties(prefix="auth")
 public class AuthConfiguration {
     private List<String> anonymousList = new ArrayList<>();

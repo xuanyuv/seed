@@ -4,6 +4,7 @@ import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletCont
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.web.servlet.ErrorPage;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -17,7 +18,7 @@ import org.springframework.web.servlet.view.JstlView;
  * 因为/src/main/resources/下的任何一个位置在打包war时都会被编译到/WEB-INF/classes/下面，这个目录下的JSP文件是不会被JavaEE容器识别的
  * Created by 玄玉<https://jadyer.github.io/> on 2016/11/24 10:45.
  */
-//@Configuration
+@Configuration
 public class MVCConfiguration extends WebMvcConfigurerAdapter {
 	@Bean
 	public EmbeddedServletContainerCustomizer containerCustomizer(){
@@ -34,7 +35,7 @@ public class MVCConfiguration extends WebMvcConfigurerAdapter {
 	public void addViewControllers(ViewControllerRegistry registry) {
 		//registry.addViewController("/apidoc").setViewName("forward:/apidoc/index.jsp");
 		//registry.addViewController("/apidoc/").setViewName("forward:/apidoc/index.jsp");
-		//registry.addViewController("/").setViewName("forward:/building.jsp");
+		registry.addViewController("/").setViewName("forward:/login.jsp");
 		registry.addViewController("/login").setViewName("forward:/login.jsp");
 	}
 

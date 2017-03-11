@@ -24,7 +24,6 @@
 	<!--
 	JSP页面测试时，要用到下面的配置，详见https://jadyer.github.io/2016/07/29/idea-springboot-jsp/
 	-->
-	<!--
 	<build>
 		<plugins>
 			<plugin>
@@ -36,5 +35,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	-->
 </project>

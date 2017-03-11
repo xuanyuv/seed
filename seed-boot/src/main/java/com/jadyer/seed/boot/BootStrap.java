@@ -74,6 +74,12 @@ import javax.servlet.Filter;
  */
 @SpringBootApplication(scanBasePackages="${scan.base.packages}", exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class BootStrap extends SpringBootServletInitializer {
+	//启动时不能直接执行main
+	//具体启动方式见https://jadyer.github.io/2016/07/29/idea-springboot-jsp/
+	public static void main(String[] args) {
+		new SpringApplicationBuilder().sources(BootStrap.class).profiles("local").run(args);
+	}
+
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         //这里的配置与com.jadyer.demo.test.ApiBootStarp.java中的配置是没有关系的
@@ -89,8 +95,4 @@ public class BootStrap extends SpringBootServletInitializer {
 	public Filter characterEncodingFilter(){
 		return new CharacterEncodingFilter("UTF-8", true);
 	}
-
-	//public static void main(String[] args) {
-	//	new SpringApplicationBuilder().sources(BootStrap.class).profiles("local").run(args);
-	//}
 }

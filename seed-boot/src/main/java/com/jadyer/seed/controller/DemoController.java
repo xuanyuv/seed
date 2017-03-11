@@ -43,13 +43,13 @@ public class DemoController {
     @Resource
     private BootProperties bootProperties;
 
-    /**
-     * 配置默认的访问首页
-     */
-    @RequestMapping("/")
-    String index(){
-        return "login";
-    }
+    ///**
+    // * 配置Thymeleaf默认的访问首页
+    // */
+    //@RequestMapping("/")
+    //String index(){
+    //    return "login";
+    //}
 
 
     /**
