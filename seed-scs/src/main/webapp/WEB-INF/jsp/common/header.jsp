@@ -41,7 +41,6 @@
 			<a href="javascript:alert('暂未开放');"><span>粉丝管理</span><i></i></a>
 		</li>
 		<li ${currentMenu eq 'menu_sys' ? 'class="on"' : ''}>
-		<li class="on">
 			<a href="#"><span>平台设置</span><i></i></a>
 			<div>
 				<a href="javascript:alert('暂未开放');"><span>公众菜单</span></a>
@@ -56,6 +55,6 @@
 		<p class="p1"><i></i><span class="fm2">您好：${empty userInfo.username ? "玄玉" : userInfo.username}，欢迎访问半步多平台，现在是：<fmt:formatDate value="<%=new Date()%>" pattern="yyyy年MM月dd日 E"/></span></p>
 		<p class="p2 fm2">
 			<a href="javascript:alert('暂未开放');" class="mr_20"><i class="i_man"></i><span class="va_m">修改信息</span></a>
-			<a href="${ctx}"><i class="i_sw"></i><span class="va_m">退出</span></a>
+			<a href="javascript:alert('暂未开放');"><i class="i_sw"></i><span class="va_m">退出</span></a>
 		</p>
 	</div>
