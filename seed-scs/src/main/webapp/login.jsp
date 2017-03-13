@@ -36,7 +36,7 @@
 $(function(){
     //已登录状态下自动跳转默认首页
     if("" != "${userinfo}"){
-        window.location.href = "${pageContext.request.contextPath}/sample/view?url=wangEditorDemo";
+        window.location.href = "${pageContext.request.contextPath}/sample/view?url=demo.wangeditor";
     }
     $("#username").focus();
     $.setBox("div.box_login");
@@ -96,7 +96,7 @@ function login(){
         {username:username, password:MD5(password), captcha:captcha},
         function(data){
             if(0 == data.code){
-                window.location.href = "${pageContext.request.contextPath}/sample/view?url=wangEditorDemo";
+                window.location.href = "${pageContext.request.contextPath}/sample/view?url=demo.wangeditor";
             }else{
                 o.attr("disabled", false).text("登录").css({"background":"#5bb75b", "cursor":"auto"});
                  $.promptBox(data.msg, "#ffb848");
