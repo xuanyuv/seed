@@ -212,7 +212,7 @@ public final class FtpUtil {
 	/**
 	 * 上传文件
 	 * <p>
-	 *     该方法与{@link FtpUtil#uploadAndLogout(String, String, String, String, InputStream)}的区别是
+	 *     该方法与{@link #uploadAndLogout(String, String, String, String, InputStream)}的区别是
 	 *     上传完文件后没有登出服务器及释放连接，但会关闭输入流
 	 *     之所以提供该方法是用于同时上传多个文件的情况下，使之能够共用一个FTP连接
 	 * </p>

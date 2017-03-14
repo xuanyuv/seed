@@ -1030,10 +1030,12 @@ public final class JadyerUtil {
 
 	/**
 	 * 格式化XML格式的字符串
-	 * @see 格式化失败时返回的Map中,isPrettySuccess=no,prettyResultStr=堆栈信息
-	 * @see 格式化成功时返回的Map中,isPrettySuccess=yes,prettyResultStr=格式化后的字符串
+	 * <p>
+	 *     格式化失败时返回的Map中，isPrettySuccess=no，prettyResultStr=堆栈信息
+	 *     格式化成功时返回的Map中，isPrettySuccess=yes，prettyResultStr=格式化后的字符串
+	 * </p>
 	 * @param xmlString 待格式化的XML字符串
-	 * @return 返回的Map中有两个字符串的key-value,分别为isPrettySuccess和prettyResultStr
+	 * @return 返回的Map中有两个字符串的key-value，分别为isPrettySuccess和prettyResultStr
 	 */
 	public static Map<String, String> formatXMLString(String xmlString) {
 		Map<String, String> resultMap = new HashMap<>();
@@ -1059,10 +1061,12 @@ public final class JadyerUtil {
 
 	/**
 	 * 抓屏方法
-	 * @see 该方法抓的是全屏,并且当传入的fileName参数为空时会将抓屏图片默认保存到用户桌面上
-	 * @param fileName        抓屏后的图片保存名称(含保存路径及后缀),传空时会把图片自动保存到桌面
+	 * <p>
+	 *     该方法抓的是全屏，并且当传入的fileName参数为空时会将抓屏图片默认保存到用户桌面上
+	 * </p>
+	 * @param fileName        抓屏后的图片保存名称（含保存路径及后缀），传空时会把图片自动保存到桌面
 	 * @param isAutoOpenImage 是否自动打开图片
-	 * @return 抓屏成功返回true,反之false
+	 * @return 抓屏成功返回true，反之false
 	 */
 	public static boolean captureScreen(String fileName, boolean isAutoOpenImage){
 		if(isEmpty(fileName)){
@@ -1086,9 +1090,7 @@ public final class JadyerUtil {
 					Desktop.getDesktop().open(file);
 				}
 			}
-		} catch (AWTException e) {
-			return false;
-		} catch (IOException e) {
+		} catch (AWTException | IOException e) {
 			return false;
 		}
 		return true;
@@ -1097,7 +1099,9 @@ public final class JadyerUtil {
 
 	/**
 	 * 提取堆栈信息
-	 * @see 等价于org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(cause);
+	 * <p>
+	 *     等价于org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(cause);
+	 * </p>
 	 */
 	public static String extractStackTrace(Throwable cause){
 		//ByteArrayOutputStream byteArrayOut = new ByteArrayOutputStream();
@@ -1113,10 +1117,10 @@ public final class JadyerUtil {
 
 	/**
 	 * 提取收到的HttpServletRequest请求报文头消息
-	 * @see 该方法默认使用了UTF-8解析请求消息
-	 * @see 解析过程中发生异常时会抛出RuntimeException
-	 * @create Nov 28, 2015 4:12:19 PM
-	 * @author 玄玉<http://blog.csdn.net/jadyer>
+	 * <p>
+	 *     该方法默认使用了UTF-8解析请求消息
+	 *     解析过程中发生异常时会抛出RuntimeException
+	 * </p>
 	 */
 	public static String extractHttpServletRequestHeaderMessage(HttpServletRequest request){
 		StringBuilder sb = new StringBuilder();

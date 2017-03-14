@@ -67,7 +67,7 @@ public final class IPUtil {
 	/**
 	 * 获取客户端IP的另一种写法
 	 * <p>
-	 *     暂不推荐使用，因为已经有{@link IPUtil#getClientIP(HttpServletRequest)}方法了
+	 *     暂不推荐使用，因为已经有{@link #getClientIP(HttpServletRequest)}方法了
 	 * </p>
 	 */
 	@Deprecated
@@ -97,7 +97,7 @@ public final class IPUtil {
 	/**
 	 * 获取服务器IP的另一种写法
 	 * <p>
-	 *     暂不推荐使用，因为已经有{@link IPUtil#getServerIP()}方法了
+	 *     暂不推荐使用，因为已经有{@link #getServerIP()}方法了
 	 *     另外：对于该方法，单网卡时会返回"/192.168.2.173"，多网卡时返回"/192.168.2.173/192.168.56.1"
 	 * </p>
 	 */

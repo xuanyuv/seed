@@ -549,7 +549,7 @@ public final class CodecUtil {
 	 */
 	public static String buildHmacSign(String data, String key, String algorithm){
 		SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(), algorithm);
-		Mac mac = null;
+		Mac mac;
 		try {
 			mac = Mac.getInstance(algorithm);
 			mac.init(secretKey);
@@ -567,7 +567,7 @@ public final class CodecUtil {
 	 * 方法内部首先会过滤Map<String,String>参数中的部分键值对
 	 * 过滤规则为移除键名为"cert","hmac","signMsg"及键值为null或键值长度为零的键值对
 	 * 过滤后会产生一个字符串,其格式为按照键名升序排序的key11=value11|key22=value22|key=signKey
-	 * 最后调用{@link CodecUtil#getHexSign(String,String,String)}签名,返回签名后的小写的十六进制字符串
+	 * 最后调用 {@link #buildHexSign(String, String, String)} 签名,返回签名后的小写的十六进制字符串
 	 * @param param     待签名的Map<String,String>
 	 * @param charset   签名时转码用到的字符集
 	 * @param algorithm 签名时所使用的算法,其有效值包括<code>MD5,SHA,SHA1,SHA-1,SHA-256,SHA-384,SHA-512</code>
@@ -576,12 +576,11 @@ public final class CodecUtil {
 	 */
 	public static String buildHexSign(Map<String, String> param, String charset, String algorithm, String signKey){
 		StringBuilder sb = new StringBuilder();
-		List<String> keys = new ArrayList<String>(param.keySet());
+		List<String> keys = new ArrayList<>(param.keySet());
 		Collections.sort(keys);
-		for(int i=0; i<keys.size(); i++){
-			String key = keys.get(i);
+		for (String key : keys) {
 			String value = param.get(key);
-			if(key.equalsIgnoreCase("cert") || key.equalsIgnoreCase("hmac") || key.equalsIgnoreCase("signMsg") || value==null || value.length()==0){
+			if (key.equalsIgnoreCase("cert") || key.equalsIgnoreCase("hmac") || key.equalsIgnoreCase("signMsg") || null==value || value.length()==0) {
 				continue;
 			}
 			sb.append(key).append("=").append(value).append("|");
@@ -595,7 +594,7 @@ public final class CodecUtil {
 	 * 通过指定算法签名字符串
 	 * Calculates the algorithm digest and returns the value as a hex string
 	 * If system dosen't support this <code>algorithm</code>, return "" not null
-	 * It will Calls {@link JadyerUtil#getBytes(String data, String charset)}
+	 * It will Calls {@link JadyerUtil#getBytes(String, String)}
 	 * 若系统不支持<code>charset</code>字符集,则按照系统默认字符集进行转换
 	 * commons-codec.jar中的DigestUtils.md5Hex(String data)与本方法buildHexSign(data, "UTF-8", "MD5")结果相同
 	 * @param data        Data to digest
@@ -606,7 +605,7 @@ public final class CodecUtil {
 	public static String buildHexSign(String data, String charset, String algorithm){
 	    char[] DIGITS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 	    byte[] dataBytes = JadyerUtil.getBytes(data, charset);
-		byte[] algorithmData = null;
+		byte[] algorithmData;
 		try {
 			//get an algorithm digest instance
 			algorithmData = MessageDigest.getInstance(algorithm).digest(dataBytes);

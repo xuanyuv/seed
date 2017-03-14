@@ -664,10 +664,12 @@ public final class HttpUtil {
 
 	/**
 	 * 发送HTTP_POST请求
-	 * @see you can see {@link HttpUtil#postBySocket(String, String)}
+	 * <p>
+	 *     you can see {@link #postBySocket(String,String)}
+	 * </p>
 	 * @param reqURL     请求地址
 	 * @param reqParams  请求报文
-	 * @return 应答Map有两个key,reqFullData--HTTP请求完整报文,respFullData--HTTP响应完整报文
+	 * @return 应答Map有两个key，reqFullData--HTTP请求完整报文，respFullData--HTTP响应完整报文
 	 */
 	private static Map<String, String> postBySocket(String reqURL, Map<String, String> reqParams){
 		StringBuilder reqData = new StringBuilder();
@@ -915,20 +917,23 @@ public final class HttpUtil {
 
 	/**
 	 * 发送TCP请求
-	 * @see 1)方法内设置了连接和读取超时(时间由本工具类全局变量限定)
-	 * @see 2)转码(编码为byte[]发送到Server)与解码请求响应字节时,均采用本工具类设置的全局DEFAULT_CHARSET
-	 * @see 3)关于Socket属性的详细注释,you can see {@link HttpUtil#postBySocket(String, String)}
+	 * <p>
+	 *     1、方法内设置了连接和读取超时（时间由本工具类全局变量限定）
+	 *     2、转码（编码为byte[]发送到Server）与解码请求响应字节时，均采用本工具类设置的全局DEFAULT_CHARSET
+	 *     3、关于Socket属性的详细注释，you can see {@link #postBySocket(String, String)}
+	 * </p>
 	 * @param IP      远程主机地址
 	 * @param port    远程主机端口
 	 * @param reqData 待发送报文的中文字符串形式
-	 * @return 应答Map有两个key,localBindPort--本地绑定的端口,respData--应答报文
+	 * @return 应答Map有四个key，localBindPort--本地绑定的端口，reqData--请求报文，respData--应答报文，respDataHex--远程主机响应的原始字节的十六进制表示
 	 */
-	private static Map<String, String> tcp(String ip, int port, String reqData){
+	public static Map<String, String> tcp(String ip, int port, String reqData){
 		Map<String, String> respMap = new HashMap<>();
 		OutputStream out;             //写
 		InputStream in;               //读
-		String localBindPort = null;  //本地绑定的端口(java socket, client, /127.0.0.1:50804 => /127.0.0.1:9901)
-		String respData = "";         //响应报文
+		String localBindPort = "";    //本地绑定的端口(java socket, client, /127.0.0.1:50804 => /127.0.0.1:9901)
+		String respData;              //响应报文
+		String respDataHex = "";      //远程主机响应的原始字节的十六进制表示
 		Socket socket = new Socket(); //客户机(Socket socket = SSLSocketFactory.getDefault().createSocket())
 		try {
 			socket.setTcpNoDelay(true);
@@ -953,31 +958,36 @@ public final class HttpUtil {
 			}
 			//解码TCP响应的完整报文
 			respData = bytesOut.toString(DEFAULT_CHARSET);
-//			/**
-//			 * 校验响应报文是否已全部接收
-//			 * @see 此为可选
-//			 * @see 假设约定的格式是:响应报文的前6个字节表示响应的完整长度(包含这6个在内)
-//			 * @see 这里所做的判断是:响应的报文长度允许其大于或等于报文前6个字节标识的长度
-//			 */
-//			byte[] lengthByte = Arrays.copyOf(bytesOut.toByteArray(), 6);
-//			if(Integer.parseInt(new String(lengthByte)) > bytesOut.size()){
-//				System.err.println("响应报文未完全接收or响应报文有误");
-//			}
+			respDataHex = JadyerUtil.buildHexStringWithASCII(bytesOut.toByteArray());
+			///*
+			// * 校验响应报文是否已全部接收
+			// * <p>
+			// *     此为可选
+			// *     假设约定的格式是：响应报文的前6个字节表示响应的完整长度（包含这6个在内）
+			// *     这里所做的判断是：响应的报文长度允许其大于或等于报文前6个字节标识的长度
+			// * </p>
+			// */
+			//byte[] lengthByte = Arrays.copyOf(bytesOut.toByteArray(), 6);
+			//if(Integer.parseInt(new String(lengthByte)) > bytesOut.size()){
+			//	System.err.println("响应报文未完全接收or响应报文有误");
+			//}
 		} catch (Exception e) {
-			System.err.println("与[" + ip + ":" + port + "]通信遇到异常,堆栈信息如下");
-			e.printStackTrace();
+			respData = JadyerUtil.extractStackTrace(e);
+			LogUtil.getLogger().error("与[{}:{}]通信遇到异常，堆栈轨迹如下", ip, port, e);
 		} finally {
 			if (socket.isConnected() && !socket.isClosed()) {
 				try {
 					socket.close();
 				} catch (IOException e) {
-					System.err.println("关闭客户机Socket时发生异常,堆栈信息如下");
-					e.printStackTrace();
+					respData = JadyerUtil.extractStackTrace(e);
+					LogUtil.getLogger().error("关闭客户机Socket时发生异常，堆栈轨迹如下", e);
 				}
 			}
 		}
 		respMap.put("localBindPort", localBindPort);
+		respMap.put("reqData", reqData);
 		respMap.put("respData", respData);
+		respMap.put("respDataHex", respDataHex);
 		return respMap;
 	}
 }
