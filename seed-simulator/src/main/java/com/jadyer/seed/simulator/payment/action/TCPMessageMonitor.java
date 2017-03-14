@@ -1,4 +1,4 @@
-package com.jadyer.seed.simulator.action;
+package com.jadyer.seed.simulator.payment.action;
 
 import com.jadyer.seed.comm.util.JadyerUtil;
 
