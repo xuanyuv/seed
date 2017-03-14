@@ -1,8 +1,8 @@
 package com.jadyer.seed.simulator.action;
 
 import com.jadyer.seed.comm.util.CodecUtil;
+import com.jadyer.seed.comm.util.HttpUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
-import com.jadyer.seed.simulator.SimulatorUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -390,7 +390,7 @@ public class NoCardPaymentTester extends JPanel implements ActionListener {
 							System.out.println("nothing to do");
 					}
 					//发送HTTP请求
-					respMap = SimulatorUtil.sendPostRequestBySocket(reqURL, reqParams, "GB18030");
+					respMap = HttpUtil.postBySocket(reqURL, reqParams);
 					tpRespMsg.setText(null==respMap.get("respMsgHex") ? respMap.get("respFullData") : respMap.get("respFullData")+respMap.get("respMsgHex"));
 				} catch (Exception e1) {
 					tpRespMsg.setText(JadyerUtil.extractStackTrace(e1));

@@ -669,9 +669,9 @@ public final class HttpUtil {
 	 * </p>
 	 * @param reqURL     请求地址
 	 * @param reqParams  请求报文
-	 * @return 应答Map有两个key，reqFullData--HTTP请求完整报文，respFullData--HTTP响应完整报文
+	 * @return 应答Map有两个key，reqFullData--HTTP请求完整报文，respFullData--HTTP响应完整报文，respMsgHex--HTTP响应的原始字节的十六进制表示
 	 */
-	private static Map<String, String> postBySocket(String reqURL, Map<String, String> reqParams){
+	public static Map<String, String> postBySocket(String reqURL, Map<String, String> reqParams){
 		StringBuilder reqData = new StringBuilder();
 		for(Map.Entry<String, String> entry : reqParams.entrySet()){
 			reqData.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
@@ -685,59 +685,60 @@ public final class HttpUtil {
 
 	/**
 	 * 发送HTTP_POST请求
-	 * @see 1)本方法是通过<code>java.net.Socket.Socket</code>实现HTTP_POST请求的发送的
-	 * @see 2)方法内设置了连接和读取超时(时间由本工具类全局变量限定)
-	 * @see 3)请求参数含中文等特殊字符时,可直接传入本方法,方法内部会使用本工具类设置的全局DEFAULT_CHARSET对其转码
-	 * @see 4)解码响应正文时,默认取响应头[Content-Type=text/html; charset=GBK]字符集
-	 * @see   若无Content-Type,则使用本工具类设置的全局DEFAULT_CHARSET解码
-	 * @see 5)该方法的请求和应答报文分别如下
-	 * @see   =============================================================================
-	 * @see   POST /tra/trade/noCardNoPassword.htm HTTP/1.1
-	 * @see   Cache-Control: no-cache
-	 * @see   Pragma: no-cache
-	 * @see   User-Agent: JavaSocket/1.6.0_33
-	 * @see   Host: 127.0.0.1
-	 * @see   Accept: text/html, image/gif, image/jpeg, *; q=.2, *\/*; q=.2
-	 * @see   Connection: keep-alive
-	 * @see   Content-Type: application/x-www-form-urlencoded; charset=GB18030
-	 * @see   Content-Length: 570
-	 * @see 
-	 * @see   cooBankNo=GDB_CREDIT&signType=MD5&orderValidityNum=30&amount=1&CVVNo=695&merReqSerial=merReqSerial&validityYear=17&orderValidityUnits=m&merNo=301900100000521&customerName=%C0%EE%D6%CE%CC%EC&interfaceVersion=1.0.0.0&customerType=02&orderDate=20130405&validityMonth=05&merUserId=merUserId&goodId=goodId&creditCardNo=6225xxxx1548&orderNo=90020120914015860583&signMsg=This+is+RequestParam+sign&busChannel=02&serverCallUrl=http%3A%2F%2Fblog.csdn.net%2Fjadyer&merExtend=merExtend&merReqTime=010452&goodsDesc=goodsDesc&customerID=5137xxxx4811&goodsName=Tea&mobileNo=135xxxx8084
-	 * @see   =============================================================================
-	 * @see   HTTP/1.1 200 OK
-	 * @see   Content-Type:text/html; charset=GBK
-	 * @see 
-	 * @see   amount=
-	 * @see   charSet=GB18030
-	 * @see   goodsName=Tea
-	 * @see   interfaceVersion=1.0.0.0
-	 * @see   merchantTime=
-	 * @see   merNo=
-	 * @see   orderDate=
-	 * @see   orderNo=
-	 * @see   signMsg=10468acce39dbd59e19ec1581eeb7177
-	 * @see   signType=MD5
-	 * @see   transRst=ILLEGAL_MERCHANT_NO
-	 * @see   goodId=goodId
-	 * @see   goodsDesc=goodsDesc
-	 * @see   merUserId=merUserId
-	 * @see   mobileNo=135xxxx8084
-	 * @see   merExtend=merExtend
-	 * @see   errDis=商户签名key查询失败导致无法验签
-	 * @see   payJnlno=
-	 * @see   payTime=
-	 * @see   acountDate=
-	 * @see   payAcountDetail=
-	 * @see   respMode=2
-	 * @see   payProAmt=
-	 * @see   payBankCode=
-	 * @see   bankAcountNo=
-	 * @see   bankAcountName=汪藏海
-	 * @see   remark=
-	 * @see   =============================================================================
+	 * 1)本方法是通过<code>java.net.Socket.Socket</code>实现HTTP_POST请求的发送的
+	 * 2)方法内设置了连接和读取超时（时间由本工具类全局变量限定）
+	 * 3)请求参数含中文等特殊字符时，无需<code>URLEncoder.encode(value, reqCharset)</code>可直接传入本方法
+	 *   方法内部会使用本工具类设置的全局DEFAULT_CHARSET对其自动encode
+	 * 4)解码响应正文时，默认取响应头[Content-Type=text/html; charset=GBK]字符集
+	 *   若无Content-Type，则使用本工具类设置的全局DEFAULT_CHARSET解码
+	 * 5)该方法的请求和应答报文分别如下
+	 *   -----------------------------------------------------------------------------------------------
+	 *   POST /tra/trade/noCardNoPassword.htm HTTP/1.1
+	 *   Cache-Control: no-cache
+	 *   Pragma: no-cache
+	 *   User-Agent: JavaSocket/1.6.0_33
+	 *   Host: 127.0.0.1
+	 *   Accept: text/html, image/gif, image/jpeg, *; q=.2, *\/*; q=.2
+	 *   Connection: keep-alive
+	 *   Content-Type: application/x-www-form-urlencoded; charset=GB18030
+	 *   Content-Length: 570
+	 *
+	 *   cooBankNo=GDB_CREDIT&signType=MD5&orderValidityNum=30&amount=1&CVVNo=695&merReqSerial=merReqSerial&validityYear=17&orderValidityUnits=m&merNo=301900100000521&customerName=%C0%EE%D6%CE%CC%EC&interfaceVersion=1.0.0.0&customerType=02&orderDate=20130405&validityMonth=05&merUserId=merUserId&goodId=goodId&creditCardNo=6225xxxx1548&orderNo=90020120914015860583&signMsg=This+is+RequestParam+sign&busChannel=02&serverCallUrl=http%3A%2F%2Fblog.csdn.net%2Fjadyer&merExtend=merExtend&merReqTime=010452&goodsDesc=goodsDesc&customerID=5137xxxx4811&goodsName=Tea&mobileNo=135xxxx8084
+	 *   -----------------------------------------------------------------------------------------------
+	 *   HTTP/1.1 200 OK
+	 *   Content-Type:text/html; charset=GBK
+	 *
+	 *   amount=
+	 *   charSet=GB18030
+	 *   goodsName=Tea
+	 *   interfaceVersion=1.0.0.0
+	 *   merchantTime=
+	 *   merNo=
+	 *   orderDate=
+	 *   orderNo=
+	 *   signMsg=10468acce39dbd59e19ec1581eeb7177
+	 *   signType=MD5
+	 *   transRst=ILLEGAL_MERCHANT_NO
+	 *   goodId=goodId
+	 *   goodsDesc=goodsDesc
+	 *   merUserId=merUserId
+	 *   mobileNo=135xxxx8084
+	 *   merExtend=merExtend
+	 *   errDis=商户签名key查询失败导致无法验签
+	 *   payJnlno=
+	 *   payTime=
+	 *   acountDate=
+	 *   payAcountDetail=
+	 *   respMode=2
+	 *   payProAmt=
+	 *   payBankCode=
+	 *   bankAcountNo=
+	 *   bankAcountName=汪藏海
+	 *   remark=
+	 *   -----------------------------------------------------------------------------------------------
 	 * @param reqURL  请求地址
-	 * @param reqData 请求报文,多个参数则应拼接为param11=value11&22=value22&33=value33的形式
-	 * @return 应答Map有两个key,reqFullData--HTTP请求完整报文,respFullData--HTTP响应完整报文
+	 * @param reqData 请求报文，多个参数则应拼接为param11=value11&22=value22&33=value33的形式
+	 * @return 应答Map有两个key，reqFullData--HTTP请求完整报文，respFullData--HTTP响应完整报文，respMsgHex--HTTP响应的原始字节的十六进制表示
 	 */
 	private static Map<String, String> postBySocket(String reqURL, String reqData){
 		Map<String, String> respMap = new HashMap<>();
@@ -745,28 +746,29 @@ public final class HttpUtil {
 		InputStream in;       //读
 		Socket socket = null; //客户机
 		String respCharset = DEFAULT_CHARSET;
+		String respMsgHex = "";
 		String respFullData = "";
 		StringBuilder reqFullData = new StringBuilder();
 		try{
 			URL sendURL = new URL(reqURL);
 			String host = sendURL.getHost();
 			int port = sendURL.getPort()==-1 ? 80 : sendURL.getPort();
-			/**
+			/*
 			 * 创建Socket
-			 * @see ---------------------------------------------------------------------------------------------------
-			 * @see 通过有参构造方法创建Socket对象时,客户机就已经发出了网络连接请求,连接成功则返回Socket对象,反之抛IOException
-			 * @see 客户端在连接服务器时,也要进行通讯,客户端也需要分配一个端口,这个端口在客户端程序中不曾指定
-			 * @see 这时就由客户端操作系统自动分配一个空闲的端口,默认的是自动的连续分配
-			 * @see 如服务器端一直运行着,而客户端不停的重复运行,就会发现默认分配的端口是连续分配的
-			 * @see 即使客户端程序已经退出了,系统也没有立即重复使用先前的端口
-			 * @see socket = new Socket(host, port);
-			 * @see ---------------------------------------------------------------------------------------------------
-			 * @see 不过,可以通过下面的方式显式的设定客户端的IP和Port
-			 * @see socket = new Socket(host, port, InetAddress.getByName("127.0.0.1"), 8765);
-			 * @see ---------------------------------------------------------------------------------------------------
+			 * ---------------------------------------------------------------------------------------------------
+			 * 通过有参构造方法创建Socket对象时，客户机就已经发出了网络连接请求，连接成功则返回Socket对象，反之抛IOException
+			 * 客户端在连接服务器时，也要进行通讯，客户端也需要分配一个端口，这个端口在客户端程序中不曾指定
+			 * 这时就由客户端操作系统自动分配一个空闲的端口，默认的是自动的连续分配
+			 * 如服务器端一直运行着，而客户端不停的重复运行，就会发现默认分配的端口是连续分配的
+			 * 即使客户端程序已经退出了，系统也没有立即重复使用先前的端口
+			 * socket = new Socket(host, port);
+			 * ---------------------------------------------------------------------------------------------------
+			 * 不过，可以通过下面的方式显式的设定客户端的IP和Port
+			 * socket = new Socket(host, port, InetAddress.getByName("127.0.0.1"), 8765);
+			 * ---------------------------------------------------------------------------------------------------
 			 */
 			socket = new Socket();
-			/**
+			/*
 			 * 设置Socket属性
 			 */
 			//true表示关闭Socket的缓冲,立即发送数据..其默认值为false
@@ -811,7 +813,7 @@ public final class HttpUtil {
 			//可以为这些参数赋予任意整数值,这些整数之间的相对大小就决定了相应参数的相对重要性
 			//如这里设置的就是---最高带宽最重要,其次是最小连接时间,最后是最小延迟
 			socket.setPerformancePreferences(2, 1, 3);
-			/**
+			/*
 			 * 连接服务端
 			 */
 			//客户端的Socket构造方法请求与服务器连接时,可能要等待一段时间
@@ -822,7 +824,7 @@ public final class HttpUtil {
 			socket.connect(new InetSocketAddress(host, port), DEFAULT_CONNECTION_TIMEOUT);
 			//获取本地绑定的端口(每一个请求都会在本地绑定一个端口,再通过该端口发出去,即/127.0.0.1:50804 => /127.0.0.1:9901)
 			//int localBindPort = socket.getLocalPort();
-			/**
+			/*
 			 * 构造HTTP请求报文
 			 */
 			reqData = URLEncoder.encode(reqData, DEFAULT_CHARSET);
@@ -837,7 +839,7 @@ public final class HttpUtil {
 			reqFullData.append("Content-Length: ").append(reqData.getBytes().length).append("\r\n");
 			reqFullData.append("\r\n");
 			reqFullData.append(reqData);
-			/**
+			/*
 			 * 发送HTTP请求
 			 */
 			out = socket.getOutputStream();
@@ -846,7 +848,7 @@ public final class HttpUtil {
 			//是因为在组装请求报文时,已URLEncoder.encode(),得到的都是非中文的英文字母符号等等
 			//此时再getBytes()无论是否指明字符集,得到的都是内容一样的字节数组
 			out.write(reqFullData.toString().getBytes());
-			/**
+			/*
 			 * 接收HTTP响应
 			 */
 			in = socket.getInputStream();
@@ -862,7 +864,8 @@ public final class HttpUtil {
 			}
 			//响应的原始字节数组
 			byte[] respBuffer = bytesOut.toByteArray();
-			/**
+			respMsgHex = JadyerUtil.buildHexStringWithASCII(respBuffer);
+			/*
 			 * 获取Content-Type中的charset值(Content-Type: text/html; charset=GBK)
 			 */
 			int from = 0;
@@ -870,47 +873,48 @@ public final class HttpUtil {
 			for(int i=0; i<respBuffer.length; i++){
 				if((respBuffer[i]==99||respBuffer[i]==67) && (respBuffer[i+1]==111||respBuffer[i+1]==79) && (respBuffer[i+2]==110||respBuffer[i+2]==78) && (respBuffer[i+3]==116||respBuffer[i+3]==84) && (respBuffer[i+4]==101||respBuffer[i+4]==69) && (respBuffer[i+5]==110||respBuffer[i+5]==78) && (respBuffer[i+6]==116||respBuffer[i+6]==84) && respBuffer[i+7]==45 && (respBuffer[i+8]==84||respBuffer[i+8]==116) && (respBuffer[i+9]==121||respBuffer[i+9]==89) && (respBuffer[i+10]==112||respBuffer[i+10]==80) && (respBuffer[i+11]==101||respBuffer[i+11]==69)){
 					from = i;
-					//既然匹配到了Content-Type,那就一定不会匹配到我们想到的\r\n,所以就直接跳到下一次循环中喽..
+					//既然匹配到了Content-Type，那就一定不会匹配到我们想到的\r\n，所以就直接跳到下一次循环中喽...
 					continue;
 				}
 				if(from>0 && to==0 && respBuffer[i]==13 && respBuffer[i+1]==10){
-					//一定要加to==0限制,因为可能存在Content-Type后面还有其它的头信息
+					//一定要加to==0限制，因为可能存在Content-Type后面还有其它的头信息
 					to = i;
-					//既然得到了你想得到的,那就不要再循环啦,徒做无用功
+					//既然得到了你想得到的，那就不要再循环啦，徒做无用功
 					break;
 				}
 			}
 			//解码HTTP响应头中的Content-Type
 			byte[] headerByte = Arrays.copyOfRange(respBuffer, from, to);
-			//HTTP响应头信息无中文,用啥解码都可以
+			//HTTP响应头信息无中文，用啥解码都可以
 			String contentType = new String(headerByte);
 			//提取charset值
 			if(contentType.toLowerCase().contains("charset")){
 				respCharset = contentType.substring(contentType.lastIndexOf("=") + 1).trim();
 			}
-			/**
+			/*
 			 * 解码HTTP响应的完整报文
 			 */
 			respFullData = bytesOut.toString(respCharset);
 		}catch(Exception e){
-			System.err.println("与[" + reqURL + "]通信遇到异常,堆栈信息如下");
-			e.printStackTrace();
+			LogUtil.getLogger().error("与[{}]通信遇到异常，堆栈轨迹如下", reqURL, e);
+			respFullData = JadyerUtil.extractStackTrace(e);
 		}finally{
 			if(null!=socket && socket.isConnected() && !socket.isClosed()){
 				try{
 					//此时socket的输出流和输入流也都会被关闭
-					//值得注意的是:先后调用Socket的shutdownInput()和shutdownOutput()方法
-					//值得注意的是:仅仅关闭了输入流和输出流,并不等价于调用Socket.close()方法
-					//通信结束后,仍然要调用Socket.close()方法,因为只有该方法才会释放Socket占用的资源,如占用的本地端口等
+					//值得注意的是：先后调用Socket的shutdownInput()和shutdownOutput()方法
+					//值得注意的是：仅仅关闭了输入流和输出流，并不等价于调用Socket.close()方法
+					//通信结束后，仍然要调用Socket.close()方法，因为只有该方法才会释放Socket占用的资源，如占用的本地端口等
 					socket.close();
 				}catch(IOException e){
-					System.err.println("关闭客户机Socket时发生异常,堆栈信息如下");
-					e.printStackTrace();
+					respFullData = JadyerUtil.extractStackTrace(e);
+					LogUtil.getLogger().error("关闭客户机Socket时发生异常，堆栈轨迹如下", e);
 				}
 			}
 		}
 		respMap.put("reqFullData", reqFullData.toString());
 		respMap.put("respFullData", respFullData);
+		respMap.put("respMsgHex", respMsgHex);
 		return respMap;
 	}
 

@@ -311,7 +311,7 @@ public class MainApp extends JFrame implements ActionListener {
 						//if(jfc.getFileFilter().getDescription().equals("支持的文件类型 (*.java;*.xml;*.properties;*.jsp;*.htm;*.html)")){
 						//	isSupportHTML = true;
 						//}
-						//SimulatorUtil.getCodeLineCounts(jfc.getSelectedFile(), resultMap, isSupportHTML);
+						//JadyerUtil.getCodeLineCounts(jfc.getSelectedFile(), resultMap, isSupportHTML);
 						JadyerUtil.getCodeLineCounts(jfc.getSelectedFile(), resultMap);
 						bCodeLineCounter.setText("行数统计完毕....");
 						JOptionPane.showMessageDialog(null, "合计行数：" + resultMap.get("total") + "\r\n代码行数：" + resultMap.get("code") + "\r\n注释行数：" + resultMap.get("comment") + "\r\n空行行数：" + resultMap.get("blank"), "代码行数统计结果", JOptionPane.INFORMATION_MESSAGE);
