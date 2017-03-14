@@ -92,36 +92,38 @@ public class Condition<T> implements Specification<T> {
             }
             //logic operator
             switch (filter.operator) {
-            case EQ:
-                    if(null == filter.value){
-                        predicateList.add(cb.isNull(expression));
-                    }else{
-                        predicateList.add(cb.equal(expression, filter.value));
-                    }
-                    break;
-            case NE:
-                    if(null == filter.value){
-                        predicateList.add(cb.isNotNull(expression));
-                    }else{
-                        predicateList.add(cb.notEqual(expression, filter.value));
-                    }
-                    break;
-            case LIKE:
-                    //noinspection unchecked
-                    predicateList.add(cb.like(expression, "%" + filter.value + "%"));
-                    break;
-            case GT:
-                    predicateList.add(cb.greaterThan(expression, (Comparable)filter.value));
-                    break;
-            case LT:
-                    predicateList.add(cb.lessThan(expression, (Comparable)filter.value));
-                    break;
-            case GE:
-                    predicateList.add(cb.greaterThanOrEqualTo(expression, (Comparable)filter.value));
-                    break;
-            case LE:
-                    predicateList.add(cb.lessThanOrEqualTo(expression, (Comparable)filter.value));
-                    break;
+                case EQ:
+                        if(null == filter.value){
+                            predicateList.add(cb.isNull(expression));
+                        }else{
+                            predicateList.add(cb.equal(expression, filter.value));
+                        }
+                        break;
+                case NE:
+                        if(null == filter.value){
+                            predicateList.add(cb.isNotNull(expression));
+                        }else{
+                            predicateList.add(cb.notEqual(expression, filter.value));
+                        }
+                        break;
+                case LIKE:
+                        //noinspection unchecked
+                        predicateList.add(cb.like(expression, "%" + filter.value + "%"));
+                        break;
+                case GT:
+                        predicateList.add(cb.greaterThan(expression, (Comparable)filter.value));
+                        break;
+                case LT:
+                        predicateList.add(cb.lessThan(expression, (Comparable)filter.value));
+                        break;
+                case GE:
+                        predicateList.add(cb.greaterThanOrEqualTo(expression, (Comparable)filter.value));
+                        break;
+                case LE:
+                        predicateList.add(cb.lessThanOrEqualTo(expression, (Comparable)filter.value));
+                        break;
+                default:
+                        System.out.println("nothing to do");
             }
         }
         //将所有条件用 and 联合起来
