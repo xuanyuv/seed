@@ -1,5 +1,6 @@
-package com.jadyer.seed.server.core;
+package com.jadyer.seed.server;
 
+import com.jadyer.seed.server.core.ServerHandler;
 import org.apache.mina.core.filterchain.IoFilterChainBuilder;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.springframework.beans.factory.annotation.Value;

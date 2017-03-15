@@ -31,34 +31,12 @@ import java.util.concurrent.TimeUnit;
  * Created by 玄玉<https://jadyer.github.io/> on 2012/10/03 00:42.
  */
 public final class MinaUtil {
-	private static final String DEFAULT_CHARSET = "UTF-8";          //设置默认通信报文编码为UTF-8
+	public static final String DEFAULT_CHARSET = "UTF-8";          //设置默认通信报文编码为UTF-8
 	private static final int DEFAULT_BOTHIDLE_TIMEOUT = 90;         //设置默认发呆时间为90s
 	private static final int DEFAULT_CONNECTION_TIMEOUT = 1000 * 2; //设置默认连接超时为2s
 	private static final int DEFAULT_SO_TIMEOUT = 1000 * 60;        //设置默认读取超时为60s
 
 	private MinaUtil(){}
-	
-	///**
-	// * 向支付处理系统发送TCP消息
-	// * @see 该方法默认采用"GB18030"字符集编解码数据
-	// * @see 当通信发生异常时,如Fail to get session....返回<code>"MINA_SERVER_ERROR"</code>字符串
-	// */
-	//public static String sendTCPMessage(String message){
-	//	String adderss = "192.168.40.4:15566";
-	//	return sendTCPMessage(message, adderss.split(":")[0], Integer.parseInt(adderss.split(":")[1]), DEFAULT_CHARSET);
-	//}
-	//
-	//
-	///**
-	// * 向沃前置系统发送TCP消息
-	// * @see 该方法默认采用"GB18030"字符集编解码数据
-	// * @see 当通信发生异常时,如Fail to get session....返回<code>"MINA_SERVER_ERROR"</code>字符串
-	// */
-	//public static String sendTCPMessageToWoPortal(String message){
-	//	String adderss = "192.168.20.8:8002";
-	//	return sendTCPMessage(message, adderss.split(":")[0], Integer.parseInt(adderss.split(":")[1]), ConfigUtil.INSTANCE.getProperty("sys.charset.tcp"));
-	//}
-	
 	
 	/**
 	 * 发送TCP消息

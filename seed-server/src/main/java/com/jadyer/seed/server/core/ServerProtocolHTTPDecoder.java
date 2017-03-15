@@ -1,6 +1,7 @@
 package com.jadyer.seed.server.core;
 
 import com.jadyer.seed.comm.util.JadyerUtil;
+import com.jadyer.seed.comm.util.MinaUtil;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ServerProtocolHTTPDecoder implements MessageDecoder {
-	static final String DEFAULT_HTTP_CHARSET = "UTF-8";
 	@Value("${server.listening.port.http}")
 	private int listeningHttpPort;
 
@@ -38,9 +38,9 @@ public class ServerProtocolHTTPDecoder implements MessageDecoder {
 	public MessageDecoderResult decode(IoSession session, IoBuffer in, ProtocolDecoderOutput out) throws Exception {
 		byte[] message = new byte[in.limit()];
 		in.get(message);
-		String fullMessage = JadyerUtil.getString(message, DEFAULT_HTTP_CHARSET);
+		String fullMessage = JadyerUtil.getString(message, MinaUtil.DEFAULT_CHARSET);
 		Token token = new Token();
-		token.setBusiCharset(DEFAULT_HTTP_CHARSET);
+		token.setBusiCharset(MinaUtil.DEFAULT_CHARSET);
 		token.setBusiType(Token.BUSI_TYPE_HTTP);
 		token.setFullMessage(fullMessage);
 		if(fullMessage.startsWith("GET")){
@@ -132,7 +132,7 @@ public class ServerProtocolHTTPDecoder implements MessageDecoder {
 		 */
 		byte[] messages = new byte[in.limit()];
 		in.get(messages);
-		String message = JadyerUtil.getString(messages, DEFAULT_HTTP_CHARSET);
+		String message = JadyerUtil.getString(messages, MinaUtil.DEFAULT_CHARSET);
 		/*
 		 * 授理GET请求
 		 */
@@ -154,7 +154,7 @@ public class ServerProtocolHTTPDecoder implements MessageDecoder {
 					}else if(contentLength >= 0){
 						//取HTTP_POST请求报文体
 						String messageBody = message.split("\r\n\r\n")[1];
-						if(contentLength == JadyerUtil.getBytes(messageBody, DEFAULT_HTTP_CHARSET).length){
+						if(contentLength == JadyerUtil.getBytes(messageBody, MinaUtil.DEFAULT_CHARSET).length){
 							return true;
 						}
 					}

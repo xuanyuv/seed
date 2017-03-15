@@ -1,6 +1,7 @@
 package com.jadyer.seed.server.core;
 
 import com.jadyer.seed.comm.util.JadyerUtil;
+import com.jadyer.seed.comm.util.MinaUtil;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
@@ -24,7 +25,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ServerProtocolTCPDecoder implements MessageDecoder {
-	static final String DEFAULT_TCP_CHARSET = "UTF-8";
 	@Value("${server.listening.port.tcp}")
 	private int listeningTcpPort;
 
@@ -41,7 +41,7 @@ public class ServerProtocolTCPDecoder implements MessageDecoder {
 		if(session.getLocalAddress().toString().contains(":" + listeningTcpPort)){
 			byte[] messageLength = new byte[6];
 			in.get(messageLength);
-			if(in.limit() >= Integer.parseInt(JadyerUtil.getString(messageLength, DEFAULT_TCP_CHARSET))){
+			if(in.limit() >= Integer.parseInt(JadyerUtil.getString(messageLength, MinaUtil.DEFAULT_CHARSET))){
 				return MessageDecoderResult.OK;
 			}else{
 				return MessageDecoderResult.NEED_DATA;
@@ -55,9 +55,9 @@ public class ServerProtocolTCPDecoder implements MessageDecoder {
 	public MessageDecoderResult decode(IoSession session, IoBuffer in, ProtocolDecoderOutput out) throws Exception {
 		byte[] message = new byte[in.limit()];
 		in.get(message);
-		String fullMessage = JadyerUtil.getString(message, DEFAULT_TCP_CHARSET);
+		String fullMessage = JadyerUtil.getString(message, MinaUtil.DEFAULT_CHARSET);
 		Token token = new Token();
-		token.setBusiCharset(DEFAULT_TCP_CHARSET);
+		token.setBusiCharset(MinaUtil.DEFAULT_CHARSET);
 		token.setBusiType(Token.BUSI_TYPE_TCP);
 		token.setBusiCode(fullMessage.substring(6, 11));
 		token.setBusiMessage(fullMessage);

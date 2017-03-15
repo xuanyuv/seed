@@ -3,7 +3,7 @@ package com.jadyer.seed.server.action;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.server.core.GenericAction;
-import com.jadyer.seed.server.core.MessageBuilder;
+import com.jadyer.seed.server.helper.MessageBuilder;
 import com.jadyer.seed.server.model.NetBankResultNotify;
 import org.springframework.stereotype.Controller;
 

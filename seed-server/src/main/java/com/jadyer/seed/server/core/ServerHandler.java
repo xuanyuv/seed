@@ -3,6 +3,7 @@ package com.jadyer.seed.server.core;
 import com.jadyer.seed.comm.base.SpringContextHolder;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
+import com.jadyer.seed.server.helper.MessageBuilder;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;

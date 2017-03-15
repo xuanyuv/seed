@@ -1,7 +1,7 @@
-package com.jadyer.seed.server.core;
+package com.jadyer.seed.server.helper;
 
-import com.jadyer.seed.comm.util.ConfigUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
+import com.jadyer.seed.comm.util.MinaUtil;
 import com.jadyer.seed.server.model.NetBankResultNotify;
 import com.jadyer.seed.server.model.OrderResultNotify;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -26,11 +26,11 @@ public final class MessageBuilder {
 	 */
 	private static String buildResponseMessageHead(String respCode, String respDesc){
 		StringBuilder sb = new StringBuilder("000000"); //msgLen--------固长6,报文长度
-		sb.append(respCode)                             //respCode------固长8,应答码
-		  .append(JadyerUtil.rightPadUseByte(respDesc)) //respDesc------固长100,应答描述
-		  .append(JadyerUtil.buildSerialNo())           //respSerialNo--固长20,应答流水号
-		  .append(JadyerUtil.getCurrentTime())          //respTime------固长14,应答日期时间yyyyMMddhhmmss
-		  .append(JadyerUtil.getCurrentDate());         //accountDate---固长8,账务日期时间yyyMMdd
+		sb.append(respCode)                                 //respCode------固长8,应答码
+		  .append(JadyerUtil.rightPadUseByte(respDesc))     //respDesc------固长100,应答描述
+		  .append(JadyerUtil.buildSerialNo())               //respSerialNo--固长20,应答流水号
+		  .append(JadyerUtil.getCurrentTime())              //respTime------固长14,应答日期时间yyyyMMddhhmmss
+		  .append(JadyerUtil.getCurrentDate());             //accountDate---固长8,账务日期时间yyyMMdd
 		return sb.toString();
 	}
 	
@@ -42,12 +42,12 @@ public final class MessageBuilder {
 	 */
 	private static String buildRequestMessageHead(String busiCode){
 		StringBuilder sb = new StringBuilder("000000"); //msgLen--------固长6,报文长度
-		sb.append(busiCode)                             //busiCode------固长5,消息码
-		  .append("206")                                //reqSysType----固长3,请求系统类型
-		  .append("00001")                              //reqSysCode----固长5,请求系统编码
-		  .append(JadyerUtil.getCurrentTime())          //reqTime-------固长14,请求日期时间yyyyMMddhhmmss
-		  .append("06")                                 //tradeChannel--固长2,交易渠道
-		  .append(JadyerUtil.buildSerialNo());          //reqSerialNo---固长20,请求流水
+		sb.append(busiCode)                                 //busiCode------固长5,消息码
+		  .append("206")                                    //reqSysType----固长3,请求系统类型
+		  .append("00001")                                  //reqSysCode----固长5,请求系统编码
+		  .append(JadyerUtil.getCurrentTime())              //reqTime-------固长14,请求日期时间yyyyMMddhhmmss
+		  .append("06")                                     //tradeChannel--固长2,交易渠道
+		  .append(JadyerUtil.buildSerialNo());              //reqSerialNo---固长20,请求流水
 		return sb.toString();
 	}
 
@@ -59,10 +59,10 @@ public final class MessageBuilder {
 	 */
 	private static String buildWoPortalRequestMessageHead(String busiCode){
 		StringBuilder sb = new StringBuilder("000000"); //msgLen--------固长6,报文长度
-		sb.append(busiCode)                             //busiCode------固长5,请求交易编码
-		  .append("001")                                //reqSysType----固长3,请求系统类型
-		  .append("00001")                              //reqSysCode----固长5,请求系统编码
-		  .append(JadyerUtil.getCurrentTime());         //reqTime-------固长14,请求时间yyyyMMddhhmmss
+		sb.append(busiCode)                                 //busiCode------固长5,请求交易编码
+		  .append("001")                                    //reqSysType----固长3,请求系统类型
+		  .append("00001")                                  //reqSysCode----固长5,请求系统编码
+		  .append(JadyerUtil.getCurrentTime());             //reqTime-------固长14,请求时间yyyyMMddhhmmss
 		return sb.toString();
 	}
 	
@@ -75,7 +75,7 @@ public final class MessageBuilder {
 	 * @return 计算并修正了真实长度后的可以发送出去的完整报文
 	 */
 	private static String buildFullMessage(String message){
-		StringBuilder sb = new StringBuilder(String.valueOf(JadyerUtil.getBytes(message, ConfigUtil.INSTANCE.getProperty("sys.charset.tcp")).length));
+		StringBuilder sb = new StringBuilder(String.valueOf(JadyerUtil.getBytes(message, MinaUtil.DEFAULT_CHARSET).length));
 		while(sb.length() < 6){
 			sb.insert(0, "0");
 		}
@@ -183,9 +183,9 @@ public final class MessageBuilder {
 		if(httpResponseCode == HttpURLConnection.HTTP_OK){
 			StringBuilder sb = new StringBuilder();
 			sb.append("HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=");
-			sb.append(ConfigUtil.INSTANCE.getProperty("sys.charset.http"));
+			sb.append(MinaUtil.DEFAULT_CHARSET);
 			sb.append("\r\nContent-Length: ");
-			sb.append(JadyerUtil.getBytes(httpResponseMessageBody, ConfigUtil.INSTANCE.getProperty("sys.charset.http")).length);
+			sb.append(JadyerUtil.getBytes(httpResponseMessageBody, MinaUtil.DEFAULT_CHARSET).length);
 			sb.append("\r\n\r\n");
 			sb.append(httpResponseMessageBody);
 			return sb.toString();
@@ -208,8 +208,8 @@ public final class MessageBuilder {
 	public static String getTCPMessageBody(String respData, int messageHeahLength){
 		int messageBodyLength = Integer.parseInt(respData.substring(0,6)) - messageHeahLength; //计算报文体长度(报文总长度-报文头长度)
 		byte[] messageBodys = new byte[messageBodyLength];
-		System.arraycopy(JadyerUtil.getBytes(respData, ConfigUtil.INSTANCE.getProperty("sys.charset.tcp")), messageHeahLength, messageBodys, 0, messageBodyLength);
-		return JadyerUtil.getString(messageBodys, ConfigUtil.INSTANCE.getProperty("sys.charset.tcp"));
+		System.arraycopy(JadyerUtil.getBytes(respData, MinaUtil.DEFAULT_CHARSET), messageHeahLength, messageBodys, 0, messageBodyLength);
+		return JadyerUtil.getString(messageBodys, MinaUtil.DEFAULT_CHARSET);
 	}
 	
 	
@@ -222,7 +222,7 @@ public final class MessageBuilder {
 	 * @param length   报文头中自起始截止到应答描述字段时的长度,如支付处理的为114,沃前置则为128
 	 */
 	public static String getTCPMessageHeadRespDesc(String respData, int length){
-		byte[] srcByte = JadyerUtil.getBytes(respData, ConfigUtil.INSTANCE.getProperty("sys.charset.tcp"));
+		byte[] srcByte = JadyerUtil.getBytes(respData, MinaUtil.DEFAULT_CHARSET);
 		int respDesclength = 0;     //有效的应答描述字节长度
 		if(srcByte[length-1] != 0){ //应答描述的字节长度为固长100,不足时0x00右侧自动补齐
 			respDesclength = 100;
@@ -236,7 +236,7 @@ public final class MessageBuilder {
 		}
 		byte[] destByte = new byte[respDesclength];
 		System.arraycopy(srcByte, length-100, destByte, 0, respDesclength); //从源数组的应答描述起始下标开始拷贝
-		return JadyerUtil.getString(destByte, ConfigUtil.INSTANCE.getProperty("sys.charset.tcp"));
+		return JadyerUtil.getString(destByte, MinaUtil.DEFAULT_CHARSET);
 	}
 	
 	
@@ -246,8 +246,8 @@ public final class MessageBuilder {
 	public static String getServerStatus(){
 		StringBuilder sb = new StringBuilder();
 		sb.append("<html><head><title>Jadyer Server Status</title>\n");
-		sb.append("<link rel=\"icon\" href=\"https://raw.githubusercontent.com/jadyer/JadyerEngine/master/JadyerEngine-web/src/main/webapp/favicon.ico\" type=\"image/x-icon\"/>\n");
-		sb.append("<link rel=\"shortcut icon\" href=\"https://raw.githubusercontent.com/jadyer/JadyerEngine/master/JadyerEngine-web/src/main/webapp/favicon.ico\" type=\"image/x-icon\"/>\n");
+		sb.append("<link rel=\"icon\" href=\"https://raw.githubusercontent.com/jadyer/seed/master/seed-scs/src/main/webapp/favicon.ico\" type=\"image/x-icon\"/>\n");
+		sb.append("<link rel=\"shortcut icon\" href=\"https://raw.githubusercontent.com/jadyer/seed/master/seed-scs/src/main/webapp/favicon.ico\" type=\"image/x-icon\"/>\n");
 		sb.append("<style media=\"screen\">\n");
 		sb.append("body {background-color:#93bde6;}\n");
 		sb.append("div.version {font-weight:bold; font-size:100%; margin-bottom:8px;}\n");
@@ -275,7 +275,7 @@ public final class MessageBuilder {
 		sb.append("<ul><li class=\"active\">Details</li></ul>\n");
 		sb.append("<table cellpadding=\"2\" cellspacing=\"0\" border=\"1\" class=\"data\">\n");
 		sb.append("<tbody>\n");
-		sb.append("<tr><th>").append("SYSTEM.NAME").append(":</th><td>").append("采用Mina编写的服务器(JadyerServer)").append("</td></tr>\n");
+		sb.append("<tr><th>").append("SYSTEM.NAME").append(":</th><td>").append("采用Mina编写的服务器（SeedServer）").append("</td></tr>\n");
 		Properties properties = System.getProperties();
 		Enumeration<Object> enums = properties.keys();
 		while(enums.hasMoreElements()){
