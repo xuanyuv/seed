@@ -3,28 +3,14 @@ scan:
     packages: com.jadyer.seed
 
 logging:
-  path: /home/seed/log/qss
-  config: classpath:config/logback.xml
+  path: /home/seed/log/server
+  config: classpath:logback.xml
 
-spring:
-  datasource:
-    url: jdbc:mysql://127.0.0.1:3306/qss?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
-    username: root
-    password: xuanyu
-    minIdle: 5
-    maxActive: 50
-    initialSize: 5
-    maxWait: 60000
-    minEvictableIdleTimeMillis: 300000
-    timeBetweenEvictionRunsMillis: 60000
-  jpa:
-    showSql: true
-    database: MYSQL
-    generateDdl: false
-    databasePlatform: org.hibernate.dialect.MySQL5InnoDBDialect
-    properties:
-      hibernate:
-        format_sql: true
+server:
+  listening:
+    port:
+      tcp: 9901
+      http: 8000
 
 ---
 spring:
