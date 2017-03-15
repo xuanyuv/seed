@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
 public class ServerProtocolTCPDecoder implements MessageDecoder {
 	static final String DEFAULT_TCP_CHARSET = "UTF-8";
 	@Value("${server.listening.port.tcp}")
-	private String listeningTcpPort;
+	private int listeningTcpPort;
 
 	/**
 	 * 该方法相当于预读取,用于判断是否是可用的解码器,这里对IoBuffer读取不会影响数据包的大小

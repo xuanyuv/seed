@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 public class ServerProtocolHTTPDecoder implements MessageDecoder {
 	static final String DEFAULT_HTTP_CHARSET = "UTF-8";
 	@Value("${server.listening.port.http}")
-	private String listeningHttpPort;
+	private int listeningHttpPort;
 
 	@Override
 	public MessageDecoderResult decodable(IoSession session, IoBuffer in) {
