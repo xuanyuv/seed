@@ -29,6 +29,9 @@ public class ServerHandler extends IoHandlerAdapter {
 		return processmap;
 	}
 
+	//@Resource
+	//private SpringContextHolder springContextHolder;
+
 	//装载业务码和与之对应的接口业务实现类
 	private Map<String, GenericAction> busiProcessMap = new HashMap<>();
 
