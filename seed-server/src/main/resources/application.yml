@@ -2,15 +2,27 @@ scan:
   base:
     packages: com.jadyer.seed
 
+
 logging:
   path: /home/seed/log/server
   config: classpath:logback.xml
 
+
 server:
   listening:
+    timeout:
+      write: 10000   # 写超时时间，单位：毫秒
+      bothidle: 90   # 双向发呆时间，单位：秒
     port:
       tcp: 9901
       http: 8000
+      reuse: true    # 端口是否可重用
+  busi:
+    processmap:     # 业务码和与之对应的接口业务实现类
+      10005: orderResultNotifyAction
+      /notify_boc: netBankResultNotifyBOCAction
+      /notify_yeepay: netBankResultNotifyYEEPAYAction
+
 
 ---
 spring:

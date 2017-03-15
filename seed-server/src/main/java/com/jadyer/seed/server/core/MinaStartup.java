@@ -1,11 +1,16 @@
 package com.jadyer.seed.server.core;
 
 import org.apache.mina.core.filterchain.IoFilterChainBuilder;
-import org.apache.mina.core.service.IoHandler;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,53 +21,44 @@ import java.util.List;
  * </p>
  * Created by 玄玉<https://jadyer.github.io/> on 2012/12/19 10:01.
  */
+@Component
 public class MinaStartup {
-	private IoHandler handler;                       //处理器
-	private List<SocketAddress> socketAddresses;     //监听地址
-	private IoFilterChainBuilder filterChainBuilder; //过滤器链
-	private int writeTimeout;                        //写超时时间
-	private int bothIdleTime;                        //双向发呆时间
-	private boolean reuseAddress;                    //端口是否可重用
-	
+	@Resource
+	private ServerHandler serverHandler;               //处理器
+	@Resource
+	private IoFilterChainBuilder ioFilterChainBuilder; //过滤器链
+	@Value("${server.listening.port.reuse}")
+	private boolean reuseAddress;                      //端口是否可重用
+	@Value("#{server.listening.timeout.write}")
+	private int writeTimeout;                          //写超时时间
+	@Value("#{server.listening.timeout.bothidle}")
+	private int bothIdleTime;                          //双向发呆时间
+	@Value("${server.listening.port.tcp}")             //监听地址：TCP
+	private int listeningTcpPort;
+	@Value("${server.listening.port.http}")            //监听地址：HTTP
+	private int listeningHttpPort;
+
+	@PostConstruct
 	public final void bind() throws IOException {
 		NioSocketAcceptor acceptor = new NioSocketAcceptor();
 		acceptor.setBacklog(0);
 		acceptor.setReuseAddress(this.reuseAddress);
 		acceptor.getSessionConfig().setWriteTimeout(this.writeTimeout);
 		acceptor.getSessionConfig().setBothIdleTime(this.bothIdleTime);
-		acceptor.setFilterChainBuilder(this.filterChainBuilder);
-		acceptor.setHandler(this.handler);
-		if(this.socketAddresses==null || this.socketAddresses.size()<1){
-			throw new RuntimeException("监听SocketAddress数不得小于1");
-		}
-		acceptor.bind(this.socketAddresses);
+		acceptor.setFilterChainBuilder(this.ioFilterChainBuilder);
+		acceptor.setHandler(this.serverHandler);
+		List<SocketAddress> socketAddresses = new ArrayList<>();
+		socketAddresses.add(new InetSocketAddress(listeningTcpPort));
+		socketAddresses.add(new InetSocketAddress(listeningHttpPort));
+		acceptor.bind(socketAddresses);
 		if(acceptor.isActive()){
 			System.out.println("写 超 时: " + this.writeTimeout + "ms");
 			System.out.println("发呆配置: Both Idle " + this.bothIdleTime + "s");
 			System.out.println("端口重用: " + this.reuseAddress);
-			System.out.println("服务端初始化完成......");
-			System.out.println("服务已启动....开始监听...." + acceptor.getLocalAddresses());
+			System.out.println("服务端初始化完成...");
+			System.out.println("服务已启动...开始监听..." + acceptor.getLocalAddresses());
 		}else{
-			System.out.println("服务端初始化失败......");
+			System.out.println("服务端初始化失败...");
 		}
-	}
-	
-	public void setHandler(IoHandler handler) {
-		this.handler = handler;
-	}
-	public void setSocketAddresses(List<SocketAddress> socketAddresses) {
-		this.socketAddresses = socketAddresses;
-	}
-	public void setFilterChainBuilder(IoFilterChainBuilder filterChainBuilder) {
-		this.filterChainBuilder = filterChainBuilder;
-	}
-	public void setWriteTimeout(int writeTimeout) {
-		this.writeTimeout = writeTimeout;
-	}
-	public void setBothIdleTime(int bothIdleTime) {
-		this.bothIdleTime = bothIdleTime;
-	}
-	public void setReuseAddress(boolean reuseAddress) {
-		this.reuseAddress = reuseAddress;
 	}
 }

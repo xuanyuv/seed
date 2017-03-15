@@ -12,7 +12,7 @@ class JobHelper {
 //		Object obj = null;
 //		Class<?> clazz = null;
 //		if(StringUtils.isNotBlank(task.getBeanName())){
-//			obj = ApplicationContextHolder.getBean(task.getBeanName());
+//			obj = SpringContextHolder.getBean(task.getBeanName());
 //		}else if(StringUtils.isNotBlank(task.getBeanClazz())){
 //			try{
 //				clazz = Class.forName(task.getBeanClazz());
