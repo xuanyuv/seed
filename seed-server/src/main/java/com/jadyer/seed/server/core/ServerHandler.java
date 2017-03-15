@@ -10,6 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,22 +24,21 @@ import java.util.Map;
 @Configuration
 @ConfigurationProperties(prefix="server.busi")
 public class ServerHandler extends IoHandlerAdapter {
-	private Map<String, String> processmap = new HashMap<>();
+	//装载业务码和与之对应的接口业务实现类
+	private Map<String, GenericAction> busiProcessMap = new HashMap<>();
 
+	private Map<String, String> processmap = new HashMap<>();
 	public Map<String, String> getProcessmap() {
 		return processmap;
 	}
 
-	//@Resource
-	//private SpringContextHolder springContextHolder;
-
-	//装载业务码和与之对应的接口业务实现类
-	private Map<String, GenericAction> busiProcessMap = new HashMap<>();
+	@Resource
+	private SpringContextHolder springContextHolder;
 
 	@PostConstruct
 	public void buildBusiProcessMap(){
 		for(Map.Entry<String,String> entry : processmap.entrySet()){
-			busiProcessMap.put(entry.getKey(), (GenericAction)SpringContextHolder.getBean(entry.getValue()));
+			busiProcessMap.put(entry.getKey(), (GenericAction)springContextHolder.getBean(entry.getValue()));
 		}
 	}
 
