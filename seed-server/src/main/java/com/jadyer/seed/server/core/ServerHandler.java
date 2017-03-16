@@ -1,17 +1,12 @@
 package com.jadyer.seed.server.core;
 
-import com.jadyer.seed.comm.base.SpringContextHolder;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.server.helper.MessageBuilder;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,29 +17,13 @@ import java.util.Map;
  * </p>
  * Created by 玄玉<https://jadyer.github.io/> on 2012/12/22 19:23.
  */
-@Configuration
-@ConfigurationProperties(prefix="server")
 public class ServerHandler extends IoHandlerAdapter {
 	//装载业务码和与之对应的接口业务实现类
 	private Map<String, GenericAction> busiProcessMap = new HashMap<>();
-	private Map<String, String> busimap = new HashMap<>();
-	public Map<String, String> getBusimap() {
-		return busimap;
-	}
-	@Resource
-	private SpringContextHolder springContextHolder;
-	@PostConstruct
-	public void buildBusiProcessMap(){
-		for(Map.Entry<String,String> entry : busimap.entrySet()){
-			busiProcessMap.put(entry.getKey(), (GenericAction)springContextHolder.getBean(entry.getValue()));
-		}
-	}
 
-	////装载业务码和与之对应的接口业务实现类
-	//private Map<String, GenericAction> busiProcessMap = new HashMap<>();
-	//public void setBusiProcessMap(Map<String, GenericAction> busiProcessMap) {
-	//	this.busiProcessMap = busiProcessMap;
-	//}
+	public void setBusiProcessMap(Map<String, GenericAction> busiProcessMap) {
+		this.busiProcessMap = busiProcessMap;
+	}
 
 	@Override
 	public void messageReceived(IoSession session, Object message) {
