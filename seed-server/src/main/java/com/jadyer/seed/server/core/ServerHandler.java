@@ -25,24 +25,26 @@ import java.util.Map;
 @Configuration
 @ConfigurationProperties(prefix="server")
 public class ServerHandler extends IoHandlerAdapter {
+	//装载业务码和与之对应的接口业务实现类
+	private Map<String, GenericAction> busiProcessMap = new HashMap<>();
 	private Map<String, String> busimap = new HashMap<>();
-
 	public Map<String, String> getBusimap() {
 		return busimap;
 	}
-
-	//装载业务码和与之对应的接口业务实现类
-	private Map<String, GenericAction> busiProcessMap = new HashMap<>();
-
 	@Resource
 	private SpringContextHolder springContextHolder;
-
 	@PostConstruct
 	public void buildBusiProcessMap(){
 		for(Map.Entry<String,String> entry : busimap.entrySet()){
 			busiProcessMap.put(entry.getKey(), (GenericAction)springContextHolder.getBean(entry.getValue()));
 		}
 	}
+
+	////装载业务码和与之对应的接口业务实现类
+	//private Map<String, GenericAction> busiProcessMap = new HashMap<>();
+	//public void setBusiProcessMap(Map<String, GenericAction> busiProcessMap) {
+	//	this.busiProcessMap = busiProcessMap;
+	//}
 
 	@Override
 	public void messageReceived(IoSession session, Object message) {

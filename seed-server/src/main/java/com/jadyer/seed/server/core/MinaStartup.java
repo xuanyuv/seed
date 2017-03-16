@@ -1,8 +1,6 @@
-package com.jadyer.seed.server;
+package com.jadyer.seed.server.core;
 
 import com.jadyer.seed.comm.util.ConfigUtil;
-import com.jadyer.seed.server.core.ServerHandler;
-import com.jadyer.seed.server.core.ServerProtocolCodecFactory;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.executor.ExecutorFilter;
 import org.apache.mina.filter.logging.LoggingFilter;
@@ -69,11 +67,27 @@ public class MinaStartup {
 	}
 }
 /*
-下面是非SpringBoot应用的applicationContext.xml写法
+ * 下面是非SpringBoot应用的MinaStartup的写法
+ */
+//https://jadyer.github.io/2012/10/31/mina-spring/里面的MinaStartup.java
+
+/*
+ * 下面是非SpringBoot应用的ServerHandler中的有改动部分的写法
+ */
+/*
+//装载业务码和与之对应的接口业务实现类
+private Map<String, GenericAction> busiProcessMap = new HashMap<>();
+public void setBusiProcessMap(Map<String, GenericAction> busiProcessMap) {
+	this.busiProcessMap = busiProcessMap;
+}
 */
+
+/*
+ * 下面是非SpringBoot应用的applicationContext.xml写法
+ */
 /*
 <!-- 构造Server端 -->
-<bean id="jadyerServer" class="com.jadyer.server.core.MinaStartup" init-method="bind">
+<bean id="jadyerServer" class="com.jadyer.seed.server.MinaStartup" init-method="bind">
 	<property name="reuseAddress" value="true"/>
 	<property name="writeTimeout" value="${sys.timeout.tcp.write}"/>
 	<property name="bothIdleTime" value="${sys.timeout.tcp.bothIdle}"/>
@@ -88,26 +102,6 @@ public class MinaStartup {
 				<constructor-arg index="0" value="${server.port.http}"/>
 			</bean>
 		</list>
-	</property>
-</bean>
-<!-- 构造过滤器链 -->
-<!-- 这里有个鱼和熊掌不可兼得的情景，注意：无论如何executor都要定义在NioSocketConnector.setHandler()的前面 -->
-<!-- 若将codec定义在executor的前面，则codec由NioProcessor-1线程处理，IoHandler由pool-1-thread-1线程处理 -->
-<!-- 若将codec定义在executor的后面，则codec和IoHandler都由pool-1-thread-1线程处理 -->
-<bean id="ioFilterChainBuilder" class="org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder">
-	<property name="filters">
-		<map>
-			<entry key="codec">
-				<bean class="org.apache.mina.filter.codec.ProtocolCodecFilter">
-					<constructor-arg>
-						<bean class="com.jadyer.server.core.ServerProtocolCodecFactory"/>
-					</constructor-arg>
-				</bean>
-			</entry>
-			<entry key="executor">
-				<bean class="org.apache.mina.filter.executor.ExecutorFilter"/>
-			</entry>
-		</map>
 	</property>
 </bean>
 <!-- 构造业务处理类 -->
