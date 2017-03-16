@@ -17,7 +17,7 @@ public class ServerTest {
 	@Test
 	public void TCPRequestTest(){
 		String message = "0003961000510110199201209222240000020120922000069347814303000700000813``中国联通交费充值`为号码18655228826交费充值100.00元`UDP1209222238312219411`10000```20120922`chinaunicom-payFeeOnline`UTF-8`20120922223831`MD5`20120922020103806276`1`02`10000`20120922223954`20120922`BOCO_B2C```http://192.168.20.2:5545/ecpay/pay/elecChnlFrontPayRspBackAction.action`1`立即支付,交易成功`";
-		System.out.println(message.getBytes(StandardCharsets.UTF_8).length);
+		System.out.println("发送的报文长度[" + message.getBytes(StandardCharsets.UTF_8).length + "]");
 		String respData = MinaUtil.sendTCPMessage(message, "127.0.0.1", 9901, "UTF-8");
 		System.out.println("收到服务端反馈[" + respData + "]");
 	}
