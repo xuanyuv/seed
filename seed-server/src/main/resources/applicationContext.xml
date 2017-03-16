@@ -12,7 +12,7 @@
 		<context:exclude-filter type="regex" expression="com.jadyer.seed.comm.exception.*"/>
 	</context:component-scan>
 
-	<bean id="minaStartup" class="com.jadyer.seed.server.core.MinaStartup" init-method="bind">
+	<bean class="com.jadyer.seed.server.core.MinaStartup" init-method="bind">
 		<property name="reuseAddress" value="${server.port.reuse}"/>
 		<property name="writeTimeout" value="${server.timeout.write}"/>
 		<property name="bothIdleTime" value="${server.timeout.bothidle}"/>
