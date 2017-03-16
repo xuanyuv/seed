@@ -54,7 +54,7 @@
 	<li>
 		目前采用AES/ECB/PKCS5Padding模式加密，测试环境密钥appsecret=QQRif23NDzEd9aEQTAY6Dg<br/>
 		加解密工具类可使用我的Github中的CodecUtil#buildAESEncrypt()和buildAESDecrypt()<br/>
-		<a target="_blank" href="https://github.com/jadyer/JadyerEngine/blob/master/JadyerEngine-common/src/main/java/com/jadyer/engine/common/util/CodecUtil.java">https://github.com/jadyer/JadyerEngine/blob/master/JadyerEngine-common/src/main/java/com/jadyer/engine/common/util/CodecUtil.java</a>
+		<a target="_blank" href="https://github.com/jadyer/seed/blob/master/seed-comm/src/main/java/com/jadyer/seed/comm/util/CodecUtil.java">https://github.com/jadyer/seed/blob/master/seed-comm/src/main/java/com/jadyer/seed/comm/util/CodecUtil.java</a>
 	</li>
 	<li>
 		加密明文为各接口入参出参的所有不包括文件流和公共请求参数的JSON字符串<br/>
@@ -68,7 +68,7 @@
 	<li>
 		RSA密钥位数为2048bit（1024已经不安全了），RSA签名算法采用SHA256WithRSA（SHA1WithRSA已被废弃），密文及签名的结果均采用Base64编码传输<br/>
 		加解密（公钥加密，私钥解密）和签名（私钥签名，公钥验签）的工具类可使用我的Github中的CodecUtil#buildRSA的相关方法<br/>
-		<a target="_blank" href="https://github.com/jadyer/JadyerEngine/blob/master/JadyerEngine-common/src/main/java/com/jadyer/engine/common/util/CodecUtil.java">https://github.com/jadyer/JadyerEngine/blob/master/JadyerEngine-common/src/main/java/com/jadyer/engine/common/util/CodecUtil.java</a>
+		<a target="_blank" href="https://github.com/jadyer/seed/blob/master/seed-comm/src/main/java/com/jadyer/seed/comm/util/CodecUtil.java">https://github.com/jadyer/seed/blob/master/seed-comm/src/main/java/com/jadyer/seed/comm/util/CodecUtil.java</a>
 	</li>
 	<li>
 		加解密和签名的明文为各接口入参出参的所有不包括文件流和公共请求参数的JSON字符串<br/>
@@ -81,7 +81,7 @@
 	<li>
 		此时加解密模式为<span style="color:blue; font-weight:bold;">AES+RSA</span>算法，其中AES仍采用AES/ECB/PKCS5Padding模式加密，RSA密钥位数仍为2048bit，RSA签名算法仍采用SHA256WithRSA<br/>
 		加解密（公钥加密，私钥解密）和签名（私钥签名，公钥验签）的工具类可使用我的Github中的CodecUtil#buildAES和buildRSA的相关方法<br/>
-		<a target="_blank" href="https://github.com/jadyer/JadyerEngine/blob/master/JadyerEngine-common/src/main/java/com/jadyer/engine/common/util/CodecUtil.java">https://github.com/jadyer/JadyerEngine/blob/master/JadyerEngine-common/src/main/java/com/jadyer/engine/common/util/CodecUtil.java</a>
+		<a target="_blank" href="https://github.com/jadyer/seed/blob/master/seed-comm/src/main/java/com/jadyer/seed/comm/util/CodecUtil.java">https://github.com/jadyer/seed/blob/master/seed-comm/src/main/java/com/jadyer/seed/comm/util/CodecUtil.java</a>
 	</li>
 	<li>
 		加解密和签名的明文为各接口入参出参的所有不包括文件流和公共请求参数的JSON字符串<br/>

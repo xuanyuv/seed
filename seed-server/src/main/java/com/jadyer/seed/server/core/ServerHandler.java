@@ -23,22 +23,23 @@ import java.util.Map;
  * Created by 玄玉<https://jadyer.github.io/> on 2012/12/22 19:23.
  */
 @Configuration
-@ConfigurationProperties(prefix="server.busi")
+@ConfigurationProperties(prefix="server")
 public class ServerHandler extends IoHandlerAdapter {
+	private Map<String, String> busimap = new HashMap<>();
+
+	public Map<String, String> getBusimap() {
+		return busimap;
+	}
+
 	//装载业务码和与之对应的接口业务实现类
 	private Map<String, GenericAction> busiProcessMap = new HashMap<>();
-
-	private Map<String, String> processmap = new HashMap<>();
-	public Map<String, String> getProcessmap() {
-		return processmap;
-	}
 
 	@Resource
 	private SpringContextHolder springContextHolder;
 
 	@PostConstruct
 	public void buildBusiProcessMap(){
-		for(Map.Entry<String,String> entry : processmap.entrySet()){
+		for(Map.Entry<String,String> entry : busimap.entrySet()){
 			busiProcessMap.put(entry.getKey(), (GenericAction)springContextHolder.getBean(entry.getValue()));
 		}
 	}

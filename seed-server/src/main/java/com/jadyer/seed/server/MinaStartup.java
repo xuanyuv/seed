@@ -1,9 +1,12 @@
 package com.jadyer.seed.server;
 
+import com.jadyer.seed.comm.util.ConfigUtil;
 import com.jadyer.seed.server.core.ServerHandler;
-import org.apache.mina.core.filterchain.IoFilterChainBuilder;
+import com.jadyer.seed.server.core.ServerProtocolCodecFactory;
+import org.apache.mina.filter.codec.ProtocolCodecFilter;
+import org.apache.mina.filter.executor.ExecutorFilter;
+import org.apache.mina.filter.logging.LoggingFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -25,37 +28,39 @@ import java.util.List;
 @Component
 public class MinaStartup {
 	@Resource
-	private ServerHandler serverHandler;               //处理器
-	@Resource
-	private IoFilterChainBuilder ioFilterChainBuilder; //过滤器链
-	@Value("${server.listening.port.reuse}")
-	private boolean reuseAddress;                      //端口是否可重用
-	@Value("${server.listening.timeout.write}")
-	private int writeTimeout;                          //写超时时间
-	@Value("${server.listening.timeout.bothidle}")
-	private int bothIdleTime;                          //双向发呆时间
-	@Value("${server.listening.port.tcp}")
-	private int listeningTcpPort;                      //监听地址：TCP
-	@Value("${server.listening.port.http}")
-	private int listeningHttpPort;                     //监听地址：HTTP
+	private ServerHandler serverHandler;
 
 	@PostConstruct
 	public final void bind() throws IOException {
+		int tcpPort = ConfigUtil.INSTANCE.getPropertyForInt("server.port.tcp");
+		int httpPort = ConfigUtil.INSTANCE.getPropertyForInt("server.port.http");
+		int writeTimeout = ConfigUtil.INSTANCE.getPropertyForInt("server.timeout.write");
+		int bothIdleTime = ConfigUtil.INSTANCE.getPropertyForInt("server.timeout.bothidle");
+		boolean reuseAddress = Boolean.parseBoolean(ConfigUtil.INSTANCE.getProperty("server.port.reuse"));
 		NioSocketAcceptor acceptor = new NioSocketAcceptor();
 		acceptor.setBacklog(0);
-		acceptor.setReuseAddress(this.reuseAddress);
-		acceptor.getSessionConfig().setWriteTimeout(this.writeTimeout);
-		acceptor.getSessionConfig().setBothIdleTime(this.bothIdleTime);
-		acceptor.setFilterChainBuilder(this.ioFilterChainBuilder);
+		//端口是否可重用
+		acceptor.setReuseAddress(reuseAddress);
+		//写超时时间，单位：毫秒
+		acceptor.getSessionConfig().setWriteTimeout(writeTimeout);
+		//双向发呆时间，单位：秒
+		acceptor.getSessionConfig().setBothIdleTime(bothIdleTime);
+		//过滤器链
+		acceptor.getFilterChain().addLast("logger", new LoggingFilter());
+		acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new ServerProtocolCodecFactory()));
+		acceptor.getFilterChain().addLast("executor", new ExecutorFilter());
+		//处理器
 		acceptor.setHandler(this.serverHandler);
 		List<SocketAddress> socketAddresses = new ArrayList<>();
-		socketAddresses.add(new InetSocketAddress(listeningTcpPort));
-		socketAddresses.add(new InetSocketAddress(listeningHttpPort));
+		//监听的TCP服务端口
+		socketAddresses.add(new InetSocketAddress(tcpPort));
+		//监听的HTTP服务端口
+		socketAddresses.add(new InetSocketAddress(httpPort));
 		acceptor.bind(socketAddresses);
 		if(acceptor.isActive()){
-			System.out.println("写 超 时: " + this.writeTimeout + "ms");
-			System.out.println("发呆配置: Both Idle " + this.bothIdleTime + "s");
-			System.out.println("端口重用: " + this.reuseAddress);
+			System.out.println("写 超 时: " + writeTimeout + "ms");
+			System.out.println("发呆配置: Both Idle " + bothIdleTime + "s");
+			System.out.println("端口重用: " + reuseAddress);
 			System.out.println("服务端初始化完成...");
 			System.out.println("服务已启动...开始监听..." + acceptor.getLocalAddresses());
 		}else{

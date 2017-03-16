@@ -1,5 +1,6 @@
 package com.jadyer.seed.server.core;
 
+import com.jadyer.seed.comm.util.ConfigUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.MinaUtil;
 import org.apache.mina.core.buffer.IoBuffer;
@@ -7,8 +8,6 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 import org.apache.mina.filter.codec.demux.MessageDecoder;
 import org.apache.mina.filter.codec.demux.MessageDecoderResult;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 /**
  * Server端TCP协议解码器
@@ -23,11 +22,7 @@ import org.springframework.stereotype.Component;
  * ------------------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.github.io/> on 2012/12/21 14:52.
  */
-@Component
 public class ServerProtocolTCPDecoder implements MessageDecoder {
-	@Value("${server.listening.port.tcp}")
-	private int listeningTcpPort;
-
 	/**
 	 * 该方法相当于预读取,用于判断是否是可用的解码器,这里对IoBuffer读取不会影响数据包的大小
 	 * 该方法结束后IoBuffer会复原,所以不必担心调用该方法时,position已经不在缓冲区起始位置
@@ -38,7 +33,7 @@ public class ServerProtocolTCPDecoder implements MessageDecoder {
 		if(in.remaining() < 6){
 			return MessageDecoderResult.NEED_DATA;
 		}
-		if(session.getLocalAddress().toString().contains(":" + listeningTcpPort)){
+		if(session.getLocalAddress().toString().contains(":" + ConfigUtil.INSTANCE.getProperty("server.port.tcp"))){
 			byte[] messageLength = new byte[6];
 			in.get(messageLength);
 			if(in.limit() >= Integer.parseInt(JadyerUtil.getString(messageLength, MinaUtil.DEFAULT_CHARSET))){
