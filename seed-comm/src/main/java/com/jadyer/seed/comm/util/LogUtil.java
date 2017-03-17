@@ -105,9 +105,9 @@ public final class LogUtil {
 //	 * 设置日志记录器为当前会话时最初绑定的日志记录器
 //	 * 该方法适用于整个会话由2个或2个以上的线程处理的情景
 //	 * 比如Mina2.x中的exceptionCaught(IoSession session, Throwable cause)，其用法如下
-//	 * <code>LogUtil.setCurrentLogger((Log)session.getAttribute("currentLog"))</code>
-//	 * <code>LogUtil.getLogger().error("请求被拒绝or请求地址有误,堆栈轨迹如下", cause)</code>
-//	 * 最后，记得会话开始时，通过<code>session.setAttribute("currentLog", LogUtil.getLogger())</code>标记日志记录器
+//	 * LogUtil.setCurrentLogger((Log)session.getAttribute("currentLog"))
+//	 * LogUtil.getLogger().error("请求被拒绝or请求地址有误，堆栈轨迹如下", cause)
+//	 * 最后，记得会话开始时，通过session.setAttribute("currentLog", LogUtil.getLogger())标记日志记录器
 //	 */
 //	public static void setCurrentLogger(Log log){
 //		currentLoggerMap.set(log);

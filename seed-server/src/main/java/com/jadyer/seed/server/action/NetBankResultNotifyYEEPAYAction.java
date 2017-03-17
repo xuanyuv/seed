@@ -5,6 +5,7 @@ import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.server.core.GenericAction;
 import com.jadyer.seed.server.helper.MessageBuilder;
 import com.jadyer.seed.server.model.NetBankResultNotify;
+import org.apache.commons.lang3.RandomUtils;
 import org.springframework.stereotype.Controller;
 
 import java.util.HashMap;
@@ -39,7 +40,7 @@ public class NetBankResultNotifyYEEPAYAction implements GenericAction {
 		Map<String, String> param = new HashMap<>();
 		for (String aMessageArray : messageArray) {
 			String key = aMessageArray.substring(0, aMessageArray.indexOf("="));
-			String value = aMessageArray.substring(aMessageArray.indexOf("=") + 1)==null ? "" : aMessageArray.substring(aMessageArray.indexOf("=")+1);
+			String value = aMessageArray.substring(aMessageArray.indexOf("=") + 1);
 			param.put(key, value);
 		}
 		
@@ -62,17 +63,17 @@ public class NetBankResultNotifyYEEPAYAction implements GenericAction {
 	    nbrn.setTradeAmount(JadyerUtil.moneyYuanToFen(param.get("r3_Amt")));
 	    String messageToBusiPlatform = MessageBuilder.buildNetBankResultNotifyMessage(nbrn);
 	    LogUtil.getLogger().info("易宝网银结果通知-->发往支付处理的报文[" + messageToBusiPlatform + "]");
-//		String respData = MinaUtil.sendTCPMessage(messageToBusiPlatform);
-//		LogUtil.getLogger().info("易宝网银结果通知-->支付处理的响应报文[" + respData + "]");
-//		
-//		/**
-//		 * 响应给易宝
-//		 */
-//		if(respData.substring(6, 14).equals("99999999") && respData.split("`", -1)[23].equals("1")){
-//			return MessageUtil.buildHTTPResponseMessage("SUCCESS YeePay Return OK !!!");
-//		}else{
-//			return MessageUtil.buildHTTPResponseMessage(500, null);
-//		}
+		//String respData = MinaUtil.sendTCPMessage(messageToBusiPlatform);
+		//LogUtil.getLogger().info("易宝网银结果通知-->支付处理的响应报文[" + respData + "]");
+        //
+		///**
+		// * 响应给易宝
+		// */
+		//if(respData.substring(6, 14).equals("99999999") && respData.split("`", -1)[23].equals("1")){
+		//	return MessageUtil.buildHTTPResponseMessage("SUCCESS YeePay Return OK !!!");
+		//}else{
+		//	return MessageUtil.buildHTTPResponseMessage(500, null);
+		//}
 	    return MessageBuilder.buildHTTPResponseMessage("SUCCESS YeePay Return OK !!!");
 	}
 	
@@ -101,6 +102,6 @@ public class NetBankResultNotifyYEEPAYAction implements GenericAction {
 		//	LogUtil.getLogger().info("易宝网银结果通知-->验签未通过");
 		//	return false;
 		//}
-		return true;
+		return RandomUtils.nextBoolean();
 	}
 }

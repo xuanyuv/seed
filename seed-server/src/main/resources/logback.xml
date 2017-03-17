@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<configuration>
+	<property name="PROJECT_NAME" value="seed-server"/>
+	<property name="LOG_HOME" value="/home/seed/log/server"/>
+	<contextName>${PROJECT_NAME}</contextName>
+
+	<appender name="WEB_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/web.log</file>
+		<encoder>
+			<pattern>[%d{yyMMddHHmmss}][%t][%C{0}.%M]%m%n</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_HOME}/archive/web.log.%d{yyyyMMdd}</fileNamePattern>
+		</rollingPolicy>
+	</appender>
+	<appender name="WAP_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/wap.log</file>
+		<encoder>
+			<pattern>[%d{yyMMddHHmmss}][%t][%C{0}.%M]%m%n</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_HOME}/archive/wap.log.%d{yyyyMMdd}</fileNamePattern>
+		</rollingPolicy>
+	</appender>
+	<appender name="DEFAULT_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/${PROJECT_NAME}.log</file>
+		<encoder>
+			<pattern>[%d{yyMMddHHmmss}][%t][%C{0}.%M]%m%n</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_HOME}/archive/${PROJECT_NAME}.log.%d{yyyyMMdd}</fileNamePattern>
+		</rollingPolicy>
+	</appender>
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>[%d{yyMMddHHmmss}][%t][%C{0}.%M]%m%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="org.jboss" level="WARN"/>
+	<logger name="org.apache" level="WARN"/>
+	<logger name="org.hibernate" level="WARN"/>
+	<logger name="org.thymeleaf" level="WARN"/>
+	<logger name="org.springframework" level="WARN"/>
+	<logger name="webLogger" level="INFO" additivity="true">
+		<appender-ref ref="WEB_LOG"/>
+	</logger>
+	<logger name="wapLogger" level="INFO" additivity="true">
+		<appender-ref ref="WAP_LOG"/>
+	</logger>
+	<logger name="defaultLogger" level="INFO" additivity="true">
+		<appender-ref ref="DEFAULT_LOG"/>
+	</logger>
+
+	<root level="DEBUG">
+		<appender-ref ref="CONSOLE"/>
+	</root>
+</configuration>

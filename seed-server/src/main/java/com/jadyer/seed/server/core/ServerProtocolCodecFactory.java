@@ -15,8 +15,8 @@ import org.apache.mina.filter.codec.demux.DemuxingProtocolCodecFactory;
  * ----------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.github.io/> on 2012/12/22 19:24.
  */
-public class ServerProtocolCodecFactory extends DemuxingProtocolCodecFactory {
-	public ServerProtocolCodecFactory(){
+class ServerProtocolCodecFactory extends DemuxingProtocolCodecFactory {
+	ServerProtocolCodecFactory(){
 		super.addMessageEncoder(String.class, ServerProtocolEncoder.class);
 		super.addMessageDecoder(ServerProtocolTCPDecoder.class);
 		super.addMessageDecoder(ServerProtocolHTTPDecoder.class);
