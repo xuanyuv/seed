@@ -121,9 +121,7 @@ import java.util.Map;
  * @history v1.3-->修改<code>getSysJournalNo()</code>实现细节为<code>java.util.UUID.randomUUID()</code>
  * @history v1.2-->新增<code>getString()</code>字节数组转为字符串方法
  * @history v1.1-->新增<code>getHexSign()</code>通过指定算法签名字符串方法
- * @update 2016/8/27 15:26
- * @create Dec 22, 2012 7:00:47 PM
- * @author 玄玉<http://blog.csdn.net/jadyer>
+ * Created by 玄玉<https://jadyer.github.io/> on 2012/12/22 19:00.
  */
 public final class JadyerUtil {
 	private static BigInteger sequenceNo = new BigInteger("0");
@@ -425,7 +423,7 @@ public final class JadyerUtil {
 	/**
 	 * 判断是否为Ajax请求
 	 * @create Nov 1, 2015 1:30:55 PM
-	 * @author 玄玉<http://blog.csdn.net/jadyer>
+	 * @author 玄玉<https://jadyer.github.io/>
 	 */
 	public static boolean isAjaxRequest(HttpServletRequest request){
 		String requestType = request.getHeader("X-Requested-With");
@@ -443,7 +441,7 @@ public final class JadyerUtil {
 	 * @see 且只能处理当前类,暂不能处理父类和子类
 	 * @see 且类属性只能是String
 	 * @create Dec 17, 2015 4:44:47 PM
-	 * @author 玄玉<http://blog.csdn.net/jadyer>
+	 * @author 玄玉<https://jadyer.github.io/>
 	 */
 	public static <T> T requestToBean(HttpServletRequest request, Class<T> beanClass){
 		try{
@@ -1017,7 +1015,7 @@ public final class JadyerUtil {
 	 * @see 第一种方案需要注意很多,比如MySQL版本、MySQL的表和数据库配置、MySQL Connector的版本等等
 	 * @see 所以写了这个第二种方案的转义方法
 	 * @create Apr 7, 2016 11:41:35 AM
-	 * @author 玄玉<http://blog.csdn.net/jadyer>
+	 * @author 玄玉<https://jadyer.github.io/>
 	 */
 	public static String escapeEmoji(String emoji){
 		if(StringUtils.isNotBlank(emoji)){
@@ -1136,10 +1134,10 @@ public final class JadyerUtil {
 
 	/**
 	 * 提取收到的HttpServletRequest请求报文体消息
-	 * @see 该方法默认使用了UTF-8解析请求消息
-	 * @see 解析过程中发生异常时会抛出RuntimeException
-	 * @create Nov 28, 2015 4:12:19 PM
-	 * @author 玄玉<http://blog.csdn.net/jadyer>
+	 * <p>
+	 *     该方法默认使用了UTF-8解析请求消息
+	 *     解析过程中发生异常时会抛出RuntimeException
+	 * </p>
 	 */
 	public static String extractHttpServletRequestBodyMessage(HttpServletRequest request){
 		try{
@@ -1167,23 +1165,25 @@ public final class JadyerUtil {
 
 	/**
 	 * 统计代码行数
-	 * @see 1)目前仅支持*.java;*.xml;*.properties;*.jsp;*.htm;*.html六种文件格式
-	 * @see 2)在统计jsp或htm或html文件时,也会将文件中的js或css标签里面的代码统计进去,即也会正确计算页面中js或css代码的注释或空行等
-	 * @see 3)要注意两种特殊情况,对于这种特殊情况,本方法也进行了处理
-	 * @see   <style type="text/css"><!--css code//--></style>
-	 * @see   <script type="text/javascript"><!--js code//--></script>
-	 * @see 4)本方法也支持统计*.js和*.css文件中的代码行数,只不过实际中js和css文件通常是现成的,只有很少的一部分才是程序员自己写的代码
-	 * @see   而这一部分代码通常都写在jsp或html页面中,故本方法未统计*.js和*.css文件
-	 * @see   如需统计,则只需初始化一下js和css的注释标记,并在允许的文件类型列表中将js和css添加进去即可
-	 * @see 5)本方法会将统计结果放到参数resultMap中
-	 * @see 6)不可在本方法中为resultMap的几个键的值设定初始值,因为本方法内部存在递归操作...但可以在调用方传入参数前初始化,如下所示
-	 * @see   Map<String, Integer> resultMap = new HashMap<String, Integer>();
-	 * @see   resultMap.put("total", 0);
-	 * @see   resultMap.put("code", 0);
-	 * @see   resultMap.put("comment", 0);
-	 * @see   resultMap.put("blank", 0);
-	 * @see   然后在调用本方法时传进来即可:JadyerUtil.getCodeLineCounts(file, resultMap);
-	 * @see   待本方法执行完毕后,传进来的resultMap里面就有值了,调用方就可以获取到里面的值进行业务处理了
+	 * -------------------------------------------------------------------------------------------------------------
+	 * 1)目前仅支持*.java;*.xml;*.properties;*.jsp;*.htm;*.html六种文件格式
+	 * 2)在统计jsp或htm或html文件时,也会将文件中的js或css标签里面的代码统计进去,即也会正确计算页面中js或css代码的注释或空行等
+	 * 3)要注意两种特殊情况,对于这种特殊情况,本方法也进行了处理
+	 *   <style type="text/css"><!--css code//--></style>
+	 *   <script type="text/javascript"><!--js code//--></script>
+	 * 4)本方法也支持统计*.js和*.css文件中的代码行数,只不过实际中js和css文件通常是现成的,只有很少的一部分才是程序员自己写的代码
+	 *   而这一部分代码通常都写在jsp或html页面中,故本方法未统计*.js和*.css文件
+	 *   如需统计,则只需初始化一下js和css的注释标记,并在允许的文件类型列表中将js和css添加进去即可
+	 * 5)本方法会将统计结果放到参数resultMap中
+	 * 6)不可在本方法中为resultMap的几个键的值设定初始值,因为本方法内部存在递归操作...但可以在调用方传入参数前初始化,如下所示
+	 *   Map<String, Integer> resultMap = new HashMap<String, Integer>();
+	 *   resultMap.put("total", 0);
+	 *   resultMap.put("code", 0);
+	 *   resultMap.put("comment", 0);
+	 *   resultMap.put("blank", 0);
+	 *   然后在调用本方法时传进来即可:JadyerUtil.getCodeLineCounts(file, resultMap);
+	 *   待本方法执行完毕后,传进来的resultMap里面就有值了,调用方就可以获取到里面的值进行业务处理了
+	 * -------------------------------------------------------------------------------------------------------------
 	 * @param codeFile  待统计的File类,可以是具体的文件或目录
 	 * @param resultMap 用于记录统计结果,键为total,code,comment,blank
 	 */

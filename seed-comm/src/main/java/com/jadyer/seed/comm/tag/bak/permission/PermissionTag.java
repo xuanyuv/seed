@@ -88,7 +88,7 @@ public abstract class PermissionTag extends TagSupport {
 ///**
 // * 登陆认证以及授权
 // * @create Oct 9, 2013 1:21:15 PM
-// * @author 玄玉<http://blog.csdn.net/jadyer>
+// * @author 玄玉<https://jadyer.github.io/>
 // */
 //public class WthRealm extends AuthorizingRealm {
 //	@Resource

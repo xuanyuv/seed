@@ -46,7 +46,7 @@ import java.util.Map;
  * @history v1.0-->方法新建,目前仅支持二维码的生成和解析,生成二维码时支持添加logo头像
  * @editor Sep 10, 2013 9:32:23 PM
  * @create Sep 10, 2013 2:08:16 PM
- * @author 玄玉<http://blog.csdn.net/jadyer>
+ * @author 玄玉<https://jadyer.github.io/>
  */
 public final class ZXingUtil {
 	private ZXingUtil(){}

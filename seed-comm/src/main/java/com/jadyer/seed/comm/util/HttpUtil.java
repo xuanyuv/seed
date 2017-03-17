@@ -168,7 +168,7 @@ import java.util.Map;
  * @history v1.0-->新建<code>sendGetRequest()</code>和<code>sendPostRequest()</code>方法
  * @update 2016/5/19 12:33
  * @create Feb 1, 2012 3:02:27 PM
- * @author 玄玉<http://blog.csdn.net/jadyer>
+ * @author 玄玉<https://jadyer.github.io/>
  */
 public final class HttpUtil {
 	private static final String DEFAULT_CHARSET = "UTF-8";          //设置默认通信报文编码为UTF-8
