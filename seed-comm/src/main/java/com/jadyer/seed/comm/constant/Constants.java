@@ -13,6 +13,11 @@ public interface Constants {
     String WEB_CURRENT_MENU = "currentMenu";
 
     /**
+     * 微信或QQ公众平台绑定时发送的文本指令
+     */
+    String MPP_BIND_TEXT = "我是玄玉";
+
+    /**
      * seed-open用到的常量
      */
     //seed-open的全局编码

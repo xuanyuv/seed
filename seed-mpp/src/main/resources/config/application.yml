@@ -16,7 +16,7 @@ multipart:
 
 spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/scs?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
+    url: jdbc:mysql://127.0.0.1:3306/mpp?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
     username: root
     password: xuanyu
     minIdle: 5
@@ -41,19 +41,12 @@ auth:
     - /js/**
     - /css/**
     - /img/**
+    - /qq/**
+    - /weixin/**
+    - /mpp/login/**
     - /health
-    - /druid/**
-    - /sample/login/**
-    - /login
     - /login.jsp
     - /captcha.jsp
-    - /favicon.ico
-    - /building.jsp
-
-
-app:
-  upload: /app/upload
-
 
 ---
 spring:

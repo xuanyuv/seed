@@ -114,20 +114,20 @@ function submit(){
 	<!--Table order list-->
 	<table class="tab_head tab_in tab_list2" width="100%">
 		<tr class="ti"><th colspan="2">个人信息</th></tr>
-		<tr><th width="15%">用户名：</th><td>${not empty uname ? uname : userInfo.username}</td></tr>
+		<tr><th width="15%">用户名：</th><td>${not empty uname ? uname : user.username}</td></tr>
 		<tr>
 		    <th>平台类型：</th>
 		    <td>
-		        <c:if test="${fn:length(userInfo.mptype) gt 32}">
-                    ${fn:substring(userInfo.mptype,0,32)}...
+		        <c:if test="${fn:length(user.mptype) gt 32}">
+                    ${fn:substring(user.mptype,0,32)}...
                 </c:if>
-                <c:if test="${fn:length(userInfo.mptype) le 32}">
+                <c:if test="${fn:length(user.mptype) le 32}">
                     ${advice.content}
                 </c:if>
 		    </td>
 		</tr>
-		<tr><th>绑解状态：</th><td>${userInfo.bindStatus eq 0 ? '<span class="cf30 fw">未绑定</span>' : '<span class="cgre fw">已绑定</span>'}</td></tr>
-		<tr><th>绑解时间：</th><td><fmt:formatDate value="${userInfo.bindTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td></tr>
+		<tr><th>绑解状态：</th><td>${user.bindStatus eq 0 ? '<span class="cf30 fw">未绑定</span>' : '<span class="cgre fw">已绑定</span>'}</td></tr>
+		<tr><th>绑解时间：</th><td><fmt:formatDate value="${user.bindTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td></tr>
 	</table>
 	<!--/Table order list-->
 	<form id="userBindForm">
@@ -135,11 +135,11 @@ function submit(){
 			<tr class="ti"><th colspan="2">公众信息</th></tr>
 			<tr><th width="15%">URL：</th><td>${mpurl}</td></tr>
 			<tr><th>Token：</th><td>${token}</td></tr>
-			<tr><th>appid：</th><td><input class="inpte" type="text" id="appid" name="appid" value="${userInfo.appid}" maxlength="32"/></td></tr>
-			<tr><th>appsecret：</th><td><input class="inpte" type="text" id="appsecret" name="appsecret" value="${userInfo.appsecret}" maxlength="64"/></td></tr>
-			<tr><th>原始ID：</th><td><input class="inpte" type="text" id="mpid" name="mpid" value="${userInfo.mpid}" maxlength="32"/></td></tr>
-			<tr><th>公众号：</th><td><input class="inpte" type="text" id="mpno" name="mpno" value="${userInfo.mpno}" maxlength="32"/></td></tr>
-			<tr><th>公众名：</th><td><input class="inpte" type="text" id="mpname" name="mpname" value="${userInfo.mpname}" maxlength="32"/></td></tr>
+			<tr><th>appid：</th><td><input class="inpte" type="text" id="appid" name="appid" value="${user.appid}" maxlength="32"/></td></tr>
+			<tr><th>appsecret：</th><td><input class="inpte" type="text" id="appsecret" name="appsecret" value="${user.appsecret}" maxlength="64"/></td></tr>
+			<tr><th>原始ID：</th><td><input class="inpte" type="text" id="mpid" name="mpid" value="${user.mpid}" maxlength="32"/></td></tr>
+			<tr><th>公众号：</th><td><input class="inpte" type="text" id="mpno" name="mpno" value="${user.mpno}" maxlength="32"/></td></tr>
+			<tr><th>公众名：</th><td><input class="inpte" type="text" id="mpname" name="mpname" value="${user.mpname}" maxlength="32"/></td></tr>
 			<tr>
                 <th>
                     <%--

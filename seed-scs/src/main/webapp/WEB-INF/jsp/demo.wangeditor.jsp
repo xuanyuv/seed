@@ -21,7 +21,7 @@ b {font-weight:bold !important;}
 	<form id="userBindForm">
 		<table class="tab_head tab_in tab_list2" width="100%">
 			<tr class="ti"><th colspan="2">公众信息</th></tr>
-			<tr><th>公众号：</th><td><input class="inpte" type="text" id="mpno" name="mpno" value="${userInfo.mpno}" maxlength="32"/></td></tr>
+			<tr><th>公众号：</th><td><input class="inpte" type="text" id="mpno" name="mpno" value="${user.mpno}" maxlength="32"/></td></tr>
 			<!-- 注意：textarea的值应该是被p标签包裹了的值，否则会出现wangEditor里面编辑文字时（比如加粗），文字自动换行的现象 -->
 			<tr><th>公众名：</th><td style="width:90%"><textarea id="mpname" style="height:300px;"><p>这是初始化内容</p></textarea></td></tr>
 		</table>

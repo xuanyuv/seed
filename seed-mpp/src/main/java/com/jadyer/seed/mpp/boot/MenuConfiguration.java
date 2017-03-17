@@ -29,38 +29,17 @@ public class MenuConfiguration {
     private static class MenuFilter extends OncePerRequestFilter {
         @Override
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-            request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_reply");
-            if(request.getServletPath().startsWith("/stand")){
-                request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_module");
-            }
-            if(request.getServletPath().startsWith("/staff")){
-                request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_module");
-            }
-            if(request.getServletPath().startsWith("/lucky")){
-                request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_module");
-            }
+            request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_sys");
             if(request.getServletPath().startsWith("/fans")){
                 request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_fans");
             }
-            if(request.getServletPath().startsWith("/user")){
-                request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_sys");
+            if(request.getServletPath().startsWith("/reply")){
+                request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_reply");
             }
-            if(request.getServletPath().startsWith("/sample/view")){
+            if(request.getServletPath().startsWith("/mpp/view")){
                 String url = request.getParameter("url");
-                if(url.startsWith("stand")){
-                    request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_module");
-                }
-                if(url.startsWith("staff")){
-                    request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_module");
-                }
-                if(url.startsWith("lucky")){
-                    request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_module");
-                }
-                if(url.startsWith("fans")){
-                    request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_fans");
-                }
-                if(url.startsWith("user")){
-                    request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_sys");
+                if(url.startsWith("reply")){
+                    request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_reply");
                 }
             }
             filterChain.doFilter(request, response);

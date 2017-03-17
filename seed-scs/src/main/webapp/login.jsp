@@ -35,7 +35,7 @@
 <script>
 $(function(){
     //已登录状态下自动跳转默认首页
-    if("" != "${userinfo}"){
+    if("" != "${user}"){
         window.location.href = "${pageContext.request.contextPath}/sample/view?url=demo.wangeditor";
     }
     $("#username").focus();

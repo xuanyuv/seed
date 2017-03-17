@@ -17,9 +17,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by 玄玉<https://jadyer.github.io/> on 2017/3/10 5:27.
- */
 @EntityScan(basePackages="${scan.base.packages}")
 @EnableJpaRepositories(basePackages="${scan.base.packages}")
 @SpringBootApplication(scanBasePackages="${scan.base.packages}")
@@ -61,4 +58,27 @@ public class MppBootStrap extends SpringBootServletInitializer {
         fastjson.setFastJsonConfig(fastJsonConfig);
         return new HttpMessageConverters(fastjson);
     }
+
+
+    /*
+    <!-- 网页授权 -->
+	<!-- http://www.jadyer.com/mpp/qq/getopenid?test=7645&appid=123456789&oauth=base&openid=openid -->
+	<!-- http://www.jadyer.com/mpp/weixin/getopenid?test=7645&appid=wx63ae5326e400cca2&oauth=base&openid=openid -->
+	<filter>
+		<filter-name>QQFilter</filter-name>
+		<filter-class>com.jadyer.sdk.qq.filter.QQFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>QQFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>WeixinFilter</filter-name>
+		<filter-class>com.jadyer.sdk.weixin.filter.WeixinFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>WeixinFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+    */
 }

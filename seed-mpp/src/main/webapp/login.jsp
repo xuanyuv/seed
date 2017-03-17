@@ -35,8 +35,8 @@
 <script>
 $(function(){
     //已登录状态下自动跳转默认首页
-    if("" != "${userinfo}"){
-        window.location.href = "${pageContext.request.contextPath}/sample/view?url=demo.wangeditor";
+    if("" != "${user}"){
+        window.location.href = "${pageContext.request.contextPath}/user/info";
     }
     $("#username").focus();
     $.setBox("div.box_login");
@@ -50,57 +50,57 @@ $(function(){
  * 设置Box居中
  */
 $.setBox = function(o){
-    var o = $(o),
-        n = 0;
-    $(window).resize(function(){
-        setOH();
-    });
-    setOH();
-    function setOH(){
-        n = Math.floor(($(window).height() - o.height())/2);
-        n = n>0 ? n : 0;
-        o.css("paddingTop", n);
-    }
+	var o = $(o),
+		n = 0;
+	$(window).resize(function(){
+		setOH();
+	});
+	setOH();
+	function setOH(){
+		n = Math.floor(($(window).height() - o.height())/2);
+		n = n>0 ? n : 0;
+		o.css("paddingTop", n);
+	}
 }
 
 /**
  * 登录
  */
-var flag = true;
+var flag = true; 
 function login(){
-    var o        = $("#loginSubmit");
-    var username = $("#username").val();
-    var password = $("#password").val();
-    var captcha  = $("#captcha").val();
-    if(isEmpty(username)){
-        $.promptBox("请输入用户名", "#ffb848");
-        $("#username").focus();
-        return false;
-    }
-    if(isEmpty(password)){
-        $.promptBox("请输入密码", "#ffb848");
-        $("#password").focus();
-        return false;
-    }
-    if(isEmpty(captcha)){
-        $.promptBox("请输入验证码", "#ffb848");
-        $("#captcha").focus();
-        return false;
-    }
-    if(!flag){
-        return false;
-    }
-    flag = false;
-    o.attr("disabled", true).text("登录中...").css({"background":"#28b779", "cursor":"auto"});
-    $.post("${pageContext.request.contextPath}/sample/login",
+	var o        = $("#loginSubmit");
+	var username = $("#username").val();
+	var password = $("#password").val();
+	var captcha  = $("#captcha").val();
+	if(isEmpty(username)){
+		$.promptBox("请输入用户名", "#ffb848");
+		$("#username").focus();
+		return false;
+	}
+	if(isEmpty(password)){
+		$.promptBox("请输入密码", "#ffb848");
+		$("#password").focus();
+		return false;
+	}
+	if(isEmpty(captcha)){
+		$.promptBox("请输入验证码", "#ffb848");
+		$("#captcha").focus();
+		return false;
+	}
+	if(!flag){
+		return false;
+	}
+	flag = false;
+	o.attr("disabled", true).text("登录中...").css({"background":"#28b779", "cursor":"auto"});
+	$.post("${pageContext.request.contextPath}/user/login",
         {username:username, password:MD5(password), captcha:captcha},
         function(data){
-            if(0 == data.code){
-                window.location.href = "${pageContext.request.contextPath}/sample/view?url=demo.wangeditor";
+            if(1000 == data.code){
+                window.location.href = "${pageContext.request.contextPath}/user/info";
             }else{
                 o.attr("disabled", false).text("登录").css({"background":"#5bb75b", "cursor":"auto"});
-                 $.promptBox(data.msg, "#ffb848");
-                 flag = true;
+                $.promptBox(data.message, "#ffb848");
+                flag = true;
             }
         }
     );
@@ -110,30 +110,29 @@ function login(){
  * 重载验证码
  */
 function reloadCaptcha(){
-    document.getElementById("captchaImg").src = "captcha.jsp?time=" +  Math.random();
+	document.getElementById("captchaImg").src = "captcha.jsp?time=" +  Math.random();
 }
 </script>
 </head>
 <body onkeydown="if(13==event.keyCode)login();">
-    <div class="box_login">
-        <div class="u"><img src="img/logo.png"/></div>
-        <ul class="m">
-            <li class="l1"><i></i><p><input id="username" type="text" class="te" placeholder="Username" maxlength="16"/></p></li>
-            <li class="l2"><i></i><p><input id="password" type="password" class="te" placeholder="Password" maxlength="16"/></p></li>
-            <li class="l2">
-                <i></i>
-                <p>
-                    <input id="captcha" name="captcha" type="text" class="te" placeholder="captcha" maxlength="4" style="width:190px; vertical-align:middle;"/>
-                    <img style="cursor:pointer; vertical-align:middle; height:38px;" id="captchaImg" src="captcha.jsp" onClick="this.src='captcha.jsp?time'+Math.random();">
-                    <a href="javascript:reloadCaptcha();" style="vertical-align:middle; color:#49afcd;">看不清，换一张！</a>
-                </p>
-            </li>
-        </ul>
-        <div class="d">
-            <p class="p1"><a href="javascript:alert('暂未开放');" title="注册">注册</a><span></span><a href="javascript:alert('暂未开放');" title="忘记密码">忘记密码</a></p>
-            <p class="p2"><button id="loginSubmit" onclick="login();" class="btn trans" type="button">登&nbsp;&nbsp;录</button></p>
-            <div class="clear"></div>
-        </div>
-    </div>
+	<div class="box_login">
+		<div class="u"><img src="img/logo.png"/></div>
+		<ul class="m">
+			<li class="l1"><i></i><p><input id="username" type="text" class="te" placeholder="Username" maxlength="16"/></p></li>
+			<li class="l2"><i></i><p><input id="password" type="password" class="te" placeholder="Password" maxlength="16"/></p></li>
+			<li class="l2">
+				<i></i>
+				<p>
+					<input id="captcha" name="captcha" type="text" class="te" placeholder="captcha" maxlength="4" style="width:300px; vertical-align:middle;"/>
+					<img style="cursor:pointer; vertical-align:middle; height:38px;" id="captchaImg" src="captcha.jsp" onClick="this.src='captcha.jsp?time'+Math.random();">
+				</p>
+			</li>
+		</ul>
+		<div class="d">
+			<p class="p1"><a href="javascript:alert('暂未开放');" title="注册">注册</a><span></span><a href="javascript:alert('暂未开放');" title="忘记密码">忘记密码</a></p>
+			<p class="p2"><button id="loginSubmit" onclick="login();" class="btn trans" type="button">登&nbsp;&nbsp;录</button></p>
+			<div class="clear"></div>
+		</div>
+	</div>
 </body>
 </html>
