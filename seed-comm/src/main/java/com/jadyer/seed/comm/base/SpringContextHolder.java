@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 /**
  * ApplicationContext持有器
+ * <p>
+ *     用法举例：FansInfoDao fansInfoDao = (FansInfoDao)SpringContextHolder.getBean("fansInfoDao");
+ * </p>
  * --------------------------------------------------------------------------------------------------
  * Spring提供了一些Aware接口，比如BeanFactoryAware、ApplicationContextAware、ResourceLoaderAware、ServletContextAware
  * 实现了这些接口的Bean在被初始化之后，便拥有了取得相关资源的能力
