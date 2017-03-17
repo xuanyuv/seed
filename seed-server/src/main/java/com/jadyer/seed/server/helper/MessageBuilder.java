@@ -245,7 +245,7 @@ public final class MessageBuilder {
 	 */
 	public static String getServerStatus(){
 		StringBuilder sb = new StringBuilder();
-		sb.append("<html><head><title>Jadyer Seed Server Status</title>\n");
+		sb.append("<html><head><title>Seed Server Status</title>\n");
 		sb.append("<link rel=\"icon\" href=\"https://raw.githubusercontent.com/jadyer/seed/master/seed-scs/src/main/webapp/favicon.ico\" type=\"image/x-icon\"/>\n");
 		sb.append("<link rel=\"shortcut icon\" href=\"https://raw.githubusercontent.com/jadyer/seed/master/seed-scs/src/main/webapp/favicon.ico\" type=\"image/x-icon\"/>\n");
 		sb.append("<style media=\"screen\">\n");
@@ -271,11 +271,11 @@ public final class MessageBuilder {
 		sb.append("a.quiet:hover {background:white;}\n");
 		sb.append("</style></head>\n");
 		sb.append("<body>\n");
-		sb.append("<div class=\"version\">Jadyer Server Status (").append(DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss")).append(")</div>\n");
+		sb.append("<div class=\"version\">Seed Server Status （").append(DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss")).append("）</div>\n");
 		sb.append("<ul><li class=\"active\">Details</li></ul>\n");
 		sb.append("<table cellpadding=\"2\" cellspacing=\"0\" border=\"1\" class=\"data\">\n");
 		sb.append("<tbody>\n");
-		sb.append("<tr><th>").append("SYSTEM.NAME").append(":</th><td>").append("采用Mina编写的服务器（JadyerSeedServer）").append("</td></tr>\n");
+		sb.append("<tr><th>").append("SYSTEM.NAME").append(":</th><td>").append("采用Mina编写的服务器（Seed Server）").append("</td></tr>\n");
 		Properties properties = System.getProperties();
 		Enumeration<Object> enums = properties.keys();
 		while(enums.hasMoreElements()){
