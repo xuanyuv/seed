@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<jsp:include page="/header.jsp"/>
+<jsp:include page="comm/header.jsp"/>
 
 <div class="c_nav">
 	<div class="ti">粉丝列表</div>
@@ -35,8 +35,8 @@
 		</c:forEach>
 	</table>
 	<!--/Table list-->
-	<jsp:include page="/page.jsp?requestURI=${ctx}/fans/list"/>
+	<jsp:include page="comm/page.jsp?requestURI=${ctx}/fans/list"/>
 </div>
 <!--/Content-->
 
-<jsp:include page="/footer.jsp"/>
+<jsp:include page="comm/footer.jsp"/>

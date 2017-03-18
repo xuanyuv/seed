@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<jsp:include page="/header.jsp"/>
+<jsp:include page="../comm/header.jsp"/>
 
 <script>
 $(function(){
@@ -122,4 +122,4 @@ function submit(){
 </div>
 <!--/Content-->
 
-<jsp:include page="/footer.jsp"/>
+<jsp:include page="../comm/footer.jsp"/>

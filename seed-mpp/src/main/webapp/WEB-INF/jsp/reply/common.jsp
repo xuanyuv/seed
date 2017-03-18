@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<jsp:include page="/header.jsp"/>
+<jsp:include page="../comm/header.jsp"/>
 
 <div class="c_nav">
 	<div class="ti">通用的回复</div>
@@ -23,4 +23,4 @@
 </div>
 <!--/Content-->
 
-<jsp:include page="/footer.jsp"/>
+<jsp:include page="../comm/footer.jsp"/>

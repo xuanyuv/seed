@@ -3,7 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<jsp:include page="../common/header.jsp"/>
+<jsp:include page="../comm/header.jsp"/>
 
 <script src="${ctx}/js/ajaxfileupload.js"></script>
 
@@ -167,4 +167,4 @@ function submit(){
 </div>
 <!--/Content-->
 
-<jsp:include page="../common/footer.jsp"/>
+<jsp:include page="../comm/footer.jsp"/>

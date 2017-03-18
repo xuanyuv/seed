@@ -1,6 +1,6 @@
 <%@ page pageEncoding="UTF-8"%>
 
-<jsp:include page="common/header.jsp"/>
+<jsp:include page="comm/header.jsp"/>
 
 <link rel="stylesheet" href="${ctx}/js/wangEditor-2.1.22/css/wangEditor.min.css">
 <style>
@@ -33,7 +33,7 @@ b {font-weight:bold !important;}
 </div>
 <!--/Content-->
 
-<jsp:include page="common/footer.jsp"/>
+<jsp:include page="comm/footer.jsp"/>
 
 <script src="${ctx}/js/wangEditor-2.1.22/js/wangEditor.min.js"></script>
 <script>

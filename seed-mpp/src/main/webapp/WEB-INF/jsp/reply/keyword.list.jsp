@@ -3,7 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<jsp:include page="/header.jsp"/>
+<jsp:include page="../comm/header.jsp"/>
 
 <script>
 function deleteKeyword(id){
@@ -60,8 +60,8 @@ function deleteKeyword(id){
 		</c:forEach>
 	</table>
 	<!--/Table list-->
-	<jsp:include page="/page.jsp?requestURI=${ctx}/reply/keyword/list"/>
+	<jsp:include page="../comm/page.jsp?requestURI=${ctx}/reply/keyword/list"/>
 </div>
 <!--/Content-->
 
-<jsp:include page="/footer.jsp"/>
+<jsp:include page="../comm/footer.jsp"/>
