@@ -43,7 +43,7 @@ auth:
     - /img/**
     - /qq/**
     - /weixin/**
-    - /mpp/login/**
+    - /user/login/**
     - /health
     - /login.jsp
     - /captcha.jsp

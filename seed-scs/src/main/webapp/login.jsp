@@ -99,8 +99,8 @@ function login(){
                 window.location.href = "${pageContext.request.contextPath}/sample/view?url=demo.wangeditor";
             }else{
                 o.attr("disabled", false).text("登录").css({"background":"#5bb75b", "cursor":"auto"});
-                 $.promptBox(data.msg, "#ffb848");
-                 flag = true;
+                $.promptBox(data.msg, "#ffb848");
+                flag = true;
             }
         }
     );

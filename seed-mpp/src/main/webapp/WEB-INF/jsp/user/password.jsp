@@ -25,7 +25,7 @@ function submit(){
 	$.post("${ctx}/user/password/update",
 		{oldPassword:$("#oldPassword").val(), newPassword:$("#newPassword").val()},
 		function(data){
-			if(1000 == data.code){
+			if(0 == data.code){
 				$.promptBox("密码修改成功", "green");
 			}else{
 				$.promptBox(data.message, "#ffb848");

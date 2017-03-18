@@ -121,7 +121,7 @@ public class UserController{
 		}
 		request.setAttribute("token", DigestUtils.md5Hex(userInfo.getUuid() + "https://jadyer.github.io/" + userInfo.getUuid()));
 		request.setAttribute("mpurl", sb.toString());
-		return "user/userInfo";
+		return "user/info";
 	}
 
 

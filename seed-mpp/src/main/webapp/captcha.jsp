@@ -8,16 +8,15 @@
 
 <%--
 这是一个用于生成随机验证码图片的JSP文件
-这里contentType="image/jpeg"用来告诉容器:该JSP文件的输出格式为图片格式
-登录网站时,通常要求输入随机生成的验证码,这是为了防止有些软件会自动生成破解密码
-这些验证码一般都是通过图片显示出来的,并且图片上有很多不规则的线条或者图案来干扰,使得软件不容易识别图案上的验证码
+这里contentType="image/jpeg"用来告诉容器：该JSP文件的输出格式为图片格式
+登录网站时，通常要求输入随机生成的验证码，这是为了防止有些软件会自动生成破解密码
+这些验证码一般都是通过图片显示出来的，并且图片上有很多不规则的线条或者图案来干扰，使得软件不容易识别图案上的验证码
 --%>
 
 <%!
 /**
- * 定义验证码类型
- * @see 1--纯数字,2--纯汉字
- * @see 这里也支持数字和英文字母组合,但考虑到不好辨认,故注释了这部分代码,详见69行
+ * 定义验证码类型（1--纯数字，2--纯汉字）
+ * 这里也支持数字和英文字母组合，但考虑到不好辨认，故注释了这部分代码，详见第69行
  */
 int captchaType = 1;
 
@@ -114,7 +113,7 @@ if(this.captchaType == 1){
 				  "\u62a5\u53f6\u538b\u6162\u53d4\u80cc\u7ec6";
 	//图片背景增加噪点
 	g.setColor(this.getRandColor(random, 160, 200));
-	g.setFont(new Font("Times New Roman", Font.PLAIN, 14)); 
+	g.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 	for(int i=0; i<6; i++){
 		g.drawString("*********************************************", 0, 5*(i+2));
 	}
@@ -134,12 +133,14 @@ if(this.captchaType == 1){
 
 //将验证码存入SESSION
 session.setAttribute("rand", sRand);
+
 //图像生效
 g.dispose();
 //输出图像到页面
 ImageIO.write(image, "PNG", response.getOutputStream());
 
-//若无下面两行代码,则每次请求生成验证码图片时,尽管不会影响到图片的生成以及验证码的校验,但控制台都会滚动下面的异常
+//若无下面两行代码，则每次请求生成验证码图片时
+//尽管不会影响到图片的生成以及验证码的校验，但控制台都会滚动下面的异常
 //java.lang.IllegalStateException: getOutputStream() has already been called for this response
 out.clear();
 out = pageContext.pushBody();

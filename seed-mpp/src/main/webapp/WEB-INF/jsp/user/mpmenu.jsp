@@ -8,7 +8,7 @@
 $(function(){
 	$.get("${pageContext.request.contextPath}/user/menu/getjson",
 		function(data){
-			if(1000 == data.code){
+			if(0 == data.code){
 				$("#RawJson").text(data.data);
 			}else{
 				$("#RawJson").text("读取自定义菜单JSON失败-->["+data.message+"]");
@@ -21,7 +21,7 @@ function deploy(){
 	$.post("${ctx}/user/menu/create",
 		{menuJson:$("#RawJson").val()},
 		function(data){
-			if(1000 == data.code){
+			if(0 == data.code){
 				$.promptBox("发布成功", "green");
 			}else{
 				$.promptBox(data.message, "#ffb848");

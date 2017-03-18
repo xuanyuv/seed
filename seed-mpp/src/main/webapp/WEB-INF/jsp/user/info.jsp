@@ -28,7 +28,7 @@ function submit(){
 			$.post("${ctx}/user/bind",
 				$("#userBindForm").serialize(),
 				function(data){
-					if(1000 == data.code){
+					if(0 == data.code){
 						alert("操作成功！！\r\n请于公众号回复\“<%=Constants.MPP_BIND_TEXT%>\”完成绑定");
 					}else{
 						$.promptBox(data.message, "#ffb848");

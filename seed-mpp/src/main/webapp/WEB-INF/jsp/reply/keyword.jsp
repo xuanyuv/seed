@@ -13,7 +13,7 @@ $(function(){
 	if(""=="${o}" || "update"=="${o}"){
 		$.get("${ctx}/reply/keyword/get/${id}",
 			function(data){
-				if(1000 == data.code){
+				if(0 == data.code){
 					if("update" == "${o}"){
 						$("#type").find("option[value=" + data.data.type + "]").prop("selected", true);
 						$("#keyword").val(data.data.keyword);
@@ -49,7 +49,7 @@ function submit(){
 		$.post("${ctx}/reply/keyword/save",
 			$("#keywordForm").serialize(),
 			function(data){
-				if(1000 == data.code){
+				if(0 == data.code){
 					location.href = "${ctx}/reply/keyword/list";
 				}else{
 					$.promptBox("系统繁忙或重复的关键字", "#ffb848");

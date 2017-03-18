@@ -36,7 +36,7 @@ public class MenuConfiguration {
             if(request.getServletPath().startsWith("/reply")){
                 request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_reply");
             }
-            if(request.getServletPath().startsWith("/mpp/view")){
+            if(request.getServletPath().startsWith("/view")){
                 String url = request.getParameter("url");
                 if(url.startsWith("reply")){
                     request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_reply");

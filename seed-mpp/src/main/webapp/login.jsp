@@ -95,11 +95,11 @@ function login(){
 	$.post("${pageContext.request.contextPath}/user/login",
         {username:username, password:MD5(password), captcha:captcha},
         function(data){
-            if(1000 == data.code){
+            if(0 == data.code){
                 window.location.href = "${pageContext.request.contextPath}/user/info";
             }else{
                 o.attr("disabled", false).text("登录").css({"background":"#5bb75b", "cursor":"auto"});
-                $.promptBox(data.message, "#ffb848");
+                $.promptBox(data.msg, "#ffb848");
                 flag = true;
             }
         }
