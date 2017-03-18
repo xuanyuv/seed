@@ -144,7 +144,7 @@ public final class CodecUtil {
 			Security.addProvider(new BouncyCastleProvider());
 		}
 		//实例化密钥生成器
-		KeyGenerator kg = null;
+		KeyGenerator kg;
 		try {
 			kg = KeyGenerator.getInstance(algorithm);
 		} catch (NoSuchAlgorithmException e) {
@@ -179,7 +179,7 @@ public final class CodecUtil {
 	 */
 	public static Map<String, String> initRSAKey(int keysize){
 		if(keysize != ALGORITHM_RSA_PRIVATE_KEY_LENGTH){
-			throw new IllegalArgumentException("RSA1024已经不安全了,请使用"+ALGORITHM_RSA_PRIVATE_KEY_LENGTH+"初始化RSA密钥对");
+			throw new IllegalArgumentException("RSA1024已经不安全了，请使用"+ALGORITHM_RSA_PRIVATE_KEY_LENGTH+"初始化RSA密钥对");
 		}
 		//为RSA算法创建一个KeyPairGenerator对象
 		KeyPairGenerator kpg;
@@ -198,7 +198,7 @@ public final class CodecUtil {
 		//得到私钥
 		Key privateKey = keyPair.getPrivate();
 		String privateKeyStr = Base64.encodeBase64URLSafeString(privateKey.getEncoded());
-		Map<String, String> keyPairMap = new HashMap<String, String>();
+		Map<String, String> keyPairMap = new HashMap<>();
 		keyPairMap.put("publicKey", publicKeyStr);
 		keyPairMap.put("privateKey", privateKeyStr);
 		return keyPairMap;
@@ -213,7 +213,7 @@ public final class CodecUtil {
 	 * @return 加密或解密后得到的数据的字节数组
 	 */
 	private static byte[] rsaSplitCodec(Cipher cipher, int opmode, byte[] datas){
-		int maxBlock = 0;
+		int maxBlock;
 		if(opmode == Cipher.DECRYPT_MODE){
 			maxBlock = ALGORITHM_RSA_PRIVATE_KEY_LENGTH / 8;
 		}else{

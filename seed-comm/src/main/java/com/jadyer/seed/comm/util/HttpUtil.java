@@ -547,7 +547,7 @@ public final class HttpUtil {
 			out.write(URLEncoder.encode(reqData, DEFAULT_CHARSET).getBytes());
 			out.flush(); //发送数据
 			
-			/**
+			/*
 			 * 获取HTTP响应头
 			 * @see URLConnection类提供了读取远程服务器响应数据的一系列方法
 			 * @see getHeaderField(String name)可以返回响应头中参数name指定的属性的值
@@ -570,7 +570,7 @@ public final class HttpUtil {
 				respHeader.append("\r\n");
 			}
 			
-			/**
+			/*
 			 * 获取Content-Type中的charset值
 			 * @see 如Content-Type: text/html; charset=GBK
 			 */
@@ -581,7 +581,7 @@ public final class HttpUtil {
 				respCharset = contentType.substring(contentType.lastIndexOf("=") + 1).trim();
 			}
 			
-			/**
+			/*
 			 * 获取HTTP响应正文
 			 * @see ---------------------------------------------------------------------------------------------
 			 * @see SUN提供了基于HTTP协议的框架实现,不过,这些实现类并没有在JDK类库中公开,它们都位于sun.net.www包或者其子包中
@@ -725,7 +725,7 @@ public final class HttpUtil {
 		Socket socket = null; //客户机
 		String respCharset = DEFAULT_CHARSET;
 		String respMsgHex = "";
-		String respFullData = "";
+		String respFullData;
 		StringBuilder reqFullData = new StringBuilder();
 		try{
 			URL sendURL = new URL(reqURL);
