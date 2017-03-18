@@ -1,9 +1,9 @@
 package com.jadyer.seed.mpp.sdk.weixin.filter;
 
 import com.jadyer.seed.comm.util.HttpUtil;
+import com.jadyer.seed.comm.util.JadyerUtil;
+import com.jadyer.seed.comm.util.LogUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -23,8 +23,6 @@ import java.io.PrintWriter;
  * @author 玄玉<https://jadyer.github.io/>
  */
 public class WeixinFilterDemo implements Filter {
-	private static final Logger logger = LoggerFactory.getLogger(WeixinFilter.class);
-
 	@Override
 	public void destroy() {}
 
@@ -37,7 +35,7 @@ public class WeixinFilterDemo implements Filter {
 		HttpServletResponse response = (HttpServletResponse)resp;
 		String appid = request.getParameter("appid");
 		if(StringUtils.isNotBlank(appid) && "base".equals(request.getParameter("oauth")) && "openid".equals(request.getParameter("openid"))){
-			if(this.isAjaxRequest(request)){
+			if(JadyerUtil.isAjaxRequest(request)){
 				throw new RuntimeException("请不要通过Ajax获取粉丝信息");
 			}
 			String userAgent = request.getHeader("User-Agent");
@@ -55,33 +53,14 @@ public class WeixinFilterDemo implements Filter {
 			}
 			String fullURL = request.getRequestURL().toString() + (null==request.getQueryString()?"":"?"+request.getQueryString());
 			String state = fullURL.replace("?", "/").replaceAll("&", "/").replace("/oauth=base", "");
-			logger.info("计算粉丝请求的资源得到state=[{}]", state);
+			LogUtil.getLogger().info("计算粉丝请求的资源得到state=[{}]", state);
 			//String appurl = ConfigUtil.INSTANCE.getProperty("appurl");
 			String appurl = null;
 			String redirectURL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appid + "&redirect_uri=" + (appurl+"/weixin/helper/oauth/"+appid) + "&response_type=code&scope=snsapi_base&state=" + state + "#wechat_redirect";
-			logger.info("计算请求到微信服务器的redirectURL=[{}]", redirectURL);
+			LogUtil.getLogger().info("计算请求到微信服务器的redirectURL=[{}]", redirectURL);
 			response.sendRedirect(redirectURL);
 		}else{
 			chain.doFilter(req, resp);
-		}
-	}
-
-
-	/**
-	 * 判断是否为Ajax请求
-	 * @create Nov 1, 2015 1:30:55 PM
-	 * @author 玄玉<https://jadyer.github.io/>
-	 */
-	private boolean isAjaxRequest(HttpServletRequest request){
-		String requestType = request.getHeader("X-Requested-With");
-		if(null!=requestType && "XMLHttpRequest".equals(requestType)){
-			return true;
-		}
-		requestType = request.getHeader("x-requested-with");
-		if(null!=requestType && "XMLHttpRequest".equals(requestType)){
-			return true;
-		}else{
-			return false;
 		}
 	}
 }

@@ -2,11 +2,10 @@ package com.jadyer.seed.mpp.sdk.weixin.filter;
 
 import com.jadyer.seed.comm.util.HttpUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
+import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.mpp.sdk.weixin.constant.WeixinConstants;
 import com.jadyer.seed.mpp.sdk.weixin.helper.WeixinHelper;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -25,8 +24,6 @@ import java.io.PrintWriter;
  * @author 玄玉<https://jadyer.github.io/>
  */
 public class WeixinFilter implements Filter {
-	private static final Logger logger = LoggerFactory.getLogger(WeixinFilter.class);
-
 	@Override
 	public void destroy() {}
 
@@ -60,7 +57,7 @@ public class WeixinFilter implements Filter {
 			 * @see   User-Agent: Mozilla/5.0 (Linux; U; Android 4.4.2; zh-cn; H60-L01 Build/HDH60-L01) AppleWebKit/533.1 (KHTML, like Gecko)Version/4.0 MQQBrowser/5.4 TBS/025469 Mobile Safari/533.1 MicroMessenger/6.2.5.54_re87237d.622 NetType/WIFI Language/zh_CN
 			 */
 			String userAgent = request.getHeader("User-Agent");
-			logger.info("网页授权获取粉丝信息时请求的User-Agent=[{}]", userAgent);
+			LogUtil.getLogger().info("网页授权获取粉丝信息时请求的User-Agent=[{}]", userAgent);
 			if(!userAgent.contains("MicroMessenger") || (!userAgent.contains("iPhone") && !userAgent.contains("Android"))){
 				response.setCharacterEncoding(HttpUtil.DEFAULT_CHARSET);
 				response.setContentType("text/plain; charset=" + HttpUtil.DEFAULT_CHARSET);
@@ -78,7 +75,7 @@ public class WeixinFilter implements Filter {
 			 */
 			String fullURL = request.getRequestURL().toString() + (null==request.getQueryString()?"":"?"+request.getQueryString());
 			String state = fullURL.replace("?", "/").replaceAll("&", "/").replace("/oauth=base", "");
-			logger.info("计算粉丝请求的资源得到state=[{}]", state);
+			LogUtil.getLogger().info("计算粉丝请求的资源得到state=[{}]", state);
 			//String appurl = http://www.jadyer.com/mpp
 			StringBuilder appurl = new StringBuilder();
 			appurl.append(request.getScheme()).append("://").append(request.getServerName());
@@ -87,7 +84,7 @@ public class WeixinFilter implements Filter {
 			}
 			appurl.append(request.getContextPath());
 			String redirectURL = WeixinHelper.buildWeixinOAuthCodeURL(appid, WeixinConstants.WEIXIN_OAUTH_SCOPE_SNSAPI_BASE, state, appurl.toString()+"/weixin/helper/oauth/"+appid);
-			logger.info("计算请求到微信服务器的redirectURL=[{}]", redirectURL);
+			LogUtil.getLogger().info("计算请求到微信服务器的redirectURL=[{}]", redirectURL);
 			response.sendRedirect(redirectURL);
 		}else{
 			chain.doFilter(req, resp);

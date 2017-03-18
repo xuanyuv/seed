@@ -10,7 +10,6 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
-@Transactional(rollbackFor=Exception.class)
 public class UserService {
 	@Resource
 	private UserInfoRepository userInfoRepository;
@@ -21,31 +20,27 @@ public class UserService {
 		return DigestUtils.md5Hex(password + "https://jadyer.github.io/");
 	}
 
-	@Transactional(readOnly=true)
-	public UserInfo findByUsernameAndPassword(String username, String password){
+	UserInfo findByUsernameAndPassword(String username, String password){
 		return userInfoRepository.findByUsernameAndPassword(username, buildEncryptPassword(password));
 	}
 
-	@Transactional(readOnly=true)
-	public UserInfo findOne(long id){
+	UserInfo findOne(long id){
 		return userInfoRepository.findOne(id);
 	}
 
-	@Transactional(readOnly=true)
-	public List<UserInfo> findAll(){
+	List<UserInfo> findAll(){
 		return userInfoRepository.findAll();
 	}
 
-	@Transactional(readOnly=true)
 	public UserInfo findByWxid(String mpid){
 		return userInfoRepository.findByWxid(mpid);
 	}
 
-	@Transactional(readOnly=true)
 	public UserInfo findByQqid(String mpid){
 		return userInfoRepository.findByQqid(mpid);
 	}
 
+	@Transactional(rollbackFor=Exception.class)
 	public UserInfo save(UserInfo userInfo){
 		return userInfoRepository.saveAndFlush(userInfo);
 	}
@@ -56,7 +51,8 @@ public class UserService {
 	 * @param oldPassword 用户输入的旧密码
 	 * @param newPassword 用户输入的新密码
 	 */
-	public UserInfo passwordUpdate(UserInfo userInfo, String oldPassword, String newPassword){
+	@Transactional(rollbackFor=Exception.class)
+	UserInfo passwordUpdate(UserInfo userInfo, String oldPassword, String newPassword){
 		if(!userInfo.getPassword().equals(buildEncryptPassword(oldPassword))){
 			return null;
 		}
@@ -67,14 +63,14 @@ public class UserService {
 	/**
 	 * 查询当前登录用户关联的公众平台自定义菜单JSON信息
 	 */
-	public String getMenuJson(long uid){
+	String getMenuJson(long uid){
 		List<MenuInfo> menuList = menuInfoRepository.findMenuListByUID(uid);
 		for(MenuInfo obj : menuList){
 			if(3 == obj.getType()){
 				return obj.getMenuJson();
 			}
 		}
-		return null;
+		return "";
 	}
 
 	/**
@@ -82,7 +78,8 @@ public class UserService {
 	 * @param menuJson 微信或QQ公众号自定义菜单数据的JSON字符串
 	 * @return 返回本次存储在数据库的自定义菜单内容
 	 */
-	public boolean menuJsonUpsert(long uid, String menuJson){
+	@Transactional(rollbackFor=Exception.class)
+	boolean menuJsonUpsert(long uid, String menuJson){
 		MenuInfo menu = null;
 		List<MenuInfo> menuList = menuInfoRepository.findMenuListByUID(uid);
 		for(MenuInfo obj : menuList){

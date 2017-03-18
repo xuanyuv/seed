@@ -14,16 +14,16 @@ import com.jadyer.seed.mpp.sdk.qq.msg.out.QQOutTextMsg;
 public class QQOutMsgXmlBuilder {
 	private QQOutMsgXmlBuilder(){}
 	
-//	public static void write(QQOutMsg outMsg, HttpServletResponse response){
-//		try{
-//			PrintWriter out = response.getWriter();
-//			out.write(build(outMsg));
-//			out.flush();
-//			out.close();
-//		}catch(IOException e){
-//			throw new RuntimeException(e);
-//		}
-//	}
+	//public static void write(QQOutMsg outMsg, HttpServletResponse response){
+	//	try{
+	//		PrintWriter out = response.getWriter();
+	//		out.write(build(outMsg));
+	//		out.flush();
+	//		out.close();
+	//	}catch(IOException e){
+	//		throw new RuntimeException(e);
+	//	}
+	//}
 
 
 	public static String build(QQOutMsg outMsg){

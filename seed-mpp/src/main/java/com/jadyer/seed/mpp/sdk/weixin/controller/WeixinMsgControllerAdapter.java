@@ -1,5 +1,6 @@
 package com.jadyer.seed.mpp.sdk.weixin.controller;
 
+import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.mpp.sdk.weixin.constant.WeixinConstants;
 import com.jadyer.seed.mpp.sdk.weixin.msg.in.WeixinInImageMsg;
 import com.jadyer.seed.mpp.sdk.weixin.msg.in.WeixinInLinkMsg;
@@ -14,8 +15,6 @@ import com.jadyer.seed.mpp.sdk.weixin.msg.in.event.WeixinInTemplateEventMsg;
 import com.jadyer.seed.mpp.sdk.weixin.msg.out.WeixinOutImageMsg;
 import com.jadyer.seed.mpp.sdk.weixin.msg.out.WeixinOutMsg;
 import com.jadyer.seed.mpp.sdk.weixin.msg.out.WeixinOutTextMsg;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 通用的微信消息Adapter
@@ -24,8 +23,6 @@ import org.slf4j.LoggerFactory;
  * @author 玄玉<https://jadyer.github.io/>
  */
 abstract class WeixinMsgControllerAdapter extends WeixinMsgController {
-	private final Logger logger = LoggerFactory.getLogger(getClass());
-
 	@Override
 	protected abstract WeixinOutMsg processInMenuEventMsg(WeixinInMenuEventMsg inMenuEventMsg);
 
@@ -81,7 +78,7 @@ abstract class WeixinMsgControllerAdapter extends WeixinMsgController {
 			return new WeixinOutTextMsg(inFollowEventMsg).setContent("感谢您的关注");
 		}
 		if(WeixinInFollowEventMsg.EVENT_INFOLLOW_UNSUBSCRIBE.equals(inFollowEventMsg.getEvent())){
-			logger.info("您的粉丝{}取消关注了您", inFollowEventMsg.getFromUserName());
+			LogUtil.getLogger().info("您的粉丝{}取消关注了您", inFollowEventMsg.getFromUserName());
 		}
 		return new WeixinOutTextMsg(inFollowEventMsg).setContent(WeixinConstants.NOT_NEED_REPLY_FLAG);
 	}
@@ -109,15 +106,15 @@ abstract class WeixinMsgControllerAdapter extends WeixinMsgController {
 	@Override
 	protected WeixinOutMsg processInCustomServiceEventMsg(WeixinInCustomServiceEventMsg inCustomServiceEventMsg){
 		if(WeixinInCustomServiceEventMsg.EVENT_INCUSTOMSERVICE_KF_CREATE_SESSION.equals(inCustomServiceEventMsg.getEvent())){
-			logger.info("客服{}接入了会话", inCustomServiceEventMsg.getKfAccount());
+			LogUtil.getLogger().info("客服{}接入了会话", inCustomServiceEventMsg.getKfAccount());
 			return new WeixinOutTextMsg(inCustomServiceEventMsg).setContent("客服" + inCustomServiceEventMsg.getKfAccount() + "接入了会话");
 		}
 		if(WeixinInCustomServiceEventMsg.EVENT_INCUSTOMSERVICE_KF_CLOSE_SESSION.equals(inCustomServiceEventMsg.getEvent())){
-			logger.info("客服{}关闭了会话", inCustomServiceEventMsg.getKfAccount());
+			LogUtil.getLogger().info("客服{}关闭了会话", inCustomServiceEventMsg.getKfAccount());
 			return new WeixinOutTextMsg(inCustomServiceEventMsg).setContent("客服" + inCustomServiceEventMsg.getKfAccount() + "关闭了会话");
 		}
 		if(WeixinInCustomServiceEventMsg.EVENT_INCUSTOMSERVICE_KF_SWITCH_SESSION.equals(inCustomServiceEventMsg.getEvent())){
-			logger.info("客服{}将会话转接给了客服{}", inCustomServiceEventMsg.getKfAccount(), inCustomServiceEventMsg.getToKfAccount());
+			LogUtil.getLogger().info("客服{}将会话转接给了客服{}", inCustomServiceEventMsg.getKfAccount(), inCustomServiceEventMsg.getToKfAccount());
 			return new WeixinOutTextMsg(inCustomServiceEventMsg).setContent("客服" + inCustomServiceEventMsg.getKfAccount() + "将会话转接给了客服" + inCustomServiceEventMsg.getToKfAccount());
 		}
 		return new WeixinOutTextMsg(inCustomServiceEventMsg).setContent(WeixinConstants.NOT_NEED_REPLY_FLAG);
@@ -131,17 +128,17 @@ abstract class WeixinMsgControllerAdapter extends WeixinMsgController {
 	@Override
 	protected WeixinOutMsg processInTemplateEventMsg(WeixinInTemplateEventMsg inTemplateEventMsg) {
 		if(WeixinInTemplateEventMsg.EVENT_INTEMPLATE_TEMPLATEFANMSGREAD.equals(inTemplateEventMsg.getEvent())){
-			logger.info("模板消息msgid={}阅读成功", inTemplateEventMsg.getMsgID());
+			LogUtil.getLogger().info("模板消息msgid={}阅读成功", inTemplateEventMsg.getMsgID());
 		}
 		if(WeixinInTemplateEventMsg.EVENT_INTEMPLATE_TEMPLATESENDJOBFINISH.equals(inTemplateEventMsg.getEvent())){
 			if(WeixinInTemplateEventMsg.EVENT_INTEMPLATE_STATUS_SUCCESS.equals(inTemplateEventMsg.getStatus())){
-				logger.info("模板消息msgid={}送达成功", inTemplateEventMsg.getMsgID());
+				LogUtil.getLogger().info("模板消息msgid={}送达成功", inTemplateEventMsg.getMsgID());
 			}
 			if(WeixinInTemplateEventMsg.EVENT_INTEMPLATE_STATUS_BLOCK.equals(inTemplateEventMsg.getStatus())){
-				logger.info("模板消息msgid={}由于{}而送达失败", inTemplateEventMsg.getMsgID(), "用户拒收（用户设置拒绝接收公众号消息）");
+				LogUtil.getLogger().info("模板消息msgid={}由于{}而送达失败", inTemplateEventMsg.getMsgID(), "用户拒收（用户设置拒绝接收公众号消息）");
 			}
 			if(WeixinInTemplateEventMsg.EVENT_INTEMPLATE_STATUS_FAILED.equals(inTemplateEventMsg.getStatus())){
-				logger.info("模板消息msgid={}由于{}而送达失败", inTemplateEventMsg.getMsgID(), "其它原因");
+				LogUtil.getLogger().info("模板消息msgid={}由于{}而送达失败", inTemplateEventMsg.getMsgID(), "其它原因");
 			}
 		}
 		return new WeixinOutTextMsg(inTemplateEventMsg).setContent(WeixinConstants.NOT_NEED_REPLY_FLAG);
@@ -153,7 +150,7 @@ abstract class WeixinMsgControllerAdapter extends WeixinMsgController {
      */
 	@Override
 	protected WeixinOutMsg processInLocationEventMsg(WeixinInLocationEventMsg inLocationEventMsg) {
-		logger.info("收到粉絲=[{}]上報的地理位置纬度=[{}]，经度=[{}]，精度=[{}]", inLocationEventMsg.getFromUserName(), inLocationEventMsg.getLatitude(), inLocationEventMsg.getLongitude(), inLocationEventMsg.getPrecision());
+		LogUtil.getLogger().info("收到粉絲=[{}]上報的地理位置纬度=[{}]，经度=[{}]，精度=[{}]", inLocationEventMsg.getFromUserName(), inLocationEventMsg.getLatitude(), inLocationEventMsg.getLongitude(), inLocationEventMsg.getPrecision());
 		return new WeixinOutTextMsg(inLocationEventMsg).setContent(WeixinConstants.NOT_NEED_REPLY_FLAG);
 	}
 }

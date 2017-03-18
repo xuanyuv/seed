@@ -72,7 +72,7 @@ DROP TABLE IF EXISTS t_fans_info;
 CREATE TABLE t_fans_info(
 id             INT AUTO_INCREMENT PRIMARY KEY COMMENT '主键',
 uid            INT          NOT NULL COMMENT '平台用户ID，对应t_user#id',
-wxId           VARCHAR(32)  COMMENT '微信原始ID',
+wxid           VARCHAR(32)  COMMENT '微信原始ID',
 openid         VARCHAR(64)  NOT NULL COMMENT '粉丝的openid',
 name           VARCHAR(16)  COMMENT '粉丝的真实姓名',
 id_card        VARCHAR(18)  COMMENT '粉丝的身份证号',

@@ -1,9 +1,8 @@
 package com.jadyer.seed.mpp.sdk.qq.helper;
 
+import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.mpp.sdk.qq.model.QQOAuthAccessToken;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,7 +16,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author 玄玉<https://jadyer.github.io/>
  */
 public class QQTokenHolder {
-	private static final Logger logger = LoggerFactory.getLogger(QQTokenHolder.class);
 	private static final String FLAG_QQ_ACCESSTOKEN = "qq_access_token_";
 	private static final String FLAG_QQ_JSAPI_TICKET = "qq_jsapi_ticket_";
 	private static final String FLAG_QQ_ACCESSTOKEN_EXPIRETIME = FLAG_QQ_ACCESSTOKEN + "expire_time_";
@@ -109,7 +107,7 @@ public class QQTokenHolder {
 				tokenMap.put(FLAG_QQ_ACCESSTOKEN + appid, accessToken);
 				tokenMap.put(FLAG_QQ_ACCESSTOKEN_EXPIRETIME + appid, System.currentTimeMillis()+QQ_TOKEN_EXPIRE_TIME_MILLIS);
 			} catch (Exception e) {
-				logger.error("获取QQappid=["+appid+"]的access_token失败", e);
+				LogUtil.getLogger().error("获取QQappid=["+appid+"]的access_token失败", e);
 			}
 			qqAccessTokenRefreshing.set(false);
 		}
@@ -129,13 +127,13 @@ public class QQTokenHolder {
 			return (String)tokenMap.get(FLAG_QQ_JSAPI_TICKET + appid);
 		}
 		if(qqJSApiTicketRefreshing.compareAndSet(false, true)){
-			String jsapiTicket = null;
+			String jsapiTicket;
 			try {
 				jsapiTicket = QQHelper.getQQJSApiTicket(getQQAccessToken(appid));
 				tokenMap.put(FLAG_QQ_JSAPI_TICKET + appid, jsapiTicket);
 				tokenMap.put(FLAG_QQ_JSAPI_TICKET_EXPIRETIME + appid, System.currentTimeMillis()+QQ_TOKEN_EXPIRE_TIME_MILLIS);
 			} catch (Exception e) {
-				logger.error("获取QQappid=["+appid+"]的jsapi_ticket失败", e);
+				LogUtil.getLogger().error("获取QQappid=["+appid+"]的jsapi_ticket失败", e);
 			}
 			qqJSApiTicketRefreshing.set(false);
 		}
@@ -152,17 +150,17 @@ public class QQTokenHolder {
 	 * @author 玄玉<https://jadyer.github.io/>
 	 */
 	public static QQOAuthAccessToken getQQOAuthAccessToken(String appid, String code){
-//		Long expireTime = (Long)tokenMap.get(FLAG_QQ_OAUTH_ACCESSTOKEN_EXPIRETIME + appid);
-//		if(null!=expireTime && expireTime>=System.currentTimeMillis()){
-//			return (QQOAuthAccessToken)tokenMap.get(FLAG_QQ_OAUTH_ACCESSTOKEN + appid);
-//		}
-//		if(qqOAuthAccessTokenRefreshing.compareAndSet(false, true)){
-//			QQOAuthAccessToken qqOauthAccessToken = QQHelper.getQQOAuthAccessToken(appid, getQQAppsecret(appid), code);
-//			tokenMap.put(FLAG_QQ_OAUTH_ACCESSTOKEN + appid, qqOauthAccessToken);
-//			tokenMap.put(FLAG_QQ_OAUTH_ACCESSTOKEN_EXPIRETIME + appid, System.currentTimeMillis()+QQ_TOKEN_EXPIRE_TIME_MILLIS);
-//			qqOAuthAccessTokenRefreshing.set(false);
-//		}
-//		return (QQOAuthAccessToken)tokenMap.get(FLAG_QQ_OAUTH_ACCESSTOKEN + appid);
+		//Long expireTime = (Long)tokenMap.get(FLAG_QQ_OAUTH_ACCESSTOKEN_EXPIRETIME + appid);
+		//if(null!=expireTime && expireTime>=System.currentTimeMillis()){
+		//	return (QQOAuthAccessToken)tokenMap.get(FLAG_QQ_OAUTH_ACCESSTOKEN + appid);
+		//}
+		//if(qqOAuthAccessTokenRefreshing.compareAndSet(false, true)){
+		//	QQOAuthAccessToken qqOauthAccessToken = QQHelper.getQQOAuthAccessToken(appid, getQQAppsecret(appid), code);
+		//	tokenMap.put(FLAG_QQ_OAUTH_ACCESSTOKEN + appid, qqOauthAccessToken);
+		//	tokenMap.put(FLAG_QQ_OAUTH_ACCESSTOKEN_EXPIRETIME + appid, System.currentTimeMillis()+QQ_TOKEN_EXPIRE_TIME_MILLIS);
+		//	qqOAuthAccessTokenRefreshing.set(false);
+		//}
+		//return (QQOAuthAccessToken)tokenMap.get(FLAG_QQ_OAUTH_ACCESSTOKEN + appid);
 		return QQHelper.getQQOAuthAccessToken(appid, getQQAppsecret(appid), code);
 	}
 }

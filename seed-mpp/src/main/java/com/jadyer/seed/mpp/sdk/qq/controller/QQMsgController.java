@@ -1,6 +1,7 @@
 package com.jadyer.seed.mpp.sdk.qq.controller;
 
 import com.jadyer.seed.comm.util.JadyerUtil;
+import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.mpp.sdk.qq.msg.QQInMsgParser;
 import com.jadyer.seed.mpp.sdk.qq.msg.QQOutMsgXmlBuilder;
 import com.jadyer.seed.mpp.sdk.qq.msg.in.QQInImageMsg;
@@ -13,8 +14,6 @@ import com.jadyer.seed.mpp.sdk.qq.msg.in.event.QQInTemplateEventMsg;
 import com.jadyer.seed.mpp.sdk.qq.msg.out.QQOutMsg;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -30,12 +29,10 @@ import java.util.Arrays;
  * Created by 玄玉<https://jadyer.github.io/> on 2015/11/26 19:22.
  */
 public abstract class QQMsgController {
-	private final Logger logger = LoggerFactory.getLogger(getClass());
-
 	@RequestMapping(value="/{token}")
 	public void index(@PathVariable String token, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String reqBodyMsg = JadyerUtil.extractHttpServletRequestBodyMessage(request);
-		logger.info("收到QQ服务器消息如下\n{}", JadyerUtil.extractHttpServletRequestHeaderMessage(request)+"\n"+reqBodyMsg);
+		LogUtil.getLogger().info("收到QQ服务器消息如下\n{}", JadyerUtil.extractHttpServletRequestHeaderMessage(request)+"\n"+reqBodyMsg);
 		//GET过来的请求表示更新开发者服务器URL
 		if("GET".equalsIgnoreCase(request.getMethod())){
 			//验签
@@ -78,7 +75,7 @@ public abstract class QQMsgController {
 		out.write(outMsgXml);
 		out.flush();
 		out.close();
-		logger.info("应答QQ服务器消息-->{}", outMsgXml);
+		LogUtil.getLogger().info("应答QQ服务器消息-->{}", outMsgXml);
 	}
 
 
@@ -124,7 +121,9 @@ public abstract class QQMsgController {
 
 	/**
 	 * 处理自定义菜单拉取消息/跳转链接的事件
-	 * @see 经测试,对于VIEW类型的URL跳转类,不会推到开发者服务器而是直接跳过去
+	 * <p>
+	 *     经测试：对于VIEW类型的URL跳转类，不会推到开发者服务器而是直接跳过去
+	 * </p>
 	 */
 	protected abstract QQOutMsg processInMenuEventMsg(QQInMenuEventMsg inMenuEventMsg);
 

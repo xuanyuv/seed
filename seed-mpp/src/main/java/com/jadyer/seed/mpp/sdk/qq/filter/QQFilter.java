@@ -2,11 +2,10 @@ package com.jadyer.seed.mpp.sdk.qq.filter;
 
 import com.jadyer.seed.comm.util.HttpUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
+import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.mpp.sdk.qq.constant.QQConstants;
 import com.jadyer.seed.mpp.sdk.qq.helper.QQHelper;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -24,8 +23,6 @@ import java.io.PrintWriter;
  * Created by 玄玉<https://jadyer.github.io/> on 2015/12/24 12:00.
  */
 public class QQFilter implements Filter {
-	private static final Logger logger = LoggerFactory.getLogger(QQFilter.class);
-
 	@Override
 	public void destroy() {}
 
@@ -59,7 +56,7 @@ public class QQFilter implements Filter {
 			 * @see   User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_1 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D201 QQ/6.1.0.496 Pixel/640 NetType/WIFI Mem/14
 			 */
 			String userAgent = request.getHeader("User-Agent");
-			logger.info("网页授权获取粉丝信息时请求的User-Agent=[{}]", userAgent);
+			LogUtil.getLogger().info("网页授权获取粉丝信息时请求的User-Agent=[{}]", userAgent);
 			if(!userAgent.contains("QQ") || (!userAgent.contains("iPhone") && !userAgent.contains("Android"))){
 				response.setCharacterEncoding(HttpUtil.DEFAULT_CHARSET);
 				response.setContentType("text/plain; charset=" + HttpUtil.DEFAULT_CHARSET);
@@ -77,7 +74,7 @@ public class QQFilter implements Filter {
 			 */
 			String fullURL = request.getRequestURL().toString() + (null==request.getQueryString()?"":"?"+request.getQueryString());
 			String state = fullURL.replace("?", "/").replaceAll("&", "/").replace("/oauth=base", "");
-			logger.info("计算粉丝请求的资源得到state=[{}]", state);
+			LogUtil.getLogger().info("计算粉丝请求的资源得到state=[{}]", state);
 			//String appurl = http://www.jadyer.com/mpp
 			StringBuilder appurl = new StringBuilder();
 			appurl.append(request.getScheme()).append("://").append(request.getServerName());
@@ -86,7 +83,7 @@ public class QQFilter implements Filter {
 			}
 			appurl.append(request.getContextPath());
 			String redirectURL = QQHelper.buildQQOAuthCodeURL(appid, QQConstants.QQ_OAUTH_SCOPE_SNSAPI_BASE, state, appurl.toString()+"/qq/helper/oauth/"+appid);
-			logger.info("计算请求到QQ服务器地址redirectURL=[{}]", redirectURL);
+			LogUtil.getLogger().info("计算请求到QQ服务器地址redirectURL=[{}]", redirectURL);
 			response.sendRedirect(redirectURL);
 		}else{
 			chain.doFilter(req, resp);

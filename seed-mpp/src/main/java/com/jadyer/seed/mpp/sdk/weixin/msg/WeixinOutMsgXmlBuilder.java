@@ -15,16 +15,16 @@ import com.jadyer.seed.mpp.sdk.weixin.msg.out.WeixinOutTextMsg;
 public class WeixinOutMsgXmlBuilder {
 	private WeixinOutMsgXmlBuilder(){}
 	
-//	public static void write(WeixinOutMsg outMsg, HttpServletResponse response){
-//		try{
-//			PrintWriter out = response.getWriter();
-//			out.write(build(outMsg));
-//			out.flush();
-//			out.close();
-//		}catch(IOException e){
-//			throw new RuntimeException(e);
-//		}
-//	}
+	//public static void write(WeixinOutMsg outMsg, HttpServletResponse response){
+	//	try{
+	//		PrintWriter out = response.getWriter();
+	//		out.write(build(outMsg));
+	//		out.flush();
+	//		out.close();
+	//	}catch(IOException e){
+	//		throw new RuntimeException(e);
+	//	}
+	//}
 
 
 	public static String build(WeixinOutMsg outMsg){

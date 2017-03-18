@@ -139,7 +139,7 @@ public class UserController{
 		userInfo.setMptype(_userInfo.getMptype());
 		userInfo.setBindTime(new Date());
 		request.getSession().setAttribute(Constants.WEB_SESSION_USER, userService.save(userInfo));
-		//更换绑定的公众号,也要同步更新微信或QQ公众平台的appid和appsecret
+		//更换绑定的公众号，也要同步更新微信或QQ公众平台的appid和appsecret
 		if(1 == userInfo.getMptype()){
 			WeixinTokenHolder.setWeixinAppidAppsecret(userInfo.getAppid(), userInfo.getAppsecret());
 		}

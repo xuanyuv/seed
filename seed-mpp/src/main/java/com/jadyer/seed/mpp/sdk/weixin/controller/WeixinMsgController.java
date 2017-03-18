@@ -1,6 +1,7 @@
 package com.jadyer.seed.mpp.sdk.weixin.controller;
 
 import com.jadyer.seed.comm.util.JadyerUtil;
+import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.mpp.sdk.weixin.msg.WeixinInMsgParser;
 import com.jadyer.seed.mpp.sdk.weixin.msg.WeixinOutMsgXmlBuilder;
 import com.jadyer.seed.mpp.sdk.weixin.msg.in.WeixinInImageMsg;
@@ -17,8 +18,6 @@ import com.jadyer.seed.mpp.sdk.weixin.msg.in.event.WeixinInTemplateEventMsg;
 import com.jadyer.seed.mpp.sdk.weixin.msg.out.WeixinOutMsg;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -29,19 +28,15 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 
 /**
- * 接收微信服务器消息,自动解析成com.jadyer.sdk.weixin.msg.in.WeixinInMsg
- * 并分发到相应的处理方法,得到处理后的com.jadyer.sdk.weixin.msg.out.WeixinOutMsg并回复给微信服务器
- * @create Oct 18, 2015 12:37:47 PM
- * @author 玄玉<https://jadyer.github.io/>
+ * 接收微信服务器消息，自动解析成com.jadyer.seed.mpp.sdk.weixin.msg.in.WeixinInMsg
+ * 并分发到相应的处理方法，得到处理后的com.jadyer.seed.mpp.sdk.weixin.msg.out.WeixinOutMsg并回复给微信服务器
  */
 //注意：从语法上讲，这里类名不需要public，但我们需要让它在SpringMVC作用下暴露接口出去，所以一定要public
 public abstract class WeixinMsgController {
-	private final Logger logger = LoggerFactory.getLogger(getClass());
-
 	@RequestMapping(value="/{token}")
 	public void index(@PathVariable String token, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String reqBodyMsg = JadyerUtil.extractHttpServletRequestBodyMessage(request);
-		logger.info("收到微信服务器消息如下\n{}", JadyerUtil.extractHttpServletRequestHeaderMessage(request)+"\n"+reqBodyMsg);
+		LogUtil.getLogger().info("收到微信服务器消息如下\n{}", JadyerUtil.extractHttpServletRequestHeaderMessage(request)+"\n"+reqBodyMsg);
 		//验签
 		if(!this.verifySignature(DigestUtils.md5Hex(token+"https://jadyer.github.io/"+token), request)){
 			PrintWriter out = response.getWriter();
@@ -103,14 +98,12 @@ public abstract class WeixinMsgController {
 		out.write(outMsgXml);
 		out.flush();
 		out.close();
-		logger.info("应答微信服务器消息-->{}", outMsgXml);
+		LogUtil.getLogger().info("应答微信服务器消息-->{}", outMsgXml);
 	}
 
 
 	/**
 	 * 验签
-	 * @create Oct 18, 2015 1:16:24 PM
-	 * @author 玄玉<https://jadyer.github.io/>
 	 */
 	private boolean verifySignature(String token, HttpServletRequest request){
 		String signature = request.getParameter("signature");
@@ -163,7 +156,9 @@ public abstract class WeixinMsgController {
 
 	/**
 	 * 处理自定义菜单拉取消息/跳转链接的事件
-	 * @see 经测试,对于VIEW类型的URL跳转类,不会推到开发者服务器而是直接跳过去
+	 * <p>
+	 *     经测试：对于VIEW类型的URL跳转类，不会推到开发者服务器而是直接跳过去
+	 * </p>
 	 */
 	protected abstract WeixinOutMsg processInMenuEventMsg(WeixinInMenuEventMsg inMenuEventMsg);
 

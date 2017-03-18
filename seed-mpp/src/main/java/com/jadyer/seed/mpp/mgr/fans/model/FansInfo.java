@@ -15,7 +15,7 @@ import javax.persistence.Table;
 public class FansInfo extends BaseEntity<Long> {
 	private static final long serialVersionUID = 7585092842503110991L;
 	private long uid;
-	private String wxId;
+	private String wxid;
 	private String openid;
 	private String name;
 	@Column(name="id_card")
@@ -42,11 +42,11 @@ public class FansInfo extends BaseEntity<Long> {
 	public void setUid(long uid) {
 		this.uid = uid;
 	}
-	public String getWxId() {
-		return wxId;
+	public String getWxid() {
+		return wxid;
 	}
-	public void setWxId(String wxId) {
-		this.wxId = wxId;
+	public void setWxid(String wxid) {
+		this.wxid = wxid;
 	}
 	public String getOpenid() {
 		return openid;

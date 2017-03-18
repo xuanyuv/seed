@@ -1,11 +1,10 @@
 package com.jadyer.seed.mpp.sdk.qq.controller;
 
 import com.jadyer.seed.comm.util.HttpUtil;
+import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.mpp.sdk.qq.helper.QQTokenHolder;
 import com.jadyer.seed.mpp.sdk.qq.model.QQOAuthAccessToken;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,8 +20,6 @@ import java.io.PrintWriter;
 @Controller
 @RequestMapping(value="/qq/helper")
 public class QQHelperController {
-	private final Logger logger = LoggerFactory.getLogger(getClass());
-
 	/**
 	 * 获取网页access_token
 	 * @param appid QQappid,通过它来支持多用户
@@ -32,7 +29,7 @@ public class QQHelperController {
 	 */
 	@RequestMapping(value="/oauth/{appid}")
 	public String oauth(@PathVariable String appid, String code, String state, HttpServletResponse response) throws IOException{
-		logger.info("收到QQ服务器回调code=[{}], state=[{}]", code, state);
+		LogUtil.getLogger().info("收到QQ服务器回调code=[{}], state=[{}]", code, state);
 		if(StringUtils.isNotBlank(code)){
 			QQOAuthAccessToken oauthAccessToken = QQTokenHolder.getQQOAuthAccessToken(appid, code);
 			if(0==oauthAccessToken.getErrcode() && StringUtils.isNotBlank(oauthAccessToken.getOpenid())){
@@ -48,7 +45,7 @@ public class QQHelperController {
 				params = params.replaceAll("/", "&").replace("openid=openid", "openid="+oauthAccessToken.getOpenid());
 				//3.拼接粉丝请求的原URL并跳转过去
 				String fullURI = uri + "?" + params;
-				logger.info("还原粉丝请求的资源得到state=[{}]", fullURI);
+				LogUtil.getLogger().info("还原粉丝请求的资源得到state=[{}]", fullURI);
 				response.sendRedirect(fullURI);
 			}
 		}

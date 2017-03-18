@@ -2,9 +2,8 @@ package com.jadyer.seed.mpp.sdk.qq.filter;
 
 import com.jadyer.seed.comm.util.HttpUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
+import com.jadyer.seed.comm.util.LogUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -25,8 +24,6 @@ import java.io.PrintWriter;
  * Created by 玄玉<https://jadyer.github.io/> on 2015/12/24 12:12.
  */
 public class QQFilterDemo implements Filter {
-	private static final Logger logger = LoggerFactory.getLogger(QQFilterDemo.class);
-
 	@Override
 	public void destroy() {}
 
@@ -57,11 +54,11 @@ public class QQFilterDemo implements Filter {
 			}
 			String fullURL = request.getRequestURL().toString() + (null==request.getQueryString()?"":"?"+request.getQueryString());
 			String state = fullURL.replace("?", "/").replaceAll("&", "/").replace("/oauth=base", "");
-			logger.info("计算粉丝请求的资源得到state=[{}]", state);
+			LogUtil.getLogger().info("计算粉丝请求的资源得到state=[{}]", state);
 			//String appurl = ConfigUtil.INSTANCE.getProperty("appurl");
 			String appurl = null;
 			String redirectURL = "https://open.mp.qq.com/connect/oauth2/authorize?appid=" + appid + "&redirect_uri=" + (appurl+"/qq/helper/oauth/"+appid) + "&response_type=code&scope=snsapi_base&state=" + state + "#qq_redirect";
-			logger.info("计算请求到QQ服务器地址redirectURL=[{}]", redirectURL);
+			LogUtil.getLogger().info("计算请求到QQ服务器地址redirectURL=[{}]", redirectURL);
 			response.sendRedirect(redirectURL);
 		}else{
 			chain.doFilter(req, resp);

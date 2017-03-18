@@ -1,6 +1,7 @@
 package com.jadyer.seed.mpp.sdk.weixin.controller;
 
 import com.jadyer.seed.comm.util.HttpUtil;
+import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.mpp.sdk.weixin.constant.WeixinConstants;
 import com.jadyer.seed.mpp.sdk.weixin.helper.WeixinHelper;
 import com.jadyer.seed.mpp.sdk.weixin.helper.WeixinTokenHolder;
@@ -9,8 +10,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,8 +35,6 @@ import java.util.Map;
 @Controller
 @RequestMapping(value="/weixin/helper")
 public class WeixinHelperController {
-	private final Logger logger = LoggerFactory.getLogger(getClass());
-
 	/**
 	 * 获取网页access_token
 	 * @param appid 微信appid,通过它来支持多用户
@@ -47,7 +44,7 @@ public class WeixinHelperController {
 	 */
 	@RequestMapping(value="/oauth/{appid}")
 	public String oauth(@PathVariable String appid, String code, String state, HttpServletResponse response) throws IOException{
-		logger.info("收到微信服务器回调code=[{}], state=[{}]", code, state);
+		LogUtil.getLogger().info("收到微信服务器回调code=[{}], state=[{}]", code, state);
 		if(StringUtils.isNotBlank(code)){
 			WeixinOAuthAccessToken oauthAccessToken = WeixinTokenHolder.getWeixinOAuthAccessToken(appid, code);
 			if(0==oauthAccessToken.getErrcode() && StringUtils.isNotBlank(oauthAccessToken.getOpenid())){
@@ -63,7 +60,7 @@ public class WeixinHelperController {
 				params = params.replaceAll("/", "&").replace("openid=openid", "openid="+oauthAccessToken.getOpenid());
 				//3.拼接粉丝请求的原URL并跳转过去
 				String fullURI = uri + "?" + params;
-				logger.info("还原粉丝请求的资源得到state=[{}]", fullURI);
+				LogUtil.getLogger().info("还原粉丝请求的资源得到state=[{}]", fullURI);
 				response.sendRedirect(fullURI);
 			}
 		}
@@ -137,7 +134,7 @@ public class WeixinHelperController {
 		try {
 			return new File(localFileFullPath).delete();
 		} catch (Exception e) {
-			logger.info("删除存储在本地的微信临时媒体文件mediaId=["+mediaId+"],fullPath=["+localFileFullPath+"]失败,堆栈轨迹如下", e);
+			LogUtil.getLogger().info("删除存储在本地的微信临时媒体文件mediaId=["+mediaId+"],fullPath=["+localFileFullPath+"]失败,堆栈轨迹如下", e);
 			return false;
 		}
 	}

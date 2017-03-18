@@ -3,6 +3,7 @@ package com.jadyer.seed.mpp.sdk.weixin.helper;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.jadyer.seed.comm.util.HttpUtil;
+import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.mpp.sdk.weixin.constant.WeixinCodeEnum;
 import com.jadyer.seed.mpp.sdk.weixin.constant.WeixinConstants;
 import com.jadyer.seed.mpp.sdk.weixin.model.WeixinErrorInfo;
@@ -14,8 +15,6 @@ import com.jadyer.seed.mpp.sdk.weixin.model.template.WeixinTemplate;
 import com.jadyer.seed.mpp.sdk.weixin.model.template.WeixinTemplateMsg;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -24,8 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 public final class WeixinHelper {
-	private static final Logger logger = LoggerFactory.getLogger(WeixinHelper.class);
-
 	private WeixinHelper(){}
 
 	/**
@@ -38,7 +35,7 @@ public final class WeixinHelper {
 	static String getWeixinAccessToken(String appid, String appsecret) throws IllegalAccessException {
 		String reqURL = WeixinConstants.URL_WEIXIN_GET_ACCESSTOKEN.replace(WeixinConstants.URL_PLACEHOLDER_APPID, appid).replace(WeixinConstants.URL_PLACEHOLDER_APPSECRET, appsecret);
 		String respData = HttpUtil.post(reqURL, null, null);
-		logger.info("获取微信access_token,微信应答报文为-->{}", respData);
+		LogUtil.getLogger().info("获取微信access_token,微信应答报文为-->{}", respData);
 		Map<String, String> map = JSON.parseObject(respData, new TypeReference<Map<String, String>>(){});
 		if(respData.contains("access_token")){
 			return map.get("access_token");
@@ -63,7 +60,7 @@ public final class WeixinHelper {
 	static String getWeixinJSApiTicket(String accesstoken) throws IllegalAccessException {
 		String reqURL = WeixinConstants.URL_WEIXIN_GET_JSAPI_TICKET.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
 		String respData = HttpUtil.post(reqURL, null, null);
-		logger.info("获取微信jsapi_ticket,微信应答报文为-->{}", respData);
+		LogUtil.getLogger().info("获取微信jsapi_ticket,微信应答报文为-->{}", respData);
 		Map<String, String> map = JSON.parseObject(respData, new TypeReference<Map<String, String>>(){});
 		if("0".equals(map.get("errcode"))){
 			return map.get("ticket");
@@ -88,7 +85,7 @@ public final class WeixinHelper {
 																	  .replace(WeixinConstants.URL_PLACEHOLDER_APPSECRET, appsecret)
 																	  .replace(WeixinConstants.URL_PLACEHOLDER_CODE, code);
 		String respData = HttpUtil.post(reqURL, null, null);
-		logger.info("获取微信网页access_token,微信应答报文为-->{}", respData);
+		LogUtil.getLogger().info("获取微信网页access_token,微信应答报文为-->{}", respData);
 		WeixinOAuthAccessToken weixinOauthAccessToken = JSON.parseObject(respData, WeixinOAuthAccessToken.class);
 		if(weixinOauthAccessToken.getErrcode() != 0){
 			String errmsg = WeixinCodeEnum.getMessageByCode(weixinOauthAccessToken.getErrcode());
@@ -131,9 +128,9 @@ public final class WeixinHelper {
 	public static WeixinErrorInfo createWeixinMenu(String accesstoken, WeixinMenu menu){
 		String reqURL = WeixinConstants.URL_WEIXIN_GET_CREATE_MENU.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
 		String reqData = JSON.toJSONString(menu);
-		logger.info("自定义菜单创建-->待发送的JSON为{}", reqData);
+		LogUtil.getLogger().info("自定义菜单创建-->待发送的JSON为{}", reqData);
 		String respData = HttpUtil.post(reqURL, reqData, null);
-		logger.info("自定义菜单创建-->微信应答JSON为{}", respData);
+		LogUtil.getLogger().info("自定义菜单创建-->微信应答JSON为{}", respData);
 		WeixinErrorInfo errinfo = JSON.parseObject(respData, WeixinErrorInfo.class);
 		if(errinfo.getErrcode() != 0){
 			String errmsg = WeixinCodeEnum.getMessageByCode(errinfo.getErrcode());
@@ -152,9 +149,9 @@ public final class WeixinHelper {
 	 */
 	public static WeixinErrorInfo createWeixinMenu(String accesstoken, String menuJson){
 		String reqURL = WeixinConstants.URL_WEIXIN_GET_CREATE_MENU.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
-		logger.info("自定义菜单创建-->待发送的JSON为{}", menuJson);
+		LogUtil.getLogger().info("自定义菜单创建-->待发送的JSON为{}", menuJson);
 		String respData = HttpUtil.post(reqURL, menuJson, null);
-		logger.info("自定义菜单创建-->微信应答JSON为{}", respData);
+		LogUtil.getLogger().info("自定义菜单创建-->微信应答JSON为{}", respData);
 		WeixinErrorInfo errinfo = JSON.parseObject(respData, WeixinErrorInfo.class);
 		if(errinfo.getErrcode() != 0){
 			String errmsg = WeixinCodeEnum.getMessageByCode(errinfo.getErrcode());
@@ -194,9 +191,9 @@ public final class WeixinHelper {
 	public static WeixinErrorInfo pushWeixinMsgToFans(String accesstoken, WeixinCustomMsg customMsg){
 		String reqURL = WeixinConstants.URL_WEIXIN_CUSTOM_PUSH_MESSAGE.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
 		String reqData = JSON.toJSONString(customMsg);
-		logger.info("客服接口主动推消息-->待发送的JSON为{}", reqData);
+		LogUtil.getLogger().info("客服接口主动推消息-->待发送的JSON为{}", reqData);
 		String respData = HttpUtil.post(reqURL, reqData, null);
-		logger.info("客服接口主动推消息-->微信应答JSON为{}", respData);
+		LogUtil.getLogger().info("客服接口主动推消息-->微信应答JSON为{}", respData);
 		WeixinErrorInfo errinfo = JSON.parseObject(respData, WeixinErrorInfo.class);
 		if(errinfo.getErrcode() != 0){
 			String errmsg = WeixinCodeEnum.getMessageByCode(errinfo.getErrcode());
@@ -214,9 +211,9 @@ public final class WeixinHelper {
 	public static WeixinErrorInfo pushWeixinTemplateMsgToFans(String accesstoken, WeixinTemplateMsg templateMsg){
 		String reqURL = WeixinConstants.URL_WEIXIN_TEMPLATE_PUSH_MESSAGE.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
 		String reqData = JSON.toJSONString(templateMsg);
-		logger.info("单发主动推模板消息-->发送的JSON为{}", reqData);
+		LogUtil.getLogger().info("单发主动推模板消息-->发送的JSON为{}", reqData);
 		String respData = HttpUtil.post(reqURL, reqData, "application/json; charset="+HttpUtil.DEFAULT_CHARSET);
-		logger.info("单发主动推模板消息-->微信应答JSON为{}", respData);
+		LogUtil.getLogger().info("单发主动推模板消息-->微信应答JSON为{}", respData);
 		WeixinErrorInfo errinfo = JSON.parseObject(respData, WeixinErrorInfo.class);
 		if(errinfo.getErrcode() != 0){
 			String errmsg = WeixinCodeEnum.getMessageByCode(errinfo.getErrcode());
@@ -234,7 +231,7 @@ public final class WeixinHelper {
 	public static List<WeixinTemplate> getWeixinTemplateList(String accesstoken){
 		String reqURL = WeixinConstants.URL_WEIXIN_TEMPLATE_GETALL.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
 		String respData = HttpUtil.post(reqURL, null, null);
-		logger.info("获取微信模板消息列表，微信应答报文为-->{}", respData);
+		LogUtil.getLogger().info("获取微信模板消息列表，微信应答报文为-->{}", respData);
 		Map<String, String> map = JSON.parseObject(respData, new TypeReference<Map<String, String>>(){});
 		String templateListStr = map.get("template_list");
 		if(StringUtils.isBlank(templateListStr)){
@@ -310,9 +307,9 @@ public final class WeixinHelper {
 		}else{
 			throw new IllegalArgumentException("无法识别的二维码类型-->[" + type + "]");
 		}
-		logger.info("创建二维码ticket-->待发送的JSON为{}", reqData);
+		LogUtil.getLogger().info("创建二维码ticket-->待发送的JSON为{}", reqData);
 		String respData = HttpUtil.post(reqURL, reqData, null);
-		logger.info("创建二维码ticket-->微信应答JSON为{}", respData);
+		LogUtil.getLogger().info("创建二维码ticket-->微信应答JSON为{}", respData);
 		if(respData.contains("ticket")){
 			return JSON.parseObject(respData, new TypeReference<Map<String, String>>(){}).get("ticket");
 		}else{
