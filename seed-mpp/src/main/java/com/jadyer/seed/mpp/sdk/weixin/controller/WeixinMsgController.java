@@ -1,5 +1,6 @@
 package com.jadyer.seed.mpp.sdk.weixin.controller;
 
+import com.jadyer.seed.comm.constant.Constants;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.mpp.sdk.weixin.msg.WeixinInMsgParser;
@@ -35,11 +36,12 @@ import java.util.Arrays;
 public abstract class WeixinMsgController {
 	@RequestMapping(value="/{token}")
 	public void index(@PathVariable String token, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.setCharacterEncoding(Constants.MPP_CHARSET_UTF8);
+		PrintWriter out = response.getWriter();
 		String reqBodyMsg = JadyerUtil.extractHttpServletRequestBodyMessage(request);
 		LogUtil.getLogger().info("收到微信服务器消息如下\n{}", JadyerUtil.extractHttpServletRequestHeaderMessage(request)+"\n"+reqBodyMsg);
 		//验签
 		if(!this.verifySignature(DigestUtils.md5Hex(token+"https://jadyer.github.io/"+token), request)){
-			PrintWriter out = response.getWriter();
 			out.write("verify signature failed");
 			out.flush();
 			out.close();
@@ -47,7 +49,6 @@ public abstract class WeixinMsgController {
 		}
 		//GET过来的请求表示更新开发者服务器URL
 		if("GET".equalsIgnoreCase(request.getMethod())){
-			PrintWriter out = response.getWriter();
 			out.write(request.getParameter("echostr"));
 			out.flush();
 			out.close();
@@ -94,7 +95,6 @@ public abstract class WeixinMsgController {
 			outMsg = this.processInLocationEventMsg((WeixinInLocationEventMsg)inMsg);
 		}
 		String outMsgXml = WeixinOutMsgXmlBuilder.build(outMsg);
-		PrintWriter out = response.getWriter();
 		out.write(outMsgXml);
 		out.flush();
 		out.close();

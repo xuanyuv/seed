@@ -16,6 +16,7 @@ public interface Constants {
      * 微信或QQ公众平台绑定时发送的文本指令
      */
     String MPP_BIND_TEXT = "我是玄玉";
+    String MPP_CHARSET_UTF8 = "UTF-8";
 
     /**
      * seed-open用到的常量
