@@ -49,10 +49,10 @@ function addTask(){
 		$.post("${ctx}/qss/add",
 				{status:"0", concurrent:$("#concurrent").val(), name:$("#name").val(), group:$("#group").val(), url:$("#url").val(), cron:$("#cron").val(), desc:$("#desc").val(), dynamicPassword:$("#dynamicPassword").val()},
 				function(jsonData){
-					if(1000==jsonData.code){
+					if(0 == jsonData.code){
 						location.reload();
 					}else{
-						alert(jsonData.message);
+						alert(jsonData.msg);
 					}
 				}
 		);
@@ -66,10 +66,10 @@ function deleteTask(id){
 	if(inputDynamicPassword()){
 		if(confirm("确定删除此任务么？")){
 			$.get("${ctx}/qss/delete/"+id+"/"+dynamicPassword,function(data){
-				if(1000==data.code){
+				if(0 == data.code){
 					location.reload();
 				}else{
-					alert(data.message);
+					alert(data.msg);
 				}
 			});
 		}
@@ -83,10 +83,10 @@ function triggerJob(id){
 	if(inputDynamicPassword()){
 		if(confirm("确定立即执行此任务么？")){
 			$.get("${ctx}/qss/triggerJob/"+id+"/"+dynamicPassword,function(data){
-				if(1000==data.code){
+				if(0 == data.code){
 					location.reload();
 				}else{
-					alert(data.message);
+					alert(data.msg);
 				}
 			});
 		}
@@ -99,10 +99,10 @@ function triggerJob(id){
 function updateStatus(id, status){
 	if(inputDynamicPassword()){
 		$.get("${ctx}/qss/updateStatus?id="+id+"&status="+status+"&dynamicPassword="+dynamicPassword,function(data){
-			if(1000==data.code){
+			if(0 == data.code){
 				location.reload();
 			}else{
-				alert(data.message);
+				alert(data.msg);
 			}
 		});
 	}
@@ -116,10 +116,10 @@ function updateCron(id, cron){
 		var cron = prompt("请输入CronExpression", cron);
 		if(cron){
 			$.get("${ctx}/qss/updateCron?id="+id+"&cron="+cron+"&dynamicPassword="+dynamicPassword,function(data){
-				if(1000==data.code){
+				if(0 == data.code){
 					location.reload();
 				}else{
-					alert(data.message);
+					alert(data.msg);
 				}
 			});
 		}

@@ -11,7 +11,7 @@ $(function(){
 			if(0 == data.code){
 				$("#RawJson").text(data.data);
 			}else{
-				$("#RawJson").text("读取自定义菜单JSON失败-->["+data.message+"]");
+				$("#RawJson").text("读取自定义菜单JSON失败-->["+data.msg+"]");
 			}
 		}
 	);
@@ -24,7 +24,7 @@ function deploy(){
 			if(0 == data.code){
 				$.promptBox("发布成功", "green");
 			}else{
-				$.promptBox(data.message, "#ffb848");
+				$.promptBox(data.msg, "#ffb848");
 			}
 		}
 	);

@@ -9,10 +9,10 @@
 function deleteKeyword(id){
 	if(confirm("确定删除此关键字么？\r\n删除后其对应的文本回复或图文回复都将失效！！")){
 		$.get("${ctx}/reply/keyword/delete/"+id,function(data){
-			if(1000==data.code){
+			if(0 == data.code){
 				location.reload();
 			}else{
-				$.promptBox(data.message, "#ffb848");
+				$.promptBox(data.msg, "#ffb848");
 			}
 		});
 	}

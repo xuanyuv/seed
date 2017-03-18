@@ -25,7 +25,7 @@ function saveOrUpdate(){
 				id = data.data.id;
 				$.promptBox("更新成功", "green");
 			}else{
-				$.promptBox(data.message, "#ffb848");
+				$.promptBox(data.msg, "#ffb848");
 			}
 		}
 	);

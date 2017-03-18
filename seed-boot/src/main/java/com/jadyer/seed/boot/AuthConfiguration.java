@@ -37,7 +37,7 @@ public class AuthConfiguration {
      * 权限验证
      * <p>
      *     Session超时后，Ajax请求会被"Status Code:302 Found"到超时后的登录页面
-     *     此时前台js中收到的Ajax结果是undefined，其实是没有得到应答，所以alert(jsonData.message)时会弹出undefined
+     *     此时前台js中收到的Ajax结果是undefined，其实是没有得到应答，所以alert(jsonData.msg)时会弹出undefined
      * </p>
      * Created by 玄玉<https://jadyer.github.io/> on 2014/11/3 10:39.
      */

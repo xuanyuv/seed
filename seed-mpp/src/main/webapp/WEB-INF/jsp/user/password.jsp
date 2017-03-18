@@ -28,7 +28,7 @@ function submit(){
 			if(0 == data.code){
 				$.promptBox("密码修改成功", "green");
 			}else{
-				$.promptBox(data.message, "#ffb848");
+				$.promptBox(data.msg, "#ffb848");
 			}
 		}
 	);

@@ -31,7 +31,7 @@ function submit(){
 					if(0 == data.code){
 						alert("操作成功！！\r\n请于公众号回复\“<%=Constants.MPP_BIND_TEXT%>\”完成绑定");
 					}else{
-						$.promptBox(data.message, "#ffb848");
+						$.promptBox(data.msg, "#ffb848");
 					}
 				}
 			);
