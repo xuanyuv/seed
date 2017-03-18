@@ -51,7 +51,7 @@ public class WeixinOutMsgXmlBuilder {
 	 * 回复文本消息
 	 * @see -----------------------------------------------------------------------------------------------------------
 	 * @see 1.汉字直接传入即可,不需要手工编码,微信上回显的不会乱码(微信服务器POST消息时用的是UTF-8编码,响应消息时也要UTF-8编码)
-	 * @see 2.若想在文本中写链接,那么传入"欢迎访问<a href=\"http://blog.csdn.net/jadyer\">我的博客</a>"即可
+	 * @see 2.若想在文本中写链接,那么传入"欢迎访问<a href=\"https://jadyer.github.io/\">我的博客</a>"即可
 	 * @see 3.下面是开发者服务器回复给微信服务器的XML报文格式
 	 * @see <xml>
 	 * @see 	<ToUserName><![CDATA[toUser]]></ToUserName>

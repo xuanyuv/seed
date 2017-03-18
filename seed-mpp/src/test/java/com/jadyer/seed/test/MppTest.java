@@ -28,7 +28,7 @@ public class MppTest {
     @Test
     public void createQQMenu(){
         String accesstoken = "c33c7270918c211d4fd29eb42ed7296c";
-        String menu = "{\"button\":[{\"name\":\"个人中心\",\"sub_button\":[{\"name\":\"我的博客\",\"type\":\"view\",\"url\":\"http://blog.csdn.net/jadyer\"},{\"name\":\"我的GitHub\",\"type\":\"view\",\"url\":\"https://github.com/jadyer\"}]},{\"key\":\"joke\",\"name\":\"幽默笑话\",\"type\":\"click\"},{\"name\":\"休闲驿站\",\"sub_button\":[{\"key\":\"123abc\",\"name\":\"历史上的今天\",\"type\":\"click\"},{\"key\":\"456\",\"name\":\"天气预报\",\"type\":\"click\"}]}]}";
+        String menu = "{\"button\":[{\"name\":\"个人中心\",\"sub_button\":[{\"name\":\"我的博客\",\"type\":\"view\",\"url\":\"https://jadyer.github.io/\"},{\"name\":\"我的GitHub\",\"type\":\"view\",\"url\":\"https://github.com/jadyer\"}]},{\"key\":\"joke\",\"name\":\"幽默笑话\",\"type\":\"click\"},{\"name\":\"休闲驿站\",\"sub_button\":[{\"key\":\"123abc\",\"name\":\"历史上的今天\",\"type\":\"click\"},{\"key\":\"456\",\"name\":\"天气预报\",\"type\":\"click\"}]}]}";
         System.out.println(ReflectionToStringBuilder.toString(QQHelper.createQQMenu(accesstoken, menu), ToStringStyle.MULTI_LINE_STYLE));
     }
 

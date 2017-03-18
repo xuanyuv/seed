@@ -39,7 +39,7 @@ public abstract class QQMsgController {
 		//GET过来的请求表示更新开发者服务器URL
 		if("GET".equalsIgnoreCase(request.getMethod())){
 			//验签
-			if(!this.verifySignature(DigestUtils.md5Hex(token+"http://blog.csdn.net/jadyer"+token), request)){
+			if(!this.verifySignature(DigestUtils.md5Hex(token+"https://jadyer.github.io/"+token), request)){
 				PrintWriter out = response.getWriter();
 				out.write("verify signature failed");
 				out.flush();

@@ -49,7 +49,7 @@ function submit(){
 	<table class="tab_head tab_in tab_list2" width="100%">
 		<tr class="ti"><th colspan="2">个人信息</th></tr>
 		<tr><th width="15%">用户名：</th><td>${user.username}</td></tr>
-		<tr><th>平台类型：</th><td>${user.mptype eq 1 ? '微信' : user.mptype eq 2 ? 'QQ' : '未知'}</td></tr>
+		<tr><th>平台类型：</th><td>${user.mptype eq 1 ? '微信（http://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login）' : user.mptype eq 2 ? 'QQ' : '未知'}</td></tr>
 		<tr><th>绑解状态：</th><td>${user.bindStatus eq 0 ? '<span class="cf30 fw">未绑定</span>' : '<span class="cgre fw">已绑定</span>'}</td></tr>
 		<tr><th>绑解时间：</th><td><fmt:formatDate value="${user.bindTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td></tr>
 	</table>

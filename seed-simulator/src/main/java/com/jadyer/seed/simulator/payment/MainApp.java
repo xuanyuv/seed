@@ -51,7 +51,7 @@ public class MainApp extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 6763819475306383567L;
 	/*
 	simulator.name=支付模拟器v2.4
-	simulator.about=\r\n作者：玄玉\r\n邮箱：jadyer@yeah.net\r\n博客：http://blog.csdn.net/jadyer\r\n更新：\r\nv1.0-->20130405：实现了无卡支付业务模拟功能，支持多家银行，支持生产在内的所有环境测试\r\nv2.0-->20130406：增加TCP报文测试器工具，可自动计算报文长度，支持服务端响应原始字节打印\r\nv2.1-->20130406：主窗口WelcomeTab增加数字时钟功能，目前订单通知和自动补单功能尚未实现\r\nv2.2-->20130423：移除自动补单测试的功能，并增加网络共享文件读取及调用本地程序查看的功能\r\nv2.3-->20130502：读取共享文件时增加进度条显示，增加多线程处理，取消无卡支付生产测试功能\r\nv2.4-->20130714：新增代码行数统计器，支持 *.java  *.xml  *.properties  *.jsp  *.htm  *.html六种文件
+	simulator.about=\r\n作者：玄玉\r\n邮箱：jadyer@yeah.net\r\n博客：https://jadyer.github.io/\r\n更新：\r\nv1.0-->20130405：实现了无卡支付业务模拟功能，支持多家银行，支持生产在内的所有环境测试\r\nv2.0-->20130406：增加TCP报文测试器工具，可自动计算报文长度，支持服务端响应原始字节打印\r\nv2.1-->20130406：主窗口WelcomeTab增加数字时钟功能，目前订单通知和自动补单功能尚未实现\r\nv2.2-->20130423：移除自动补单测试的功能，并增加网络共享文件读取及调用本地程序查看的功能\r\nv2.3-->20130502：读取共享文件时增加进度条显示，增加多线程处理，取消无卡支付生产测试功能\r\nv2.4-->20130714：新增代码行数统计器，支持 *.java  *.xml  *.properties  *.jsp  *.htm  *.html六种文件
 	#v2.4-->20130520：增加TCP报文监控器工具，可监控TCP或HTTP报文，类似于Apache-TCPMon工具
 	*/
 	private static final String SIMULATOR_NAME = "支付模拟器v2.4";

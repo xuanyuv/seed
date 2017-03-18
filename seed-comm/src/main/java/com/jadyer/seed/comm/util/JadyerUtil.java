@@ -1248,11 +1248,11 @@ public final class JadyerUtil {
 			case "xml":
 				multiCommentPrefix[0] = "<!--";
 				multiCommentSuffix[0] = "-->";
-				singleCommentPrefix = "http://blog.csdn.net/jadyer";
+				singleCommentPrefix = "https://jadyer.github.io/";
 				break;
 			case "properties":
-				multiCommentPrefix[0] = "http://blog.csdn.net/jadyer";
-				multiCommentSuffix[0] = "http://blog.csdn.net/jadyer";
+				multiCommentPrefix[0] = "https://jadyer.github.io/";
+				multiCommentSuffix[0] = "https://jadyer.github.io/";
 				singleCommentPrefix = "#";
 				break;
 			case "jsp":
@@ -1277,12 +1277,12 @@ public final class JadyerUtil {
 				singleCommentPrefix = "//";
 				break;
 			default:
-				multiCommentPrefix[0] = "http://blog.csdn.net/jadyer";
-				multiCommentSuffix[0] = "http://blog.csdn.net/jadyer";
-				singleCommentPrefix = "http://blog.csdn.net/jadyer";
+				multiCommentPrefix[0] = "https://jadyer.github.io/";
+				multiCommentSuffix[0] = "https://jadyer.github.io/";
+				singleCommentPrefix = "https://jadyer.github.io/";
 				break;
 		}
-		/**
+		/*
 		 * 开始统计
 		 */
 		BufferedReader br = null;
@@ -1302,8 +1302,8 @@ public final class JadyerUtil {
 					//css和js标记的起始标签分别有不止一种的写法,故startsWith
 					if(content.startsWith("<style") || content.startsWith("<script")){
 						//这里之所以取下标为0的元素,是因为上面在初始化多行的注释标记时,均将页面中的<!---->注释标记放置在第0个元素
-						multiCommentPrefix[0] = "http://blog.csdn.net/jadyer";
-						multiCommentSuffix[0] = "http://blog.csdn.net/jadyer";
+						multiCommentPrefix[0] = "https://jadyer.github.io/";
+						multiCommentSuffix[0] = "https://jadyer.github.io/";
 					}
 					if(content.equals("</style>") || content.equals("</script>")){
 						multiCommentPrefix[0] = "<!--";

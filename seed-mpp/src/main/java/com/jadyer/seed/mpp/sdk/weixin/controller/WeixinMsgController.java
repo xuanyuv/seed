@@ -43,7 +43,7 @@ public abstract class WeixinMsgController {
 		String reqBodyMsg = JadyerUtil.extractHttpServletRequestBodyMessage(request);
 		logger.info("收到微信服务器消息如下\n{}", JadyerUtil.extractHttpServletRequestHeaderMessage(request)+"\n"+reqBodyMsg);
 		//验签
-		if(!this.verifySignature(DigestUtils.md5Hex(token+"http://blog.csdn.net/jadyer"+token), request)){
+		if(!this.verifySignature(DigestUtils.md5Hex(token+"https://jadyer.github.io/"+token), request)){
 			PrintWriter out = response.getWriter();
 			out.write("verify signature failed");
 			out.flush();
