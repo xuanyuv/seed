@@ -25,7 +25,7 @@
 			<a href="#"><span>回复设置</span><i></i></a>
 			<div>
 				<a href="javascript:alert('暂未开放');"><span>关键字回复</span></a>
-				<a href="${ctx}/sample/view?url=demo.wangeditor"><span>关注后回复</span></a>
+				<a href="${ctx}/sample/view?url=wangeditor"><span>关注后回复</span></a>
 				<a href="javascript:alert('暂未开放');"><span>通用的回复</span></a>
 			</div>
 		</li>
