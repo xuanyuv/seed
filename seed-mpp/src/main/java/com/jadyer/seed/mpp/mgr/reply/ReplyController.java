@@ -25,15 +25,15 @@ import java.util.Map;
 @RequestMapping(value="/reply")
 public class ReplyController{
 	@Resource
-	private ReplyInfoDao replyInfoDao;
+	private ReplyInfoRepository replyInfoRepository;
 
 	/**
 	 * 查询通用的回复内容
 	 */
 	@RequestMapping("/common/get")
 	public String getCommon(HttpServletRequest request){
-		int uid = ((UserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId();
-		List<ReplyInfo> replyInfoList = replyInfoDao.findByCategory(uid, "0");
+		long uid = ((UserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId();
+		List<ReplyInfo> replyInfoList = replyInfoRepository.findByCategory(uid, 0);
 		if(!replyInfoList.isEmpty()){
 			request.setAttribute("replyInfo", replyInfoList.get(0));
 		}
@@ -46,8 +46,8 @@ public class ReplyController{
 	 */
 	@RequestMapping("/follow/get")
 	public String getFollow(HttpServletRequest request){
-		int uid = ((UserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId();
-		List<ReplyInfo> replyInfoList = replyInfoDao.findByCategory(uid, "1");
+		long uid = ((UserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId();
+		List<ReplyInfo> replyInfoList = replyInfoRepository.findByCategory(uid, 1);
 		if(!replyInfoList.isEmpty()){
 			request.setAttribute("replyInfo", replyInfoList.get(0));
 		}
@@ -62,9 +62,9 @@ public class ReplyController{
 	@RequestMapping("/follow/save")
 	public CommonResult saveFollow(ReplyInfo replyInfo, HttpServletRequest request){
 		replyInfo.setUid(((UserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId());
-		replyInfo.setCategory("1");
-		replyInfo.setType("0");
-		return new CommonResult(replyInfoDao.saveAndFlush(replyInfo));
+		replyInfo.setCategory(1);
+		replyInfo.setType(0);
+		return new CommonResult(replyInfoRepository.saveAndFlush(replyInfo));
 	}
 
 
@@ -73,7 +73,7 @@ public class ReplyController{
 	@RequestMapping("/keyword/list")
 	public String listKeyword(HttpServletRequest request){
 		int uid = ((UserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId();
-		List<ReplyInfo> replyInfoList = replyInfoDao.findByCategory(uid, "2");
+		List<ReplyInfo> replyInfoList = replyInfoRepository.findByCategory(uid, "2");
 		request.setAttribute("replyInfoList", replyInfoList);
 		return "reply/keywordList";
 	}
@@ -86,7 +86,7 @@ public class ReplyController{
 	 */
 	@RequestMapping("/keyword/list")
 	public String listViaPage(String pageNo, HttpServletRequest request){
-		final int uid = ((UserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId();
+		final long uid = ((UserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId();
 		//排序
 		Sort sort = new Sort(Sort.Direction.DESC, "id");
 		//分页
@@ -97,7 +97,7 @@ public class ReplyController{
 		params.put("category", 2);
 		Condition<ReplyInfo> spec = Condition.<ReplyInfo>create().and(params);
 		//执行
-		Page<ReplyInfo> keywordPage = replyInfoDao.findAll(spec, pageable);
+		Page<ReplyInfo> keywordPage = replyInfoRepository.findAll(spec, pageable);
 		request.setAttribute("page", keywordPage);
 		return "reply/keywordList";
 	}
@@ -108,8 +108,8 @@ public class ReplyController{
 	 */
 	@ResponseBody
 	@RequestMapping("/keyword/get/{id}")
-	public CommonResult getKeyword(@PathVariable int id){
-		return new CommonResult(replyInfoDao.findOne(id));
+	public CommonResult getKeyword(@PathVariable long id){
+		return new CommonResult(replyInfoRepository.findOne(id));
 	}
 
 
@@ -118,8 +118,8 @@ public class ReplyController{
 	 */
 	@ResponseBody
 	@RequestMapping("/keyword/delete/{id}")
-	public CommonResult deleteKeyword(@PathVariable int id){
-		replyInfoDao.delete(id);
+	public CommonResult deleteKeyword(@PathVariable long id){
+		replyInfoRepository.delete(id);
 		return new CommonResult();
 	}
 
@@ -130,7 +130,7 @@ public class ReplyController{
 	@ResponseBody
 	@RequestMapping("/keyword/save")
 	public CommonResult saveKeyword(ReplyInfo replyInfo){
-		replyInfoDao.saveAndFlush(replyInfo);
+		replyInfoRepository.saveAndFlush(replyInfo);
 		return new CommonResult();
 	}
 }

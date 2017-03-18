@@ -1,10 +1,10 @@
 package com.jadyer.seed.mpp.mgr.user;
 
+import com.jadyer.seed.comm.jpa.BaseRepository;
 import com.jadyer.seed.mpp.mgr.user.model.UserInfo;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface UserInfoDao extends JpaRepository<UserInfo, Integer> {
+public interface UserInfoRepository extends BaseRepository<UserInfo, Long> {
 	@Query("FROM UserInfo WHERE username=?1 AND password=?2")
 	UserInfo findByUsernameAndPassword(String username, String password);
 

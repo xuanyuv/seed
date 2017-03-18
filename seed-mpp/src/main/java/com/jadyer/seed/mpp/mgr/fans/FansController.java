@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping(value="/fans")
 public class FansController{
 	@Resource
-	private FansInfoDao fansInfoDao;
+	private FansInfoRepository fansInfoRepository;
 
 	/**
 	 * 分页查询粉丝信息
@@ -27,7 +27,7 @@ public class FansController{
 	 */
 	@RequestMapping("/list")
 	public String listViaPage(String pageNo, HttpServletRequest request){
-		final int uid = ((UserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId();
+		final long uid = ((UserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId();
 		//排序
 		Sort sort = new Sort(Sort.Direction.DESC, "id");
 		//分页
@@ -35,7 +35,7 @@ public class FansController{
 		//条件
 		Condition<FansInfo> spec = Condition.<FansInfo>create().and("uid", Condition.Operator.EQ, uid);
 		//执行
-		Page<FansInfo> fansPage = fansInfoDao.findAll(spec, pageable);
+		Page<FansInfo> fansPage = fansInfoRepository.findAll(spec, pageable);
 		request.setAttribute("page", fansPage);
 		return "fansList";
 	}

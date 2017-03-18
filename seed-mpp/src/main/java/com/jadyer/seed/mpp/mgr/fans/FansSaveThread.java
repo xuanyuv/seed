@@ -25,15 +25,15 @@ public class FansSaveThread implements Runnable {
 
 	@Override
 	public void run() {
-		FansInfoDao fansInfoDao = (FansInfoDao)SpringContextHolder.getBean("fansInfoDao");
-		FansInfo fansInfo = fansInfoDao.findByUidAndOpenid(userInfo.getId(), openid);
+		FansInfoRepository fansInfoRepository = (FansInfoRepository)SpringContextHolder.getBean("fansInfoRepository");
+		FansInfo fansInfo = fansInfoRepository.findByUidAndOpenid(userInfo.getId(), openid);
 		if(null == fansInfo){
 			fansInfo = new FansInfo();
 		}
 		/*
 		 * 向QQ服务器或微信服务器查询粉丝信息
 		 */
-		if("1".equals(userInfo.getMptype())){
+		if(1 == userInfo.getMptype()){
 			WeixinFansInfo weixinFansInfo = WeixinHelper.getWeixinFansInfo(WeixinTokenHolder.getWeixinAccessToken(userInfo.getAppid()), openid);
 			fansInfo.setUid(userInfo.getId());
 			fansInfo.setWxId(userInfo.getMpid());
@@ -41,7 +41,7 @@ public class FansSaveThread implements Runnable {
 			fansInfo.setSubscribe(String.valueOf(weixinFansInfo.getSubscribe()));
 			fansInfo.setSubscribeTime(DateFormatUtils.format(new Date(Long.parseLong(weixinFansInfo.getSubscribe_time())*1000), "yyyy-MM-dd HH:mm:ss"));
 			fansInfo.setNickname(JadyerUtil.escapeEmoji(weixinFansInfo.getNickname()));
-			fansInfo.setSex(String.valueOf(weixinFansInfo.getSex()));
+			fansInfo.setSex(weixinFansInfo.getSex());
 			fansInfo.setCity(weixinFansInfo.getCity());
 			fansInfo.setCountry(weixinFansInfo.getCountry());
 			fansInfo.setProvince(weixinFansInfo.getProvince());
@@ -50,7 +50,7 @@ public class FansSaveThread implements Runnable {
 			fansInfo.setUnionid(weixinFansInfo.getUnionid());
 			fansInfo.setRemark(weixinFansInfo.getRemark());
 			fansInfo.setGroupid(weixinFansInfo.getGroupid());
-			fansInfoDao.saveAndFlush(fansInfo);
+			fansInfoRepository.saveAndFlush(fansInfo);
 		}else{
 			QQFansInfo qqFansInfo = QQHelper.getQQFansInfo(QQTokenHolder.getQQAccessToken(userInfo.getAppid()), openid);
 			fansInfo.setUid(userInfo.getId());
@@ -59,7 +59,7 @@ public class FansSaveThread implements Runnable {
 			fansInfo.setSubscribe(String.valueOf(qqFansInfo.getSubscribe()));
 			fansInfo.setSubscribeTime(DateFormatUtils.format(new Date(Long.parseLong(qqFansInfo.getSubscribe_time())*1000), "yyyy-MM-dd HH:mm:ss"));
 			fansInfo.setNickname(JadyerUtil.escapeEmoji(qqFansInfo.getNickname()));
-			fansInfo.setSex(String.valueOf(qqFansInfo.getSex()));
+			fansInfo.setSex(qqFansInfo.getSex());
 			fansInfo.setCity(qqFansInfo.getCity());
 			fansInfo.setCountry(qqFansInfo.getCountry());
 			fansInfo.setProvince(qqFansInfo.getProvince());
@@ -68,7 +68,7 @@ public class FansSaveThread implements Runnable {
 			fansInfo.setUnionid(qqFansInfo.getUnionid());
 			fansInfo.setRemark(qqFansInfo.getRemark());
 			fansInfo.setGroupid(qqFansInfo.getGroupid());
-			fansInfoDao.saveAndFlush(fansInfo);
+			fansInfoRepository.saveAndFlush(fansInfo);
 		}
 	}
 }

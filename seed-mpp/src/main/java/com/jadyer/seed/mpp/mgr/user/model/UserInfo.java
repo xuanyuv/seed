@@ -1,14 +1,11 @@
 package com.jadyer.seed.mpp.mgr.user.model;
 
+import com.jadyer.seed.comm.jpa.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 
@@ -16,33 +13,22 @@ import java.util.Date;
 @DynamicInsert
 @DynamicUpdate
 @Table(name="t_user_info")
-public class UserInfo {
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+public class UserInfo extends BaseEntity<Long> {
+	private static final long serialVersionUID = -2122414521974718376L;
 	private int pid;
 	private String username;
 	private String password;
 	private String uuid;
-	private String mptype;
+	private int mptype;
 	private String mpid;
 	private String mpno;
 	private String mpname;
 	private String appid;
 	private String appsecret;
-	private String bindStatus;
+	@Column(name="bind_status")
+	private int bindStatus;
 	private Date bindTime;
-	@Basic(fetch=FetchType.LAZY)
-	private Date createTime = new Date();
-	@Basic(fetch=FetchType.LAZY)
-	private Date updateTime;
 
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public int getPid() {
 		return pid;
 	}
@@ -67,10 +53,10 @@ public class UserInfo {
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
-	public String getMptype() {
+	public int getMptype() {
 		return mptype;
 	}
-	public void setMptype(String mptype) {
+	public void setMptype(int mptype) {
 		this.mptype = mptype;
 	}
 	public String getMpid() {
@@ -103,10 +89,10 @@ public class UserInfo {
 	public void setAppsecret(String appsecret) {
 		this.appsecret = appsecret;
 	}
-	public String getBindStatus() {
+	public int getBindStatus() {
 		return bindStatus;
 	}
-	public void setBindStatus(String bindStatus) {
+	public void setBindStatus(int bindStatus) {
 		this.bindStatus = bindStatus;
 	}
 	public Date getBindTime() {
@@ -114,17 +100,5 @@ public class UserInfo {
 	}
 	public void setBindTime(Date bindTime) {
 		this.bindTime = bindTime;
-	}
-	public Date getCreateTime() {
-		return createTime;
-	}
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-	public Date getUpdateTime() {
-		return updateTime;
-	}
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
 	}
 }

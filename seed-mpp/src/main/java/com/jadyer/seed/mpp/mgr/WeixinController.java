@@ -2,9 +2,9 @@ package com.jadyer.seed.mpp.mgr;
 
 import com.jadyer.seed.comm.constant.Constants;
 import com.jadyer.seed.comm.util.LogUtil;
-import com.jadyer.seed.mpp.mgr.fans.FansInfoDao;
+import com.jadyer.seed.mpp.mgr.fans.FansInfoRepository;
 import com.jadyer.seed.mpp.mgr.fans.FansSaveThread;
-import com.jadyer.seed.mpp.mgr.reply.ReplyInfoDao;
+import com.jadyer.seed.mpp.mgr.reply.ReplyInfoRepository;
 import com.jadyer.seed.mpp.mgr.reply.model.ReplyInfo;
 import com.jadyer.seed.mpp.mgr.user.UserService;
 import com.jadyer.seed.mpp.mgr.user.model.UserInfo;
@@ -37,9 +37,9 @@ public class WeixinController extends WeixinMsgControllerCustomServiceAdapter {
 	@Resource
 	private UserService userService;
 	@Resource
-	private FansInfoDao fansInfoDao;
+	private FansInfoRepository fansInfoRepository;
 	@Resource
-	private ReplyInfoDao replyInfoDao;
+	private ReplyInfoRepository replyInfoRepository;
 
 	@Override
 	protected WeixinOutMsg processInTextMsg(WeixinInTextMsg inTextMsg) {
@@ -61,24 +61,24 @@ public class WeixinController extends WeixinMsgControllerCustomServiceAdapter {
 			return new WeixinOutTextMsg(inTextMsg).setContent("该公众号未绑定");
 		}
 		//没绑定就提示绑定
-		if("0".equals(userInfo.getBindStatus()) && !Constants.MPP_BIND_TEXT.equals(inTextMsg.getContent())){
+		if(0==userInfo.getBindStatus() && !Constants.MPP_BIND_TEXT.equals(inTextMsg.getContent())){
 			return new WeixinOutTextMsg(inTextMsg).setContent("账户未绑定\r请发送\"" + Constants.MPP_BIND_TEXT + "\"绑定");
 		}
 		//绑定
-		if("0".equals(userInfo.getBindStatus()) && Constants.MPP_BIND_TEXT.equals(inTextMsg.getContent())){
-			userInfo.setBindStatus("1");
+		if(0==userInfo.getBindStatus() && Constants.MPP_BIND_TEXT.equals(inTextMsg.getContent())){
+			userInfo.setBindStatus(1);
 			userInfo.setBindTime(new Date());
 			userService.save(userInfo);
 			return new WeixinOutTextMsg(inTextMsg).setContent("绑定完毕，升级成功！");
 		}
 		//关键字查找（暂时只支持回复文本或转发到多客服）
-		ReplyInfo replyInfo = replyInfoDao.findByKeyword(userInfo.getId(), inTextMsg.getContent());
-		if(null!=replyInfo && "0".equals(replyInfo.getType())){
+		ReplyInfo replyInfo = replyInfoRepository.findByKeyword(userInfo.getId(), inTextMsg.getContent());
+		if(null!=replyInfo && 0==replyInfo.getType()){
 			return new WeixinOutTextMsg(inTextMsg).setContent(replyInfo.getContent());
 		}
 		//查找通用的回复（暂时设定为转发到多客服）
-		List<ReplyInfo> replyInfoList = replyInfoDao.findByCategory(userInfo.getId(), "0");
-		if(!replyInfoList.isEmpty() && "4".equals(replyInfoList.get(0).getType())){
+		List<ReplyInfo> replyInfoList = replyInfoRepository.findByCategory(userInfo.getId(), 0);
+		if(!replyInfoList.isEmpty() && 4==replyInfoList.get(0).getType()){
 			return new WeixinOutCustomServiceMsg(inTextMsg);
 		}
 		//否则原样返回
@@ -95,7 +95,7 @@ public class WeixinController extends WeixinMsgControllerCustomServiceAdapter {
 		}
 		//VIEW类的直接跳转过去了，CLICK类的暂定根据关键字回复（找不到关键字就转发到多客服）
 		if(WeixinInMenuEventMsg.EVENT_INMENU_CLICK.equals(inMenuEventMsg.getEvent())){
-			ReplyInfo replyInfo = replyInfoDao.findByKeyword(userInfo.getId(), inMenuEventMsg.getEventKey());
+			ReplyInfo replyInfo = replyInfoRepository.findByKeyword(userInfo.getId(), inMenuEventMsg.getEventKey());
 			if(null == replyInfo){
 				return new WeixinOutCustomServiceMsg(inMenuEventMsg);
 			}else{
@@ -120,7 +120,7 @@ public class WeixinController extends WeixinMsgControllerCustomServiceAdapter {
 			threadPool.execute(new FansSaveThread(userInfo, inFollowEventMsg.getFromUserName()));
 			threadPool.shutdown();
 			//目前设定关注后回复文本
-			List<ReplyInfo> replyInfoList = replyInfoDao.findByCategory(userInfo.getId(), "1");
+			List<ReplyInfo> replyInfoList = replyInfoRepository.findByCategory(userInfo.getId(), 1);
 			if(replyInfoList.isEmpty()){
 				return new WeixinOutTextMsg(inFollowEventMsg).setContent("感谢您的关注");
 			}else{
@@ -128,7 +128,7 @@ public class WeixinController extends WeixinMsgControllerCustomServiceAdapter {
 			}
 		}
 		if(WeixinInFollowEventMsg.EVENT_INFOLLOW_UNSUBSCRIBE.equals(inFollowEventMsg.getEvent())){
-			fansInfoDao.updateSubscribe("0", userInfo.getId(), inFollowEventMsg.getFromUserName());
+			fansInfoRepository.updateSubscribe("0", userInfo.getId(), inFollowEventMsg.getFromUserName());
 			LogUtil.getLogger().info("您的粉丝" + inFollowEventMsg.getFromUserName() + "取消关注了您");
 		}
 		return new WeixinOutTextMsg(inFollowEventMsg).setContent("您的粉丝" + inFollowEventMsg.getFromUserName() + "取消关注了您");

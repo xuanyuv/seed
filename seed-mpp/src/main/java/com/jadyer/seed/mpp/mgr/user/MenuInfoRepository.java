@@ -1,19 +1,19 @@
 package com.jadyer.seed.mpp.mgr.user;
 
+import com.jadyer.seed.comm.jpa.BaseRepository;
 import com.jadyer.seed.mpp.mgr.user.model.MenuInfo;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface MenuInfoDao extends JpaRepository<MenuInfo, Integer> {
+public interface MenuInfoRepository extends BaseRepository<MenuInfo, Long> {
 	@Query("FROM MenuInfo WHERE uid=?1")
-	List<MenuInfo> findMenuListByUID(int uid);
+	List<MenuInfo> findMenuListByUID(long uid);
 
 	@Modifying
 	@Transactional
 	@Query("UPDATE MenuInfo SET menuJson=?1 WHERE type=3 AND uid=?2")
-	int updateJson(String menuJson, int uid);
+	int updateJson(String menuJson, long uid);
 }

@@ -47,12 +47,12 @@ public class UserController{
 						logger.info("未查询到需要登记的appid");
 					}
 					for(UserInfo obj : userinfoList){
-						if("1".equals(obj.getBindStatus())){
-							if("1".equals(obj.getMptype())){
+						if(1 == obj.getBindStatus()){
+							if(1 == obj.getMptype()){
 								WeixinTokenHolder.setWeixinAppidAppsecret(obj.getAppid(), obj.getAppsecret());
 								logger.info("登记微信appid=[{}]，appsecret=[{}]完毕", obj.getAppid(), obj.getAppsecret());
 							}
-							if("2".equals(obj.getMptype())){
+							if(2 == obj.getMptype()){
 								QQTokenHolder.setQQAppidAppsecret(obj.getAppid(), obj.getAppsecret());
 								logger.info("登记QQappid=[{}]，appsecret=[{}]完毕", obj.getAppid(), obj.getAppsecret());
 							}
@@ -113,10 +113,10 @@ public class UserController{
 			sb.append(":").append(request.getServerPort());
 		}
 		sb.append(request.getContextPath());
-		if("1".equals(userInfo.getMptype())){
+		if(1 == userInfo.getMptype()){
 			sb.append("/weixin/").append(userInfo.getUuid());
 		}
-		if("2".equals(userInfo.getMptype())){
+		if(2 == userInfo.getMptype()){
 			sb.append("/qq/").append(userInfo.getUuid());
 		}
 		request.setAttribute("token", DigestUtils.md5Hex(userInfo.getUuid() + "https://jadyer.github.io/" + userInfo.getUuid()));
@@ -140,10 +140,10 @@ public class UserController{
 		userInfo.setBindTime(new Date());
 		request.getSession().setAttribute(Constants.WEB_SESSION_USER, userService.save(userInfo));
 		//更换绑定的公众号,也要同步更新微信或QQ公众平台的appid和appsecret
-		if("1".equals(userInfo.getMptype())){
+		if(1 == userInfo.getMptype()){
 			WeixinTokenHolder.setWeixinAppidAppsecret(userInfo.getAppid(), userInfo.getAppsecret());
 		}
-		if("2".equals(userInfo.getMptype())){
+		if(2 ==userInfo.getMptype()){
 			QQTokenHolder.setQQAppidAppsecret(userInfo.getAppid(), userInfo.getAppsecret());
 		}
 		return new CommonResult();
@@ -170,7 +170,7 @@ public class UserController{
 	@ResponseBody
 	@RequestMapping("/menu/getjson")
 	public CommonResult menuGetjson(HttpServletRequest request){
-		int uid = ((UserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId();
+		long uid = ((UserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId();
 		return new CommonResult(userService.getMenuJson(uid));
 	}
 
@@ -183,17 +183,17 @@ public class UserController{
 	@RequestMapping("/menu/create")
 	public CommonResult menuCreate(String menuJson, HttpServletRequest request){
 		UserInfo userInfo = (UserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER);
-		if("0".equals(userInfo.getBindStatus())){
+		if(0 == userInfo.getBindStatus()){
 			return new CommonResult(CodeEnum.SYSTEM_ERROR.getCode(), "当前用户未绑定微信或QQ公众平台");
 		}
-		if("1".equals(userInfo.getMptype())){
+		if(1 == userInfo.getMptype()){
 			WeixinErrorInfo errorInfo = WeixinHelper.createWeixinMenu(WeixinTokenHolder.getWeixinAccessToken(userInfo.getAppid()), menuJson);
 			if(0==errorInfo.getErrcode() && userService.menuJsonUpsert(userInfo.getId(), menuJson)){
 				return new CommonResult();
 			}
 			return new CommonResult(errorInfo.getErrcode(), errorInfo.getErrmsg());
 		}
-		if("2".equals(userInfo.getMptype())){
+		if(2 == userInfo.getMptype()){
 			QQErrorInfo errorInfo = QQHelper.createQQMenu(QQTokenHolder.getQQAccessToken(userInfo.getAppid()), menuJson);
 			if(0==errorInfo.getErrcode() && userService.menuJsonUpsert(userInfo.getId(), menuJson)){
 				return new CommonResult();

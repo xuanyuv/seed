@@ -1,58 +1,45 @@
 package com.jadyer.seed.mpp.mgr.fans.model;
 
+import com.jadyer.seed.comm.jpa.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
 
 @Entity
 @DynamicInsert
 @DynamicUpdate
 @Table(name="t_fans_info")
-public class FansInfo {
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
-	private int uid;
+public class FansInfo extends BaseEntity<Long> {
+	private static final long serialVersionUID = 7585092842503110991L;
+	private long uid;
 	private String wxId;
 	private String openid;
 	private String name;
+	@Column(name="id_card")
 	private String idCard;
+	@Column(name="phone_no")
 	private String phoneNo;
 	private String subscribe;
 	private String nickname;
-	private String sex;
+	private int sex;
 	private String city;
 	private String country;
 	private String province;
 	private String language;
 	private String headimgurl;
+	@Column(name="subscribe_time")
 	private String subscribeTime;
 	private String unionid;
 	private String remark;
 	private String groupid;
-	@Basic(fetch=FetchType.LAZY)
-	private Date createTime = new Date();
-	@Basic(fetch=FetchType.LAZY)
-	private Date updateTime;
 
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public int getUid() {
+	public long getUid() {
 		return uid;
 	}
-	public void setUid(int uid) {
+	public void setUid(long uid) {
 		this.uid = uid;
 	}
 	public String getWxId() {
@@ -97,10 +84,10 @@ public class FansInfo {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
-	public String getSex() {
+	public int getSex() {
 		return sex;
 	}
-	public void setSex(String sex) {
+	public void setSex(int sex) {
 		this.sex = sex;
 	}
 	public String getCity() {
@@ -156,17 +143,5 @@ public class FansInfo {
 	}
 	public void setGroupid(String groupid) {
 		this.groupid = groupid;
-	}
-	public Date getCreateTime() {
-		return createTime;
-	}
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-	public Date getUpdateTime() {
-		return updateTime;
-	}
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
 	}
 }
