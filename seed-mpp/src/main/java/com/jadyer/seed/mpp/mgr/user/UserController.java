@@ -50,16 +50,16 @@ public class UserController{
 						if("1".equals(obj.getBindStatus())){
 							if("1".equals(obj.getMptype())){
 								WeixinTokenHolder.setWeixinAppidAppsecret(obj.getAppid(), obj.getAppsecret());
-								logger.info("登记微信appid=[{}],appsecret=[{}]完毕", obj.getAppid(), obj.getAppsecret());
+								logger.info("登记微信appid=[{}]，appsecret=[{}]完毕", obj.getAppid(), obj.getAppsecret());
 							}
 							if("2".equals(obj.getMptype())){
 								QQTokenHolder.setQQAppidAppsecret(obj.getAppid(), obj.getAppsecret());
-								logger.info("登记QQappid=[{}],appsecret=[{}]完毕", obj.getAppid(), obj.getAppsecret());
+								logger.info("登记QQappid=[{}]，appsecret=[{}]完毕", obj.getAppid(), obj.getAppsecret());
 							}
 						}
 					}
 				} catch (Exception e) {
-					LogUtil.getLogger().info("登记appid时发生异常, 堆栈轨迹如下", e);
+					LogUtil.getLogger().info("登记appid时发生异常，堆栈轨迹如下", e);
 				}
 			}
 		}, 6, TimeUnit.SECONDS);
@@ -119,15 +119,14 @@ public class UserController{
 		if("2".equals(userInfo.getMptype())){
 			sb.append("/qq/").append(userInfo.getUuid());
 		}
-		request.setAttribute("token", DigestUtils.md5Hex(userInfo.getUuid() + "http://blog.csdn.net/jadyer" + userInfo.getUuid()));
+		request.setAttribute("token", DigestUtils.md5Hex(userInfo.getUuid() + "https://jadyer.github.io/" + userInfo.getUuid()));
 		request.setAttribute("mpurl", sb.toString());
 		return "user/userInfo";
 	}
 
 
 	/**
-	 * 绑定公众号
-	 * @see 即录库
+	 * 绑定公众号（即录库）
 	 */
 	@ResponseBody
 	@RequestMapping("/bind")
@@ -153,7 +152,6 @@ public class UserController{
 
 	/**
 	 * 修改密码
-	 * @see 修改成功后要刷新HttpSession中的用户信息
 	 */
 	@ResponseBody
 	@RequestMapping("/password/update")
@@ -163,15 +161,12 @@ public class UserController{
 		if(null == respUserInfo){
 			return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "原密码不正确");
 		}
+		//修改成功后要刷新HttpSession中的用户信息
 		request.getSession().setAttribute(Constants.WEB_SESSION_USER, respUserInfo);
 		return new CommonResult();
 	}
 
 
-	/**
-	 * 修改密码
-	 * @see 修改成功后要刷新HttpSession中的用户信息
-	 */
 	@ResponseBody
 	@RequestMapping("/menu/getjson")
 	public CommonResult menuGetjson(HttpServletRequest request){

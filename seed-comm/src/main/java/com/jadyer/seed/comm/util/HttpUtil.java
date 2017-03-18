@@ -50,6 +50,8 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -60,97 +62,98 @@ import java.util.Map;
 
 /**
  * 封装了发送HTTP请求的工具类
- * @see -----------------------------------------------------------------------------------------------------------
- * @see 本工具类中的部分方法用到了HttpComponents-Client-4.2.1
- * @see -----------------------------------------------------------------------------------------------------------
- * @see 关于HttpComponents-4.3提供的FluentAPI及集合SpringRestTemplate详见以下网址介绍
- * @see https://github.com/springside/springside4/wiki/HttpClient
- * @see http://liuxing.info/2015/05/21/RestTemplate实践/
- * @see http://my.oschina.net/sannychan/blog/485677
- * @see http://www.cnblogs.com/hupengcool/p/4590006.html
- * @see -----------------------------------------------------------------------------------------------------------
- * @see 开发HTTPS应用的过程中,时常会遇到下面两种情况
- * @see 1.测试服务器没有有效的HTTPS证书,客户端连接时就会抛异常
- * @see   javax.net.ssl.SSLPeerUnverifiedException: peer not authenticated
- * @see 2.测试服务器有HTTPS证书,但可能由于各种不知名的原因,它还是会抛一堆烂码七糟的异常,诸如下面这两种
- * @see   javax.net.ssl.SSLException: hostname in certificate didn't match: <123.125.97.66> != <123.125.97.241>
- * @see   javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
- * @see -----------------------------------------------------------------------------------------------------------
- * @see 在使用HttpComponents-Client-4.2.1创建连接时,针对HTTPS请求就要告诉它使用一个不同的TrustManager
- * @see 由于HTTPS使用的模式是X.509,对于该模式,Java有一个特定的TrustManager,称为X509TrustManager
- * @see TrustManager是一个用于检查给定的证书是否有效的类,所以我们自己创建一个X509TrustManager实例
- * @see 而在X509TrustManager实例中,若证书无效,那么TrustManager在它的checkXXX()方法中将抛出CertificateException
- * @see 既然我们要接受所有的证书,那么X509TrustManager里面的方法体中不抛出异常就行了
- * @see 然后创建一个SSLContext并使用X509TrustManager实例来初始化之
- * @see 接着通过SSLContext创建SSLSocketFactory,最后将SSLSocketFactory注册给HttpClient就可以了
- * @see -----------------------------------------------------------------------------------------------------------
- * @see 各大平台免费接口
- * @see 1)京东获取单个商品价格
- * @see   http://p.3.cn/prices/mgets?skuIds=J_商品ID&type=1
- * @see   ps:商品ID这么获取:http://item.jd.com/954086.html
- * @see 2)快递接口
- * @see   http://www.kuaidi100.com/query?type=快递公司代号&postid=快递单号
- * @see   ps:快递公司编码:申通="shentong" EMS="ems" 顺丰="shunfeng" 圆通="yuantong" 中通="zhongtong" 韵达="yunda" 天天="tiantian" 汇通="huitongkuaidi" 全峰="quanfengkuaidi" 德邦="debangwuliu" 宅急送="zhaijisong"
- * @see 3)天气接口
- * @see   http://www.weather.com.cn/data/sk/101010100.html(国家气象局提供的天气预报接口)
- * @see   http://www.weather.com.cn/data/cityinfo/101010100.html(国家气象局提供的天气预报接口)
- * @see   http://m.weather.com.cn/data/101010100.html(国家气象局提供的天气预报接口)
- * @see   http://api.map.baidu.com/telematics/v3/weather?location=嘉兴&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ
- * @see   location:城市名或经纬度 ak:开发者密钥 output:默认xml
- * @see 4)手机信息查询接口
- * @see   http://tcc.taobao.com/cc/json/mobile_tel_segment.htm?tel=手机号
- * @see   https://www.baifubao.com/callback?cmd=1059&callback=phone&phone=手机号
- * @see   http://virtual.paipai.com/extinfo/GetMobileProductInfo?mobile=手机号&amount=10000&callname=getPhoneNumInfoExtCallback
- * @see 5)IP接口
- * @see   http://ip.taobao.com/service/getIpInfo.php?ip=63.223.108.42
- * @see   http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip=218.4.255.255(IP值为空时,会自动获取本地的)
- * @see 6)语音转换接口
- * @see   http://translate.google.com/translate_tts?tl=zh&q=我要去天安门
- * @see 7)视频信息接口
- * @see   http://v.youku.com/player/getPlayList/VideoIDS/视频ID
- * @see   ps:http://v.youku.com/v_show/id_XNTQxNzc4ODg0.html的ID就是XNTQxNzc4ODg0
- * @see 8)地图接口
- * @see   http://gc.ditu.aliyun.com/geocoding?a=哈尔滨市
- * @see   http://gc.ditu.aliyun.com/regeocoding?l=39.938133,116.395739&type=001
- * @see   参数解释:纬度,经度,type001(100代表道路,010代表POI,001代表门址,111可以同时显示前三项)
- * @see 9)获取QQ昵称和用户头像
- * @see   http://r.qzone.qq.com/cgi-bin/user/cgi_personal_card?uin=517751422
- * @see 10)音乐接口
- * @see    http://qzone-music.qq.com/fcg-bin/cgi_playlist_xml.fcg?uin=QQ号码&json=1&g_tk=1916754934
- * @see    http://qzone-music.qq.com/fcg-bin/fcg_music_fav_getinfo.fcg?dirinfo=0&dirid=1&uin=QQ号&p=0.519638272547262&g_tk=1284234856
- * @see    http://v5.pc.duomi.com/search-ajaxsearch-searchall?kw=关键字&pi=页码&pz=每页音乐数
- * @see -----------------------------------------------------------------------------------------------------------
- * @see 可以调研下okhttp和jodd-http，两者都比较小
- * @see okhttp一共俩包加起来411kb，jodd-http一共仨包加起来453kb，但光一个httpclient-4.5.2.jar都是719kb
- * @see 关键httpclient每次升级，哪怕是小版本升级，API都要跟着改，升一次级就跟学一门新语言似的
- * @see 下面是httpclient-4.4.x版本的一个写法
- * @see import org.apache.http.client.HttpClient;
- * @see import org.apache.http.config.Registry;
- * @see import org.apache.http.config.RegistryBuilder;
- * @see import org.apache.http.conn.socket.ConnectionSocketFactory;
- * @see import org.apache.http.conn.socket.PlainConnectionSocketFactory;
- * @see import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
- * @see import org.apache.http.impl.client.HttpClientBuilder;
- * @see import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
- * @see public class HttpClientDemo {
- * @see     private int maxTotalConn;    //最大连接数
- * @see     private int maxConnPerRoute; //单URL并发连接数
- * @see     private int connectTimeout;  //建立链接超时，单位：毫秒
- * @see     private int readTimeout;     //数据读取超时，单位：毫秒
- * @see     private HttpClient createHttpClient(){
- * @see         //HttpClient httpClient = HttpClientBuilder.create().setMaxConnTotal(maxTotalConn).setMaxConnPerRoute(maxConnPerRoute).build();
- * @see         Registry<ConnectionSocketFactory> schemeRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
- * @see             .register("http", PlainConnectionSocketFactory.getSocketFactory())
- * @see             .register("https", SSLConnectionSocketFactory.getSocketFactory())
- * @see             .build();
- * @see         PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager(schemeRegistry);
- * @see         connectionManager.setMaxTotal(maxTotalConn);
- * @see         connectionManager.setDefaultMaxPerRoute(maxConnPerRoute);
- * @see         return HttpClientBuilder.create().setConnectionManager(connectionManager).build();
- * @see     }
- * @see }
- * @see -----------------------------------------------------------------------------------------------------------
- * @version v2.6
+ * -----------------------------------------------------------------------------------------------------------
+ * 本工具类中的部分方法用到了HttpComponents-Client-4.2.1
+ * -----------------------------------------------------------------------------------------------------------
+ * 关于HttpComponents-4.3提供的FluentAPI及集合SpringRestTemplate详见以下网址介绍
+ * https://github.com/springside/springside4/wiki/HttpClient
+ * http://liuxing.info/2015/05/21/RestTemplate实践/
+ * http://my.oschina.net/sannychan/blog/485677
+ * http://www.cnblogs.com/hupengcool/p/4590006.html
+ * -----------------------------------------------------------------------------------------------------------
+ * 开发HTTPS应用的过程中,时常会遇到下面两种情况
+ * 1.测试服务器没有有效的HTTPS证书,客户端连接时就会抛异常
+ *   javax.net.ssl.SSLPeerUnverifiedException: peer not authenticated
+ * 2.测试服务器有HTTPS证书,但可能由于各种不知名的原因,它还是会抛一堆烂码七糟的异常,诸如下面这两种
+ *   javax.net.ssl.SSLException: hostname in certificate didn't match: <123.125.97.66> != <123.125.97.241>
+ *   javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+ * -----------------------------------------------------------------------------------------------------------
+ * 在使用HttpComponents-Client-4.2.1创建连接时,针对HTTPS请求就要告诉它使用一个不同的TrustManager
+ * 由于HTTPS使用的模式是X.509,对于该模式,Java有一个特定的TrustManager,称为X509TrustManager
+ * TrustManager是一个用于检查给定的证书是否有效的类,所以我们自己创建一个X509TrustManager实例
+ * 而在X509TrustManager实例中,若证书无效,那么TrustManager在它的checkXXX()方法中将抛出CertificateException
+ * 既然我们要接受所有的证书,那么X509TrustManager里面的方法体中不抛出异常就行了
+ * 然后创建一个SSLContext并使用X509TrustManager实例来初始化之
+ * 接着通过SSLContext创建SSLSocketFactory,最后将SSLSocketFactory注册给HttpClient就可以了
+ * -----------------------------------------------------------------------------------------------------------
+ * 各大平台免费接口
+ * 1)京东获取单个商品价格
+ *   http://p.3.cn/prices/mgets?skuIds=J_商品ID&type=1
+ *   ps:商品ID这么获取:http://item.jd.com/954086.html
+ * 2)快递接口
+ *   http://www.kuaidi100.com/query?type=快递公司代号&postid=快递单号
+ *   ps:快递公司编码:申通="shentong" EMS="ems" 顺丰="shunfeng" 圆通="yuantong" 中通="zhongtong" 韵达="yunda" 天天="tiantian" 汇通="huitongkuaidi" 全峰="quanfengkuaidi" 德邦="debangwuliu" 宅急送="zhaijisong"
+ * 3)天气接口
+ *   http://www.weather.com.cn/data/sk/101010100.html(国家气象局提供的天气预报接口)
+ *   http://www.weather.com.cn/data/cityinfo/101010100.html(国家气象局提供的天气预报接口)
+ *   http://m.weather.com.cn/data/101010100.html(国家气象局提供的天气预报接口)
+ *   http://api.map.baidu.com/telematics/v3/weather?location=嘉兴&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ
+ *   location:城市名或经纬度 ak:开发者密钥 output:默认xml
+ * 4)手机信息查询接口
+ *   http://tcc.taobao.com/cc/json/mobile_tel_segment.htm?tel=手机号
+ *   https://www.baifubao.com/callback?cmd=1059&callback=phone&phone=手机号
+ *   http://virtual.paipai.com/extinfo/GetMobileProductInfo?mobile=手机号&amount=10000&callname=getPhoneNumInfoExtCallback
+ * 5)IP接口
+ *   http://ip.taobao.com/service/getIpInfo.php?ip=63.223.108.42
+ *   http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip=218.4.255.255(IP值为空时,会自动获取本地的)
+ * 6)语音转换接口
+ *   http://translate.google.com/translate_tts?tl=zh&q=我要去天安门
+ * 7)视频信息接口
+ *   http://v.youku.com/player/getPlayList/VideoIDS/视频ID
+ *   ps:http://v.youku.com/v_show/id_XNTQxNzc4ODg0.html的ID就是XNTQxNzc4ODg0
+ * 8)地图接口
+ *   http://gc.ditu.aliyun.com/geocoding?a=哈尔滨市
+ *   http://gc.ditu.aliyun.com/regeocoding?l=39.938133,116.395739&type=001
+ *   参数解释:纬度,经度,type001(100代表道路,010代表POI,001代表门址,111可以同时显示前三项)
+ * 9)获取QQ昵称和用户头像
+ *   http://r.qzone.qq.com/cgi-bin/user/cgi_personal_card?uin=517751422
+ * 10)音乐接口
+ *    http://qzone-music.qq.com/fcg-bin/cgi_playlist_xml.fcg?uin=QQ号码&json=1&g_tk=1916754934
+ *    http://qzone-music.qq.com/fcg-bin/fcg_music_fav_getinfo.fcg?dirinfo=0&dirid=1&uin=QQ号&p=0.519638272547262&g_tk=1284234856
+ *    http://v5.pc.duomi.com/search-ajaxsearch-searchall?kw=关键字&pi=页码&pz=每页音乐数
+ * -----------------------------------------------------------------------------------------------------------
+ * 可以调研下okhttp和jodd-http，两者都比较小
+ * okhttp一共俩包加起来411kb，jodd-http一共仨包加起来453kb，但光一个httpclient-4.5.2.jar都是719kb
+ * 关键httpclient每次升级，哪怕是小版本升级，API都要跟着改，升一次级就跟学一门新语言似的
+ * 下面是httpclient-4.4.x版本的一个写法
+ * import org.apache.http.client.HttpClient;
+ * import org.apache.http.config.Registry;
+ * import org.apache.http.config.RegistryBuilder;
+ * import org.apache.http.conn.socket.ConnectionSocketFactory;
+ * import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+ * import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+ * import org.apache.http.impl.client.HttpClientBuilder;
+ * import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+ * public class HttpClientDemo {
+ *     private int maxTotalConn;    //最大连接数
+ *     private int maxConnPerRoute; //单URL并发连接数
+ *     private int connectTimeout;  //建立链接超时，单位：毫秒
+ *     private int readTimeout;     //数据读取超时，单位：毫秒
+ *     private HttpClient createHttpClient(){
+ *         //HttpClient httpClient = HttpClientBuilder.create().setMaxConnTotal(maxTotalConn).setMaxConnPerRoute(maxConnPerRoute).build();
+ *         Registry<ConnectionSocketFactory> schemeRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
+ *             .register("http", PlainConnectionSocketFactory.getSocketFactory())
+ *             .register("https", SSLConnectionSocketFactory.getSocketFactory())
+ *             .build();
+ *         PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager(schemeRegistry);
+ *         connectionManager.setMaxTotal(maxTotalConn);
+ *         connectionManager.setDefaultMaxPerRoute(maxConnPerRoute);
+ *         return HttpClientBuilder.create().setConnectionManager(connectionManager).build();
+ *     }
+ * }
+ * -----------------------------------------------------------------------------------------------------------
+ * @version v2.7
+ * @history v2.7-->抽象出公共的HTTPS支持的设置，加入到httpclient实现的各个方法中，并更名postTSL()为post()
  * @history v2.6-->修复部分细节，增加入参出参的日志打印
  * @history v2.5-->修复<code>postWithUpload()</code>方法的<code>Map<String, String> params</code>参数传入null时无法上传文件的BUG
  * @history v2.4-->重命名GET和POST方法名,全局定义通信报文编码和连接读取超时时间,通信发生异常时修改为直接抛出RuntimeException
@@ -166,12 +169,11 @@ import java.util.Map;
  * @history v1.2-->新增<code>sendPostRequest()</code>方法,用于发送HTTP协议报文体为任意字符串的POST请求
  * @history v1.1-->新增<code>sendPostSSLRequest()</code>方法,用于发送HTTPS的POST请求
  * @history v1.0-->新建<code>sendGetRequest()</code>和<code>sendPostRequest()</code>方法
- * @update 2016/5/19 12:33
- * @create Feb 1, 2012 3:02:27 PM
- * @author 玄玉<https://jadyer.github.io/>
+ * Created by 玄玉<https://jadyer.github.io/> on 2012/2/1 15:02.
  */
+@SuppressWarnings("deprecation")
 public final class HttpUtil {
-	private static final String DEFAULT_CHARSET = "UTF-8";          //设置默认通信报文编码为UTF-8
+	public static final String DEFAULT_CHARSET = "UTF-8";          //设置默认通信报文编码为UTF-8
 	private static final int DEFAULT_CONNECTION_TIMEOUT = 1000 * 2; //设置默认连接超时为2s
 	private static final int DEFAULT_SO_TIMEOUT = 1000 * 60;        //设置默认读取超时为60s
 
@@ -197,9 +199,9 @@ public final class HttpUtil {
 		httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, DEFAULT_CONNECTION_TIMEOUT);
 		//读取超时60s
 		httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, DEFAULT_SO_TIMEOUT);
-		HttpGet httpGet = new HttpGet(reqURL);
 		try{
-			HttpResponse response = httpClient.execute(httpGet);
+			httpClient = addTLSSupport(httpClient);
+			HttpResponse response = httpClient.execute(new HttpGet(reqURL));
 			HttpEntity entity = response.getEntity();
 			if(null != entity){
 				//Charset respCharset=EntityUtils.getContentCharSet(entity)也可以获取响应编码,但从4.1.3开始不建议使用这种方式
@@ -291,8 +293,9 @@ public final class HttpUtil {
 		}else{
 			httpPost.setHeader(HTTP.CONTENT_TYPE, contentType);
 		}
+		httpPost.setEntity(new StringEntity(null==reqData?"":reqData, DEFAULT_CHARSET));
 		try{
-			httpPost.setEntity(new StringEntity(null==reqData?"":reqData, DEFAULT_CHARSET));
+			httpClient = addTLSSupport(httpClient);
 			HttpResponse response = httpClient.execute(httpPost);
 			HttpEntity entity = response.getEntity();
 			if(null != entity){
@@ -325,41 +328,13 @@ public final class HttpUtil {
 	 * @param params 请求参数,无参数时传null即可
 	 * @return 远程主机响应正文
 	 */
-	public static String postTLS(String reqURL, Map<String, String> params){
+	public static String post(String reqURL, Map<String, String> params){
 		LogUtil.getLogger().info("请求{}的报文为-->>{}", reqURL, JadyerUtil.buildStringFromMap(params));
 		String respData = "";
 		HttpClient httpClient = new DefaultHttpClient();
 		httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, DEFAULT_CONNECTION_TIMEOUT);
 		httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, DEFAULT_SO_TIMEOUT);
-		//创建TrustManager(),用于解决javax.net.ssl.SSLPeerUnverifiedException: peer not authenticated
-		X509TrustManager trustManager = new X509TrustManager(){
-			@Override
-			public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {}
-			@Override
-			public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {}
-			@Override
-			public X509Certificate[] getAcceptedIssuers() {return null;}
-		};
-		//创建HostnameVerifier,用于解决javax.net.ssl.SSLException: hostname in certificate didn't match: <123.125.97.66> != <123.125.97.241>
-		X509HostnameVerifier hostnameVerifier = new X509HostnameVerifier(){
-			@Override
-			public void verify(String host, SSLSocket ssl) throws IOException {}
-			@Override
-			public void verify(String host, X509Certificate cert) throws SSLException {}
-			@Override
-			public void verify(String host, String[] cns, String[] subjectAlts) throws SSLException {}
-			@Override
-			public boolean verify(String arg0, SSLSession arg1) {return true;}
-		};
 		try {
-			//TLS1.0是SSL3.0的升级版(网上已有人发现SSL3.0的致命BUG了),它们使用的是相同的SSLContext
-			SSLContext sslContext = SSLContext.getInstance(SSLSocketFactory.TLS);
-			//使用TrustManager来初始化该上下文,TrustManager只是被SSL的Socket所使用
-			sslContext.init(null, new TrustManager[]{trustManager}, null);
-			//创建SSLSocketFactory
-			SSLSocketFactory socketFactory = new SSLSocketFactory(sslContext, hostnameVerifier);
-			//通过SchemeRegistry将SSLSocketFactory注册到HttpClient上
-			httpClient.getConnectionManager().getSchemeRegistry().register(new Scheme("https", 443, socketFactory));
 			HttpPost httpPost = new HttpPost(reqURL);
 			//由于下面使用的是new UrlEncodedFormEntity(....),所以这里不需要手工指定CONTENT_TYPE为application/x-www-form-urlencoded
 			//因为在查看了HttpClient的源码后发现,UrlEncodedFormEntity所采用的默认CONTENT_TYPE就是application/x-www-form-urlencoded
@@ -371,6 +346,7 @@ public final class HttpUtil {
 				}
 				httpPost.setEntity(new UrlEncodedFormEntity(formParams, DEFAULT_CHARSET));
 			}
+			httpClient = addTLSSupport(httpClient);
 			HttpResponse response = httpClient.execute(httpPost);
 			HttpEntity entity = response.getEntity();
 			if(null != entity){
@@ -424,6 +400,7 @@ public final class HttpUtil {
 				}
 			}
 			httpPost.setEntity(reqEntity);
+			httpClient = addTLSSupport(httpClient);
 			HttpResponse response = httpClient.execute(httpPost);
 			HttpEntity entity = response.getEntity();
 			if(null != entity){
@@ -478,6 +455,7 @@ public final class HttpUtil {
 				}
 				httpPost.setEntity(new UrlEncodedFormEntity(formParams, DEFAULT_CHARSET));
 			}
+			httpClient = addTLSSupport(httpClient);
 			HttpResponse response = httpClient.execute(httpPost);
 			entity = response.getEntity();
 			if(null==entity || null==entity.getContentType() || (!entity.getContentType().getValue().startsWith(ContentType.APPLICATION_OCTET_STREAM.getMimeType())) && !entity.getContentType().getValue().contains("image/jpeg")){
@@ -993,5 +971,38 @@ public final class HttpUtil {
 		respMap.put("respData", respData);
 		respMap.put("respDataHex", respDataHex);
 		return respMap;
+	}
+
+
+	private static HttpClient addTLSSupport(HttpClient httpClient) throws NoSuchAlgorithmException, KeyManagementException {
+		//创建TrustManager(),用于解决javax.net.ssl.SSLPeerUnverifiedException: peer not authenticated
+		X509TrustManager trustManager = new X509TrustManager(){
+			@Override
+			public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {}
+			@Override
+			public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {}
+			@Override
+			public X509Certificate[] getAcceptedIssuers() {return null;}
+		};
+		//创建HostnameVerifier,用于解决javax.net.ssl.SSLException: hostname in certificate didn't match: <123.125.97.66> != <123.125.97.241>
+		X509HostnameVerifier hostnameVerifier = new X509HostnameVerifier(){
+			@Override
+			public void verify(String host, SSLSocket ssl) throws IOException {}
+			@Override
+			public void verify(String host, X509Certificate cert) throws SSLException {}
+			@Override
+			public void verify(String host, String[] cns, String[] subjectAlts) throws SSLException {}
+			@Override
+			public boolean verify(String arg0, SSLSession arg1) {return true;}
+		};
+		//TLS1.0是SSL3.0的升级版(网上已有人发现SSL3.0的致命BUG了),它们使用的是相同的SSLContext
+		SSLContext sslContext = SSLContext.getInstance(SSLSocketFactory.TLS);
+		//使用TrustManager来初始化该上下文,TrustManager只是被SSL的Socket所使用
+		sslContext.init(null, new TrustManager[]{trustManager}, null);
+		//创建SSLSocketFactory
+		SSLSocketFactory socketFactory = new SSLSocketFactory(sslContext, hostnameVerifier);
+		//通过SchemeRegistry将SSLSocketFactory注册到HttpClient上
+		httpClient.getConnectionManager().getSchemeRegistry().register(new Scheme("https", 443, socketFactory));
+		return httpClient;
 	}
 }

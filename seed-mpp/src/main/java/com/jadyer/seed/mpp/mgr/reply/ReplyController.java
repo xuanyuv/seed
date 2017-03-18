@@ -68,16 +68,16 @@ public class ReplyController{
 	}
 
 
-//	/**
-//	 * 查询关键字回复列表
-//	 */
-//	@RequestMapping("/keyword/list")
-//	public String listKeyword(HttpServletRequest request){
-//		int uid = (Integer)request.getSession().getAttribute(Constants.UID);
-//		List<ReplyInfo> replyInfoList = replyInfoDao.findByCategory(uid, "2");
-//		request.setAttribute("replyInfoList", replyInfoList);
-//		return "reply/keywordList";
-//	}
+	/*
+	//查询关键字回复列表
+	@RequestMapping("/keyword/list")
+	public String listKeyword(HttpServletRequest request){
+		int uid = ((UserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId();
+		List<ReplyInfo> replyInfoList = replyInfoDao.findByCategory(uid, "2");
+		request.setAttribute("replyInfoList", replyInfoList);
+		return "reply/keywordList";
+	}
+	*/
 
 
 	/**

@@ -1,9 +1,9 @@
 package com.jadyer.seed.mpp.sdk.qq.filter;
 
+import com.jadyer.seed.comm.util.HttpUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.mpp.sdk.qq.constant.QQConstants;
 import com.jadyer.seed.mpp.sdk.qq.helper.QQHelper;
-import com.jadyer.seed.mpp.sdk.util.HttpUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +73,7 @@ public class QQFilter implements Filter {
 				return;
 			}
 			/*
-			 * state=http://www.jadyer.com/JadyerSDK/user/get/2/uname=玄玉/openid=openid
+			 * state=http://www.jadyer.com/seed/user/get/2/uname=玄玉/openid=openid
 			 */
 			String fullURL = request.getRequestURL().toString() + (null==request.getQueryString()?"":"?"+request.getQueryString());
 			String state = fullURL.replace("?", "/").replaceAll("&", "/").replace("/oauth=base", "");

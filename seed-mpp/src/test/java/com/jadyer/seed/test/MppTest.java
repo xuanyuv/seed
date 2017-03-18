@@ -1,10 +1,10 @@
 package com.jadyer.seed.test;
 
 import com.alibaba.fastjson.JSON;
+import com.jadyer.seed.comm.util.HttpUtil;
 import com.jadyer.seed.mpp.sdk.qq.helper.QQHelper;
 import com.jadyer.seed.mpp.sdk.qq.model.custom.QQCustomTextMsg;
 import com.jadyer.seed.mpp.sdk.qq.model.template.QQTemplateMsg;
-import com.jadyer.seed.mpp.sdk.util.HttpUtil;
 import com.jadyer.seed.mpp.sdk.weixin.model.template.WeixinTemplateMsg;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -51,7 +51,7 @@ public class MppTest {
     @Test
     public void pushQQTemplateMsgToFans(){
         QQTemplateMsg.ButtonItem button = new QQTemplateMsg.ButtonItem();
-        button.put("url", new QQTemplateMsg.BItem(QQTemplateMsg.TEMPLATE_MSG_TYPE_VIEW, "test", "https://github.com/jadyer/JadyerSDK/"));
+        button.put("url", new QQTemplateMsg.BItem(QQTemplateMsg.TEMPLATE_MSG_TYPE_VIEW, "test", "https://github.com/jadyer/seed/"));
         QQTemplateMsg.DataItem data = new QQTemplateMsg.DataItem();
         data.put("first", new QQTemplateMsg.DItem("天下无敌任我行"));
         data.put("end", new QQTemplateMsg.DItem("随心所欲陪你玩"));

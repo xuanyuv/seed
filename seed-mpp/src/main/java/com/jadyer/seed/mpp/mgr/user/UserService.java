@@ -18,7 +18,7 @@ public class UserService {
 	private MenuInfoDao menuInfoDao;
 	
 	private String buildEncryptPassword(String password){
-		return DigestUtils.md5Hex(password + "https://github.com/jadyer/JadyerSDK");
+		return DigestUtils.md5Hex(password + "https://github.com/jadyer/seed");
 	}
 
 	@Transactional(readOnly=true)
@@ -55,8 +55,6 @@ public class UserService {
 	 * @param userInfo    HttpSession中的当前登录用户信息
 	 * @param oldPassword 用户输入的旧密码
 	 * @param newPassword 用户输入的新密码
-	 * @create Oct 25, 2015 2:58:33 PM
-	 * @author 玄玉<http://blog.csdn.net/jadyer>
 	 */
 	public UserInfo passwordUpdate(UserInfo userInfo, String oldPassword, String newPassword){
 		if(!userInfo.getPassword().equals(buildEncryptPassword(oldPassword))){

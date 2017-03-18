@@ -2,7 +2,7 @@ package com.jadyer.seed.mpp.sdk.weixin.helper;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.jadyer.seed.mpp.sdk.util.HttpUtil;
+import com.jadyer.seed.comm.util.HttpUtil;
 import com.jadyer.seed.mpp.sdk.weixin.constant.WeixinCodeEnum;
 import com.jadyer.seed.mpp.sdk.weixin.constant.WeixinConstants;
 import com.jadyer.seed.mpp.sdk.weixin.model.WeixinErrorInfo;
@@ -37,7 +37,7 @@ public final class WeixinHelper {
 	 */
 	static String getWeixinAccessToken(String appid, String appsecret) throws IllegalAccessException {
 		String reqURL = WeixinConstants.URL_WEIXIN_GET_ACCESSTOKEN.replace(WeixinConstants.URL_PLACEHOLDER_APPID, appid).replace(WeixinConstants.URL_PLACEHOLDER_APPSECRET, appsecret);
-		String respData = HttpUtil.post(reqURL);
+		String respData = HttpUtil.post(reqURL, null, null);
 		logger.info("获取微信access_token,微信应答报文为-->{}", respData);
 		Map<String, String> map = JSON.parseObject(respData, new TypeReference<Map<String, String>>(){});
 		if(respData.contains("access_token")){
@@ -62,7 +62,7 @@ public final class WeixinHelper {
 	 */
 	static String getWeixinJSApiTicket(String accesstoken) throws IllegalAccessException {
 		String reqURL = WeixinConstants.URL_WEIXIN_GET_JSAPI_TICKET.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
-		String respData = HttpUtil.post(reqURL);
+		String respData = HttpUtil.post(reqURL, null, null);
 		logger.info("获取微信jsapi_ticket,微信应答报文为-->{}", respData);
 		Map<String, String> map = JSON.parseObject(respData, new TypeReference<Map<String, String>>(){});
 		if("0".equals(map.get("errcode"))){
@@ -87,7 +87,7 @@ public final class WeixinHelper {
 		String reqURL = WeixinConstants.URL_WEIXIN_OAUTH2_GET_ACCESSTOKEN.replace(WeixinConstants.URL_PLACEHOLDER_APPID, appid)
 																	  .replace(WeixinConstants.URL_PLACEHOLDER_APPSECRET, appsecret)
 																	  .replace(WeixinConstants.URL_PLACEHOLDER_CODE, code);
-		String respData = HttpUtil.post(reqURL);
+		String respData = HttpUtil.post(reqURL, null, null);
 		logger.info("获取微信网页access_token,微信应答报文为-->{}", respData);
 		WeixinOAuthAccessToken weixinOauthAccessToken = JSON.parseObject(respData, WeixinOAuthAccessToken.class);
 		if(weixinOauthAccessToken.getErrcode() != 0){
@@ -180,7 +180,7 @@ public final class WeixinHelper {
 	 */
 	public static WeixinFansInfo getWeixinFansInfo(String accesstoken, String openid){
 		String reqURL = WeixinConstants.URL_WEIXIN_GET_FANSINFO.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken).replace(WeixinConstants.URL_PLACEHOLDER_OPENID, openid);
-		String respData = HttpUtil.post(reqURL);
+		String respData = HttpUtil.post(reqURL, null, null);
 		return JSON.parseObject(respData, WeixinFansInfo.class);
 	}
 
@@ -233,7 +233,7 @@ public final class WeixinHelper {
 	 */
 	public static List<WeixinTemplate> getWeixinTemplateList(String accesstoken){
 		String reqURL = WeixinConstants.URL_WEIXIN_TEMPLATE_GETALL.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
-		String respData = HttpUtil.post(reqURL);
+		String respData = HttpUtil.post(reqURL, null, null);
 		logger.info("获取微信模板消息列表，微信应答报文为-->{}", respData);
 		Map<String, String> map = JSON.parseObject(respData, new TypeReference<Map<String, String>>(){});
 		String templateListStr = map.get("template_list");

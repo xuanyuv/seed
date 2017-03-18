@@ -1,6 +1,6 @@
 package com.jadyer.seed.mpp.sdk.weixin.controller;
 
-import com.jadyer.seed.mpp.sdk.util.HttpUtil;
+import com.jadyer.seed.comm.util.HttpUtil;
 import com.jadyer.seed.mpp.sdk.weixin.constant.WeixinConstants;
 import com.jadyer.seed.mpp.sdk.weixin.helper.WeixinHelper;
 import com.jadyer.seed.mpp.sdk.weixin.helper.WeixinTokenHolder;

@@ -1,8 +1,8 @@
 package com.jadyer.seed.mpp.sdk.qq.controller;
 
+import com.jadyer.seed.comm.util.HttpUtil;
 import com.jadyer.seed.mpp.sdk.qq.helper.QQTokenHolder;
 import com.jadyer.seed.mpp.sdk.qq.model.QQOAuthAccessToken;
-import com.jadyer.seed.mpp.sdk.util.HttpUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

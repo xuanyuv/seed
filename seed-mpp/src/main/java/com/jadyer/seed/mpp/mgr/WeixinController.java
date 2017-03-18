@@ -46,13 +46,13 @@ public class WeixinController extends WeixinMsgControllerCustomServiceAdapter {
 		/*
 		//回复带链接和表情的文本消息
 		if("blog".equals(inTextMsg.getContent())){
-			return new WeixinOutTextMsg(inTextMsg).setContent("[右哼哼]欢迎访问<a href=\"http://blog.csdn.net/jadyer\">我的博客</a>[左哼哼]");
+			return new WeixinOutTextMsg(inTextMsg).setContent("[右哼哼]欢迎访问<a href=\"https://jadyer.github.io/\">我的博客</a>[左哼哼]");
 		}
 		//回复多图文
 		WeixinOutNewsMsg outMsg = new WeixinOutNewsMsg(inTextMsg);
-		outMsg.addNews("第一个大图文标题", "第一个大图文描述", "http://avatar.csdn.net/6/0/B/1_jadyer.jpg", "http://blog.csdn.net/jadyer");
+		outMsg.addNews("第一个大图文标题", "第一个大图文描述", "http://avatar.csdn.net/6/0/B/1_jadyer.jpg", "https://jadyer.github.io/");
 		outMsg.addNews("第二个图文的标题", "第二个图文的描述", "http://img.my.csdn.net/uploads/201507/26/1437881866_3678.png", "https://github.com/jadyer");
-		outMsg.addNews("第三个图文的标题", "第三个图文的描述", "http://img.my.csdn.net/uploads/201009/14/7892753_1284475095fyR0.jpg", "http://blog.csdn.net/jadyer/article/details/5859908");
+		outMsg.addNews("第三个图文的标题", "第三个图文的描述", "http://img.my.csdn.net/uploads/201009/14/7892753_1284475095fyR0.jpg", "https://jadyer.github.io/2015/10/20/wechat-dev-ngrok-pagekite/");
 		return outMsg;
 		*/
 		//防伪
@@ -69,14 +69,14 @@ public class WeixinController extends WeixinMsgControllerCustomServiceAdapter {
 			userInfo.setBindStatus("1");
 			userInfo.setBindTime(new Date());
 			userService.save(userInfo);
-			return new WeixinOutTextMsg(inTextMsg).setContent("绑定完毕，升级成功");
+			return new WeixinOutTextMsg(inTextMsg).setContent("绑定完毕，升级成功！");
 		}
-		//关键字查找(暂时只支持回复文本或转发到多客服)
+		//关键字查找（暂时只支持回复文本或转发到多客服）
 		ReplyInfo replyInfo = replyInfoDao.findByKeyword(userInfo.getId(), inTextMsg.getContent());
 		if(null!=replyInfo && "0".equals(replyInfo.getType())){
 			return new WeixinOutTextMsg(inTextMsg).setContent(replyInfo.getContent());
 		}
-		//查找通用的回复(暂时设定为转发到多客服)
+		//查找通用的回复（暂时设定为转发到多客服）
 		List<ReplyInfo> replyInfoList = replyInfoDao.findByCategory(userInfo.getId(), "0");
 		if(!replyInfoList.isEmpty() && "4".equals(replyInfoList.get(0).getType())){
 			return new WeixinOutCustomServiceMsg(inTextMsg);
@@ -93,7 +93,7 @@ public class WeixinController extends WeixinMsgControllerCustomServiceAdapter {
 		if(null == userInfo){
 			return new WeixinOutTextMsg(inMenuEventMsg).setContent("该公众号未绑定");
 		}
-		//VIEW类的直接跳转过去了,CLICK类的暂定根据关键字回复(找不到关键字就转发到多客服)
+		//VIEW类的直接跳转过去了，CLICK类的暂定根据关键字回复（找不到关键字就转发到多客服）
 		if(WeixinInMenuEventMsg.EVENT_INMENU_CLICK.equals(inMenuEventMsg.getEvent())){
 			ReplyInfo replyInfo = replyInfoDao.findByKeyword(userInfo.getId(), inMenuEventMsg.getEventKey());
 			if(null == replyInfo){
@@ -102,7 +102,7 @@ public class WeixinController extends WeixinMsgControllerCustomServiceAdapter {
 				return new WeixinOutTextMsg(inMenuEventMsg).setContent(replyInfo.getContent());
 			}
 		}
-		//跳到URL时,返回特定的消息使得微信服务器不会回复消息给用户手机上
+		//跳到URL时，返回特定的消息使得微信服务器不会回复消息给用户手机上
 		return new WeixinOutTextMsg(inMenuEventMsg).setContent(WeixinConstants.NOT_NEED_REPLY_FLAG);
 	}
 
@@ -169,58 +169,51 @@ public class WeixinController extends WeixinMsgControllerCustomServiceAdapter {
 		WeixinTemplateMsg templateMsg = new WeixinTemplateMsg();
 		templateMsg.setTouser(openid);
 		templateMsg.setTemplate_id(templateid);
-		templateMsg.setUrl("http://blog.csdn.net/jadyer");
+		templateMsg.setUrl("https://jadyer.github.io/");
 		templateMsg.setData(data);
 		return WeixinHelper.pushWeixinTemplateMsgToFans(WeixinTokenHolder.getWeixinAccessToken(appid), templateMsg);
 	}
 
 
-//	@ResponseBody
-//	@RequestMapping(value="/getWeixinAccessToken")
-//	public String getWeixinAccessToken(){
-//		String appid = "wx63ae5326e400cca2";
-//		String appsecret = "b6a838ea12d6175c00793503500ede64";
-//		return WeixinHelper.getWeixinAccessToken(appid, appsecret);
-//	}
-//
-//
-//	@ResponseBody
-//	@RequestMapping(value="/getWeixinFansInfo")
-//	public FansInfo getWeixinFansInfo(){
-//		String accesstoken = "axJDAkVIyi5SEYXTnHbWQZypbO0O8p5cDM5CdU0gs4loKMtpB3QCSuK4S6rfPebIArXx33Lmg_U5QoSLflUIHwKQnlGSsTlqhgFk-5RT2y0";
-//		String openid = "o3SHot22_IqkUI7DpahNv-KBiFIs";
-//		return WeixinHelper.getWeixinFansInfo(accesstoken, openid);
-//	}
-//
-//
-//	@ResponseBody
-//	@RequestMapping(value="/createWeixinMenu")
-//	public ErrorInfo createWeixinMenu(){
-//		String accesstoken = "nHVQXjVPWlyvdglrU6EgGnH_MzvdltddS4HOzUJocjX-wb_NVOi-6rJjumZJayRqwHT7xx80ziBaDCXc6dqddVHheP7g6aJAxv71Lwj3Cxg";
-//		WeixinSubViewButton btn11 = new WeixinSubViewButton("我的博客", "http://blog.csdn.net/jadyer");
-//		WeixinSubViewButton btn22 = new WeixinSubViewButton("我的GitHub", "http://jadyer.tunnel.mobi/weixin/getOpenid?oauth=base&openid=openid");
-//		WeixinSubClickButton btn33 = new WeixinSubClickButton("历史上的今天", "123abc");
-//		WeixinSubClickButton btn44 = new WeixinSubClickButton("天气预报", "456");
-//		WeixinSubClickButton btn55 = new WeixinSubClickButton("幽默笑话", "joke");
-//		WeixinSuperButton sbtn11 = new WeixinSuperButton("个人中心", new WeixinButton[]{btn11, btn22});
-//		WeixinSuperButton sbtn22 = new WeixinSuperButton("休闲驿站", new WeixinButton[]{btn33, btn44});
-//		WeixinMenu menu = new WeixinMenu(new WeixinButton[]{sbtn11, btn55, sbtn22});
-//		return WeixinHelper.createWeixinMenu(accesstoken, menu);
-//	}
-//
-//
-//	@ResponseBody
-//	@RequestMapping(value="/pushWeixinMsgToFans")
-//	public ErrorInfo pushWeixinMsgToFans(){
-//		String accesstoken = "axJDAkVIyi5SEYXTnHbWQZypbO0O8p5cDM5CdU0gs4loKMtpB3QCSuK4S6rfPebIArXx33Lmg_U5QoSLflUIHwKQnlGSsTlqhgFk-5RT2y0";
-//		String openid = "o3SHot22_IqkUI7DpahNv-KBiFIs";
-//		//推文本消息
-//		WeixinCustomTextMsg customTextMsg = new WeixinCustomTextMsg(openid, new Text("[呲牙]SDK已发布，详见<a href=\"https://github.com/jadyer/JadyerSDK\">我的Github</a>[呲牙]"));
-//		WeixinHelper.pushWeixinMsgToFans(accesstoken, customTextMsg);
-//		//推图文消息
-//		WeixinCustomNewsMsg.News.Article article11 = new Article("欢迎访问玄玉博客", "玄玉博客是一个开放态度的Java生态圈", "http://avatar.csdn.net/6/0/B/1_jadyer.jpg", "http://blog.csdn.net/jadyer");
-//		WeixinCustomNewsMsg.News.Article article22 = new Article("玄玉微信SDK", "玄玉微信SDK是一个正在研发中的SDK", "http://img.my.csdn.net/uploads/201507/26/1437881866_3678.png", "https://github.com/jadyer");
-//		WeixinCustomNewsMsg customNewsMsg = new WeixinCustomNewsMsg(openid, new News(new Article[]{article11, article22}));
-//		return WeixinHelper.pushWeixinMsgToFans(accesstoken, customNewsMsg);
-//	}
+	/*
+	@ResponseBody
+	@RequestMapping(value="/getWeixinFansInfo")
+	public WeixinFansInfo getWeixinFansInfo(){
+		String accesstoken = "axJDAkVIyi5SEYXTnHbWQZypbO0O8p5cDM5CdU0gs4loKMtpB3QCSuK4S6rfPebIArXx33Lmg_U5QoSLflUIHwKQnlGSsTlqhgFk-5RT2y0";
+		String openid = "o3SHot22_IqkUI7DpahNv-KBiFIs";
+		return WeixinHelper.getWeixinFansInfo(accesstoken, openid);
+	}
+
+
+	@ResponseBody
+	@RequestMapping(value="/createWeixinMenu")
+	public WeixinErrorInfo createWeixinMenu(){
+		String accesstoken = "nHVQXjVPWlyvdglrU6EgGnH_MzvdltddS4HOzUJocjX-wb_NVOi-6rJjumZJayRqwHT7xx80ziBaDCXc6dqddVHheP7g6aJAxv71Lwj3Cxg";
+		WeixinSubViewButton btn11 = new WeixinSubViewButton("我的博客", "https://jadyer.github.io/");
+		WeixinSubViewButton btn22 = new WeixinSubViewButton("我的GitHub", "http://jadyer.tunnel.mobi/weixin/getOpenid?oauth=base&openid=openid");
+		WeixinSubClickButton btn33 = new WeixinSubClickButton("历史上的今天", "123abc");
+		WeixinSubClickButton btn44 = new WeixinSubClickButton("天气预报", "456");
+		WeixinSubClickButton btn55 = new WeixinSubClickButton("幽默笑话", "joke");
+		WeixinSuperButton sbtn11 = new WeixinSuperButton("个人中心", new WeixinButton[]{btn11, btn22});
+		WeixinSuperButton sbtn22 = new WeixinSuperButton("休闲驿站", new WeixinButton[]{btn33, btn44});
+		WeixinMenu menu = new WeixinMenu(new WeixinButton[]{sbtn11, btn55, sbtn22});
+		return WeixinHelper.createWeixinMenu(accesstoken, menu);
+	}
+
+
+	@ResponseBody
+	@RequestMapping(value="/pushWeixinMsgToFans")
+	public WeixinErrorInfo pushWeixinMsgToFans(){
+		String accesstoken = "axJDAkVIyi5SEYXTnHbWQZypbO0O8p5cDM5CdU0gs4loKMtpB3QCSuK4S6rfPebIArXx33Lmg_U5QoSLflUIHwKQnlGSsTlqhgFk-5RT2y0";
+		String openid = "o3SHot22_IqkUI7DpahNv-KBiFIs";
+		//推文本消息
+		WeixinCustomTextMsg customTextMsg = new WeixinCustomTextMsg(openid, new WeixinCustomTextMsg.Text("[呲牙]SDK已发布，详见<a href=\"https://github.com/jadyer/seed\">我的Github</a>[呲牙]"));
+		WeixinHelper.pushWeixinMsgToFans(accesstoken, customTextMsg);
+		//推图文消息
+		WeixinCustomNewsMsg.News.Article article11 = new WeixinCustomNewsMsg.News.Article("欢迎访问玄玉博客", "玄玉博客是一个开放态度的Java生态圈", "http://avatar.csdn.net/6/0/B/1_jadyer.jpg", "https://jadyer.github.io/");
+		WeixinCustomNewsMsg.News.Article article22 = new WeixinCustomNewsMsg.News.Article("玄玉微信SDK", "玄玉微信SDK是一个正在研发中的SDK", "http://img.my.csdn.net/uploads/201507/26/1437881866_3678.png", "https://github.com/jadyer");
+		WeixinCustomNewsMsg customNewsMsg = new WeixinCustomNewsMsg(openid, new WeixinCustomNewsMsg.News(new WeixinCustomNewsMsg.News.Article[]{article11, article22}));
+		return WeixinHelper.pushWeixinMsgToFans(accesstoken, customNewsMsg);
+	}
+	*/
 }

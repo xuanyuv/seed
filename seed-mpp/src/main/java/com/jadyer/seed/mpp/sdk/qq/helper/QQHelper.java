@@ -2,6 +2,7 @@ package com.jadyer.seed.mpp.sdk.qq.helper;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.jadyer.seed.comm.util.HttpUtil;
 import com.jadyer.seed.mpp.sdk.qq.constant.QQCodeEnum;
 import com.jadyer.seed.mpp.sdk.qq.constant.QQConstants;
 import com.jadyer.seed.mpp.sdk.qq.model.QQErrorInfo;
@@ -10,7 +11,6 @@ import com.jadyer.seed.mpp.sdk.qq.model.QQOAuthAccessToken;
 import com.jadyer.seed.mpp.sdk.qq.model.custom.QQCustomMsg;
 import com.jadyer.seed.mpp.sdk.qq.model.menu.QQMenu;
 import com.jadyer.seed.mpp.sdk.qq.model.template.QQTemplateMsg;
-import com.jadyer.seed.mpp.sdk.util.HttpUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -36,7 +36,7 @@ public final class QQHelper {
 	 */
 	static String getQQAccessToken(String appid, String appsecret) throws IllegalAccessException {
 		String reqURL = QQConstants.URL_QQ_GET_ACCESSTOKEN.replace(QQConstants.URL_PLACEHOLDER_APPID, appid).replace(QQConstants.URL_PLACEHOLDER_APPSECRET, appsecret);
-		String respData = HttpUtil.post(reqURL);
+		String respData = HttpUtil.post(reqURL, null, null);
 		logger.info("获取QQaccess_token,QQ应答报文为-->{}", respData);
 		Map<String, String> map = JSON.parseObject(respData, new TypeReference<Map<String, String>>(){});
 		if("0".equals(map.get("errcode")) && StringUtils.isNotBlank(map.get("access_token"))){
@@ -58,7 +58,7 @@ public final class QQHelper {
 	 */
 	static String getQQJSApiTicket(String accesstoken) throws IllegalAccessException {
 		String reqURL = QQConstants.URL_QQ_GET_JSAPI_TICKET.replace(QQConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
-		String respData = HttpUtil.post(reqURL);
+		String respData = HttpUtil.post(reqURL, null, null);
 		logger.info("获取QQjsapi_ticket,QQ应答报文为-->{}", respData);
 		Map<String, String> map = JSON.parseObject(respData, new TypeReference<Map<String, String>>(){});
 		if("0".equals(map.get("errcode"))){
@@ -85,7 +85,7 @@ public final class QQHelper {
 		String reqURL = QQConstants.URL_QQ_OAUTH2_GET_ACCESSTOKEN.replace(QQConstants.URL_PLACEHOLDER_APPID, appid)
 																	  .replace(QQConstants.URL_PLACEHOLDER_APPSECRET, appsecret)
 																	  .replace(QQConstants.URL_PLACEHOLDER_CODE, code);
-		String respData = HttpUtil.post(reqURL);
+		String respData = HttpUtil.post(reqURL, null, null);
 		logger.info("获取QQ网页access_token,QQ应答报文为-->{}", respData);
 		QQOAuthAccessToken qqOauthAccessToken = JSON.parseObject(respData, QQOAuthAccessToken.class);
 		if(qqOauthAccessToken.getErrcode() != 0){
@@ -186,7 +186,7 @@ public final class QQHelper {
 	 */
 	public static QQFansInfo getQQFansInfo(String accesstoken, String openid){
 		String reqURL = QQConstants.URL_QQ_GET_FANSINFO.replace(QQConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken).replace(QQConstants.URL_PLACEHOLDER_OPENID, openid);
-		String respData = HttpUtil.post(reqURL);
+		String respData = HttpUtil.post(reqURL, null, null);
 		return JSON.parseObject(respData, QQFansInfo.class);
 	}
 

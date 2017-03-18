@@ -1,12 +1,12 @@
 package com.jadyer.seed.mpp.mgr.fans;
 
 import com.jadyer.seed.comm.base.SpringContextHolder;
+import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.mpp.mgr.fans.model.FansInfo;
 import com.jadyer.seed.mpp.mgr.user.model.UserInfo;
 import com.jadyer.seed.mpp.sdk.qq.helper.QQHelper;
 import com.jadyer.seed.mpp.sdk.qq.helper.QQTokenHolder;
 import com.jadyer.seed.mpp.sdk.qq.model.QQFansInfo;
-import com.jadyer.seed.mpp.sdk.util.SDKUtil;
 import com.jadyer.seed.mpp.sdk.weixin.helper.WeixinHelper;
 import com.jadyer.seed.mpp.sdk.weixin.helper.WeixinTokenHolder;
 import com.jadyer.seed.mpp.sdk.weixin.model.WeixinFansInfo;
@@ -40,7 +40,7 @@ public class FansSaveThread implements Runnable {
 			fansInfo.setOpenid(openid);
 			fansInfo.setSubscribe(String.valueOf(weixinFansInfo.getSubscribe()));
 			fansInfo.setSubscribeTime(DateFormatUtils.format(new Date(Long.parseLong(weixinFansInfo.getSubscribe_time())*1000), "yyyy-MM-dd HH:mm:ss"));
-			fansInfo.setNickname(SDKUtil.escapeEmoji(weixinFansInfo.getNickname()));
+			fansInfo.setNickname(JadyerUtil.escapeEmoji(weixinFansInfo.getNickname()));
 			fansInfo.setSex(String.valueOf(weixinFansInfo.getSex()));
 			fansInfo.setCity(weixinFansInfo.getCity());
 			fansInfo.setCountry(weixinFansInfo.getCountry());
@@ -58,7 +58,7 @@ public class FansSaveThread implements Runnable {
 			fansInfo.setOpenid(openid);
 			fansInfo.setSubscribe(String.valueOf(qqFansInfo.getSubscribe()));
 			fansInfo.setSubscribeTime(DateFormatUtils.format(new Date(Long.parseLong(qqFansInfo.getSubscribe_time())*1000), "yyyy-MM-dd HH:mm:ss"));
-			fansInfo.setNickname(SDKUtil.escapeEmoji(qqFansInfo.getNickname()));
+			fansInfo.setNickname(JadyerUtil.escapeEmoji(qqFansInfo.getNickname()));
 			fansInfo.setSex(String.valueOf(qqFansInfo.getSex()));
 			fansInfo.setCity(qqFansInfo.getCity());
 			fansInfo.setCountry(qqFansInfo.getCountry());

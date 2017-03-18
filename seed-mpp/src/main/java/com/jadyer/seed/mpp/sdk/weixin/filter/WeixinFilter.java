@@ -1,7 +1,7 @@
 package com.jadyer.seed.mpp.sdk.weixin.filter;
 
+import com.jadyer.seed.comm.util.HttpUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
-import com.jadyer.seed.mpp.sdk.util.HttpUtil;
 import com.jadyer.seed.mpp.sdk.weixin.constant.WeixinConstants;
 import com.jadyer.seed.mpp.sdk.weixin.helper.WeixinHelper;
 import org.apache.commons.lang3.StringUtils;
@@ -47,7 +47,7 @@ public class WeixinFilter implements Filter {
 			if(JadyerUtil.isAjaxRequest(request)){
 				throw new RuntimeException("请不要通过Ajax获取粉丝信息");
 			}
-			/**
+			/*
 			 * @see 1.IE-11.0.9600.17843
 			 * @see   User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko
 			 * @see 2.Chrome-46.0.2490.71 m (64-bit)
@@ -73,8 +73,8 @@ public class WeixinFilter implements Filter {
 				out.close();
 				return;
 			}
-			/**
-			 * state=http://www.jadyer.com/JadyerSDK/user/get/2/uname=玄玉/openid=openid
+			/*
+			 * state=http://www.jadyer.com/seed/user/get/2/uname=玄玉/openid=openid
 			 */
 			String fullURL = request.getRequestURL().toString() + (null==request.getQueryString()?"":"?"+request.getQueryString());
 			String state = fullURL.replace("?", "/").replaceAll("&", "/").replace("/oauth=base", "");
