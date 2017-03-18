@@ -70,7 +70,7 @@ public class UserController{
 	 * 登录
 	 */
 	@ResponseBody
-	@RequestMapping(value="/login", method= RequestMethod.POST)
+	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public CommonResult login(String username, String password, String captcha, HttpServletRequest request){
 		if(StringUtils.isNotBlank(captcha)){
 			if(!captcha.equals(request.getSession().getAttribute("rand"))){

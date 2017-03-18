@@ -1,5 +1,5 @@
 <%@ page pageEncoding="UTF-8"%>
-<%@ page import="com.jadyer.sdk.demo.common.constant.Constants"%>
+<%@ page import="com.jadyer.seed.comm.constant.Constants"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 

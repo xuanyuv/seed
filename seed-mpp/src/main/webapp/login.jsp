@@ -129,7 +129,6 @@ function reloadCaptcha(){
 			</li>
 		</ul>
 		<div class="d">
-			<p class="p1"><a href="javascript:alert('暂未开放');" title="注册">注册</a><span></span><a href="javascript:alert('暂未开放');" title="忘记密码">忘记密码</a></p>
 			<p class="p2"><button id="loginSubmit" onclick="login();" class="btn trans" type="button">登&nbsp;&nbsp;录</button></p>
 			<div class="clear"></div>
 		</div>

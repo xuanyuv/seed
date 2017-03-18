@@ -11,9 +11,7 @@ import org.springframework.web.servlet.view.JstlView;
 public class MVCConfiguration extends WebMvcConfigurerAdapter {
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
-		//registry.addViewController("/").setViewName("forward:/building.jsp");
-		registry.addViewController("/").setViewName("forward:/portal/index.jsp");
-		registry.addViewController("/login").setViewName("forward:/login.jsp");
+		registry.addViewController("/").setViewName("forward:/login.jsp");
 	}
 
 	@Override

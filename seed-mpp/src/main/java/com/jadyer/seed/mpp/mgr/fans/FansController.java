@@ -37,6 +37,6 @@ public class FansController{
 		//执行
 		Page<FansInfo> fansPage = fansInfoRepository.findAll(spec, pageable);
 		request.setAttribute("page", fansPage);
-		return "fansList";
+		return "fans.list";
 	}
 }

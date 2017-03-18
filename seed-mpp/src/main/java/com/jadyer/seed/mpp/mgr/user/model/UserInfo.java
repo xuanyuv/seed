@@ -27,6 +27,7 @@ public class UserInfo extends BaseEntity<Long> {
 	private String appsecret;
 	@Column(name="bind_status")
 	private int bindStatus;
+	@Column(name="bind_time")
 	private Date bindTime;
 
 	public int getPid() {

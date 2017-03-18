@@ -75,7 +75,7 @@ public class ReplyController{
 		int uid = ((UserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId();
 		List<ReplyInfo> replyInfoList = replyInfoRepository.findByCategory(uid, "2");
 		request.setAttribute("replyInfoList", replyInfoList);
-		return "reply/keywordList";
+		return "reply/keyword.list";
 	}
 	*/
 
@@ -99,7 +99,7 @@ public class ReplyController{
 		//执行
 		Page<ReplyInfo> keywordPage = replyInfoRepository.findAll(spec, pageable);
 		request.setAttribute("page", keywordPage);
-		return "reply/keywordList";
+		return "reply/keyword.list";
 	}
 
 

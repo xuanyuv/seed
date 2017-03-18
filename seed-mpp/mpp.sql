@@ -62,7 +62,7 @@ mpname      VARCHAR(32) COMMENT '微信或QQ公众平台名称',
 appid       VARCHAR(32) COMMENT '微信或QQ公众平台appid',
 appsecret   VARCHAR(64) COMMENT '微信或QQ公众平台appsecret',
 bind_status TINYINT(1)  COMMENT '微信或QQ公众平台绑定状态：0--未绑定，1--已绑定',
-bindTime    TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT '微信或QQ公众平台绑定解绑时间',
+bind_time   TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT '微信或QQ公众平台绑定解绑时间',
 create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间'
 )ENGINE=InnoDB DEFAULT CHARSET=UTF8 COMMENT='mpplus平台用户表';
@@ -126,7 +126,7 @@ update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMES
 )ENGINE=InnoDB DEFAULT CHARSET=UTF8 COMMENT='自定义菜单表';
 
 
-INSERT INTO t_reply_info(uid, category, type) VALUES(2, '0', '4');
-INSERT INTO t_user_info(id, pid, username, password, uuid, mptype, bindStatus) VALUES(1, 0, 'admin', '6ceb1183ea22e54c76a5bc1ab78590e0', REPLACE(UUID(),'-',''), '0', '0');
-INSERT INTO t_user_info(id, pid, username, password, uuid, mptype, bindStatus) VALUES(2, 1, 'wx', '7f3b2e2ebdfc3108b89c9179b7c49f3e', REPLACE(UUID(),'-',''), '1', '0');
-INSERT INTO t_user_info(id, pid, username, password, uuid, mptype, bindStatus) VALUES(3, 1, 'qq', '0bcbe32327f4326ef272322b788109cb', REPLACE(UUID(),'-',''), '2', '0');
+INSERT INTO t_reply_info(uid, category, type) VALUES(2, 0, 4);
+INSERT INTO t_user_info(id, pid, username, password, uuid, mptype, bind_status) VALUES(1, 0, 'admin', '6ceb1183ea22e54c76a5bc1ab78590e0', REPLACE(UUID(),'-',''), 0, 0);
+INSERT INTO t_user_info(id, pid, username, password, uuid, mptype, bind_status) VALUES(2, 1, 'wx', '7f3b2e2ebdfc3108b89c9179b7c49f3e', REPLACE(UUID(),'-',''), 1, 0);
+INSERT INTO t_user_info(id, pid, username, password, uuid, mptype, bind_status) VALUES(3, 1, 'qq', '0bcbe32327f4326ef272322b788109cb', REPLACE(UUID(),'-',''), 2, 0);

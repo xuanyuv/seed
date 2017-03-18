@@ -1,5 +1,5 @@
 <%@ page pageEncoding="UTF-8"%>
-<%@ page import="com.jadyer.sdk.weixin.helper.WeixinTokenHolder"%>
+<%@ page import="com.jadyer.seed.mpp.sdk.weixin.helper.WeixinTokenHolder"%>
 <%
 out.println(WeixinTokenHolder.getWeixinAccessToken());
 out.print(WeixinTokenHolder.getWeixinJSApiTicket());
@@ -10,7 +10,7 @@ out.print(WeixinTokenHolder.getWeixinJSApiTicket());
 <meta charset="UTF-8">
 <title>JSSDKDemo</title>
 <script src="<%=request.getContextPath()%>/js/jquery-1.11.3.min.js"></script>
-<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="//res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
 $(function(){
 	$.post("${pageContext.request.contextPath}/weixin/helper/sign/jssdk",
