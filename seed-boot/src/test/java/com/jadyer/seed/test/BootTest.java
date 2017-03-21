@@ -78,6 +78,15 @@ public class BootTest {
 
 
 	/**
+	 * 通过lua脚步，根据pattern，获取Redis中的所有key
+	 */
+	@Test
+	public void redisGetallkey(){
+		System.out.println(this.jedisCluster.eval("return redis.call('keys', ARGV[1])", 0, "youqian*"));
+	}
+
+
+	/**
 	 * 限流測試
 	 */
 	@Test
