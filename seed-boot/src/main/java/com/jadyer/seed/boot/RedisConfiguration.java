@@ -21,10 +21,11 @@ import java.util.Set;
  * Created by 玄玉<https://jadyer.github.io/> on 2016/11/24 10:46.
  */
 //@Configuration
-@SuppressWarnings("ALL")
+@SuppressWarnings("WeakerAccess")
 @ConditionalOnClass({JedisCluster.class})
 @ConfigurationProperties(prefix="redis")
 public class RedisConfiguration {
+	//各个getter应该是public的才可以，否则其它地方使用JedisCluster对象时会报告空指针
 	private int connectionTimeout = 2000;
 	private int soTimeout = 5000;
 	private int maxRedirections = 5;

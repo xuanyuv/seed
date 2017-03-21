@@ -10,11 +10,14 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.junit4.SpringRunner;
 import redis.clients.jedis.JedisCluster;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -22,6 +25,7 @@ import java.util.concurrent.TimeUnit;
  * 演示spring-boot-starter-test的几个用法
  */
 @RunWith(SpringRunner.class)
+@Profile("local")
 @SpringBootTest(classes=BootStrap.class)
 public class BootTest {
 	@Resource
@@ -81,8 +85,11 @@ public class BootTest {
 	 * 通过lua脚步，根据pattern，获取Redis中的所有key
 	 */
 	@Test
+	@SuppressWarnings("unchecked")
 	public void redisGetallkey(){
-		System.out.println(this.jedisCluster.eval("return redis.call('keys', ARGV[1])", 0, "youqian*"));
+		Object obj = jedisCluster.eval("return redis.call('keys', ARGV[1])", 0, "youqian*");
+		List<String> keyList = (null==obj) ? new ArrayList<String>() : (List<String>)obj;
+		System.out.println("合计查到[" + keyList.size() + "]条key");
 	}
 
 
