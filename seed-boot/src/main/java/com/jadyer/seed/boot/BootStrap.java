@@ -41,10 +41,15 @@ import javax.servlet.Filter;
  *   info---------显示应用的基本信息
  *   metrics------显示应用的性能指标
  *   mappings-----显示SpringMVC应用中通过@RequestMapping添加的路径映射
- *   shutdown-----关闭应用（有待验证）
  *   trace--------显示应用相关的跟踪信息
- * 2.http://127.0.0.1/health/可以查看应用的健康状态,实现HealthIndicator接口后还可以自定义Health服务
- * 3.http://127.0.0.1/info/会将应用中任何以"info."开头的配置参数暴露出去,详见application.properties写法
+ *   shutdown-----关闭应用
+ * 2.http://127.0.0.1/health可以查看应用的健康状态,实现HealthIndicator接口后还可以自定义Health服务
+ * 3.http://127.0.0.1/info会将应用中任何以"info."开头的配置参数暴露出去,详见application.properties写法
+ * 4.http://127.0.0.1/shutdown属于敏感操作，故此功能默认是关闭的（其它的actuator都不是敏感操作，所以默认都是开启的）
+ *   通过配置endpoints.shutdown.enabled=true即可启用
+ *   另外，http://127.0.0.1/shutdown支持POST，但不支持GET请求
+ *   它在收到请求，关闭应用时，本例中的SpringContextHolder.clearHolder()方法会被调用
+ *   并返回该字符串给调用方（包括小括号）：{"message":"Shutting down, bye..."}
  * -----------------------------------------------------------------------------------------------------------
  * 条件注解
  * 它是Sring-boot封装了Spring4.x开始提供的@Conditional注解实现的新注解，主要分以下几类

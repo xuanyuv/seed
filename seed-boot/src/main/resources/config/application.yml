@@ -6,6 +6,12 @@ server:
     uriEncoding: UTF-8
 
 
+# 启用/shutdown关闭应用的功能
+endpoints:
+  shutdown:
+    enabled: true
+
+
 # 此配置仅供http://127.0.0.1/info使用
 info:
   myversion: 8.7.0
