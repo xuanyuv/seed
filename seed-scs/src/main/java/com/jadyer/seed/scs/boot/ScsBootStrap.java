@@ -24,8 +24,7 @@ import java.util.List;
 //@EnableJpaRepositories(basePackages="${scan.base.packages}")
 @SpringBootApplication(scanBasePackages="${scan.base.packages}", exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class ScsBootStrap extends SpringBootServletInitializer {
-    //启动时不能直接执行main
-    //具体启动方式见https://jadyer.github.io/2016/07/29/idea-springboot-jsp/
+    //启动方式：https://jadyer.github.io/2016/07/29/idea-springboot-jsp/
     public static void main(String[] args) {
         new SpringApplicationBuilder().sources(ScsBootStrap.class).profiles("local").run(args);
     }

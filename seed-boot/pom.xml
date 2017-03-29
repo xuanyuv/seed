@@ -8,6 +8,7 @@
 		<version>1.1</version>
 	</parent>
 	<artifactId>seed-boot</artifactId>
+	<packaging>war</packaging>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,22 +22,7 @@
 		</dependency>
 	</dependencies>
 
-	<!--
-	JSP页面测试时，要用到下面的配置，详见https://jadyer.github.io/2016/07/29/idea-springboot-jsp/
-	-->
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<mainClass>com.jadyer.seed.boot.BootStrap</mainClass>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
-	<!-- 打成jar时，配置成下面这样就可以了（mvn package命令执行时会触发这里的repackage，这样就会打成一个可执行的jar） -->
+	<!-- https://jadyer.github.io/2016/07/29/idea-springboot-jsp/ -->
 	<build>
 		<plugins>
 			<plugin>
@@ -45,13 +31,6 @@
 				<configuration>
 					<mainClass>com.jadyer.seed.boot.BootRun</mainClass>
 				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

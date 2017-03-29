@@ -29,7 +29,7 @@ import javax.servlet.Filter;
  * 4.SpringProfile的优先级
  *   若服务启动参数包含spring.profiles.active,那么Spring会自动读取并根据参数值加载application-{profile}.yml
  *   同时根据测试得知,-Dspring.profiles.active=dev的优先级要高于SpringApplicationBuilder.profiles("prod")
- *   另外，@Profile(value="test")的示例使用詳見com.jadyer.demo.boot.h2.H2Configuration.java
+ *   另外，@Profile(value="test")的示例使用詳見com.jadyer.seed.boot.H2Configuration.java
  * -----------------------------------------------------------------------------------------------------------
  * spring-boot-starter-actuator
  * 1.autoconfig---显示SpringBoot自动配置的信息
@@ -79,20 +79,15 @@ import javax.servlet.Filter;
  */
 @SpringBootApplication(scanBasePackages="${scan.base.packages}", exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class BootStrap extends SpringBootServletInitializer {
-	//启动时不能直接执行main
-	//具体启动方式见https://jadyer.github.io/2016/07/29/idea-springboot-jsp/
-	public static void main(String[] args) {
-		new SpringApplicationBuilder().sources(BootStrap.class).profiles("local").run(args);
-	}
-
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        //这里的配置与com.jadyer.demo.test.ApiBootStarp.java中的配置是没有关系的
+        //这里的配置与com.jadyer.seed.boot.BootRun.java中的配置是独立的没有关系的
 		//return builder.sources(getClass())
 		//        .listeners(new ApplicationStartedEventListener())
 		//        .listeners(new ApplicationEnvironmentPreparedEventListener())
 		//        .listeners(new ApplicationPreparedEventListener())
 		//        .listeners(new ApplicationFailedEventListener());
+		//此处未设置.profiles()，那么打成的war包在Tomcat中启动时，会自动读取Tomcat启动变量中的spring.profiles.active
 		return builder.sources(getClass());
 	}
 

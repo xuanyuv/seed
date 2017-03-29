@@ -12,3 +12,18 @@
 * seed-scs：脚手架（Sample Code System）
 * seed-server：Mina实现的服务器
 * seed-simulator：Swing实现的模拟器
+* .
+* ├── seed-boot
+* │   └── seed-comm
+* ├── seed-mpp
+* │   └── seed-comm
+* ├── seed-open
+* │   └── seed-comm
+* ├── seed-qss
+* │   └── seed-comm
+* ├── seed-scs
+* │   └── seed-comm
+* ├── seed-server
+* │   └── seed-comm
+* └── seed-simulator
+*     └── seed-comm
