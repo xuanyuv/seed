@@ -35,4 +35,24 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<!-- 打成jar时，配置成下面这样就可以了（mvn package命令执行时会触发这里的repackage，这样就会打成一个可执行的jar） -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>com.jadyer.seed.boot.BootRun</mainClass>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
