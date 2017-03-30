@@ -6,6 +6,9 @@ package com.jadyer.seed.comm.constant;
  * Created by 玄玉<https://jadyer.github.io/> on 2015/08/27 20:21.
  */
 public interface Constants {
+    String BOOT_ACTIVE_NAME = "spring.profiles.active";
+    String BOOT_ACTIVE_DEFAULT_VALUE = "local";
+
     /**
      * Web应用的会话标志，及后台的焦点菜单
      */

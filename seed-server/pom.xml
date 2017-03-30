@@ -8,6 +8,7 @@
 		<version>1.1</version>
 	</parent>
 	<artifactId>seed-server</artifactId>
+	<packaging>war</packaging>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

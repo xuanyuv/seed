@@ -4,6 +4,7 @@ import com.jadyer.seed.boot.event.ApplicationEnvironmentPreparedEventListener;
 import com.jadyer.seed.boot.event.ApplicationFailedEventListener;
 import com.jadyer.seed.boot.event.ApplicationPreparedEventListener;
 import com.jadyer.seed.boot.event.ApplicationStartedEventListener;
+import com.jadyer.seed.comm.constant.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -66,8 +67,6 @@ import javax.servlet.Filter;
 @SpringBootApplication(scanBasePackages="${scan.base.packages}", exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class BootRun {
 	private static final Logger log = LoggerFactory.getLogger(BootRun.class);
-	private static final String ACTIVE_EVN_NAME = "spring.profiles.active";
-	private static final String ACTIVE_DEFAULT_VALUE = "local";
 
 	@Bean
 	public Filter characterEncodingFilter(){
@@ -75,20 +74,20 @@ public class BootRun {
 	}
 
 	private static String getProfile(SimpleCommandLinePropertySource source){
-		if(source.containsProperty(ACTIVE_EVN_NAME)){
-			log.info("读取到spring变量：{}={}", ACTIVE_EVN_NAME, source.getProperty(ACTIVE_EVN_NAME));
-			return source.getProperty(ACTIVE_EVN_NAME);
+		if(source.containsProperty(Constants.BOOT_ACTIVE_NAME)){
+			log.info("读取到spring变量：{}={}", Constants.BOOT_ACTIVE_NAME, source.getProperty(Constants.BOOT_ACTIVE_NAME));
+			return source.getProperty(Constants.BOOT_ACTIVE_NAME);
 		}
-		if(System.getProperties().containsKey(ACTIVE_EVN_NAME)){
-			log.info("读取到java变量：{}={}", ACTIVE_EVN_NAME, System.getProperty(ACTIVE_EVN_NAME));
-			return System.getProperty(ACTIVE_EVN_NAME);
+		if(System.getProperties().containsKey(Constants.BOOT_ACTIVE_NAME)){
+			log.info("读取到java变量：{}={}", Constants.BOOT_ACTIVE_NAME, System.getProperty(Constants.BOOT_ACTIVE_NAME));
+			return System.getProperty(Constants.BOOT_ACTIVE_NAME);
 		}
-		if(System.getenv().containsKey(ACTIVE_EVN_NAME)){
-			log.info("读取到系统变量：{}={}", ACTIVE_EVN_NAME, System.getenv(ACTIVE_EVN_NAME));
-			return System.getenv(ACTIVE_EVN_NAME);
+		if(System.getenv().containsKey(Constants.BOOT_ACTIVE_NAME)){
+			log.info("读取到系统变量：{}={}", Constants.BOOT_ACTIVE_NAME, System.getenv(Constants.BOOT_ACTIVE_NAME));
+			return System.getenv(Constants.BOOT_ACTIVE_NAME);
 		}
-		log.warn("未读取到{}，默认取环境：{}", ACTIVE_EVN_NAME, ACTIVE_DEFAULT_VALUE);
-		return ACTIVE_DEFAULT_VALUE;
+		log.warn("未读取到{}，默认取环境：{}", Constants.BOOT_ACTIVE_NAME, Constants.BOOT_ACTIVE_DEFAULT_VALUE);
+		return Constants.BOOT_ACTIVE_DEFAULT_VALUE;
 	}
 
 	public static void main(String[] args) {
