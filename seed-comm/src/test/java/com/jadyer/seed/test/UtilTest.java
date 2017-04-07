@@ -150,17 +150,34 @@ public class UtilTest {
 
 
 	/**
+	 * FTP文件读取测试
+	 */
+	@Test
+	public void ftpUtilForReadFileDataTest(){
+		String bizDate = "20191008";
+		String username = "yangguang01";
+		String password = "yangguang01@#$";
+		String host = "ftp.msxf.test";
+		String filename = "/vc_cash/yyyyMMdd/CashTransList_005103.data";
+		List<String> withdrawDataList = FtpUtil.readFileData(bizDate, filename, host, username, password);
+		for(String obj : withdrawDataList){
+			System.out.println("读取到-->[" + obj + "]");
+		}
+	}
+
+
+	/**
 	 * FTP上传测试
 	 */
 	@Test
 	public void ftpUtilForUploadTest() throws IOException {
-//		InputStream is = FileUtils.openInputStream(new File("E:\\Wallpaper\\三大名迹.jpg"));
-//		String remoteURL = "/mytest/02/03/" + DateFormatUtils.format(new Date(), "yyyyMMddHHmmss") + ".jpg";
-//		Assert.assertTrue(FtpUtil.upload("192.168.2.60", "ftpupload", "HUvueMGWg92y8SSN", remoteURL, is));
-//		is = FileUtils.openInputStream(new File("E:\\Wallpaper\\Wentworth.Miller.jpg"));
-//		remoteURL = "/mytest/02/03/" + DateFormatUtils.format(new Date(), "yyyyMMddHHmmss_2") + ".jpg";
-//		Assert.assertTrue(FtpUtil.upload("192.168.2.60", "ftpupload", "HUvueMGWg92y8SSN", remoteURL, is));
-//		FtpUtil.logout();
+		//InputStream is = FileUtils.openInputStream(new File("E:\\Wallpaper\\三大名迹.jpg"));
+		//String remoteURL = "/mytest/02/03/" + DateFormatUtils.format(new Date(), "yyyyMMddHHmmss") + ".jpg";
+		//Assert.assertTrue(FtpUtil.upload("192.168.2.60", "ftpupload", "HUvueMGWg92y8SSN", remoteURL, is));
+		//is = FileUtils.openInputStream(new File("E:\\Wallpaper\\Wentworth.Miller.jpg"));
+		//remoteURL = "/mytest/02/03/" + DateFormatUtils.format(new Date(), "yyyyMMddHHmmss_2") + ".jpg";
+		//Assert.assertTrue(FtpUtil.upload("192.168.2.60", "ftpupload", "HUvueMGWg92y8SSN", remoteURL, is));
+		//FtpUtil.logout();
 		InputStream is = FileUtils.openInputStream(new File("F:\\Tool\\Enterprise_Architect_8.0.858.zip"));
 		String remoteURL = "/mytest/02/03/" + DateFormatUtils.format(new Date(), "yyyyMMddHHmmss") + ".jpg";
 		Assert.assertTrue(FtpUtil.uploadAndLogout("192.168.2.60", "ftpupload", "HUvueMGWg92y8SSN", remoteURL, is));

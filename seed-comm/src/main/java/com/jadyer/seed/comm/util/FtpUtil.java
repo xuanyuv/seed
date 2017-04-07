@@ -57,8 +57,8 @@ public final class FtpUtil {
 	private static final int DEFAULT_CONNECT_TIMEOUT = 1000;
 	private static final int DEFAULT_DATA_TIMEOUT = 0;
 	private static final int DEFAULT_SFTP_TIMEOUT = 0;
-	public static ThreadLocal<FTPClient> ftpClientMap = new ThreadLocal<>();
-	public static ThreadLocal<ChannelSftp> channelSftpMap = new ThreadLocal<>();
+	private static ThreadLocal<FTPClient> ftpClientMap = new ThreadLocal<>();
+	private static ThreadLocal<ChannelSftp> channelSftpMap = new ThreadLocal<>();
 	private FtpUtil(){}
 
 	/**
@@ -135,20 +135,26 @@ public final class FtpUtil {
 			 * ----------------------------------------------------------------------------------------------------
 			 * FTP协议的两种工作方式，即PORT（主动式）和PASV（被动式）
 			 * PORT
-			 * PORT（主动式）的连接过程是:客户端向服务器的FTP端口(默认是21)发送连接请求,服务器接受连接,建立一条命令链路
-			 * 当需要传送数据时,客户端在命令链路上用PORT命令告诉服务器:"我打开了xxx端口,你过来连接我"
-			 * 于是服务器从20端口向客户端的 xxx端口发送连接请求,建立一条数据链路来传送数据
+			 * PORT（主动式）的连接过程是：客户端向服务器的FTP端口（默认是21）发送连接请求，服务器接受连接，建立一条命令链路
+			 * 当需要传送数据时，客户端在命令链路上用PORT命令告诉服务器：“我打开了xxx端口，你过来连接我”
+			 * 于是服务器从20端口向客户端的xxx端口发送连接请求，建立一条数据链路来传送数据
 			 * PASV
-			 * PASV（被动式）的连接过程是:客户端向服务器的FTP端口(默认是21)发送连接请 求,服务器接受连接,建立一条命令链路
-			 * 当需要传送数据时,服务器在命令链路上用PASV命令告诉客户端:"我打开了xxx端口,你过来连接我"
-			 * 于是客户端向服务器的xxx端口发送连接请求,建立一条数据链路来传送数据
+			 * PASV（被动式）的连接过程是：客户端向服务器的FTP端口（默认是21）发送连接请求，服务器接受连接，建立一条命令链路
+			 * 当需要传送数据时，服务器在命令链路上用PASV命令告诉客户端：“我打开了xxx端口，你过来连接我”
+			 * 于是客户端向服务器的xxx端口发送连接请求，建立一条数据链路来传送数据
 			 * ----------------------------------------------------------------------------------------------------
-			 * 有时执行到FTPClient.listFiles()或者FTPClient.retrieveFile()就停住了,什么反应都没有,呈现假死状态
-			 * 这时通过enterLocalPassiveMode()就可以在每次数据连接之前,ftpClient告诉ftpServer开通一个端口来传输数据
-			 * 主要因为ftpServer可能每次开启不同的端口来传输数据,但linux上由于安全限制,可能某些端口没开启,所以出现阻塞
+			 * 服务端是两种模式的，使用哪种模式取决于客户端
+			 * 同时关键点在于网络环境适合用哪种模式，比如客户端在防火墙内，则最好选择被动模式
+			 * ----------------------------------------------------------------------------------------------------
+			 * 有时执行到FTPClient.listFiles()或者FTPClient.retrieveFile()就停住了，什么反应都没有，呈现假死状态
+			 * 这时通过enterLocalPassiveMode()就可以在每次数据连接之前，ftpClient告诉ftpServer开通一个端口来传输数据
+			 * 主要因为ftpServer可能每次开启不同的端口来传输数据，但linux上由于安全限制，可能某些端口没开启，所以出现阻塞
 			 * ----------------------------------------------------------------------------------------------------
 			 */
-			ftpClient.enterLocalPassiveMode();
+			////配置成被动模式
+			//ftpClient.enterLocalPassiveMode();
+			//配置成主动模式
+			ftpClient.enterLocalActiveMode();
 			ftpClientMap.set(ftpClient);
 			return true;
 		} catch (IOException e) {
@@ -622,10 +628,28 @@ public final class FtpUtil {
 	 * 该方法仅用来读取FTP文件交换过程中的文件数据
 	 * <ul>
 	 *     文件交换的约定如下
-	 *     <li>payBatch-yyyyMMdd.data：文件交换的数据内容，内容格式根据不同业务有所不同</li>
 	 *     <li>payBatch-yyyyMMdd.ctrl：文件交换的数据文件属性文件，一般存储data文件交易记录数和data文件大小，并以[|]分隔<（data文件大小单位为字节，即java.io.File.length()）/li>
+	 *     <li>payBatch-yyyyMMdd.data：文件交换的数据内容，内容格式根据不同业务有所不同</li>
 	 *     <li>payBatch-yyyyMMdd.succ：当成功读取并业务处理了data和ctrl文件后，才会生成succ文件，以示处理过了</li>
 	 *     <li>无论是否有交易数据，都要在约定时间生成data和ctrl文件，哪怕是空的</li>
+	 * </ul>
+	 * <ul>
+	 *     下面举例说明ctrl和data文件
+	 *     /vc_cash/20191008/CashTransList_005103.ctrl内容为：13|656
+	 *     /vc_cash/20191008/CashTransList_005103.data内容为：
+	 *     510319042300000005|100.00|20190423001027|20190423
+	 *     510319042300000005|1000.00|20190423001046|20190423
+	 *     510319042300000005|0.01|20190525002257|20190525
+	 *     510319042300000005|1000.00|20190526002903|20190526
+	 *     510319102500000008|1000.00|20190527000139|20190527
+	 *     510319042300000005|0.01|20190628000638|20190628
+	 *     510319092800000012|3000.00|20190928023045|20190928
+	 *     510319102500000008|1000.00|20190828001155|20190828
+	 *     510319102500000008|1000.00|20190829000812|20190829
+	 *     510319083000000004|1000.00|20190830230020|20190830
+	 *     510319102300000002|1000.00|20190409000132|20190409
+	 *     510319041000000002|3000.00|20190410001648|20190410
+	 *     510319041000000003|3000.00|20190410031408|20190410
 	 * </ul>
 	 * @param bizDate  业务日期，格式为yyyyMMdd
 	 * @param filename FTP交换的文件完整名称，例如：/payBatch/payBatch-yyyyMMdd.data
