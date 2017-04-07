@@ -67,12 +67,10 @@ public class DruidConfiguration {
 		druidDataSource.setTimeBetweenEvictionRunsMillis(this.timeBetweenEvictionRunsMillis);
 		//默认的testWhileIdle=true,testOnBorrow=false,testOnReturn=false
 		druidDataSource.setValidationQuery("SELECT 1");
-		/*
-		 * 下面两行设置用于-->打开PSCache，并且指定每个连接上PSCache的大小
-		 * PSCache(preparedStatement)对支持游标的数据库性能提升巨大，比如说Oracle/DB2/SQLServer，但MySQL下建议关闭
-		 */
-		druidDataSource.setPoolPreparedStatements(false);
-		druidDataSource.setMaxPoolPreparedStatementPerConnectionSize(-1);
+		//打开PSCache(preparedStatement)，并且指定每个连接上PSCache的大小
+		//http://www.infoq.com/cn/news/2017/03/Analysis-errors-MySQL-JDBC
+		druidDataSource.setPoolPreparedStatements(true);
+		druidDataSource.setMaxPoolPreparedStatementPerConnectionSize(20);
 		try{
 			druidDataSource.setFilters("wall,mergeStat");
 		}catch(SQLException e){

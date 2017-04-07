@@ -8,7 +8,7 @@ logging:
 
 spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/qss?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
+    url: jdbc:mysql://127.0.0.1:3306/qss?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull
     username: root
     password: xuanyu
     minIdle: 5

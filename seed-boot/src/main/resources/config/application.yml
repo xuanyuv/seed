@@ -62,7 +62,7 @@ spring:
       enabled: true  # 啟用H2控制台並自定義訪問地址
   datasource:
     #url: jdbc:h2:mem:jadyer;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    url: jdbc:mysql://127.0.0.1:3306/qss?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
+    url: jdbc:mysql://127.0.0.1:3306/qss?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull
     username: root
     password: xuanyu
     minIdle: 5
