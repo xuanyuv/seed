@@ -320,7 +320,7 @@ public final class FtpUtil {
 			return new ByteArrayInputStream(baos.toByteArray());
 		}catch(IOException e){
 			logout();
-			throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "从FTP服务器["+hostname+"]下载文件["+remoteURL+"]失败", e);
+			throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "从FTP服务器["+hostname+"]下载文件["+remoteURL+"]失败，堆棧軌跡如下：", e);
 		}
 	}
 
@@ -337,24 +337,12 @@ public final class FtpUtil {
 	 * @param localURL  保存在本地的包含完整路径和后缀的完整文件名
 	 */
 	public static void downloadAndLogout(String hostname, String username, String password, String remoteURL, String localURL){
-		if(!login(hostname, username, password, DEFAULT_DEFAULT_TIMEOUT, DEFAULT_CONNECT_TIMEOUT, DEFAULT_DATA_TIMEOUT)){
-			throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "FTP服务器登录失败");
-		}
-		FTPClient ftpClient = ftpClientMap.get();
 		try{
-			//注意这里没有写成new String(remoteURL.getBytes(DEFAULT_CHARSET), "ISO-8859-1")
-			//这是因为有时会因为编码的问题导致明明ftp上面有文件，但读到的是空数组，所以我们就使用默认编码
-			FTPFile[] files = ftpClient.listFiles(new String(remoteURL.getBytes(DEFAULT_CHARSET), "ISO-8859-1"));
-			if(1 != files.length){
-				throw new SeedException(CodeEnum.FILE_NOT_FOUND.getCode(), "远程文件["+remoteURL+"]不存在");
-			}
-			FileUtils.copyInputStreamToFile(ftpClient.retrieveFileStream(remoteURL), new File(localURL));
-			if(!ftpClient.completePendingCommand()){
-				throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "File transfer failed.");
-			}
-		}catch(IOException e){
-			throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "从FTP服务器["+hostname+"]下载文件["+remoteURL+"]失败", e);
-		}finally{
+			InputStream is = download(hostname, username, password, remoteURL);
+			FileUtils.copyInputStreamToFile(is, new File(localURL));
+		} catch (IOException e) {
+			throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "保存FTP服务器["+hostname+"]下载到的文件流至["+localURL+"]失败，堆棧軌跡如下：", e);
+		} finally{
 			logout();
 		}
 	}
