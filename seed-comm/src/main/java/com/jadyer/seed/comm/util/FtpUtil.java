@@ -71,7 +71,7 @@ public final class FtpUtil {
 	 * @param password FTP登录密码
 	 * @return True if successfully completed, false if not.
 	 */
-	private static boolean login(String hostname, String username, String password, boolean isTextMode, int defaultTimeout, int connectTimeout, int dataTimeout){
+	private static boolean login(String hostname, String username, String password, int defaultTimeout, int connectTimeout, int dataTimeout){
 		FTPClient ftpClient = ftpClientMap.get();
 		if(null == ftpClient){
 			ftpClientMap.remove();
@@ -125,13 +125,10 @@ public final class FtpUtil {
 				LogUtil.getLogger().error("FTP服务器["+hostname+"]登录失败...");
 				return false;
 			}
-			//设置文件传输类型
-			if(isTextMode){
-				ftpClient.setFileType(FTP.ASCII_FILE_TYPE);
-			}else{
-				ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-			}
-			/**
+			//设置文件类型和傳輸模式
+            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+			ftpClient.setFileTransferMode(FTP.STREAM_TRANSFER_MODE);
+			/*
 			 * ----------------------------------------------------------------------------------------------------
 			 * FTP协议的两种工作方式，即PORT（主动式）和PASV（被动式）
 			 * PORT
@@ -151,9 +148,9 @@ public final class FtpUtil {
 			 * 主要因为ftpServer可能每次开启不同的端口来传输数据，但linux上由于安全限制，可能某些端口没开启，所以出现阻塞
 			 * ----------------------------------------------------------------------------------------------------
 			 */
-			////配置成主动模式
+			////配置為本地主动模式
 			//ftpClient.enterLocalActiveMode();
-			//配置成被动模式
+			//配置為本地被动模式
 			ftpClient.enterLocalPassiveMode();
 			ftpClientMap.set(ftpClient);
 			return true;
@@ -179,14 +176,14 @@ public final class FtpUtil {
 				ftpClient.logout();
 				LogUtil.getLogger().debug("FTP服务器[" + ftpRemoteAddress + "]登出成功...");
 			}catch (IOException e){
-				LogUtil.getLogger().warn("FTP服务器[" + ftpRemoteAddress + "]登出时发生异常,堆栈轨迹如下", e);
+				LogUtil.getLogger().warn("FTP服务器[" + ftpRemoteAddress + "]登出时发生异常，堆栈轨迹如下", e);
 			}finally{
-				if(null!=ftpClient && ftpClient.isConnected()){
+				if(ftpClient.isConnected()){
 					try {
 						ftpClient.disconnect();
 						LogUtil.getLogger().debug("FTP服务器[" + ftpRemoteAddress + "]连接释放完毕...");
 					} catch (IOException ioe) {
-						LogUtil.getLogger().warn("FTP服务器[" + ftpRemoteAddress + "]连接释放时发生异常,堆栈轨迹如下", ioe);
+						LogUtil.getLogger().warn("FTP服务器[" + ftpRemoteAddress + "]连接释放时发生异常，堆栈轨迹如下", ioe);
 					}
 				}
 			}
@@ -230,7 +227,7 @@ public final class FtpUtil {
 	 * @return True if successfully completed, false if not.
 	 */
 	public static boolean upload(String hostname, String username, String password, String remoteURL, InputStream is){
-		if(!login(hostname, username, password, false, DEFAULT_DEFAULT_TIMEOUT, DEFAULT_CONNECT_TIMEOUT, DEFAULT_DATA_TIMEOUT)){
+		if(!login(hostname, username, password, DEFAULT_DEFAULT_TIMEOUT, DEFAULT_CONNECT_TIMEOUT, DEFAULT_DATA_TIMEOUT)){
 			return false;
 		}
 		FTPClient ftpClient = ftpClientMap.get();
@@ -285,7 +282,7 @@ public final class FtpUtil {
 	 * @param remoteURL 保存在FTP上的含完整路径和后缀的完整文件名
 	 */
 	public static InputStream download(String hostname, String username, String password, String remoteURL){
-		if(!login(hostname, username, password, false, DEFAULT_DEFAULT_TIMEOUT, DEFAULT_CONNECT_TIMEOUT, DEFAULT_DATA_TIMEOUT)){
+		if(!login(hostname, username, password, DEFAULT_DEFAULT_TIMEOUT, DEFAULT_CONNECT_TIMEOUT, DEFAULT_DATA_TIMEOUT)){
 			throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "FTP服务器登录失败");
 		}
 		FTPClient ftpClient = ftpClientMap.get();
@@ -323,7 +320,7 @@ public final class FtpUtil {
 	 * @param localURL  保存在本地的包含完整路径和后缀的完整文件名
 	 */
 	public static void downloadAndLogout(String hostname, String username, String password, String remoteURL, String localURL){
-		if(!login(hostname, username, password, false, DEFAULT_DEFAULT_TIMEOUT, DEFAULT_CONNECT_TIMEOUT, DEFAULT_DATA_TIMEOUT)){
+		if(!login(hostname, username, password, DEFAULT_DEFAULT_TIMEOUT, DEFAULT_CONNECT_TIMEOUT, DEFAULT_DATA_TIMEOUT)){
 			throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "FTP服务器登录失败");
 		}
 		FTPClient ftpClient = ftpClientMap.get();
@@ -358,7 +355,7 @@ public final class FtpUtil {
 	 * @return True if successfully completed, false if not.
 	 */
 	public static boolean deleteFileAndLogout(String hostname, String username, String password, String remoteURL){
-		if(!login(hostname, username, password, false, DEFAULT_DEFAULT_TIMEOUT, DEFAULT_CONNECT_TIMEOUT, DEFAULT_DATA_TIMEOUT)){
+		if(!login(hostname, username, password, DEFAULT_DEFAULT_TIMEOUT, DEFAULT_CONNECT_TIMEOUT, DEFAULT_DATA_TIMEOUT)){
 			throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "FTP服务器登录失败");
 		}
 		try{
@@ -431,17 +428,25 @@ public final class FtpUtil {
 	public static void logoutViaSFTP(){
 		ChannelSftp channelSftp = channelSftpMap.get();
 		channelSftpMap.remove();
-		String hostname = null;
-		try {
-			hostname = channelSftp.getHome();
-			if(null != channelSftp){
+		if(null != channelSftp){
+			String hostname = null;
+			try{
+				hostname = channelSftp.getHome();
 				channelSftp.quit();
+				LogUtil.getLogger().debug("SFTP服务器[" + hostname + "]登出成功...");
+			}catch (Exception e){
+				LogUtil.getLogger().warn("SFTP服务器[" + hostname + "]登出时发生异常，堆栈轨迹如下", e);
+			}finally{
+				try{
+					Session session = channelSftp.getSession();
+					if(null!=session && session.isConnected()){
+						session.disconnect();
+						LogUtil.getLogger().debug("SFTP服务器[" + hostname + "]连接释放完毕...");
+					}
+				}catch(Exception e){
+					LogUtil.getLogger().warn("SFTP服务器[" + hostname + "]连接释放时发生异常，堆栈轨迹如下", e);
+				}
 			}
-			if(null != channelSftp.getSession()){
-				channelSftp.getSession().disconnect();
-			}
-		} catch (Exception e) {
-			LogUtil.getLogger().warn("Unable to disconnect from SFTP server[" + hostname + "]", e);
 		}
 	}
 
@@ -875,6 +880,7 @@ class SFTPProcess implements SftpProgressMonitor {
 }
 //http://www.iteye.com/problems/13329
 //http://www.oschina.net/code/snippet_2667725_54609
+//http://blog.csdn.net/daizhonghai1314/article/details/7738487
 //import java.io.File;
 //import java.io.FileOutputStream;
 //import java.io.IOException;
