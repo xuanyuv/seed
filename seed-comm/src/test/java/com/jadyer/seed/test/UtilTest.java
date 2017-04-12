@@ -154,7 +154,8 @@ public class UtilTest {
 	 */
 	@Test
 	public void ftpUtilForReadFileDataTest(){
-		String bizDate = "20191008";
+		//String bizDate = "20191008";
+		String bizDate = "20170115";
 		String username = "yangguang01";
 		String password = "yangguang01@#$";
 		String host = "ftp.msxf.test";

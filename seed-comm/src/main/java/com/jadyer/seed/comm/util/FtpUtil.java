@@ -151,10 +151,10 @@ public final class FtpUtil {
 			 * 主要因为ftpServer可能每次开启不同的端口来传输数据，但linux上由于安全限制，可能某些端口没开启，所以出现阻塞
 			 * ----------------------------------------------------------------------------------------------------
 			 */
-			////配置成被动模式
-			//ftpClient.enterLocalPassiveMode();
-			//配置成主动模式
-			ftpClient.enterLocalActiveMode();
+			////配置成主动模式
+			//ftpClient.enterLocalActiveMode();
+			//配置成被动模式
+			ftpClient.enterLocalPassiveMode();
 			ftpClientMap.set(ftpClient);
 			return true;
 		} catch (IOException e) {
@@ -391,7 +391,6 @@ public final class FtpUtil {
 		JSch jsch = new JSch();
 		Session session;
 		Channel channel;
-		channelSftp = null;
 		try {
 			session = jsch.getSession(username, hostname, port);
 		} catch (JSchException e) {
@@ -801,7 +800,7 @@ class FTPProcess implements CopyStreamListener {
 	 * @param fileSize  文件的大小,单位字节
 	 * @param startTime 开始的时间,可通过System.currentTimeMillis()获取
 	 */
-	public FTPProcess(long fileSize, long startTime){
+	FTPProcess(long fileSize, long startTime){
 		this.fileSize = fileSize;
 		this.startTime = startTime;
 	}
@@ -846,7 +845,7 @@ class SFTPProcess implements SftpProgressMonitor {
 	 * @param fileSize  文件的大小,单位字节
 	 * @param startTime 开始的时间,可通过System.currentTimeMillis()获取
 	 */
-	public SFTPProcess(long fileSize, long startTime){
+	SFTPProcess(long fileSize, long startTime){
 		this.fileSize = fileSize;
 		this.startTime = startTime;
 	}
@@ -874,6 +873,8 @@ class SFTPProcess implements SftpProgressMonitor {
 		return true;
 	}
 }
+//http://www.iteye.com/problems/13329
+//http://www.oschina.net/code/snippet_2667725_54609
 //import java.io.File;
 //import java.io.FileOutputStream;
 //import java.io.IOException;
