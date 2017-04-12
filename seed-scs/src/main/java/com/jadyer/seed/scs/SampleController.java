@@ -96,7 +96,7 @@ public class SampleController {
         OutputStream os = new BufferedOutputStream(response.getOutputStream());
         byte[] buff = new byte[1024];
         int len;
-        while((len=is.read(buff)) != -1){
+        while((len=is.read(buff)) > -1){
             os.write(buff, 0, len);
         }
         os.flush();

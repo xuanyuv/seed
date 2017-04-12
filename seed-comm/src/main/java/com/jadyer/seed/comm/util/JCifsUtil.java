@@ -51,13 +51,16 @@ public final class JCifsUtil {
 			out = new FileOutputStream(localDirectory + smbFile.getName());
 			byte[] buffer = new byte[1024];
 			int len;
-			while((len=in.read(buffer)) != -1){
+			while((len=in.read(buffer)) > -1){
 				out.write(buffer, 0, len);
 			}
+			out.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		} finally {
+			//IOUtils.closeQuietly(in);
+			//IOUtils.closeQuietly(out);
 			if(null != out){
 				try {
 					out.close();

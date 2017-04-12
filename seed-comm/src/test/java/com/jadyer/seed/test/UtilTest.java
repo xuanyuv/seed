@@ -190,11 +190,11 @@ public class UtilTest {
 	 */
 	@Test
 	public void ftpUtilForDownloadTest() throws IOException {
-		String remoteURL = "/mytest/02/03/20151006115200.jpg";
-		String localURL = "C:\\Users\\Jadyer.JADYER-PC.000\\Desktop\\aa.jpg";
-		FtpUtil.downloadAndLogout("192.168.2.60", "ftpupload", "HUvueMGWg92y8SSN", remoteURL, localURL);
-		InputStream is = FtpUtil.download("192.168.2.60", "ftpupload", "HUvueMGWg92y8SSN", remoteURL);
-		FileUtils.copyInputStreamToFile(is, new File("C:\\Users\\Jadyer.JADYER-PC.000\\Desktop\\bb.jpg"));
+		//String remoteURL = "/mytest/02/03/20151006115200.jpg";
+		//String localURL = "C:\\Users\\Jadyer.JADYER-PC.000\\Desktop\\aa.jpg";
+		//FtpUtil.downloadAndLogout("192.168.2.60", "ftpupload", "HUvueMGWg92y8SSN", remoteURL, localURL);
+		InputStream is = FtpUtil.download("ftp.msxf.test", "yangguang01", "yangguang01@#$", "/vc_cash/20170115/CashTransList_005103.data");
+		FileUtils.copyInputStreamToFile(is, new File("D:\\home\\bb.txt"));
 		FtpUtil.logout();
 	}
 

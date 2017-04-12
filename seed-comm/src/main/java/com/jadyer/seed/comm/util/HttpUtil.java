@@ -604,9 +604,10 @@ public final class HttpUtil {
 			ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 			byte[] buff = new byte[1024];
 			int len;
-			while((len=in.read(buff)) != -1){
+			while((len=in.read(buff)) > -1){
 				buffer.write(buff, 0, len);
 			}
+			buffer.flush();
 			respData = buffer.toString(respCharset);
 			
 			respMap.put("respData", respData);
@@ -617,6 +618,8 @@ public final class HttpUtil {
 			e.printStackTrace();
 			return respMap;
 		}finally{
+			//IOUtils.closeQuietly(in);
+			//IOUtils.closeQuietly(out);
 			if(null != out){
 				try{
 					out.close();
@@ -833,13 +836,14 @@ public final class HttpUtil {
 			//事实上就像JDK的API所述:Closing a ByteArrayOutputStream has no effect
 			//查询ByteArrayOutputStream.close()的源码会发现,它没有做任何事情,所以其close()与否是无所谓的
 			ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
-			byte[] buffer = new byte[512];
+			byte[] buffer = new byte[1024];
 			int len;
-			while((len=in.read(buffer)) != -1){
+			while((len=in.read(buffer)) > -1){
 				//将读取到的字节写到ByteArrayOutputStream中
 				//所以最终ByteArrayOutputStream的字节数应该等于HTTP响应报文的整体长度,而大于HTTP响应正文的长度
 				bytesOut.write(buffer, 0, len);
 			}
+			bytesOut.flush();
 			//响应的原始字节数组
 			byte[] respBuffer = bytesOut.toByteArray();
 			respMsgHex = JadyerUtil.buildHexStringWithASCII(respBuffer);
@@ -935,9 +939,10 @@ public final class HttpUtil {
 			ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
 			byte[] buffer = new byte[512];
 			int len;
-			while((len=in.read(buffer)) != -1){
+			while((len=in.read(buffer)) > -1){
 				bytesOut.write(buffer, 0, len);
 			}
+			bytesOut.flush();
 			//解码TCP响应的完整报文
 			respData = bytesOut.toString(DEFAULT_CHARSET);
 			respDataHex = JadyerUtil.buildHexStringWithASCII(bytesOut.toByteArray());

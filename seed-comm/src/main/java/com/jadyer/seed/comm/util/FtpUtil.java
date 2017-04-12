@@ -21,6 +21,8 @@ import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.io.CopyStreamEvent;
 import org.apache.commons.net.io.CopyStreamListener;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -295,12 +297,27 @@ public final class FtpUtil {
 				throw new SeedException(CodeEnum.FILE_NOT_FOUND.getCode(), "远程文件["+remoteURL+"]不存在");
 			}
 			InputStream is = ftpClient.retrieveFileStream(remoteURL);
+			//拷貝InputStream
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			byte[] buff = new byte[1024];
+			int len;
+			while((len=is.read(buff)) > -1){
+				baos.write(buff, 0, len);
+			}
+			baos.flush();
+			//事实上就像JDK的API所述：Closing a ByteArrayOutputStream has no effect
+			//查询ByteArrayOutputStream.close()的源码会发现，它没有做任何事情,所以其close()与否是无所谓的
+			baos.close();
+			IOUtils.closeQuietly(is);
+			//completePendingCommand()會一直等待FTPServer返回[226 Transfer complete]
+			//但是FTPServer需要在InputStream.close()執行之後才會返回，所以要先執行InputStream.close()
+			//201704121637測試發現：對於小文件，沒有調用close()，直接completePendingCommand()也會返回true
+			//但大文件就會卡在completePendingCommand()位置，所以上面做了一步InputStream拷貝
 			if(!ftpClient.completePendingCommand()){
-				IOUtils.closeQuietly(is);
 				logout();
 				throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "File transfer failed.");
 			}
-			return is;
+			return new ByteArrayInputStream(baos.toByteArray());
 		}catch(IOException e){
 			logout();
 			throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "从FTP服务器["+hostname+"]下载文件["+remoteURL+"]失败", e);
