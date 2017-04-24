@@ -2,7 +2,7 @@ package com.jadyer.seed.qss;
 
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
-import com.jadyer.seed.qss.module.ScheduleTask;
+import com.jadyer.seed.qss.model.ScheduleTask;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;

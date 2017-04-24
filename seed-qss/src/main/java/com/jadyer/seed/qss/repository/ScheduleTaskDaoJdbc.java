@@ -1,6 +1,6 @@
 package com.jadyer.seed.qss.repository;
 
-import com.jadyer.seed.qss.module.ScheduleTask;
+import com.jadyer.seed.qss.model.ScheduleTask;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

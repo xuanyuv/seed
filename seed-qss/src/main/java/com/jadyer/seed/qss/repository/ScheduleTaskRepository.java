@@ -1,7 +1,7 @@
 package com.jadyer.seed.qss.repository;
 
 import com.jadyer.seed.comm.jpa.BaseRepository;
-import com.jadyer.seed.qss.module.ScheduleTask;
+import com.jadyer.seed.qss.model.ScheduleTask;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;

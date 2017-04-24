@@ -4,7 +4,7 @@ import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.qss.helper.JobDisallowConcurrentFactory;
 import com.jadyer.seed.qss.helper.JobFactory;
-import com.jadyer.seed.qss.module.ScheduleTask;
+import com.jadyer.seed.qss.model.ScheduleTask;
 import com.jadyer.seed.qss.repository.ScheduleTaskDaoJdbc;
 import com.jadyer.seed.qss.repository.ScheduleTaskRepository;
 import org.quartz.CronExpression;

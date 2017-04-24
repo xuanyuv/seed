@@ -1,6 +1,6 @@
 package com.jadyer.seed.qss.helper;
 
-import com.jadyer.seed.qss.module.ScheduleTask;
+import com.jadyer.seed.qss.model.ScheduleTask;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

@@ -1,4 +1,4 @@
-package com.jadyer.seed.qss.module;
+package com.jadyer.seed.qss.model;
 
 import com.jadyer.seed.comm.jpa.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;

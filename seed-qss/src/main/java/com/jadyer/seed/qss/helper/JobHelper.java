@@ -2,7 +2,7 @@ package com.jadyer.seed.qss.helper;
 
 import com.jadyer.seed.comm.util.HttpUtil;
 import com.jadyer.seed.comm.util.LogUtil;
-import com.jadyer.seed.qss.module.ScheduleTask;
+import com.jadyer.seed.qss.model.ScheduleTask;
 
 class JobHelper {
 //	/**
