@@ -110,6 +110,10 @@ public class Condition<T> implements Specification<T> {
                         //noinspection unchecked
                         predicateList.add(cb.like(expression, "%" + filter.value + "%"));
                         break;
+                case NOTLIKE:
+                        //noinspection unchecked
+                        predicateList.add(cb.notLike(expression, "%" + filter.value + "%"));
+                        break;
                 case GT:
                         predicateList.add(cb.greaterThan(expression, (Comparable)filter.value));
                         break;
@@ -122,6 +126,17 @@ public class Condition<T> implements Specification<T> {
                 case LE:
                         predicateList.add(cb.lessThanOrEqualTo(expression, (Comparable)filter.value));
                         break;
+                case IN:
+                        //noinspection unchecked
+                        predicateList.add(cb.in(expression).value(filter.value));
+                        break;
+                case NOTIN:
+                        //noinspection unchecked
+                        predicateList.add(cb.in(expression).value(filter.value).not());
+                        break;
+                //case BETWEEN:
+                //        System.out.println("this is between");
+                //        break;
                 default:
                         System.out.println("nothing to do");
             }
@@ -132,12 +147,13 @@ public class Condition<T> implements Specification<T> {
 
 
     public enum Operator{
-        EQ, NE, LIKE, GT, LT, GE, LE;
+        //EQ, NE, GT, LT, GE, LE, LIKE, NOTLIKE, IN, NOTIN, BETWEEN;
+        EQ, NE, GT, LT, GE, LE, LIKE, NOTLIKE, IN, NOTIN;
         public static Operator getFromString(String value) {
             try {
                 return Operator.valueOf(value.toUpperCase(Locale.US));
             } catch (Exception e) {
-                String msg = "Invalid value '%s' for Operator given! Has to be in 'eq, ne, like, gt, lt, ge, le' (case insensitive).";
+                String msg = "Invalid value '%s' for Operator given! Has to be in 'eq, ne, gt, lt, ge, le, like, notlike, in, notin' (case insensitive).";
                 throw new IllegalArgumentException(String.format(msg, value), e);
             }
         }

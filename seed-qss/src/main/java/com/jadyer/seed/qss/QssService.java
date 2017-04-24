@@ -2,6 +2,7 @@ package com.jadyer.seed.qss;
 
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.exception.SeedException;
+import com.jadyer.seed.comm.jpa.Condition;
 import com.jadyer.seed.qss.helper.JobDisallowConcurrentFactory;
 import com.jadyer.seed.qss.helper.JobFactory;
 import com.jadyer.seed.qss.model.ScheduleTask;
@@ -25,7 +26,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -73,21 +73,20 @@ public class QssService {
 	}
 
 
-	List<ScheduleTask> getByIds(String ids) {
-		List<String> idstr = Arrays.asList(ids.split(","));
-		List<Long> idList = new ArrayList<>();
-		for(String obj : idstr){
-			idList.add(Long.parseLong(obj));
-		}
-		List<ScheduleTask> taskList = new ArrayList<>();
-		Object[] objs = scheduleTaskDao.getByIds(idList);
-		for(Object obj : objs){
-			ScheduleTask task = new ScheduleTask();
-			task.setName(((Object[])obj)[0].toString());
-			task.setUrl(((Object[])obj)[1].toString());
-			taskList.add(task);
-		}
-		return taskList;
+	List<ScheduleTask> getByIds(List<Long> idList) {
+		////这是使用@Query查询的方式
+		//List<ScheduleTask> taskList = new ArrayList<>();
+		//Object[] objs = scheduleTaskDao.getByIds(idList);
+		//for(Object obj : objs){
+		//	ScheduleTask task = new ScheduleTask();
+		//	task.setName(((Object[])obj)[0].toString());
+		//	task.setUrl(((Object[])obj)[1].toString());
+		//	taskList.add(task);
+		//}
+		//return taskList;
+		//这是使用统一组件查询的方式
+		Condition<ScheduleTask> query = Condition.<ScheduleTask>create().and("id", Condition.Operator.NOTIN, idList);
+		return scheduleTaskDao.findAll(query);
 	}
 
 
