@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping(value="/reply")
@@ -92,10 +90,9 @@ public class ReplyController{
 		//分页
 		Pageable pageable = new PageRequest(StringUtils.isBlank(pageNo)?0:Integer.parseInt(pageNo), 10, sort);
 		//条件
-		Map<String, Object> params = new HashMap<>();
-		params.put("uid:eq", uid);
-		params.put("category", 2);
-		Condition<ReplyInfo> spec = Condition.<ReplyInfo>create().and(params);
+		Condition<ReplyInfo> spec = Condition.create();
+		spec.and("uid", Condition.Operator.EQ, uid);
+		spec.and("category", Condition.Operator.EQ, 2);
 		//执行
 		Page<ReplyInfo> keywordPage = replyInfoRepository.findAll(spec, pageable);
 		request.setAttribute("page", keywordPage);

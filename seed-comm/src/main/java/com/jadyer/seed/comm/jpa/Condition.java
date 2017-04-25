@@ -11,27 +11,25 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 /**
  * ---------------------------------------------------------------------------------------------------------------
- * 参照了SpringSide实现
+ * 参考了SpringSide实现
  * https://github.com/springside/springside4/blob/4.0/modules/core/src/main/java/org/springside/modules/persistence/SearchFilter.java
  * https://github.com/springside/springside4/blob/4.0/modules/core/src/test/java/org/springside/modules/persistence/SearchFilterTest.java
  * https://github.com/springside/springside4/blob/4.0/modules/core/src/main/java/org/springside/modules/persistence/DynamicSpecifications.java
  * https://github.com/springside/springside4/blob/4.0/examples/showcase/src/test/java/org/springside/examples/showcase/repository/jpa/DynamicSpecificationTest.java
  * ---------------------------------------------------------------------------------------------------------------
- * 第一种用法
- * Map<String, Object> params = new HashMap<>();
- * params.put("gender", "male");
- * params.put("age:gt", 20);
- * Condition<User> query = Condition.<User>create().and("id", Condition.Operator.ge, 8).and(params);
- * userRepository.findAll(query, new PageRequest(0, 15, new Sort(Sort.Direction.DESC, "id")));
- * ---------------------------------------------------------------------------------------------------------------
- * 第二种用法
- * Condition<User> query = Condition.<User>create().and("name", Condition.Operator.NOTIN, nameList);
- * Condition<User> query = Condition.<User>create().and("updateTime", Condition.Operator.BETWEEN, new org.springframework.data.domain.Range<>(new Date(), new Date()));
+ * 具体用法
+ * Condition<User> spec = Condition.<User>create().and("id", Condition.Operator.EQ, 8);
+ * Condition<User> spec = Condition.<User>create().and("name", Condition.Operator.NOTIN, nameList);
+ * Condition<User> spec = Condition.<User>create().and("updateTime", Condition.Operator.BETWEEN, new org.springframework.data.domain.Range<>(new Date(), new Date()));
+ * 或者像下面这样构造Specification
+ * Condition<User> spec = Condition.create();
+ * spec.and("uid", Condition.Operator.EQ, uid);
+ * spec.and("category", Condition.Operator.EQ, 2);
+ * 最终传入findAll()方法中
+ * userRepository.findAll(spec, new PageRequest(0, 15, new Sort(Sort.Direction.DESC, "id")));
  * ---------------------------------------------------------------------------------------------------------------
  * 补充mysql-limit分页参数offset和rows的计算方式
  * //计算pageNo（从0开始）
@@ -44,7 +42,23 @@ import java.util.Map;
  * Created by 玄玉<https://jadyer.github.io/> on 2016/7/2 17:11.
  */
 public class Condition<T> implements Specification<T> {
+    public enum Operator{
+        EQ, NE, GT, LT, GE, LE, LIKE, NOTLIKE, IN, NOTIN, BETWEEN
+    }
+
     private List<SearchFilter> filters = new ArrayList<>();
+
+    private class SearchFilter {
+        String fieldName;
+        Object value;
+        Operator operator;
+        SearchFilter(String fieldName, Operator operator, Object value) {
+            this.fieldName = fieldName;
+            this.value = value;
+            this.operator = operator;
+        }
+    }
+
 
     public static <T> Condition<T> create() {
         return new Condition<>();
@@ -59,23 +73,6 @@ public class Condition<T> implements Specification<T> {
 
     public Condition<T> and(String fieldName, Operator op, Object value) {
         filters.add(new SearchFilter(fieldName, op, value));
-        return this;
-    }
-
-
-    /**
-     * <code>
-     *      //eq, ne, like, gt, lt, ge, le <br>
-     *      params.put("gender", "male"); <br>
-     *      params.put("age:gt", 20);
-     * </code>
-     */
-    public Condition<T> and(Map<String, Object> params) {
-        for (Map.Entry<String, Object> entry : params.entrySet()) {
-            String[] fieldNames = StringUtils.split(entry.getKey(), ":");
-            Operator operator = fieldNames.length==1 ? Operator.EQ : Operator.getFromString(fieldNames[1]);
-            filters.add(new SearchFilter(fieldNames[0], operator, entry.getValue()));
-        }
         return this;
     }
 
@@ -167,30 +164,6 @@ public class Condition<T> implements Specification<T> {
         }
         //将所有条件用 and 联合起来
         return cb.and(predicateList.toArray(new Predicate[predicateList.size()]));
-    }
-
-
-    public enum Operator{
-        EQ, NE, GT, LT, GE, LE, LIKE, NOTLIKE, IN, NOTIN, BETWEEN;
-        public static Operator getFromString(String value) {
-            try {
-                return Operator.valueOf(value.toUpperCase(Locale.US));
-            } catch (Exception e) {
-                throw new IllegalArgumentException(String.format("Invalid value '%s' for Operator given", value), e);
-            }
-        }
-    }
-
-
-    private class SearchFilter {
-        String fieldName;
-        Object value;
-        Operator operator;
-        SearchFilter(String fieldName, Operator operator, Object value) {
-            this.fieldName = fieldName;
-            this.value = value;
-            this.operator = operator;
-        }
     }
 
 
