@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * ---------------------------------------------------------------------------------------------------------------
- * 具体用法如下
+ * 用法如下：通过or()或者and()方法来创建实例，然后调用各个查询条件，即可
  * Condition<User> spec = Condition.or();
  * Condition<User> spec = Condition.and();
  * spec.eq("uid", uid);
