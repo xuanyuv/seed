@@ -1,6 +1,7 @@
 package com.jadyer.seed.comm.jpa;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Range;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -14,30 +15,32 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * <code>
- *     两种用法如下
- *     Map<String, Object> params = new HashMap<>();
- *     params.put("gender", "male");
- *     params.put("age:gt", 20);
- *     Condition<User> query = Condition.<User>create().and("id", Condition.Operator.ge, 8).and(params);
- *     userRepository.findAll(query, new PageRequest(0, 15, new Sort(Sort.Direction.DESC, "id")));
- * </code>
- * <p>
- *     参照了SpringSide实现
- *     https://github.com/springside/springside4/blob/4.0/modules/core/src/main/java/org/springside/modules/persistence/SearchFilter.java
- *     https://github.com/springside/springside4/blob/4.0/modules/core/src/test/java/org/springside/modules/persistence/SearchFilterTest.java
- *     https://github.com/springside/springside4/blob/4.0/modules/core/src/main/java/org/springside/modules/persistence/DynamicSpecifications.java
- *     https://github.com/springside/springside4/blob/4.0/examples/showcase/src/test/java/org/springside/examples/showcase/repository/jpa/DynamicSpecificationTest.java
- * </p>
- * <code>
- *     补充MySQL-LIMIT分页参数offset和rows的计算方式
- *     //计算pageNo（从0开始）
- *     if(pageSize*pageNo >= totalCount){
- *          pageNo = (int)(totalCount / pageSize);
- *     }
- *     int offset = pageSize * pageNo;
- *     int rows = pageSize;
- * </code>
+ * ---------------------------------------------------------------------------------------------------------------
+ * 参照了SpringSide实现
+ * https://github.com/springside/springside4/blob/4.0/modules/core/src/main/java/org/springside/modules/persistence/SearchFilter.java
+ * https://github.com/springside/springside4/blob/4.0/modules/core/src/test/java/org/springside/modules/persistence/SearchFilterTest.java
+ * https://github.com/springside/springside4/blob/4.0/modules/core/src/main/java/org/springside/modules/persistence/DynamicSpecifications.java
+ * https://github.com/springside/springside4/blob/4.0/examples/showcase/src/test/java/org/springside/examples/showcase/repository/jpa/DynamicSpecificationTest.java
+ * ---------------------------------------------------------------------------------------------------------------
+ * 第一种用法
+ * Map<String, Object> params = new HashMap<>();
+ * params.put("gender", "male");
+ * params.put("age:gt", 20);
+ * Condition<User> query = Condition.<User>create().and("id", Condition.Operator.ge, 8).and(params);
+ * userRepository.findAll(query, new PageRequest(0, 15, new Sort(Sort.Direction.DESC, "id")));
+ * ---------------------------------------------------------------------------------------------------------------
+ * 第二种用法
+ * Condition<User> query = Condition.<User>create().and("name", Condition.Operator.NOTIN, nameList);
+ * Condition<User> query = Condition.<User>create().and("updateTime", Condition.Operator.BETWEEN, new org.springframework.data.domain.Range<>(new Date(), new Date()));
+ * ---------------------------------------------------------------------------------------------------------------
+ * 补充mysql-limit分页参数offset和rows的计算方式
+ * //计算pageNo（从0开始）
+ * if(pageSize*pageNo >= totalCount){
+ *     pageNo = (int)(totalCount/pageSize);
+ * }
+ * int offset = pageSize * pageNo;
+ * int rows = pageSize;
+ * ---------------------------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.github.io/> on 2016/7/2 17:11.
  */
 public class Condition<T> implements Specification<T> {
@@ -107,12 +110,32 @@ public class Condition<T> implements Specification<T> {
                         }
                         break;
                 case LIKE:
-                        //noinspection unchecked
-                        predicateList.add(cb.like(expression, "%" + filter.value + "%"));
+                        if(filter.value instanceof List){
+                            List valueList = (List)filter.value;
+                            Predicate[] predicates = new Predicate[valueList.size()];
+                            for(int i=0; i<valueList.size(); i++){
+                                //noinspection unchecked
+                                predicates[i] = cb.like(expression, "%" + valueList.get(i) + "%");
+                            }
+                            predicateList.add(cb.or(predicates));
+                        }else{
+                            //noinspection unchecked
+                            predicateList.add(cb.like(expression, "%" + filter.value + "%"));
+                        }
                         break;
                 case NOTLIKE:
-                        //noinspection unchecked
-                        predicateList.add(cb.notLike(expression, "%" + filter.value + "%"));
+                        if(filter.value instanceof List){
+                            List valueList = (List)filter.value;
+                            Predicate[] predicates = new Predicate[valueList.size()];
+                            for(int i=0; i<valueList.size(); i++){
+                                //noinspection unchecked
+                                predicates[i] = cb.notLike(expression, "%" + valueList.get(i) + "%");
+                            }
+                            predicateList.add(cb.and(predicates));
+                        }else{
+                            //noinspection unchecked
+                            predicateList.add(cb.notLike(expression, "%" + filter.value + "%"));
+                        }
                         break;
                 case GT:
                         predicateList.add(cb.greaterThan(expression, (Comparable)filter.value));
@@ -134,9 +157,10 @@ public class Condition<T> implements Specification<T> {
                         //noinspection unchecked
                         predicateList.add(cb.in(expression).value(filter.value).not());
                         break;
-                //case BETWEEN:
-                //        System.out.println("this is between");
-                //        break;
+                case BETWEEN:
+                        Range range = (Range)filter.value;
+                        predicateList.add(cb.between(expression, range.getLowerBound(), range.getUpperBound()));
+                        break;
                 default:
                         System.out.println("nothing to do");
             }
@@ -147,14 +171,12 @@ public class Condition<T> implements Specification<T> {
 
 
     public enum Operator{
-        //EQ, NE, GT, LT, GE, LE, LIKE, NOTLIKE, IN, NOTIN, BETWEEN;
-        EQ, NE, GT, LT, GE, LE, LIKE, NOTLIKE, IN, NOTIN;
+        EQ, NE, GT, LT, GE, LE, LIKE, NOTLIKE, IN, NOTIN, BETWEEN;
         public static Operator getFromString(String value) {
             try {
                 return Operator.valueOf(value.toUpperCase(Locale.US));
             } catch (Exception e) {
-                String msg = "Invalid value '%s' for Operator given! Has to be in 'eq, ne, gt, lt, ge, le, like, notlike, in, notin' (case insensitive).";
-                throw new IllegalArgumentException(String.format(msg, value), e);
+                throw new IllegalArgumentException(String.format("Invalid value '%s' for Operator given", value), e);
             }
         }
     }
