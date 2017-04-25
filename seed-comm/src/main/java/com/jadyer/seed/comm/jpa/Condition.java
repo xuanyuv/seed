@@ -15,12 +15,11 @@ import java.util.List;
 /**
  * ---------------------------------------------------------------------------------------------------------------
  * 具体用法如下
- * //Condition<User> spec = Condition.create();           //此时就会使用and连接各个查询条件（默认的）
- * //Condition<User> spec = Condition.create().and();     //此时就会使用and连接各个查询条件
- * Condition<User> spec = Condition.<User>create().or();  //此时就会使用or连接各个查询条件
+ * Condition<User> spec = Condition.or();
+ * Condition<User> spec = Condition.and();
  * spec.eq("uid", uid);
  * spec.between("updateTime", new org.springframework.data.domain.Range<>(new Date(), new Date()));
- * Condition<User> spec = Condition.<User>create().or().eq("id", 8).notIn("name", nameList);
+ * Condition<User> spec = Condition.<User>or().eq("id", 8).notIn("name", nameList);
  * userRepository.findAll(spec, new PageRequest(0, 15, new Sort(Sort.Direction.DESC, "id")));
  * ---------------------------------------------------------------------------------------------------------------
  * 参考了以下实现
@@ -64,6 +63,24 @@ public class Condition<T> implements Specification<T> {
         }
     }
 
+    private Condition(Predicate.BooleanOperator operatorType) {
+        this.operatorType = operatorType;
+    }
+
+    /**
+     * 实例化对象，并设置本次构造sql时采用“or”连接各个查询条件
+     */
+    public static <T> Condition<T> or() {
+        return new Condition<>(Predicate.BooleanOperator.OR);
+    }
+
+    /**
+     * 实例化对象，并设置本次构造sql时采用“and”连接各个查询条件
+     */
+    public static <T> Condition<T> and() {
+        return new Condition<>(Predicate.BooleanOperator.AND);
+    }
+
     /**
      * 增加字段查询条件
      * @param property 实体属性名（非数据库中的字段名）
@@ -72,30 +89,6 @@ public class Condition<T> implements Specification<T> {
      */
     private Condition<T> add(String property, Operator operator, Object value) {
         filters.add(new SearchFilter(property, operator, value));
-        return this;
-    }
-
-    /**
-     * 创建实例
-     * 注意：or()和and()虽支持多次调用，但在构造SQL时使用或还是与，取决于最后一次调用的是or()还是and()
-     */
-    public static <T> Condition<T> create() {
-        return new Condition<>();
-    }
-
-    /**
-     * 设置本次构造sql时采用“or”
-     */
-    public Condition<T> or(){
-        this.operatorType = Predicate.BooleanOperator.OR;
-        return this;
-    }
-
-    /**
-     * 设置本次构造sql时采用“and”
-     */
-    public Condition<T> and(){
-        this.operatorType = Predicate.BooleanOperator.AND;
         return this;
     }
 

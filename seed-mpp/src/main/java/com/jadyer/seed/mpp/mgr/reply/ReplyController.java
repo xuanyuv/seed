@@ -90,7 +90,7 @@ public class ReplyController{
 		//分页
 		Pageable pageable = new PageRequest(StringUtils.isBlank(pageNo)?0:Integer.parseInt(pageNo), 10, sort);
 		//条件
-		Condition<ReplyInfo> spec = Condition.create();
+		Condition<ReplyInfo> spec = Condition.and();
 		spec.eq("uid", uid);
 		spec.eq("category", 2);
 		//执行
