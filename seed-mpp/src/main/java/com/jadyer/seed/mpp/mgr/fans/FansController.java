@@ -33,7 +33,7 @@ public class FansController{
 		//分页
 		Pageable pageable = new PageRequest(StringUtils.isBlank(pageNo)?0:Integer.parseInt(pageNo), 10, sort);
 		//条件
-		Condition<FansInfo> spec = Condition.<FansInfo>create().and("uid", Condition.Operator.EQ, uid);
+		Condition<FansInfo> spec = Condition.<FansInfo>create().add("uid", Condition.Operator.EQ, uid);
 		//执行
 		Page<FansInfo> fansPage = fansInfoRepository.findAll(spec, pageable);
 		request.setAttribute("page", fansPage);

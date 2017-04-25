@@ -14,22 +14,21 @@ import java.util.List;
 
 /**
  * ---------------------------------------------------------------------------------------------------------------
- * 参考了SpringSide实现
+ * 具体用法如下
+ * //Condition<User> spec = Condition.create();           //此时就会使用and连接各个查询条件（默认的）
+ * //Condition<User> spec = Condition.create().and();     //此时就会使用and连接各个查询条件
+ * Condition<User> spec = Condition.<User>create().or();  //此时就会使用or连接各个查询条件
+ * spec.add("uid", Condition.Operator.EQ, uid);
+ * spec.add("updateTime", Condition.Operator.BETWEEN, new org.springframework.data.domain.Range<>(new Date(), new Date()));
+ * Condition<User> spec = Condition.<User>create().or().add("id", Condition.Operator.EQ, 8).add("name", Condition.Operator.NOTIN, nameList);
+ * userRepository.findAll(spec, new PageRequest(0, 15, new Sort(Sort.Direction.DESC, "id")));
+ * ---------------------------------------------------------------------------------------------------------------
+ * 参考了以下实现
+ * https://github.com/wenhao/jpa-spec
  * https://github.com/springside/springside4/blob/4.0/modules/core/src/main/java/org/springside/modules/persistence/SearchFilter.java
  * https://github.com/springside/springside4/blob/4.0/modules/core/src/test/java/org/springside/modules/persistence/SearchFilterTest.java
  * https://github.com/springside/springside4/blob/4.0/modules/core/src/main/java/org/springside/modules/persistence/DynamicSpecifications.java
  * https://github.com/springside/springside4/blob/4.0/examples/showcase/src/test/java/org/springside/examples/showcase/repository/jpa/DynamicSpecificationTest.java
- * ---------------------------------------------------------------------------------------------------------------
- * 具体用法
- * Condition<User> spec = Condition.<User>create().and("id", Condition.Operator.EQ, 8);
- * Condition<User> spec = Condition.<User>create().and("name", Condition.Operator.NOTIN, nameList);
- * Condition<User> spec = Condition.<User>create().and("updateTime", Condition.Operator.BETWEEN, new org.springframework.data.domain.Range<>(new Date(), new Date()));
- * 或者像下面这样构造Specification
- * Condition<User> spec = Condition.create();
- * spec.and("uid", Condition.Operator.EQ, uid);
- * spec.and("category", Condition.Operator.EQ, 2);
- * 最终传入findAll()方法中
- * userRepository.findAll(spec, new PageRequest(0, 15, new Sort(Sort.Direction.DESC, "id")));
  * ---------------------------------------------------------------------------------------------------------------
  * 补充mysql-limit分页参数offset和rows的计算方式
  * //计算pageNo（从0开始）
@@ -42,6 +41,8 @@ import java.util.List;
  * Created by 玄玉<https://jadyer.github.io/> on 2016/7/2 17:11.
  */
 public class Condition<T> implements Specification<T> {
+    private Predicate.BooleanOperator operatorType = Predicate.BooleanOperator.AND;
+
     public enum Operator{
         EQ, NE, GT, LT, GE, LE, LIKE, NOTLIKE, IN, NOTIN, BETWEEN
     }
@@ -65,13 +66,19 @@ public class Condition<T> implements Specification<T> {
     }
 
 
-    public Condition<T> clear() {
-        filters.clear();
+    public Condition<T> or(){
+        this.operatorType = Predicate.BooleanOperator.OR;
         return this;
     }
 
 
-    public Condition<T> and(String fieldName, Operator op, Object value) {
+    public Condition<T> and(){
+        this.operatorType = Predicate.BooleanOperator.AND;
+        return this;
+    }
+
+
+    public Condition<T> add(String fieldName, Operator op, Object value) {
         filters.add(new SearchFilter(fieldName, op, value));
         return this;
     }
@@ -162,44 +169,8 @@ public class Condition<T> implements Specification<T> {
                         System.out.println("nothing to do");
             }
         }
-        //将所有条件用 and 联合起来
-        return cb.and(predicateList.toArray(new Predicate[predicateList.size()]));
+        //联合所有条件
+        Predicate[] predicates = predicateList.toArray(new Predicate[predicateList.size()]);
+        return Predicate.BooleanOperator.AND.equals(operatorType) ? cb.and(predicates) : cb.or(predicates);
     }
-
-
-    /*
-    @RequestMapping("/list")
-    public String listViaPage(String pageNo, HttpServletRequest request){
-        final int uid = (Integer)request.getSession().getAttribute(Constants.UID);
-        //排序
-        Sort sort = new Sort(Sort.Direction.DESC, "id");
-        //分页(zero-based page index)
-        Pageable pageable = new PageRequest(StringUtils.isBlank(pageNo)?0:Integer.parseInt(pageNo), Constants.PAGE_SIZE, sort);
-        //条件
-        Specification<FansInfo> spec = new Specification<FansInfo>(){
-            //@Override
-            //public Predicate toPredicate(Root<FansInfo> root, CriteriaQuery<?> query, CriteriaBuilder builder){
-            //    Path<Integer> _uid = root.get("uid");
-            //    Path<Integer> _category = root.get("category");
-            //    Predicate p1 = builder.equal(_uid, uid);
-            //    Predicate p2 = builder.equal(_category, 2);
-            //    query.where(builder.and(p1, p2));
-            //    return query.getRestriction();
-            //}
-            @Override
-            public Predicate toPredicate(Root<FansInfo> root, CriteriaQuery<?> query, CriteriaBuilder builder){
-                List<Predicate> list = new ArrayList<>();
-                Path<Integer> _uid = root.get("uid");
-                list.add(builder.equal(_uid, uid));
-                //list.add(builder.equal(root.get("uid").as(Integer.class), uid));
-                //list.add(builder.like(root.<String>get("nickname"), "%"+nickname+"%"));
-                return builder.and(list.toArray(new Predicate[list.size()]));
-            }
-        };
-        //执行
-        Page<FansInfo> fansPage = fansInfoDao.findAll(spec, pageable);
-        request.setAttribute("page", fansPage);
-        return "fansList";
-    }
-    */
 }

@@ -85,7 +85,7 @@ public class QssService {
 		//}
 		//return taskList;
 		//这是使用统一组件查询的方式
-		Condition<ScheduleTask> query = Condition.<ScheduleTask>create().and("id", Condition.Operator.IN, idList);
+		Condition<ScheduleTask> query = Condition.<ScheduleTask>create().add("id", Condition.Operator.IN, idList);
 		return scheduleTaskDao.findAll(query);
 	}
 
