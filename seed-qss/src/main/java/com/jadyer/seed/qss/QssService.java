@@ -73,8 +73,13 @@ public class QssService {
 	}
 
 
-	List<ScheduleTask> getByIds(List<Long> idList) {
+	List<ScheduleTask> getByIds(String ids) {
 		////这是使用@Query查询的方式
+		//List<String> idstr = Arrays.asList(ids.split(","));
+		//final List<Long> idList = new ArrayList<>();
+		//for(String obj : idstr){
+		//	idList.add(Long.parseLong(obj));
+		//}
 		//List<ScheduleTask> taskList = new ArrayList<>();
 		//Object[] objs = scheduleTaskDao.getByIds(idList);
 		//for(Object obj : objs){
@@ -85,7 +90,12 @@ public class QssService {
 		//}
 		//return taskList;
 		//这是使用统一组件查询的方式
-		Condition<ScheduleTask> query = Condition.<ScheduleTask>create().add("id", Condition.Operator.IN, idList);
+		String[] idss = ids.split(",");
+		Long[] values = new Long[idss.length];
+		for(int i=0; i<idss.length; i++){
+			values[i] = Long.parseLong(idss[i]);
+		}
+		Condition<ScheduleTask> query = Condition.<ScheduleTask>create().in("id", values);
 		return scheduleTaskDao.findAll(query);
 	}
 

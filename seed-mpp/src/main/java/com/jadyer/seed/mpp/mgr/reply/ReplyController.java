@@ -91,8 +91,8 @@ public class ReplyController{
 		Pageable pageable = new PageRequest(StringUtils.isBlank(pageNo)?0:Integer.parseInt(pageNo), 10, sort);
 		//条件
 		Condition<ReplyInfo> spec = Condition.create();
-		spec.add("uid", Condition.Operator.EQ, uid);
-		spec.add("category", Condition.Operator.EQ, 2);
+		spec.eq("uid", uid);
+		spec.eq("category", 2);
 		//执行
 		Page<ReplyInfo> keywordPage = replyInfoRepository.findAll(spec, pageable);
 		request.setAttribute("page", keywordPage);

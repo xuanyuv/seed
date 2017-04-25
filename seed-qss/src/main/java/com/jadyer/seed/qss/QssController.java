@@ -13,11 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 @Controller
 @RequestMapping(value="/qss")
@@ -31,16 +28,11 @@ public class QssController {
 	@ResponseBody
 	@RequestMapping(value="/getByIds")
 	public CommonResult getByIds(final String ids){
-		List<String> idstr = Arrays.asList(ids.split(","));
-		final List<Long> idList = new ArrayList<>();
-		for(String obj : idstr){
-			idList.add(Long.parseLong(obj));
-		}
 		return new CommonResult(new HashMap<String, Object>(){
 			private static final long serialVersionUID = 2518882720835440047L;
 			{
-				put("taskInfo", qssService.getById(idList.get(0)));
-				put("taskList", qssService.getByIds(idList));
+				put("taskInfo", qssService.getById(Long.parseLong(ids.substring(0,1))));
+				put("taskList", qssService.getByIds(ids));
 			}
 		});
 	}
