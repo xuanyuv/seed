@@ -20,7 +20,7 @@ import java.util.List;
  * Condition<User> spec = Condition.<User>create().or();  //此时就会使用or连接各个查询条件
  * spec.eq("uid", uid);
  * spec.between("updateTime", new org.springframework.data.domain.Range<>(new Date(), new Date()));
- * Condition<User> spec = Condition.<User>create().or().eq("id", 8).notin("name", nameList);
+ * Condition<User> spec = Condition.<User>create().or().eq("id", 8).notIn("name", nameList);
  * userRepository.findAll(spec, new PageRequest(0, 15, new Sort(Sort.Direction.DESC, "id")));
  * ---------------------------------------------------------------------------------------------------------------
  * 参考了以下实现
@@ -152,18 +152,18 @@ public class Condition<T> implements Specification<T> {
                         predicateList.add(cb.in(expression).value(filter.value).not());
                         break;
                 case LIKE:
-                        String[] values = (String[])filter.value;
-                        Predicate[] predicates = new Predicate[values.length];
-                        for(int i=0; i<values.length; i++){
-                            predicates[i] = cb.like(expression, "%" + values[i] + "%");
+                        List valueList = (List)filter.value;
+                        Predicate[] predicates = new Predicate[valueList.size()];
+                        for(int i=0; i<valueList.size(); i++){
+                            predicates[i] = cb.like(expression, "%" + valueList.get(i) + "%");
                         }
                         predicateList.add(cb.or(predicates));
                         break;
                 case NOTLIKE:
-                        values = (String[])filter.value;
-                        predicates = new Predicate[values.length];
-                        for(int i=0; i<values.length; i++){
-                            predicates[i] = cb.notLike(expression, "%" + values[i] + "%");
+                        valueList = (List)filter.value;
+                        predicates = new Predicate[valueList.size()];
+                        for(int i=0; i<valueList.size(); i++){
+                            predicates[i] = cb.notLike(expression, "%" + valueList.get(i) + "%");
                         }
                         predicateList.add(cb.and(predicates));
                         break;
@@ -211,23 +211,23 @@ public class Condition<T> implements Specification<T> {
         return this;
     }
 
-    public Condition<T> in(String property, Object... values) {
-        this.add(property, Operator.IN, values);
+    public Condition<T> in(String property, List valueList) {
+        this.add(property, Operator.IN, valueList);
         return this;
     }
 
-    public Condition<T> notin(String property, Object... values) {
-        this.add(property, Operator.NOTIN, values);
+    public Condition<T> notIn(String property, List valueList) {
+        this.add(property, Operator.NOTIN, valueList);
         return this;
     }
 
-    public Condition<T> like(String property, String... values) {
-        this.add(property, Operator.LIKE, values);
+    public Condition<T> like(String property, List<String> valueList) {
+        this.add(property, Operator.LIKE, valueList);
         return this;
     }
 
-    public Condition<T> notlike(String property, String... values) {
-        this.add(property, Operator.NOTLIKE, values);
+    public Condition<T> notLike(String property, List<String> valueList) {
+        this.add(property, Operator.NOTLIKE, valueList);
         return this;
     }
 }

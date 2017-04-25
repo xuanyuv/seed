@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -74,12 +75,12 @@ public class QssService {
 
 
 	List<ScheduleTask> getByIds(String ids) {
-		////这是使用@Query查询的方式
-		//List<String> idstr = Arrays.asList(ids.split(","));
-		//final List<Long> idList = new ArrayList<>();
-		//for(String obj : idstr){
-		//	idList.add(Long.parseLong(obj));
-		//}
+		List<String> idstr = Arrays.asList(ids.split(","));
+		List<Long> idList = new ArrayList<>();
+		for(String obj : idstr){
+			idList.add(Long.parseLong(obj));
+		}
+		////使用@Query查询的方式
 		//List<ScheduleTask> taskList = new ArrayList<>();
 		//Object[] objs = scheduleTaskDao.getByIds(idList);
 		//for(Object obj : objs){
@@ -89,13 +90,8 @@ public class QssService {
 		//	taskList.add(task);
 		//}
 		//return taskList;
-		//这是使用统一组件查询的方式
-		String[] idss = ids.split(",");
-		Long[] values = new Long[idss.length];
-		for(int i=0; i<idss.length; i++){
-			values[i] = Long.parseLong(idss[i]);
-		}
-		Condition<ScheduleTask> query = Condition.<ScheduleTask>create().in("id", values);
+		//使用统一组件查询的方式
+		Condition<ScheduleTask> query = Condition.<ScheduleTask>create().in("id", idList);
 		return scheduleTaskDao.findAll(query);
 	}
 
