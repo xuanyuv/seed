@@ -4,9 +4,10 @@ import com.jadyer.seed.comm.constant.CommonResult;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
@@ -23,7 +24,7 @@ public class SwaggerDemoUserController {
 
     @ApiOperation("查看用户")
     @ApiImplicitParam(name="id", value="用户ID", required=true, dataType="Long", paramType="path")
-    @RequestMapping(value="/get/{id}", method=RequestMethod.GET)
+    @GetMapping("/get/{id}")
     CommonResult get(@PathVariable long id){
         return new CommonResult(USER_MAP.get(id));
     }
@@ -31,7 +32,7 @@ public class SwaggerDemoUserController {
 
     @ApiOperation("删除用户")
     @ApiImplicitParam(name="id", value="用户ID", required=true, dataType="Long", paramType="path")
-    @RequestMapping(value="/delete/{id}", method=RequestMethod.POST)
+    @PostMapping("/delete/{id}")
     CommonResult delete(@PathVariable long id){
         return new CommonResult(USER_MAP.remove(id));
     }
@@ -39,7 +40,7 @@ public class SwaggerDemoUserController {
 
     @ApiOperation("创建用户")
     @ApiImplicitParam(name="user", value="用户详细信息的实体User", required=true)
-    @RequestMapping(value="/add", method=RequestMethod.POST)
+    @PostMapping("/add")
     CommonResult add(SwaggerDemoUser user){
         USER_MAP.put(user.getId(), user);
         return new CommonResult(user);
@@ -51,7 +52,7 @@ public class SwaggerDemoUserController {
             @ApiImplicitParam(name="id", value="用户ID", required=true, dataType="Long", paramType="path"),
             @ApiImplicitParam(name="user", value="更新后的User对象信息", required=true)
     })
-    @RequestMapping(value="/update/{id}", method=RequestMethod.POST)
+    @PostMapping("/update/{id}")
     CommonResult update(@PathVariable long id, SwaggerDemoUser user){
         SwaggerDemoUser u = USER_MAP.get(id);
         u.setUsername(user.getUsername());

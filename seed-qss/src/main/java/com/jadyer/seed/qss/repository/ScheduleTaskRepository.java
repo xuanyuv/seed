@@ -16,7 +16,9 @@ import java.util.List;
  * 2.有人说：也可以在接口上使用@Transactional显式指定事务属性，它将覆盖Spring-Data-JPA提供的默认值
  *   但经过我的试验，发现save()/delete()方法还是使用了@Transactional，而非@Transactional(readOnly=true)
  * -----------------------------------------------------------------------------------------------------------
- * 灵活的查询【待验证】
+ * 自定义简单查询【待验证】
+ * 自定义的简单查询就是根据方法名来自动生成SQL，主要的语法是：findXXBy、readXXBy、getXXBy、queryXXBy、countXXBy
+ * 基本上SQL体系中的关键词都可以使用，例如：LIKE、IgnoreCase、OrderBy
  * http://docs.spring.io/spring-data/jpa/docs/1.11.3.RELEASE/reference/html/#repository-query-keywords
  * http://docs.spring.io/spring-data/jpa/docs/1.11.3.RELEASE/reference/html/#jpa.query-methods.query-creation
  * 需要注意的几个点

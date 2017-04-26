@@ -6,9 +6,8 @@ import com.jadyer.seed.comm.constant.CommonResult;
 import com.jadyer.seed.comm.constant.Constants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -56,7 +55,7 @@ public class DemoController {
      * 读取配置文件中的属性
      */
     @ResponseBody
-    @RequestMapping(value="/prop")
+    @GetMapping("/prop")
     public Map<String, Object> prop(){
         Map<String, Object> map = new HashMap<>();
         map.put("weight", this.weight);
@@ -78,7 +77,7 @@ public class DemoController {
      * Thymeleaf页面点击登录按钮
      */
     @ResponseBody
-    @RequestMapping(value="/login/{username}/{password}")
+    @GetMapping("/login/{username}/{password}")
     public CommonResult login(@PathVariable String username, @PathVariable String password, HttpSession session){
         if("jadyer".equals(username) && "xuanyu".equals(password)){
             Map<String, String> fans01 = new HashMap<>();
@@ -113,7 +112,7 @@ public class DemoController {
      *     可以url传参，比如http://127.0.0.1/view?url=user/userInfo&id=3，则参数id=3会被放到request中
      * </p>
      */
-    @RequestMapping(value="/view", method= RequestMethod.GET)
+    @GetMapping("/view")
     String view(String url, HttpServletRequest request){
         Map<String, String[]> paramMap = request.getParameterMap();
         for(Map.Entry<String,String[]> entry : paramMap.entrySet()){
