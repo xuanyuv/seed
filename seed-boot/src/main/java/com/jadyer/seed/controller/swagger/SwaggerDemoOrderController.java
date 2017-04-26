@@ -2,8 +2,9 @@ package com.jadyer.seed.controller.swagger;
 
 import com.jadyer.seed.comm.constant.CommonResult;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -14,13 +15,13 @@ import springfox.documentation.annotations.ApiIgnore;
 @RequestMapping("/order")
 public class SwaggerDemoOrderController {
     @ApiOperation("获取订单列表")
-    @RequestMapping(value="/list", method= RequestMethod.GET)
+    @GetMapping("/list")
     CommonResult list(){
         return new CommonResult();
     }
 
     @ApiIgnore
-    @RequestMapping(value="/upsert", method=RequestMethod.POST)
+    @PostMapping("/upsert")
     CommonResult upsert(String username){
         return new CommonResult();
     }

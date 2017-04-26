@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import java.util.Map;
 /**
  * Created by 玄玉<https://jadyer.github.io/> on 2016/5/7 17:43.
  */
+@ApiIgnore
 @Controller
 //@RestController//它就相当于@Controller和@ResponseBody注解
 public class DemoController {
