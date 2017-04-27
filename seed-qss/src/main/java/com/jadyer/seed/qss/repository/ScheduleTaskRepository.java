@@ -1,6 +1,7 @@
 package com.jadyer.seed.qss.repository;
 
 import com.jadyer.seed.comm.jpa.BaseRepository;
+import com.jadyer.seed.qss.model.ScheduleSummary;
 import com.jadyer.seed.qss.model.ScheduleTask;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -80,6 +81,9 @@ import java.util.List;
  * Created by 玄玉<https://jadyer.github.io/> on 2015/08/29 18:04.
  */
 public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Long> {
+	@Query("SELECT st.name as name, st.url as url FROM ScheduleTask st WHERE st.id IN (?1)")
+	List<ScheduleSummary> findByIds(List<Long> idList);
+
 	/**
 	 * 通过SQL的IN()函数批量查询定时任务
 	 * <p>
@@ -88,7 +92,7 @@ public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Lon
 	 */
 	@Query("SELECT st.name, st.url FROM ScheduleTask st WHERE st.id IN (?1)")
 	Object[] getByIds(List<Long> idList);
-	
+
 	/**
 	 * 更新定时任务的状态
 	 * <p>

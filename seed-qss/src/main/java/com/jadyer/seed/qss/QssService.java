@@ -5,6 +5,7 @@ import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.comm.jpa.Condition;
 import com.jadyer.seed.qss.helper.JobDisallowConcurrentFactory;
 import com.jadyer.seed.qss.helper.JobFactory;
+import com.jadyer.seed.qss.model.ScheduleSummary;
 import com.jadyer.seed.qss.model.ScheduleTask;
 import com.jadyer.seed.qss.repository.ScheduleTaskDaoJdbc;
 import com.jadyer.seed.qss.repository.ScheduleTaskRepository;
@@ -54,7 +55,7 @@ public class QssService {
 	private Scheduler scheduler;
 
 	@Resource
-	private ScheduleTaskRepository scheduleTaskDao;
+	private ScheduleTaskRepository scheduleTaskRepository;
 
 	@Resource
 	private ScheduleTaskDaoJdbc scheduleTaskDaoJdbc;
@@ -80,19 +81,26 @@ public class QssService {
 		for(String obj : idstr){
 			idList.add(Long.parseLong(obj));
 		}
-		////使用@Query查询的方式
-		//List<ScheduleTask> taskList = new ArrayList<>();
-		//Object[] objs = scheduleTaskDao.getByIds(idList);
-		//for(Object obj : objs){
-		//	ScheduleTask task = new ScheduleTask();
-		//	task.setName(((Object[])obj)[0].toString());
-		//	task.setUrl(((Object[])obj)[1].toString());
-		//	taskList.add(task);
-		//}
-		//return taskList;
+		//使用@Query查询的方式
+		List<ScheduleTask> taskList = new ArrayList<>();
+		Object[] objs = scheduleTaskRepository.getByIds(idList);
+		for(Object obj : objs){
+			ScheduleTask task = new ScheduleTask();
+			task.setName(((Object[])obj)[0].toString());
+			task.setUrl(((Object[])obj)[1].toString());
+			taskList.add(task);
+		}
+		for(ScheduleTask obj : taskList){
+			System.out.println("11--查询到name=[" + obj.getName() + "]，url=[" + obj.getUrl() +"]");
+		}
+		//使用接口作为返回值实现多表查询
+		List<ScheduleSummary> scheduleSummaryList = scheduleTaskRepository.findByIds(idList);
+		for(ScheduleSummary obj : scheduleSummaryList){
+			System.out.println("22--查询到name=[" + obj.getName() + "]，url=[" + obj.getUrl() +"]");
+		}
 		//使用统一组件查询的方式
 		Condition<ScheduleTask> query = Condition.<ScheduleTask>and().in("id", idList);
-		return scheduleTaskDao.findAll(query);
+		return scheduleTaskRepository.findAll(query);
 	}
 
 
@@ -102,7 +110,7 @@ public class QssService {
 	List<ScheduleTask> getAllTask(){
 		//return scheduleTaskDao.findAll();
 		List<ScheduleTask> jobList = this.getAllJob();
-		List<ScheduleTask> taskList = scheduleTaskDao.findAll();
+		List<ScheduleTask> taskList = scheduleTaskRepository.findAll();
 		for(ScheduleTask task : taskList){
 			for(ScheduleTask job : jobList){
 				if(job.getName().equals(task.getName())){
@@ -123,7 +131,7 @@ public class QssService {
 		if(!CronExpression.isValidExpression(task.getCron())){
 			throw new IllegalArgumentException("CronExpression不正确");
 		}
-		return scheduleTaskDao.save(task);
+		return scheduleTaskRepository.save(task);
 	}
 	
 	
@@ -133,7 +141,7 @@ public class QssService {
 	void deleteTask(long taskId){
 		ScheduleTask task = this.getTaskById(taskId);
 		this.deleteJob(task);
-		scheduleTaskDao.delete(taskId);
+		scheduleTaskRepository.delete(taskId);
 	}
 
 
@@ -141,7 +149,7 @@ public class QssService {
 	 * 从数据库中查询指定的任务信息
 	 */
 	ScheduleTask getTaskById(long taskId) {
-		return scheduleTaskDao.findOne(taskId);
+		return scheduleTaskRepository.findOne(taskId);
 	}
 
 
@@ -160,7 +168,7 @@ public class QssService {
 		}else if(ScheduleTask.STATUS_RESUME == status){
 			this.resumeJob(task);
 		}
-		return 1==scheduleTaskDao.updateStatusById(status, taskId);
+		return 1==scheduleTaskRepository.updateStatusById(status, taskId);
 	}
 
 
@@ -176,7 +184,7 @@ public class QssService {
 		if(ScheduleTask.STATUS_RUNNING == task.getStatus()){
 			this.updateJobCron(task);
 		}
-		return 1==scheduleTaskDao.updateCronById(cron, taskId);
+		return 1==scheduleTaskRepository.updateCronById(cron, taskId);
 	}
 	
 	
