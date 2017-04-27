@@ -71,13 +71,6 @@ import java.util.List;
  * Predicate predicate = user.firstname.equalsIgnoreCase("dave").and(user.lastname.startsWithIgnoreCase("mathews"));
  * userRepository.findAll(predicate);
  * -----------------------------------------------------------------------------------------------------------
- * 审计功能【待验证】
- * 比较常见的相关注解有：@CreatedBy、@LastModifiedBy、@CreatedDate、@LastModifiedDate
- * 启用审计功能后，这四个注解才能发挥作用，启用步骤如下
- * 1. 引入spring-aspects.jar
- * 2. 如果使用Java配置的话，在配置类上使用@EnableJpaAuditing（若使用XML配置则添加<jpa:auditing/>）
- * 3. 最后在实体类上添加@EntityListeners(AuditingEntityListener.class)
- * -----------------------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.github.io/> on 2015/08/29 18:04.
  */
 public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Long> {
