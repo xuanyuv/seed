@@ -23,63 +23,63 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SpringContextHolder implements ApplicationContextAware, DisposableBean {
-	private static ApplicationContext applicationContext;
+    private static ApplicationContext applicationContext;
 
-	/**
-	 * 从静态变量applicationContext中取得Bean，自动转型为所赋值对象的类型
-	 */
-	public static Object getBean(String beanName){
-		assertContextInjected();
-		return applicationContext.getBean(beanName);
-	}
+    /**
+     * 从静态变量applicationContext中取得Bean，自动转型为所赋值对象的类型
+     */
+    public static Object getBean(String beanName){
+        assertContextInjected();
+        return applicationContext.getBean(beanName);
+    }
 
-	/**
-	 * 从静态变量applicationContext中取得Bean，自动转型为所赋值对象的类型
-	 */
-	public static <T> T getBean(Class<T> requiredType){
-		assertContextInjected();
-		return applicationContext.getBean(requiredType);
-	}
+    /**
+     * 从静态变量applicationContext中取得Bean，自动转型为所赋值对象的类型
+     */
+    public static <T> T getBean(Class<T> requiredType){
+        assertContextInjected();
+        return applicationContext.getBean(requiredType);
+    }
 
-	/**
-	 * 取得存储在静态变量中的ApplicationContext.
-	 */
-	public static ApplicationContext getApplicationContext() {
-		assertContextInjected();
-		return applicationContext;
-	}
+    /**
+     * 取得存储在静态变量中的ApplicationContext.
+     */
+    public static ApplicationContext getApplicationContext() {
+        assertContextInjected();
+        return applicationContext;
+    }
 
-	/**
-	 * 实现ApplicationContextAware接口，将ApplicationContext注入到静态变量中
-	 */
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		if(null != SpringContextHolder.applicationContext){
-			System.out.println("SpringContextHolder中的ApplicationContext将被覆盖，原ApplicationContext为：" + SpringContextHolder.applicationContext);
-		}
-		SpringContextHolder.applicationContext = applicationContext;
-	}
+    /**
+     * 实现ApplicationContextAware接口，将ApplicationContext注入到静态变量中
+     */
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        if(null != SpringContextHolder.applicationContext){
+            System.out.println("SpringContextHolder中的ApplicationContext将被覆盖，原ApplicationContext为：" + SpringContextHolder.applicationContext);
+        }
+        SpringContextHolder.applicationContext = applicationContext;
+    }
 
-	/**
-	 * 实现DisposableBean接口，在Context关闭时清理静态变量
-	 */
-	@Override
-	public void destroy() throws Exception {
-		SpringContextHolder.clearHolder();
-	}
+    /**
+     * 实现DisposableBean接口，在Context关闭时清理静态变量
+     */
+    @Override
+    public void destroy() throws Exception {
+        SpringContextHolder.clearHolder();
+    }
 
-	/**
-	 * 清除SpringContextHolder中的ApplicationContext为Null.
-	 */
-	private static void clearHolder(){
-		LogUtil.getLogger().warn("清除SpringContextHolder中的ApplicationContext：{}", applicationContext);
-		applicationContext = null;
-	}
+    /**
+     * 清除SpringContextHolder中的ApplicationContext为Null.
+     */
+    private static void clearHolder(){
+        LogUtil.getLogger().warn("清除SpringContextHolder中的ApplicationContext：{}", applicationContext);
+        applicationContext = null;
+    }
 
-	/**
-	 * 检查ApplicationContext不为空
-	 */
-	private static void assertContextInjected(){
-		Validate.validState(null!=applicationContext, "ApplicaitonContext属性未注入，请定义SpringContextHolder...");
-	}
+    /**
+     * 检查ApplicationContext不为空
+     */
+    private static void assertContextInjected(){
+        Validate.validState(null!=applicationContext, "ApplicaitonContext属性未注入，请定义SpringContextHolder...");
+    }
 }

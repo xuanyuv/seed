@@ -32,25 +32,25 @@
 </style>
 <script th:inline="javascript">
 $(function(){
-	$("#username").focus();
-	$.setBox("div.box_login");
+    $("#username").focus();
+    $.setBox("div.box_login");
 });
 
 /**
  * 设置Box居中
  */
 $.setBox = function(o){
-	var o = $(o),
-		n = 0;
-	$(window).resize(function(){
-		setOH();
-	});
-	setOH();
-	function setOH(){
-		n = Math.floor(($(window).height() - o.height())/2);
-		n = n>0 ? n : 0;
-		o.css("paddingTop", n);
-	}
+    var o = $(o),
+        n = 0;
+    $(window).resize(function(){
+        setOH();
+    });
+    setOH();
+    function setOH(){
+        n = Math.floor(($(window).height() - o.height())/2);
+        n = n>0 ? n : 0;
+        o.css("paddingTop", n);
+    }
 }
 
 /**
@@ -58,51 +58,51 @@ $.setBox = function(o){
  */
 var flag = true; 
 function login(){
-	var o        = $("#loginSubmit");
-	var username = $("#username").val();
-	var password = $("#password").val();
-	if(isEmpty(username)){
-		$.promptBox("请输入用户名", "#ffb848");
-		$("#username").focus();
-		return false;
-	}
-	if(isEmpty(password)){
-		$.promptBox("请输入密码", "#ffb848");
-		$("#password").focus();
-		return false;
-	}
-	if(!flag){
-		return false;
-	}
-	flag = false;
-	o.attr("disabled", true).text("登录中...").css({"background":"#28b779", "cursor":"auto"});
-	$.get([[@{/login/}]] + username + '/' + password,
-		function(data){
-			if(0 == data.code){
-				//window.location.href = [[@{/view?url=admin/info}]];
-				window.location.href = [[@{/view(url='admin/info',token='https://github.com/jadyer',mpurl='https://jadyer.github.io/')}]];
-			}else{
-				o.attr("disabled", false).text("登录").css({"background":"#5bb75b", "cursor":"auto"});
- 				$.promptBox(data.msg, "#ffb848");
- 				flag = true;
-			}
-		}
-	);
+    var o        = $("#loginSubmit");
+    var username = $("#username").val();
+    var password = $("#password").val();
+    if(isEmpty(username)){
+        $.promptBox("请输入用户名", "#ffb848");
+        $("#username").focus();
+        return false;
+    }
+    if(isEmpty(password)){
+        $.promptBox("请输入密码", "#ffb848");
+        $("#password").focus();
+        return false;
+    }
+    if(!flag){
+        return false;
+    }
+    flag = false;
+    o.attr("disabled", true).text("登录中...").css({"background":"#28b779", "cursor":"auto"});
+    $.get([[@{/login/}]] + username + '/' + password,
+        function(data){
+            if(0 == data.code){
+                //window.location.href = [[@{/view?url=admin/info}]];
+                window.location.href = [[@{/view(url='admin/info',token='https://github.com/jadyer',mpurl='https://jadyer.github.io/')}]];
+            }else{
+                o.attr("disabled", false).text("登录").css({"background":"#5bb75b", "cursor":"auto"});
+                 $.promptBox(data.msg, "#ffb848");
+                 flag = true;
+            }
+        }
+    );
 }
 </script>
 </head>
 <body onkeydown="if(13==event.keyCode)login();">
-	<div class="box_login">
-		<div class="u"><img th:src="@{/img/logo.png}"/></div>
-		<ul class="m">
-			<li class="l1"><i></i><p><input id="username" type="text" class="te" placeholder="Username" maxlength="16"/></p></li>
-			<li class="l2"><i></i><p><input id="password" type="password" class="te" placeholder="Password" maxlength="16"/></p></li>
-		</ul>
-		<div class="d">
-			<p class="p1"><a href="javascript:alert('暂未开放');" title="注册">注册</a><span></span><a href="javascript:alert('暂未开放');" title="忘记密码">忘记密码</a></p>
-			<p class="p2"><button id="loginSubmit" onclick="login();" class="btn trans" type="button">登&nbsp;&nbsp;录</button></p>
-			<div class="clear"></div>
-		</div>
-	</div>
+    <div class="box_login">
+        <div class="u"><img th:src="@{/img/logo.png}"/></div>
+        <ul class="m">
+            <li class="l1"><i></i><p><input id="username" type="text" class="te" placeholder="Username" maxlength="16"/></p></li>
+            <li class="l2"><i></i><p><input id="password" type="password" class="te" placeholder="Password" maxlength="16"/></p></li>
+        </ul>
+        <div class="d">
+            <p class="p1"><a href="javascript:alert('暂未开放');" title="注册">注册</a><span></span><a href="javascript:alert('暂未开放');" title="忘记密码">忘记密码</a></p>
+            <p class="p2"><button id="loginSubmit" onclick="login();" class="btn trans" type="button">登&nbsp;&nbsp;录</button></p>
+            <div class="clear"></div>
+        </div>
+    </div>
 </body>
 </html>

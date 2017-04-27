@@ -81,95 +81,95 @@ import java.util.Set;
  * Created by 玄玉<https://jadyer.github.io/> on 2015/06/09 23:25.
  */
 public final class ValidatorUtil {
-	private static Validator validator = null;
+    private static Validator validator = null;
 
-	static{
-		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-		validator = factory.getValidator();
-	}
+    static{
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
+    }
 
-	private ValidatorUtil() {}
-
-
-	/**
-	 * 判断属性是否属于例外属性列表
-	 * @return true--是例外属性,false--不是例外属性
-	 */
-	private static boolean isExcept(String field, String... exceptFieldName){
-		for(String obj : exceptFieldName){
-			if(StringUtils.isNotBlank(obj) && field.contains(obj)){
-				return true;
-			}
-		}
-		return false;
-	}
+    private ValidatorUtil() {}
 
 
-	/**
-	 * 验证对象中的属性的值是否符合注解定义
-	 * @param obj 需要验证的对象，若其父类的属性也有验证注解则会一并验证
-	 * @return 返回空字符串""表示验证通过,否则返回错误信息,多个字段的错误信息用英文分号[;]分隔
-	 */
-	public static String validate(Object obj){
-		return validate(obj, new String[]{});
-	}
+    /**
+     * 判断属性是否属于例外属性列表
+     * @return true--是例外属性,false--不是例外属性
+     */
+    private static boolean isExcept(String field, String... exceptFieldName){
+        for(String obj : exceptFieldName){
+            if(StringUtils.isNotBlank(obj) && field.contains(obj)){
+                return true;
+            }
+        }
+        return false;
+    }
 
 
-	/**
-	 * 验证对象中的属性的值是否符合注解定义
-	 * @param obj             需要验证的对象，若其父类的属性也有验证注解则会一并验证
-	 * @param exceptFieldName 不需要验证的属性
-	 * @return 返回空字符串""表示验证通过,否则返回错误信息,多个字段的错误信息用英文分号[;]分隔
-	 */
-	private static String validate(Object obj, String... exceptFieldName){
-		String validateMsg = "";
-		if(null == obj){
-			return "被验证对象不能为null";
-		}
-		Set<ConstraintViolation<Object>> validateSet = validator.validate(obj);
-		for(ConstraintViolation<Object> constraintViolation : validateSet){
-			String field = constraintViolation.getPropertyPath().toString();
-			String message = constraintViolation.getMessage();
-			if(!isExcept(field, exceptFieldName)){
-				//id:最小不能小于1;name:不能为空;
-				validateMsg += field + ":" + message + ";";
-			}
-		}
-		return validateMsg;
-	}
+    /**
+     * 验证对象中的属性的值是否符合注解定义
+     * @param obj 需要验证的对象，若其父类的属性也有验证注解则会一并验证
+     * @return 返回空字符串""表示验证通过,否则返回错误信息,多个字段的错误信息用英文分号[;]分隔
+     */
+    public static String validate(Object obj){
+        return validate(obj, new String[]{});
+    }
 
 
-	/**
-	 * 验证对象中的属性的值是否符合注解定义
-	 * @param obj 需要验证的对象，若其父类的属性也有验证注解则会一并验证
-	 * @return 返回空Map<String, String>(not null)表示验证通过,否则会将各错误字段作为key放入Map,value为错误信息
-	 */
-	public static Map<String, String> validateToMap(Object obj){
-		return validateToMap(obj, new String[]{});
-	}
+    /**
+     * 验证对象中的属性的值是否符合注解定义
+     * @param obj             需要验证的对象，若其父类的属性也有验证注解则会一并验证
+     * @param exceptFieldName 不需要验证的属性
+     * @return 返回空字符串""表示验证通过,否则返回错误信息,多个字段的错误信息用英文分号[;]分隔
+     */
+    private static String validate(Object obj, String... exceptFieldName){
+        String validateMsg = "";
+        if(null == obj){
+            return "被验证对象不能为null";
+        }
+        Set<ConstraintViolation<Object>> validateSet = validator.validate(obj);
+        for(ConstraintViolation<Object> constraintViolation : validateSet){
+            String field = constraintViolation.getPropertyPath().toString();
+            String message = constraintViolation.getMessage();
+            if(!isExcept(field, exceptFieldName)){
+                //id:最小不能小于1;name:不能为空;
+                validateMsg += field + ":" + message + ";";
+            }
+        }
+        return validateMsg;
+    }
 
 
-	/**
-	 * 验证对象中的属性的值是否符合注解定义
-	 * @param obj             需要验证的对象，若其父类的属性也有验证注解则会一并验证
-	 * @param exceptFieldName 不需要验证的属性
-	 * @return 返回空Map<String, String>(not null)表示验证通过,否则会将各错误字段作为key放入Map,value为错误信息
-	 */
-	private static Map<String, String> validateToMap(Object obj, String... exceptFieldName){
-		Map<String, String> resultMap = Maps.newHashMap();
-		if(null == obj){
-			throw new NullPointerException("被验证对象不能为null");
-		}
-		Set<ConstraintViolation<Object>> validateSet = validator.validate(obj);
-		for(ConstraintViolation<Object> constraintViolation : validateSet){
-			String field = constraintViolation.getPropertyPath().toString();
-			String message = constraintViolation.getMessage();
-			if(!isExcept(field, exceptFieldName)){
-				resultMap.put(field, message);
-			}
-		}
-		return resultMap;
-	}
+    /**
+     * 验证对象中的属性的值是否符合注解定义
+     * @param obj 需要验证的对象，若其父类的属性也有验证注解则会一并验证
+     * @return 返回空Map<String, String>(not null)表示验证通过,否则会将各错误字段作为key放入Map,value为错误信息
+     */
+    public static Map<String, String> validateToMap(Object obj){
+        return validateToMap(obj, new String[]{});
+    }
+
+
+    /**
+     * 验证对象中的属性的值是否符合注解定义
+     * @param obj             需要验证的对象，若其父类的属性也有验证注解则会一并验证
+     * @param exceptFieldName 不需要验证的属性
+     * @return 返回空Map<String, String>(not null)表示验证通过,否则会将各错误字段作为key放入Map,value为错误信息
+     */
+    private static Map<String, String> validateToMap(Object obj, String... exceptFieldName){
+        Map<String, String> resultMap = Maps.newHashMap();
+        if(null == obj){
+            throw new NullPointerException("被验证对象不能为null");
+        }
+        Set<ConstraintViolation<Object>> validateSet = validator.validate(obj);
+        for(ConstraintViolation<Object> constraintViolation : validateSet){
+            String field = constraintViolation.getPropertyPath().toString();
+            String message = constraintViolation.getMessage();
+            if(!isExcept(field, exceptFieldName)){
+                resultMap.put(field, message);
+            }
+        }
+        return resultMap;
+    }
 }
 /*
 import java.lang.annotation.Documented;
@@ -186,15 +186,15 @@ import javax.validation.Payload;
 @Constraint(validatedBy=ByteLengthValidate.class)  
 @Target({ElementType.ANNOTATION_TYPE, ElementType.FIELD})  
 public @interface ByteLength {
-	int min() default 0;
+    int min() default 0;
 
-	int max() default Integer.MAX_VALUE;
+    int max() default Integer.MAX_VALUE;
 
-	String message() default "{org.hibernate.validator.constraints.Length.message}";
+    String message() default "{org.hibernate.validator.constraints.Length.message}";
 
-	Class<?>[] groups() default {};
+    Class<?>[] groups() default {};
 
-	Class<? extends Payload>[] payload() default {};
+    Class<? extends Payload>[] payload() default {};
 }
 */
 /*
@@ -202,26 +202,26 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 public class ByteLengthValidate implements ConstraintValidator<ByteLength, String> {
-	private int min;
-	private int max;
+    private int min;
+    private int max;
 
-	@Override
-	public void initialize(ByteLength byteLength) {
-		this.min = byteLength.min();
-		this.max = byteLength.max();
-	}
+    @Override
+    public void initialize(ByteLength byteLength) {
+        this.min = byteLength.min();
+        this.max = byteLength.max();
+    }
 
-	@Override
-	public boolean isValid(String input, ConstraintValidatorContext arg1) {
-		String standard = input.replaceAll("[^\\x00-\\xff]", "**");
-		int length = standard.length();
-		if(min>0 && length<min){
-			return false;
-		}
-		if(max>0 && length>max){
-			return false;
-		}
-		return true;
-	}
+    @Override
+    public boolean isValid(String input, ConstraintValidatorContext arg1) {
+        String standard = input.replaceAll("[^\\x00-\\xff]", "**");
+        int length = standard.length();
+        if(min>0 && length<min){
+            return false;
+        }
+        if(max>0 && length>max){
+            return false;
+        }
+        return true;
+    }
 }
 */

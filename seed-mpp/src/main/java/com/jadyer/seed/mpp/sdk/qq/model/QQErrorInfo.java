@@ -8,26 +8,26 @@ package com.jadyer.seed.mpp.sdk.qq.model;
  * @author 玄玉<https://jadyer.github.io/>
  */
 public class QQErrorInfo {
-	private int errcode;
-	private String errmsg;
-	private String msgid;
+    private int errcode;
+    private String errmsg;
+    private String msgid;
 
-	public int getErrcode() {
-		return errcode;
-	}
-	public void setErrcode(int errcode) {
-		this.errcode = errcode;
-	}
-	public String getErrmsg() {
-		return errmsg;
-	}
-	public void setErrmsg(String errmsg) {
-		this.errmsg = errmsg;
-	}
-	public String getMsgid() {
-		return msgid;
-	}
-	public void setMsgid(String msgid) {
-		this.msgid = msgid;
-	}
+    public int getErrcode() {
+        return errcode;
+    }
+    public void setErrcode(int errcode) {
+        this.errcode = errcode;
+    }
+    public String getErrmsg() {
+        return errmsg;
+    }
+    public void setErrmsg(String errmsg) {
+        this.errmsg = errmsg;
+    }
+    public String getMsgid() {
+        return msgid;
+    }
+    public void setMsgid(String msgid) {
+        this.msgid = msgid;
+    }
 }

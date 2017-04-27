@@ -9,25 +9,25 @@ package com.jadyer.seed.mpp.sdk.weixin.model.menu;
  * @author 玄玉<https://jadyer.github.io/>
  */
 public class WeixinSubViewButton extends WeixinButton {
-	private String type;
-	private String url;
-	
-	public WeixinSubViewButton(String name, String url) {
-		super(name);
-		this.url = url;
-		this.type = "view";
-	}
+    private String type;
+    private String url;
 
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    public WeixinSubViewButton(String name, String url) {
+        super(name);
+        this.url = url;
+        this.type = "view";
+    }
+
+    public String getType() {
+        return type;
+    }
+    public void setType(String type) {
+        this.type = type;
+    }
+    public String getUrl() {
+        return url;
+    }
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }

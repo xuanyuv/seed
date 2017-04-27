@@ -11,8 +11,8 @@ import org.springframework.context.ApplicationListener;
  * Created by 玄玉<https://jadyer.github.io/> on 2015/12/08 17:54.
  */
 public class ApplicationStartedEventListener implements ApplicationListener<ApplicationStartedEvent> {
-	@Override
-	public void onApplicationEvent(ApplicationStartedEvent event) {
-		System.out.println("SpringBoot开始启动-->" + event.getSpringApplication());
-	}
+    @Override
+    public void onApplicationEvent(ApplicationStartedEvent event) {
+        System.out.println("SpringBoot开始启动-->" + event.getSpringApplication());
+    }
 }

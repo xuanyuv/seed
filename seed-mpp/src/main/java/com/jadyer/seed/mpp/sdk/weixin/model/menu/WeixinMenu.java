@@ -6,17 +6,17 @@ package com.jadyer.seed.mpp.sdk.weixin.model.menu;
  * @author 玄玉<https://jadyer.github.io/>
  */
 public class WeixinMenu {
-	private WeixinButton[] button;
+    private WeixinButton[] button;
 
-	public WeixinMenu(WeixinButton[] button) {
-		this.button = button;
-	}
+    public WeixinMenu(WeixinButton[] button) {
+        this.button = button;
+    }
 
-	public WeixinButton[] getButton() {
-		return button;
-	}
+    public WeixinButton[] getButton() {
+        return button;
+    }
 
-	public void setButton(WeixinButton[] button) {
-		this.button = button;
-	}
+    public void setButton(WeixinButton[] button) {
+        this.button = button;
+    }
 }

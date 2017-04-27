@@ -15,10 +15,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class BootHealthIndicator implements HealthIndicator {
-	@Override
-	public Health health() {
-		return Health.up().withDetail("myblog", "https://jadyer.github.io/")
-							.withDetail("mygithub", "https://github.com/jadyer")
-							.build();
-	}
+    @Override
+    public Health health() {
+        return Health.up().withDetail("myblog", "https://jadyer.github.io/")
+                            .withDetail("mygithub", "https://github.com/jadyer")
+                            .build();
+    }
 }

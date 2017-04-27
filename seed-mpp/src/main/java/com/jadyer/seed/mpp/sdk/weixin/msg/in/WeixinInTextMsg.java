@@ -6,33 +6,33 @@ package com.jadyer.seed.mpp.sdk.weixin.msg.in;
  * @author 玄玉<https://jadyer.github.io/>
  */
 public class WeixinInTextMsg extends WeixinInMsg {
-	/**
-	 * 文本消息内容
-	 */
-	private String content;
-	
-	/**
-	 * 64位整型的消息id
-	 */
-	private String msgId;
+    /**
+     * 文本消息内容
+     */
+    private String content;
 
-	public WeixinInTextMsg(String toUserName, String fromUserName, long createTime, String msgType) {
-		super(toUserName, fromUserName, createTime, msgType);
-	}
+    /**
+     * 64位整型的消息id
+     */
+    private String msgId;
 
-	public String getContent() {
-		return content;
-	}
+    public WeixinInTextMsg(String toUserName, String fromUserName, long createTime, String msgType) {
+        super(toUserName, fromUserName, createTime, msgType);
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public String getMsgId() {
-		return msgId;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public void setMsgId(String msgId) {
-		this.msgId = msgId;
-	}
+    public String getMsgId() {
+        return msgId;
+    }
+
+    public void setMsgId(String msgId) {
+        this.msgId = msgId;
+    }
 }

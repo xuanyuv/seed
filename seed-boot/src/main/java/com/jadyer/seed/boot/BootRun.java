@@ -66,41 +66,41 @@ import javax.servlet.Filter;
  */
 @SpringBootApplication(scanBasePackages="${scan.base.packages}", exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class BootRun {
-	private static final Logger log = LoggerFactory.getLogger(BootRun.class);
+    private static final Logger log = LoggerFactory.getLogger(BootRun.class);
 
-	@Bean
-	public Filter characterEncodingFilter(){
-		return new CharacterEncodingFilter("UTF-8", true);
-	}
+    @Bean
+    public Filter characterEncodingFilter(){
+        return new CharacterEncodingFilter("UTF-8", true);
+    }
 
-	private static String getProfile(SimpleCommandLinePropertySource source){
-		if(source.containsProperty(Constants.BOOT_ACTIVE_NAME)){
-			log.info("读取到spring变量：{}={}", Constants.BOOT_ACTIVE_NAME, source.getProperty(Constants.BOOT_ACTIVE_NAME));
-			return source.getProperty(Constants.BOOT_ACTIVE_NAME);
-		}
-		if(System.getProperties().containsKey(Constants.BOOT_ACTIVE_NAME)){
-			log.info("读取到java变量：{}={}", Constants.BOOT_ACTIVE_NAME, System.getProperty(Constants.BOOT_ACTIVE_NAME));
-			return System.getProperty(Constants.BOOT_ACTIVE_NAME);
-		}
-		if(System.getenv().containsKey(Constants.BOOT_ACTIVE_NAME)){
-			log.info("读取到系统变量：{}={}", Constants.BOOT_ACTIVE_NAME, System.getenv(Constants.BOOT_ACTIVE_NAME));
-			return System.getenv(Constants.BOOT_ACTIVE_NAME);
-		}
-		log.warn("未读取到{}，默认取环境：{}", Constants.BOOT_ACTIVE_NAME, Constants.BOOT_ACTIVE_DEFAULT_VALUE);
-		return Constants.BOOT_ACTIVE_DEFAULT_VALUE;
-	}
+    private static String getProfile(SimpleCommandLinePropertySource source){
+        if(source.containsProperty(Constants.BOOT_ACTIVE_NAME)){
+            log.info("读取到spring变量：{}={}", Constants.BOOT_ACTIVE_NAME, source.getProperty(Constants.BOOT_ACTIVE_NAME));
+            return source.getProperty(Constants.BOOT_ACTIVE_NAME);
+        }
+        if(System.getProperties().containsKey(Constants.BOOT_ACTIVE_NAME)){
+            log.info("读取到java变量：{}={}", Constants.BOOT_ACTIVE_NAME, System.getProperty(Constants.BOOT_ACTIVE_NAME));
+            return System.getProperty(Constants.BOOT_ACTIVE_NAME);
+        }
+        if(System.getenv().containsKey(Constants.BOOT_ACTIVE_NAME)){
+            log.info("读取到系统变量：{}={}", Constants.BOOT_ACTIVE_NAME, System.getenv(Constants.BOOT_ACTIVE_NAME));
+            return System.getenv(Constants.BOOT_ACTIVE_NAME);
+        }
+        log.warn("未读取到{}，默认取环境：{}", Constants.BOOT_ACTIVE_NAME, Constants.BOOT_ACTIVE_DEFAULT_VALUE);
+        return Constants.BOOT_ACTIVE_DEFAULT_VALUE;
+    }
 
-	public static void main(String[] args) {
-		//SpringApplication.run(BootRun.class, args);
-		//new SpringApplicationBuilder().sources(BootRun.class)
-		//		.profiles(getProfile(new SimpleCommandLinePropertySource(args)))
-		//		.run(args);
-		new SpringApplicationBuilder().sources(BootRun.class)
-				.listeners(new ApplicationStartedEventListener())
-				.listeners(new ApplicationEnvironmentPreparedEventListener())
-				.listeners(new ApplicationPreparedEventListener())
-				.listeners(new ApplicationFailedEventListener())
-				.profiles(getProfile(new SimpleCommandLinePropertySource(args)))
-				.run(args);
-	}
+    public static void main(String[] args) {
+        //SpringApplication.run(BootRun.class, args);
+        //new SpringApplicationBuilder().sources(BootRun.class)
+        //        .profiles(getProfile(new SimpleCommandLinePropertySource(args)))
+        //        .run(args);
+        new SpringApplicationBuilder().sources(BootRun.class)
+                .listeners(new ApplicationStartedEventListener())
+                .listeners(new ApplicationEnvironmentPreparedEventListener())
+                .listeners(new ApplicationPreparedEventListener())
+                .listeners(new ApplicationFailedEventListener())
+                .profiles(getProfile(new SimpleCommandLinePropertySource(args)))
+                .run(args);
+    }
 }

@@ -20,36 +20,36 @@ import org.springframework.web.servlet.view.JstlView;
  */
 @Configuration
 public class MVCConfiguration extends WebMvcConfigurerAdapter {
-	@Bean
-	public EmbeddedServletContainerCustomizer containerCustomizer(){
-		return new EmbeddedServletContainerCustomizer() {
-			@Override
-			public void customize(ConfigurableEmbeddedServletContainer container) {
-				container.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/WEB-INF/jsp/common/404.jsp"));
-				container.addErrorPages(new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/WEB-INF/jsp/common/500.jsp"));
-			}
-		};
-	}
+    @Bean
+    public EmbeddedServletContainerCustomizer containerCustomizer(){
+        return new EmbeddedServletContainerCustomizer() {
+            @Override
+            public void customize(ConfigurableEmbeddedServletContainer container) {
+                container.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/WEB-INF/jsp/common/404.jsp"));
+                container.addErrorPages(new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/WEB-INF/jsp/common/500.jsp"));
+            }
+        };
+    }
 
-	@Override
-	public void addViewControllers(ViewControllerRegistry registry) {
-		//registry.addViewController("/apidoc").setViewName("forward:/apidoc/index.jsp");
-		//registry.addViewController("/apidoc/").setViewName("forward:/apidoc/index.jsp");
-		registry.addViewController("/").setViewName("forward:/login.jsp");
-		registry.addViewController("/login").setViewName("forward:/login.jsp");
-	}
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        //registry.addViewController("/apidoc").setViewName("forward:/apidoc/index.jsp");
+        //registry.addViewController("/apidoc/").setViewName("forward:/apidoc/index.jsp");
+        registry.addViewController("/").setViewName("forward:/login.jsp");
+        registry.addViewController("/login").setViewName("forward:/login.jsp");
+    }
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		//registry.addResourceHandler("/apidoc/**").addResourceLocations("/apidoc/");
-	}
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        //registry.addResourceHandler("/apidoc/**").addResourceLocations("/apidoc/");
+    }
 
-	@Override
-	public void configureViewResolvers(ViewResolverRegistry registry) {
-		InternalResourceViewResolver irvr = new InternalResourceViewResolver();
-		irvr.setPrefix("/WEB-INF/jsp/");
-		irvr.setSuffix(".jsp");
-		irvr.setViewClass(JstlView.class);
-		registry.viewResolver(irvr);
-	}
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        InternalResourceViewResolver irvr = new InternalResourceViewResolver();
+        irvr.setPrefix("/WEB-INF/jsp/");
+        irvr.setSuffix(".jsp");
+        irvr.setViewClass(JstlView.class);
+        registry.viewResolver(irvr);
+    }
 }

@@ -9,18 +9,18 @@ package com.jadyer.seed.mpp.sdk.qq.model.menu;
  * @author 玄玉<https://jadyer.github.io/>
  */
 public class QQSuperButton extends QQButton {
-	private QQButton[] sub_button;
-	
-	public QQSuperButton(String name, QQButton[] sub_button) {
-		super(name);
-		this.sub_button = sub_button;
-	}
+    private QQButton[] sub_button;
 
-	public QQButton[] getSub_button() {
-		return sub_button;
-	}
+    public QQSuperButton(String name, QQButton[] sub_button) {
+        super(name);
+        this.sub_button = sub_button;
+    }
 
-	public void setSub_button(QQButton[] sub_button) {
-		this.sub_button = sub_button;
-	}
+    public QQButton[] getSub_button() {
+        return sub_button;
+    }
+
+    public void setSub_button(QQButton[] sub_button) {
+        this.sub_button = sub_button;
+    }
 }

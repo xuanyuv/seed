@@ -8,21 +8,21 @@ import com.jadyer.seed.mpp.sdk.qq.msg.in.QQInMsg;
  * @author 玄玉<https://jadyer.github.io/>
  */
 public abstract class QQInEventMsg extends QQInMsg {
-	/**
-	 * 事件类型
-	 */
-	protected String event;
+    /**
+     * 事件类型
+     */
+    protected String event;
 
-	public QQInEventMsg(String toUserName, String fromUserName, long createTime, String msgType, String event) {
-		super(toUserName, fromUserName, createTime, msgType);
-		this.event = event;
-	}
+    public QQInEventMsg(String toUserName, String fromUserName, long createTime, String msgType, String event) {
+        super(toUserName, fromUserName, createTime, msgType);
+        this.event = event;
+    }
 
-	public String getEvent() {
-		return event;
-	}
+    public String getEvent() {
+        return event;
+    }
 
-	public void setEvent(String event) {
-		this.event = event;
-	}
+    public void setEvent(String event) {
+        this.event = event;
+    }
 }

@@ -68,82 +68,82 @@ import org.slf4j.LoggerFactory;
  * Created by 玄玉<https://jadyer.github.io/> on 2012/11/18 18:19.
  */
 public final class LogUtil {
-	private static final String LOGGER_NAME_DEFAULT = "defaultLogger";
-	private static final String LOGGER_NAME_WEB = "webLogger";
-	private static final String LOGGER_NAME_WAP = "wapLogger";
+    private static final String LOGGER_NAME_DEFAULT = "defaultLogger";
+    private static final String LOGGER_NAME_WEB = "webLogger";
+    private static final String LOGGER_NAME_WAP = "wapLogger";
 
-	private LogUtil(){}
+    private LogUtil(){}
 
-	//自定义线程范围内共享的对象
-	//即它会针对不同线程分别创建独立的对象，此时每个线程得到的将是自己的实例，各线程间得到的实例没有任何关联
-	private static ThreadLocal<Logger> currentLoggerMap = new ThreadLocal<>();
+    //自定义线程范围内共享的对象
+    //即它会针对不同线程分别创建独立的对象，此时每个线程得到的将是自己的实例，各线程间得到的实例没有任何关联
+    private static ThreadLocal<Logger> currentLoggerMap = new ThreadLocal<>();
 
-	//定义日志记录器
-	private static Logger defaultLogger = LoggerFactory.getLogger(LOGGER_NAME_DEFAULT);
-	private static Logger webLogger = LoggerFactory.getLogger(LOGGER_NAME_WEB);
-	private static Logger wapLogger = LoggerFactory.getLogger(LOGGER_NAME_WAP);
+    //定义日志记录器
+    private static Logger defaultLogger = LoggerFactory.getLogger(LOGGER_NAME_DEFAULT);
+    private static Logger webLogger = LoggerFactory.getLogger(LOGGER_NAME_WEB);
+    private static Logger wapLogger = LoggerFactory.getLogger(LOGGER_NAME_WAP);
 
-	/**
-	 * 获取当前线程中的日志记录器
-	 * <p>
-	 *     每个线程调用全局的ThreadLocal.set()方法
-	 *     相当于在其内部的Map中增加一条记录，key是各自的线程，value是各自set()的值
-	 *     取的时候直接ThreadLocal.get()即可
-	 * </p>
-	 */
-	public static Logger getLogger() {
-		Logger logger = currentLoggerMap.get();
-		if(null == logger){
-			return defaultLogger;
-		}else{
-			return logger;
-		}
-	}
-
-
-//	/**
-//	 * 设置日志记录器为当前会话时最初绑定的日志记录器
-//	 * 该方法适用于整个会话由2个或2个以上的线程处理的情景
-//	 * 比如Mina2.x中的exceptionCaught(IoSession session, Throwable cause)，其用法如下
-//	 * LogUtil.setCurrentLogger((Log)session.getAttribute("currentLog"))
-//	 * LogUtil.getLogger().error("请求被拒绝or请求地址有误，堆栈轨迹如下", cause)
-//	 * 最后，记得会话开始时，通过session.setAttribute("currentLog", LogUtil.getLogger())标记日志记录器
-//	 */
-//	public static void setCurrentLogger(Log log){
-//		currentLoggerMap.set(log);
-//	}
-//	
-//	/**
-//	 * 默认日志记录器
-//	 * 多线程情境下若想使用defaultLogger则最好在使用前调用一次该方法
-//	 */
-//	public static void setDefaultLogger(){
-//		currentLoggerMap.set(defaultLogger);
-//	}
+    /**
+     * 获取当前线程中的日志记录器
+     * <p>
+     *     每个线程调用全局的ThreadLocal.set()方法
+     *     相当于在其内部的Map中增加一条记录，key是各自的线程，value是各自set()的值
+     *     取的时候直接ThreadLocal.get()即可
+     * </p>
+     */
+    public static Logger getLogger() {
+        Logger logger = currentLoggerMap.get();
+        if(null == logger){
+            return defaultLogger;
+        }else{
+            return logger;
+        }
+    }
 
 
-	/**
-	 * 获取Web端日志记录器
-	 */
-	public static Logger getWebLogger() {
-		Logger logger = currentLoggerMap.get();
-		if(null!=logger && LOGGER_NAME_WEB.equals(logger.getName())){
-			return logger;
-		}
-		currentLoggerMap.set(webLogger);
-		return webLogger;
-	}
+//    /**
+//     * 设置日志记录器为当前会话时最初绑定的日志记录器
+//     * 该方法适用于整个会话由2个或2个以上的线程处理的情景
+//     * 比如Mina2.x中的exceptionCaught(IoSession session, Throwable cause)，其用法如下
+//     * LogUtil.setCurrentLogger((Log)session.getAttribute("currentLog"))
+//     * LogUtil.getLogger().error("请求被拒绝or请求地址有误，堆栈轨迹如下", cause)
+//     * 最后，记得会话开始时，通过session.setAttribute("currentLog", LogUtil.getLogger())标记日志记录器
+//     */
+//    public static void setCurrentLogger(Log log){
+//        currentLoggerMap.set(log);
+//    }
+//
+//    /**
+//     * 默认日志记录器
+//     * 多线程情境下若想使用defaultLogger则最好在使用前调用一次该方法
+//     */
+//    public static void setDefaultLogger(){
+//        currentLoggerMap.set(defaultLogger);
+//    }
 
 
-	/**
-	 * 获取Wap端日志记录器
-	 */
-	public static Logger getWapLogger() {
-		Logger logger = currentLoggerMap.get();
-		if(null!=logger && LOGGER_NAME_WAP.equals(logger.getName())){
-			return logger;
-		}
-		currentLoggerMap.set(wapLogger);
-		return wapLogger;
-	}
+    /**
+     * 获取Web端日志记录器
+     */
+    public static Logger getWebLogger() {
+        Logger logger = currentLoggerMap.get();
+        if(null!=logger && LOGGER_NAME_WEB.equals(logger.getName())){
+            return logger;
+        }
+        currentLoggerMap.set(webLogger);
+        return webLogger;
+    }
+
+
+    /**
+     * 获取Wap端日志记录器
+     */
+    public static Logger getWapLogger() {
+        Logger logger = currentLoggerMap.get();
+        if(null!=logger && LOGGER_NAME_WAP.equals(logger.getName())){
+            return logger;
+        }
+        currentLoggerMap.set(wapLogger);
+        return wapLogger;
+    }
 }

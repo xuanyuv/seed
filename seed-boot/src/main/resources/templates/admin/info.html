@@ -3,56 +3,56 @@
 <head th:replace="/comm/header"/>
 <script>
 function validateForm(){
-	if(isEmpty($("#appid").val())){
-		$.promptBox("请填入appid", "#ffb848");
-	}else if(isEmpty($("#appsecret").val())){
-		$.promptBox("请填入appsecret", "#ffb848");
-	}else if(isEmpty($("#mpid").val())){
-		$.promptBox("请填入公众号原始ID", "#ffb848");
-	}else{
-		return true;
-	}
+    if(isEmpty($("#appid").val())){
+        $.promptBox("请填入appid", "#ffb848");
+    }else if(isEmpty($("#appsecret").val())){
+        $.promptBox("请填入appsecret", "#ffb848");
+    }else if(isEmpty($("#mpid").val())){
+        $.promptBox("请填入公众号原始ID", "#ffb848");
+    }else{
+        return true;
+    }
 }
 function submit(){
-	if(validateForm()){
-		alert("操作成功！！\r\n请于公众号回复\“你最牛逼\”完成绑定");
-	}
+    if(validateForm()){
+        alert("操作成功！！\r\n请于公众号回复\“你最牛逼\”完成绑定");
+    }
 }
 </script>
 <body>
 <div th:replace="/comm/body_menu"/>
 <div class="c_main_r">
-	<div th:replace="/comm/body_topBar"/>
-	<div class="c_nav">
-		<div class="ti">个人资料</div>
-	</div>
-	<!--Content-->
-	<div class="c_content" th:inline="text">
-		<!--Table order list-->
-		<table class="tab_head tab_in tab_list2" width="100%">
-			<tr class="ti"><th colspan="2">个人信息</th></tr>
-			<tr><th width="15%">用户名：</th><td>[[${nickname} ?: '玄玉']]</td></tr>
-		</table>
-		<!--/Table order list-->
-		<form id="userBindForm">
-			<table class="tab_head tab_in tab_list2" width="100%">
-				<tr class="ti"><th colspan="2">公众信息</th></tr>
-				<tr><th width="15%">URL：</th><td>[[${mpurl} ?: 'mpurl是空的']]</td></tr>
-				<tr><th>Token：</th><td>[[${token} ?: 'token是空的']]</td></tr>
-				<tr><th>appid：</th><td><input th:text="${appid} ?: ''" class="inpte" type="text" id="appid" name="appid" maxlength="32"/></td></tr>
-				<tr><th>appsecret：</th><td><input th:text="${appsecret}" class="inpte" type="text" id="appsecret" name="appsecret" maxlength="64"/></td></tr>
-				<tr><th>原始ID：</th><td><input th:text="${mpid}" class="inpte" type="text" id="mpid" name="mpid" maxlength="32"/></td></tr>
-				<tr><th>公众号：</th><td><input th:text="${mpno}" class="inpte" type="text" id="mpno" name="mpno" maxlength="32"/></td></tr>
-				<tr><th>公众名：</th><td><input th:text="${mpname}" class="inpte" type="text" id="mpname" name="mpname" maxlength="32"/></td></tr>
-			</table>
-			<table class="tab_head tab_in tab_list2" width="100%">
-				<tr class="ti"><th colspan="3">操作</th></tr>
-				<tr><td class="txt_l"><a class="btn_g" href="javascript:submit();">绑定公众号</a></td></tr>
-			</table>
-		</form>
-	</div>
-	<!--/Content-->
-	<div th:replace="/comm/footer"/>
+    <div th:replace="/comm/body_topBar"/>
+    <div class="c_nav">
+        <div class="ti">个人资料</div>
+    </div>
+    <!--Content-->
+    <div class="c_content" th:inline="text">
+        <!--Table order list-->
+        <table class="tab_head tab_in tab_list2" width="100%">
+            <tr class="ti"><th colspan="2">个人信息</th></tr>
+            <tr><th width="15%">用户名：</th><td>[[${nickname} ?: '玄玉']]</td></tr>
+        </table>
+        <!--/Table order list-->
+        <form id="userBindForm">
+            <table class="tab_head tab_in tab_list2" width="100%">
+                <tr class="ti"><th colspan="2">公众信息</th></tr>
+                <tr><th width="15%">URL：</th><td>[[${mpurl} ?: 'mpurl是空的']]</td></tr>
+                <tr><th>Token：</th><td>[[${token} ?: 'token是空的']]</td></tr>
+                <tr><th>appid：</th><td><input th:text="${appid} ?: ''" class="inpte" type="text" id="appid" name="appid" maxlength="32"/></td></tr>
+                <tr><th>appsecret：</th><td><input th:text="${appsecret}" class="inpte" type="text" id="appsecret" name="appsecret" maxlength="64"/></td></tr>
+                <tr><th>原始ID：</th><td><input th:text="${mpid}" class="inpte" type="text" id="mpid" name="mpid" maxlength="32"/></td></tr>
+                <tr><th>公众号：</th><td><input th:text="${mpno}" class="inpte" type="text" id="mpno" name="mpno" maxlength="32"/></td></tr>
+                <tr><th>公众名：</th><td><input th:text="${mpname}" class="inpte" type="text" id="mpname" name="mpname" maxlength="32"/></td></tr>
+            </table>
+            <table class="tab_head tab_in tab_list2" width="100%">
+                <tr class="ti"><th colspan="3">操作</th></tr>
+                <tr><td class="txt_l"><a class="btn_g" href="javascript:submit();">绑定公众号</a></td></tr>
+            </table>
+        </form>
+    </div>
+    <!--/Content-->
+    <div th:replace="/comm/footer"/>
 </div>
 </body>
 </html>

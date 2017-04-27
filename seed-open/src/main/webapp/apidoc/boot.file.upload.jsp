@@ -4,98 +4,98 @@
 <jsp:include page="/apidoc/header.jsp"/>
 <h1>文件上传.boot.file.upload</h1>
 <ol type="1">
-	<li>
-		<h2>请求报文</h2>
-		<table width="1260" border="0" cellspacing="1" bgcolor="#000000">
-			<tr bgcolor="#8CB3E2">
-				<th width="20%">名称</th>
-				<th width="10%" align="center">类型</th>
-				<th width="5%" align="center">必传</th>
-				<th width="65%">说明</th>
-			</tr>
-			<tr bgcolor="#FFFFFF">
-				<td>partnerApplyNo</td>
-				<td align="center">VARCHAR2(32)</td>
-				<td align="center">Y</td>
-				<td>合作方申请单号</td>
-			</tr>
-			<tr bgcolor="#FFFFFF">
-				<td>fileData</td>
-				<td align="center">文件流</td>
-				<td align="center">Y</td>
-				<td>该参数暂不参与签名或加密</td>
-			</tr>
-		</table>
-		<br/>
-		<table width="1260" border="0" cellspacing="1" bgcolor="#000000">
-			<tr bgcolor="#FFFFFF">
-				<td>
-					&lt;form action=&quot;http://jadyer.github.io/open/router/rest&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&lt;table border=&quot;9&quot;&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;th&gt;公参method接口名称&lt;/th&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;method&quot; value=&quot;boot.file.upload&quot;/&gt;&lt;/td&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;th&gt;公参version协议版本&lt;/th&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;version&quot; value=&quot;2.1&quot;/&gt;&lt;/td&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;th&gt;公参appid&lt;/th&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;appid&quot; value=&quot;600000001&quot;/&gt;&lt;/td&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;th&gt;公参timestamp时间戳&lt;/th&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;timestamp&quot; value=&quot;<fmt:formatDate value="<%=new Date()%>" pattern="yyyy-MM-dd HH:mm:ss"/>&quot;/&gt;&lt;/td&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;th&gt;公参data密文&lt;/th&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;data&quot; value={&quot;partnerApplyNo&quot;:&quot;123&quot;}的密文/&gt;&lt;/td&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;th&gt;&amp;nbsp;&lt;/th&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;input type=&quot;file&quot; name=&quot;fileData&quot;/&gt;&lt;/td&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&amp;nbsp;&lt;/td&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;input type=&quot;submit&quot; value=&quot;提交&quot;/&gt;&lt;/td&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&lt;/table&gt;<br/>
-					&lt;/form&gt;<br/>
-				</td>
-			</tr>
-		</table>
-	</li>
-	<li>
-		<h2>响应报文</h2>
-		<table width="1260" border="0" cellspacing="1" bgcolor="#000000">
-			<tr bgcolor="#8CB3E2">
-				<th width="20%">名称</th>
-				<th width="10%" align="center">类型</th>
-				<th width="5%" align="center">必传</th>
-				<th width="65%">说明</th>
-			</tr>
-			<tr bgcolor="#FFFFFF">
-				<td>fileId</td>
-				<td align="center">NUMBER(16)</td>
-				<td align="center">Y</td>
-				<td>文件编号</td>
-			</tr>
-		</table>
-		<br/>
-		<table width="1260" border="0" cellspacing="1" bgcolor="#000000">
-			<tr bgcolor="#FFFFFF">
-				<td>
-					{<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&quot;code&quot;: &quot;0&quot;,<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&quot;msg&quot;: &quot;操作成功&quot;,<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&quot;data&quot;: {<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;fileId&quot;: 33<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
-					}
-				</td>
-			</tr>
-		</table>
-	</li>
+    <li>
+        <h2>请求报文</h2>
+        <table width="1260" border="0" cellspacing="1" bgcolor="#000000">
+            <tr bgcolor="#8CB3E2">
+                <th width="20%">名称</th>
+                <th width="10%" align="center">类型</th>
+                <th width="5%" align="center">必传</th>
+                <th width="65%">说明</th>
+            </tr>
+            <tr bgcolor="#FFFFFF">
+                <td>partnerApplyNo</td>
+                <td align="center">VARCHAR2(32)</td>
+                <td align="center">Y</td>
+                <td>合作方申请单号</td>
+            </tr>
+            <tr bgcolor="#FFFFFF">
+                <td>fileData</td>
+                <td align="center">文件流</td>
+                <td align="center">Y</td>
+                <td>该参数暂不参与签名或加密</td>
+            </tr>
+        </table>
+        <br/>
+        <table width="1260" border="0" cellspacing="1" bgcolor="#000000">
+            <tr bgcolor="#FFFFFF">
+                <td>
+                    &lt;form action=&quot;http://jadyer.github.io/open/router/rest&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;table border=&quot;9&quot;&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;th&gt;公参method接口名称&lt;/th&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;method&quot; value=&quot;boot.file.upload&quot;/&gt;&lt;/td&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;th&gt;公参version协议版本&lt;/th&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;version&quot; value=&quot;2.1&quot;/&gt;&lt;/td&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;th&gt;公参appid&lt;/th&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;appid&quot; value=&quot;600000001&quot;/&gt;&lt;/td&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;th&gt;公参timestamp时间戳&lt;/th&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;timestamp&quot; value=&quot;<fmt:formatDate value="<%=new Date()%>" pattern="yyyy-MM-dd HH:mm:ss"/>&quot;/&gt;&lt;/td&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;th&gt;公参data密文&lt;/th&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;data&quot; value={&quot;partnerApplyNo&quot;:&quot;123&quot;}的密文/&gt;&lt;/td&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;th&gt;&amp;nbsp;&lt;/th&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;input type=&quot;file&quot; name=&quot;fileData&quot;/&gt;&lt;/td&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&amp;nbsp;&lt;/td&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;input type=&quot;submit&quot; value=&quot;提交&quot;/&gt;&lt;/td&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;/table&gt;<br/>
+                    &lt;/form&gt;<br/>
+                </td>
+            </tr>
+        </table>
+    </li>
+    <li>
+        <h2>响应报文</h2>
+        <table width="1260" border="0" cellspacing="1" bgcolor="#000000">
+            <tr bgcolor="#8CB3E2">
+                <th width="20%">名称</th>
+                <th width="10%" align="center">类型</th>
+                <th width="5%" align="center">必传</th>
+                <th width="65%">说明</th>
+            </tr>
+            <tr bgcolor="#FFFFFF">
+                <td>fileId</td>
+                <td align="center">NUMBER(16)</td>
+                <td align="center">Y</td>
+                <td>文件编号</td>
+            </tr>
+        </table>
+        <br/>
+        <table width="1260" border="0" cellspacing="1" bgcolor="#000000">
+            <tr bgcolor="#FFFFFF">
+                <td>
+                    {<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&quot;code&quot;: &quot;0&quot;,<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&quot;msg&quot;: &quot;操作成功&quot;,<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&quot;data&quot;: {<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;fileId&quot;: 33<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;}<br/>
+                    }
+                </td>
+            </tr>
+        </table>
+    </li>
 </ol>
 <jsp:include page="/apidoc/footer.jsp"/>

@@ -7,17 +7,17 @@ package com.jadyer.seed.mpp.sdk.qq.model.menu;
  * @author 玄玉<https://jadyer.github.io/>
  */
 public abstract class QQButton {
-	private String name;
+    private String name;
 
-	public QQButton(String name) {
-		this.name = name;
-	}
+    public QQButton(String name) {
+        this.name = name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 }

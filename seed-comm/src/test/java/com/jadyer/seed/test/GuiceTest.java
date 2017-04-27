@@ -17,33 +17,33 @@ import org.junit.Test;
  * Created by 玄玉<https://jadyer.github.io/> on 2015/11/15 20:07.
  */
 public class GuiceTest {
-	/**
-	 * 通过com.google.inject.Module实现
-	 */
-	@Test
-	public void moduleTest(){
-		Injector injector = Guice.createInjector(Stage.DEVELOPMENT, new HelloGuiceModule());
-		HelloGuice helloGuice = injector.getInstance(HelloGuice.class);
-		helloGuice.sayHello();
-		System.out.println("得到的第一个对象的hashcode=" + helloGuice);
-		HelloGuice helloGuice22 = injector.getInstance(HelloGuice.class);
-		helloGuice22.sayHello();
-		System.out.println("得到的第二个对象的hashcode=" + helloGuice22);
-	}
+    /**
+     * 通过com.google.inject.Module实现
+     */
+    @Test
+    public void moduleTest(){
+        Injector injector = Guice.createInjector(Stage.DEVELOPMENT, new HelloGuiceModule());
+        HelloGuice helloGuice = injector.getInstance(HelloGuice.class);
+        helloGuice.sayHello();
+        System.out.println("得到的第一个对象的hashcode=" + helloGuice);
+        HelloGuice helloGuice22 = injector.getInstance(HelloGuice.class);
+        helloGuice22.sayHello();
+        System.out.println("得到的第二个对象的hashcode=" + helloGuice22);
+    }
 
-	/**
-	 * 通过注解实现
-	 */
-	@Test
-	public void annotationTest(){
-		Injector injector = Guice.createInjector(Stage.PRODUCTION);
-		UserController obj = new UserController();
-		injector.injectMembers(obj);
-		obj.blog();
-		UserController obj22 = new UserController();
-		injector.injectMembers(obj22);
-		obj22.blog();
-	}
+    /**
+     * 通过注解实现
+     */
+    @Test
+    public void annotationTest(){
+        Injector injector = Guice.createInjector(Stage.PRODUCTION);
+        UserController obj = new UserController();
+        injector.injectMembers(obj);
+        obj.blog();
+        UserController obj22 = new UserController();
+        injector.injectMembers(obj22);
+        obj22.blog();
+    }
 }
 
 
@@ -51,22 +51,22 @@ public class GuiceTest {
  * 通过com.google.inject.Module实现
  */
 interface HelloGuice{
-	void sayHello();
+    void sayHello();
 }
 
 class HelloGuiceImpl implements HelloGuice{
-	@Override
-	public void sayHello() {
-		System.out.println("Hello Guice");
-	}
+    @Override
+    public void sayHello() {
+        System.out.println("Hello Guice");
+    }
 }
 
 class HelloGuiceModule implements Module{
-	@Override
-	public void configure(Binder binder) {
-		//binder.bind(HelloGuice.class).to(HelloGuiceImpl.class).in(Scopes.SINGLETON);
-		binder.bind(HelloGuice.class).to(HelloGuiceImpl.class);
-	}
+    @Override
+    public void configure(Binder binder) {
+        //binder.bind(HelloGuice.class).to(HelloGuiceImpl.class).in(Scopes.SINGLETON);
+        binder.bind(HelloGuice.class).to(HelloGuiceImpl.class);
+    }
 }
 
 
@@ -75,22 +75,22 @@ class HelloGuiceModule implements Module{
  */
 @ImplementedBy(UserServiceImpl.class)
 interface UserService{
-	void blog();
+    void blog();
 }
 
 @Singleton
 class UserServiceImpl implements UserService{
-	@Override
-	public void blog() {
-		System.out.println("my blog is https://jadyer.github.io/");
-	}
+    @Override
+    public void blog() {
+        System.out.println("my blog is https://jadyer.github.io/");
+    }
 }
 
 class UserController{
-	@Inject
-	private UserService userService;
-	void blog(){
-		userService.blog();
-		System.out.println("得到的接口实现类hashcode=" + userService);
-	}
+    @Inject
+    private UserService userService;
+    void blog(){
+        userService.blog();
+        System.out.println("得到的接口实现类hashcode=" + userService);
+    }
 }

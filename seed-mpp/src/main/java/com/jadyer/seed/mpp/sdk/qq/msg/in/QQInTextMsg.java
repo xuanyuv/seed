@@ -19,45 +19,45 @@ package com.jadyer.seed.mpp.sdk.qq.msg.in;
  * @see -----------------------------------------------------------------------------------------------------------
  * @see HTTP请求报文体格式化后是下面这样
  * @see <xml>
- * @see 	<ToUserName><![CDATA[2878591677]]></ToUserName>
- * @see 	<FromUserName><![CDATA[E12D231CFC30438FB6970B0C7669C101]]></FromUserName>
- * @see 	<CreateTime>1448703573</CreateTime>
- * @see 	<MsgType><![CDATA[text]]></MsgType>
- * @see 	<Content><![CDATA[你好]]></Content>
- * @see 	<MsgId>875639142</MsgId>
+ * @see     <ToUserName><![CDATA[2878591677]]></ToUserName>
+ * @see     <FromUserName><![CDATA[E12D231CFC30438FB6970B0C7669C101]]></FromUserName>
+ * @see     <CreateTime>1448703573</CreateTime>
+ * @see     <MsgType><![CDATA[text]]></MsgType>
+ * @see     <Content><![CDATA[你好]]></Content>
+ * @see     <MsgId>875639142</MsgId>
  * @see </xml>
  * @see -----------------------------------------------------------------------------------------------------------
  * @create Nov 26, 2015 7:38:16 PM
  * @author 玄玉<https://jadyer.github.io/>
  */
 public class QQInTextMsg extends QQInMsg {
-	/**
-	 * 文本消息内容
-	 */
-	private String content;
-	
-	/**
-	 * 64位整型的消息id
-	 */
-	private String msgId;
+    /**
+     * 文本消息内容
+     */
+    private String content;
 
-	public QQInTextMsg(String toUserName, String fromUserName, long createTime, String msgType) {
-		super(toUserName, fromUserName, createTime, msgType);
-	}
+    /**
+     * 64位整型的消息id
+     */
+    private String msgId;
 
-	public String getContent() {
-		return content;
-	}
+    public QQInTextMsg(String toUserName, String fromUserName, long createTime, String msgType) {
+        super(toUserName, fromUserName, createTime, msgType);
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public String getMsgId() {
-		return msgId;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public void setMsgId(String msgId) {
-		this.msgId = msgId;
-	}
+    public String getMsgId() {
+        return msgId;
+    }
+
+    public void setMsgId(String msgId) {
+        this.msgId = msgId;
+    }
 }

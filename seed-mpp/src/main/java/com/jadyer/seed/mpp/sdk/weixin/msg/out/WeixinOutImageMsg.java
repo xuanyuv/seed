@@ -8,19 +8,19 @@ import com.jadyer.seed.mpp.sdk.weixin.msg.in.WeixinInMsg;
  * @author 玄玉<https://jadyer.github.io/>
  */
 public class WeixinOutImageMsg extends WeixinOutMsg {
-	private String mediaId;
+    private String mediaId;
 
-	public WeixinOutImageMsg(WeixinInMsg inMsg) {
-		super(inMsg);
-		this.msgType = "image";
-	}
+    public WeixinOutImageMsg(WeixinInMsg inMsg) {
+        super(inMsg);
+        this.msgType = "image";
+    }
 
-	public String getMediaId() {
-		return mediaId;
-	}
+    public String getMediaId() {
+        return mediaId;
+    }
 
-	public WeixinOutImageMsg setMediaId(String mediaId) {
-		this.mediaId = mediaId;
-		return this;
-	}
+    public WeixinOutImageMsg setMediaId(String mediaId) {
+        this.mediaId = mediaId;
+        return this;
+    }
 }

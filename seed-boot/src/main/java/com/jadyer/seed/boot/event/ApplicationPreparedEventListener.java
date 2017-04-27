@@ -13,9 +13,9 @@ import org.springframework.context.ConfigurableApplicationContext;
  * Created by 玄玉<https://jadyer.github.io/> on 2015/12/08 19:00.
  */
 public class ApplicationPreparedEventListener implements ApplicationListener<ApplicationPreparedEvent> {
-	@Override
-	public void onApplicationEvent(ApplicationPreparedEvent event) {
-		ConfigurableApplicationContext cac = event.getApplicationContext();
+    @Override
+    public void onApplicationEvent(ApplicationPreparedEvent event) {
+        ConfigurableApplicationContext cac = event.getApplicationContext();
         System.out.println("SpringBoot上下文Context创建完成，但此时Spring中的Bean是没有完全加载完成的，得到ApplicationContext-->" + cac.getDisplayName());
-	}
+    }
 }

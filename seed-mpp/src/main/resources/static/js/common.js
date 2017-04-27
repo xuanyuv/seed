@@ -4,7 +4,7 @@
  * @return true--空,false--非空
  */
 function isEmpty(str){
-	return null==str || /^\s*$/.test(str);
+    return null==str || /^\s*$/.test(str);
 }
 
 
@@ -15,5 +15,5 @@ function isEmpty(str){
  * @return true--非数字,false--数字
  */
 function isNotNumber(num){
-	return isNaN(num);
+    return isNaN(num);
 }

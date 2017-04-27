@@ -111,8 +111,8 @@ public class OpenFilter extends OncePerRequestFilter {
             this.verifyGrant(reqData.getAppid(), method);
             //验签
             //if(Constants.VERSION_20.equals(reqData.getVersion())){
-            //	this.verifySign(request.getParameterMap(), apiApplication.getAppSecret());
-            //	filterChain.doFilter(request, response);
+            //    this.verifySign(request.getParameterMap(), apiApplication.getAppSecret());
+            //    filterChain.doFilter(request, response);
             //}
             //解密并处理（返回诸如html或txt内容时，就不用先得到字符串再转成字节数组输出，这会影响性能，尤其对账文件下载）
             RequestParameterWrapper requestWrapper = new RequestParameterWrapper(request);

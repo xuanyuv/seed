@@ -22,22 +22,22 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {
-	/**
-	 * 1、这里会捕获Throwable及其所有子异常
-	 * 2、欲返回JSON则需使用@ResponseBody，否则会去找JSP页面（即它不会受到被捕获的方法是否使用了@ResponseBody的影响）
-	 */
-	@ResponseBody
-	@ExceptionHandler({SeedException.class, Throwable.class})
-	public CommonResult process(Throwable cause, HttpServletRequest request){
-		LogUtil.getLogger().info("Exception Occured URL="+request.getRequestURL()+",堆栈轨迹如下", cause);
-		CommonResult result = new CommonResult();
-		if(cause instanceof SeedException){
-			result.setCode(((SeedException)cause).getCode());
-		}else{
-			result.setCode(CodeEnum.SYSTEM_ERROR.getCode());
-		}
-		//result.setMsg(cause.getMessage().contains("%s") ? cause.getMessage().replaceAll("%s", "") : cause.getMessage());
-		result.setMsg(cause.getMessage());
-		return result;
-	}
+    /**
+     * 1、这里会捕获Throwable及其所有子异常
+     * 2、欲返回JSON则需使用@ResponseBody，否则会去找JSP页面（即它不会受到被捕获的方法是否使用了@ResponseBody的影响）
+     */
+    @ResponseBody
+    @ExceptionHandler({SeedException.class, Throwable.class})
+    public CommonResult process(Throwable cause, HttpServletRequest request){
+        LogUtil.getLogger().info("Exception Occured URL="+request.getRequestURL()+",堆栈轨迹如下", cause);
+        CommonResult result = new CommonResult();
+        if(cause instanceof SeedException){
+            result.setCode(((SeedException)cause).getCode());
+        }else{
+            result.setCode(CodeEnum.SYSTEM_ERROR.getCode());
+        }
+        //result.setMsg(cause.getMessage().contains("%s") ? cause.getMessage().replaceAll("%s", "") : cause.getMessage());
+        result.setMsg(cause.getMessage());
+        return result;
+    }
 }

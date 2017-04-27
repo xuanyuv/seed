@@ -1,7 +1,7 @@
 @charset "utf-8";
 /* CSS Document */
 div.ControlsRow, div.HeadersRow {
-	font-family: Georgia;
+    font-family: Georgia;
 }
 div.Canvas
 
@@ -11,11 +11,11 @@ div.Canvas
 
   font-size: 13px;
 
-	background-color:#ECECEC;
+    background-color:#ECECEC;
 
-	color:#000000;
+    color:#000000;
 
-	border:solid 1px #CECECE;
+    border:solid 1px #CECECE;
 
 }
 
@@ -23,9 +23,9 @@ div.Canvas
 
 {
 
-	color:#00AA00;
+    color:#00AA00;
 
-	font-weight:bold;
+    font-weight:bold;
 
 }
 
@@ -33,9 +33,9 @@ div.Canvas
 
 {
 
-	color:#0033FF;
+    color:#0033FF;
 
-	font-weight:bold;
+    font-weight:bold;
 
 }
 
@@ -43,9 +43,9 @@ div.Canvas
 
 {
 
-	color:#CC0000;
+    color:#CC0000;
 
-	font-weight:bold;
+    font-weight:bold;
 
 }
 
@@ -53,7 +53,7 @@ div.Canvas
 
 {
 
-	color:#007777;
+    color:#007777;
 
 }
 
@@ -61,7 +61,7 @@ div.Canvas
 
 {
 
-	color:#AA00AA;
+    color:#AA00AA;
 
 }
 

@@ -30,32 +30,32 @@ import java.util.Date;
  */
 @MappedSuperclass
 public abstract class BaseEntity<ID extends Serializable> implements Persistable<ID> {
-	private static final long serialVersionUID = 5563689039804450746L;
-	/**
-	 * 主键（如果这里不加@GeneratedValue那么Save()时生成的insert就包括id字段）
-	 */
-	//@Id
-	//@SequenceGenerator(name="SEQUENCE_QUARTZ_NAME", sequenceName="SEQUENCE_QUARTZ", allocationSize=1)
-	//@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQUENCE_QUARTZ_NAME")
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private ID id;
+    private static final long serialVersionUID = 5563689039804450746L;
+    /**
+     * 主键（如果这里不加@GeneratedValue那么Save()时生成的insert就包括id字段）
+     */
+    //@Id
+    //@SequenceGenerator(name="SEQUENCE_QUARTZ_NAME", sequenceName="SEQUENCE_QUARTZ", allocationSize=1)
+    //@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQUENCE_QUARTZ_NAME")
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private ID id;
 
-	/**
-	 * 创建时间
-	 * 1、若未定义@Column那么JPA会认为数据库字段名与该Field相同，所以二者不同时就要显式指定@Column
-	 * 2、fetch=FetchType.LAZY用于指定该字段延迟加载：即只有在访问该属性时，才会把它的数据装载进内存中
-	 * 3、为字段指定默认值可直接写为Date createTime = new Date()，其通常用于Save()所生成的insert语句
-	 *   即前台不传createTime时，Controller接收的实体对象的createTime属性值，已被自动赋为这里的默认值
-	 */
+    /**
+     * 创建时间
+     * 1、若未定义@Column那么JPA会认为数据库字段名与该Field相同，所以二者不同时就要显式指定@Column
+     * 2、fetch=FetchType.LAZY用于指定该字段延迟加载：即只有在访问该属性时，才会把它的数据装载进内存中
+     * 3、为字段指定默认值可直接写为Date createTime = new Date()，其通常用于Save()所生成的insert语句
+     *   即前台不传createTime时，Controller接收的实体对象的createTime属性值，已被自动赋为这里的默认值
+     */
     @Column(name="create_time", updatable=false)
-	@Basic(fetch= FetchType.LAZY)
+    @Basic(fetch= FetchType.LAZY)
     //@org.springframework.data.annotation.CreatedDate
     private Date createTime = new Date();
 
     @Column(name="update_time", updatable=false, insertable=false)
-	@Basic(fetch=FetchType.LAZY)
-	//@org.springframework.data.annotation.LastModifiedDate
+    @Basic(fetch=FetchType.LAZY)
+    //@org.springframework.data.annotation.LastModifiedDate
     private Date updateTime;
 
     @Override
@@ -65,26 +65,26 @@ public abstract class BaseEntity<ID extends Serializable> implements Persistable
 
     @Override
     public ID getId() {
-    	return id;
+        return id;
     }
 
-	public void setId(ID id) {
-		this.id = id;
-	}
+    public void setId(ID id) {
+        this.id = id;
+    }
 
-	public Date getCreateTime() {
-		return createTime;
-	}
+    public Date getCreateTime() {
+        return createTime;
+    }
 
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
-	public Date getUpdateTime() {
-		return updateTime;
-	}
+    public Date getUpdateTime() {
+        return updateTime;
+    }
 
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
-	}
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 }

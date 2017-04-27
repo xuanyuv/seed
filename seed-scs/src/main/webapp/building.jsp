@@ -20,7 +20,7 @@ img {
 </style>
 </head>
 <body>
-	<h1>网站建设中...</h1>
-	<img src="${pageContext.request.contextPath}/img/building-work.png">
+    <h1>网站建设中...</h1>
+    <img src="${pageContext.request.contextPath}/img/building-work.png">
 </body>
 </html>

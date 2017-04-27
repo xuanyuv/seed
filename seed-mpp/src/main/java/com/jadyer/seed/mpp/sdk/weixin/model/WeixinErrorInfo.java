@@ -8,19 +8,19 @@ package com.jadyer.seed.mpp.sdk.weixin.model;
  * @author 玄玉<https://jadyer.github.io/>
  */
 public class WeixinErrorInfo {
-	private int errcode;
-	private String errmsg;
+    private int errcode;
+    private String errmsg;
 
-	public int getErrcode() {
-		return errcode;
-	}
-	public void setErrcode(int errcode) {
-		this.errcode = errcode;
-	}
-	public String getErrmsg() {
-		return errmsg;
-	}
-	public void setErrmsg(String errmsg) {
-		this.errmsg = errmsg;
-	}
+    public int getErrcode() {
+        return errcode;
+    }
+    public void setErrcode(int errcode) {
+        this.errcode = errcode;
+    }
+    public String getErrmsg() {
+        return errmsg;
+    }
+    public void setErrmsg(String errmsg) {
+        this.errmsg = errmsg;
+    }
 }

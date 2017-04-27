@@ -38,27 +38,27 @@ import java.util.List;
 @Component
 @ConfigurationProperties(prefix=BootProperties.PREFIX)
 public class BootProperties {
-	static final String PREFIX = "scan.base";
-	private String packages;
-	private String detailInfo;
-	private List<String> addressList = new ArrayList<>();
+    static final String PREFIX = "scan.base";
+    private String packages;
+    private String detailInfo;
+    private List<String> addressList = new ArrayList<>();
 
-	public String getPackages() {
-		return packages;
-	}
+    public String getPackages() {
+        return packages;
+    }
 
-	public void setPackages(String packages) {
-		this.packages = packages;
-	}
+    public void setPackages(String packages) {
+        this.packages = packages;
+    }
 
-	public void setDetailInfo(String detailInfo) {
-		this.detailInfo = detailInfo;
-	}
+    public void setDetailInfo(String detailInfo) {
+        this.detailInfo = detailInfo;
+    }
 
-	public String getDetailInfo() {
-		return detailInfo;
-	}
-	public List<String> getAddressList() {
-		return addressList;
-	}
+    public String getDetailInfo() {
+        return detailInfo;
+    }
+    public List<String> getAddressList() {
+        return addressList;
+    }
 }

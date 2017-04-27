@@ -2,111 +2,111 @@
 <jsp:include page="/apidoc/header.jsp"/>
 <h1>产品列表查询.boot.product.list</h1>
 <ol type="1">
-	<li>
-		<h2>请求报文</h2>
-		<table width="1260" border="0" cellspacing="1" bgcolor="#000000">
-			<tr bgcolor="#8CB3E2">
-				<th width="20%">名称</th>
-				<th width="10%" align="center">类型</th>
-				<th width="5%" align="center">必传</th>
-				<th width="65%">说明</th>
-			</tr>
-			<tr bgcolor="#FFFFFF">
-				<td>productCode</td>
-				<td align="center">VARCHAR2(8)</td>
-				<td align="center">N</td>
-				<td>产品编码，若传值则返回指定编码的相关产品参数，否则返回所有产品相关参数</td>
-			</tr>
-			<tr bgcolor="#FFFFFF">
-				<td>loanMoney</td>
-				<td align="center">NUMBER(6)</td>
-				<td align="center">N</td>
-				<td>贷款金额，单位：分，若传值则返回对应的金额区间子产品相关参数</td>
-			</tr>
-		</table>
-	</li>
-	<li>
-		<h2>响应报文</h2>
-		<table width="1260" border="0" cellspacing="1" bgcolor="#000000">
-			<tr bgcolor="#8CB3E2">
-				<th width="20%">名称</th>
-				<th width="10%" align="center">类型</th>
-				<th width="5%" align="center">必传</th>
-				<th width="65%">说明</th>
-			</tr>
-			<tr bgcolor="#FFFFFF">
-				<td>productCode</td>
-				<td align="center">VARCHAR2(32)</td>
-				<td align="center">Y</td>
-				<td>贷款产品代码</td>
-			</tr>
-			<tr bgcolor="#FFFFFF">
-				<td>productDesc</td>
-				<td align="center">VARCHAR2(64)</td>
-				<td align="center">Y</td>
-				<td>贷款产品描述</td>
-			</tr>
-			<tr bgcolor="#FFFFFF">
-				<td>loanType</td>
-				<td align="center">VARCHAR2(8)</td>
-				<td align="center">Y</td>
-				<td>贷款类型：MCAT--随借随还，MCEP--等额本金，MCEI--等额本息</td>
-			</tr>
-			<tr bgcolor="#FFFFFF">
-				<td>productStatus</td>
-				<td align="center">CHAR(1)</td>
-				<td align="center">Y</td>
-				<td>产品使用状态：A--使用中，S--暂停使用</td>
-			</tr>
-			<tr bgcolor="#FFFFFF">
-				<td>productValidity</td>
-				<td align="center">DATE</td>
-				<td align="center">Y</td>
-				<td>产品有效期，格式为yyyy-MM-dd</td>
-			</tr>
-			<tr bgcolor="#FFFFFF">
-				<td>subList</td>
-				<td align="center">JSONObject</td>
-				<td align="center">Y</td>
-				<td>
-					子产品列表JSON对象，结构如下<br/>
-					[<br/>
-					&nbsp;&nbsp;&nbsp;&nbsp;{&quot;code&quot;:&quot;1101&quot;,&quot;term&quot;:&quot;6&quot;,&quot;minAmt&quot;:&quot;1&quot;,&quot;maxAmt&quot;:&quot;9&quot;,&quot;status&quot;:&quot;A&quot;},<br/> 
-					&nbsp;&nbsp;&nbsp;&nbsp;{&quot;code&quot;:&quot;4101&quot;,&quot;term&quot;:&quot;9&quot;,&quot;minAmt&quot;:&quot;3&quot;,&quot;maxAmt&quot;:&quot;6&quot;,&quot;status&quot;:&quot;P&quot;}<br/>
-					]
-				</td>
-			</tr>
-			<tr bgcolor="#FFFFFF">
-				<td>subList.code</td>
-				<td align="center">VARCHAR2(8)</td>
-				<td align="center">Y</td>
-				<td>子产品代码</td>
-			</tr>
-			<tr bgcolor="#FFFFFF">
-				<td>subList.term</td>
-				<td align="center">VARCHAR2(2)</td>
-				<td align="center">Y</td>
-				<td>贷款期数</td>
-			</tr>
-			<tr bgcolor="#FFFFFF">
-				<td>subList.minAmt</td>
-				<td align="center">NUMBER(9)</td>
-				<td align="center">Y</td>
-				<td>最小允许贷款额度，单位：分</td>
-			</tr>
-			<tr bgcolor="#FFFFFF">
-				<td>subList.maxAmt</td>
-				<td align="center">NUMBER(9)</td>
-				<td align="center">Y</td>
-				<td>最大允许贷款额度，单位：分</td>
-			</tr>
-			<tr bgcolor="#FFFFFF">
-				<td>subList.status</td>
-				<td align="center">CHAR(1)</td>
-				<td align="center">Y</td>
-				<td>子产品使用状态：I--初建未使用，A--使用中，P--产品关闭</td>
-			</tr>
-		</table>
-	</li>
+    <li>
+        <h2>请求报文</h2>
+        <table width="1260" border="0" cellspacing="1" bgcolor="#000000">
+            <tr bgcolor="#8CB3E2">
+                <th width="20%">名称</th>
+                <th width="10%" align="center">类型</th>
+                <th width="5%" align="center">必传</th>
+                <th width="65%">说明</th>
+            </tr>
+            <tr bgcolor="#FFFFFF">
+                <td>productCode</td>
+                <td align="center">VARCHAR2(8)</td>
+                <td align="center">N</td>
+                <td>产品编码，若传值则返回指定编码的相关产品参数，否则返回所有产品相关参数</td>
+            </tr>
+            <tr bgcolor="#FFFFFF">
+                <td>loanMoney</td>
+                <td align="center">NUMBER(6)</td>
+                <td align="center">N</td>
+                <td>贷款金额，单位：分，若传值则返回对应的金额区间子产品相关参数</td>
+            </tr>
+        </table>
+    </li>
+    <li>
+        <h2>响应报文</h2>
+        <table width="1260" border="0" cellspacing="1" bgcolor="#000000">
+            <tr bgcolor="#8CB3E2">
+                <th width="20%">名称</th>
+                <th width="10%" align="center">类型</th>
+                <th width="5%" align="center">必传</th>
+                <th width="65%">说明</th>
+            </tr>
+            <tr bgcolor="#FFFFFF">
+                <td>productCode</td>
+                <td align="center">VARCHAR2(32)</td>
+                <td align="center">Y</td>
+                <td>贷款产品代码</td>
+            </tr>
+            <tr bgcolor="#FFFFFF">
+                <td>productDesc</td>
+                <td align="center">VARCHAR2(64)</td>
+                <td align="center">Y</td>
+                <td>贷款产品描述</td>
+            </tr>
+            <tr bgcolor="#FFFFFF">
+                <td>loanType</td>
+                <td align="center">VARCHAR2(8)</td>
+                <td align="center">Y</td>
+                <td>贷款类型：MCAT--随借随还，MCEP--等额本金，MCEI--等额本息</td>
+            </tr>
+            <tr bgcolor="#FFFFFF">
+                <td>productStatus</td>
+                <td align="center">CHAR(1)</td>
+                <td align="center">Y</td>
+                <td>产品使用状态：A--使用中，S--暂停使用</td>
+            </tr>
+            <tr bgcolor="#FFFFFF">
+                <td>productValidity</td>
+                <td align="center">DATE</td>
+                <td align="center">Y</td>
+                <td>产品有效期，格式为yyyy-MM-dd</td>
+            </tr>
+            <tr bgcolor="#FFFFFF">
+                <td>subList</td>
+                <td align="center">JSONObject</td>
+                <td align="center">Y</td>
+                <td>
+                    子产品列表JSON对象，结构如下<br/>
+                    [<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;{&quot;code&quot;:&quot;1101&quot;,&quot;term&quot;:&quot;6&quot;,&quot;minAmt&quot;:&quot;1&quot;,&quot;maxAmt&quot;:&quot;9&quot;,&quot;status&quot;:&quot;A&quot;},<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;{&quot;code&quot;:&quot;4101&quot;,&quot;term&quot;:&quot;9&quot;,&quot;minAmt&quot;:&quot;3&quot;,&quot;maxAmt&quot;:&quot;6&quot;,&quot;status&quot;:&quot;P&quot;}<br/>
+                    ]
+                </td>
+            </tr>
+            <tr bgcolor="#FFFFFF">
+                <td>subList.code</td>
+                <td align="center">VARCHAR2(8)</td>
+                <td align="center">Y</td>
+                <td>子产品代码</td>
+            </tr>
+            <tr bgcolor="#FFFFFF">
+                <td>subList.term</td>
+                <td align="center">VARCHAR2(2)</td>
+                <td align="center">Y</td>
+                <td>贷款期数</td>
+            </tr>
+            <tr bgcolor="#FFFFFF">
+                <td>subList.minAmt</td>
+                <td align="center">NUMBER(9)</td>
+                <td align="center">Y</td>
+                <td>最小允许贷款额度，单位：分</td>
+            </tr>
+            <tr bgcolor="#FFFFFF">
+                <td>subList.maxAmt</td>
+                <td align="center">NUMBER(9)</td>
+                <td align="center">Y</td>
+                <td>最大允许贷款额度，单位：分</td>
+            </tr>
+            <tr bgcolor="#FFFFFF">
+                <td>subList.status</td>
+                <td align="center">CHAR(1)</td>
+                <td align="center">Y</td>
+                <td>子产品使用状态：I--初建未使用，A--使用中，P--产品关闭</td>
+            </tr>
+        </table>
+    </li>
 </ol>
 <jsp:include page="/apidoc/footer.jsp"/>

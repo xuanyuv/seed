@@ -526,125 +526,125 @@ public class MoneyUtil {
     }
     
     
-	/**
-	 * @param money
-	 * @return
-	 */
-	public static String moneyToCent(Money money) {
-		if (money == null) {
-			return null;
-		}
-		return String.valueOf(money.getCent());
-	}
-	
-	/**
-	 * @param money
-	 * @return
-	 */
-	public static String moneyToYuan(Money money) {
-		if (money == null) {
-			return null;
-		}
-		return new BigDecimal(money.getCent()).divide(new BigDecimal(100)).toString();
-	}
-	
-	/**
-	 * 将money对象转换成BigDecimal类型
-	 * @param 	money	金额
-	 * @return	BigDecimal
-	 */
-	public static BigDecimal moneyToYuanDecimal(Money money) {
-		if (money == null) {
-			return null;
-		}
-		
-		return new BigDecimal(money.getCent()).divide(new BigDecimal(100));
-	}
-	
-	/**
-	 * @param cent
-	 * @return
-	 */
-	public static Money centToMoney(String cent) {
-		return getMoney(Long.valueOf(cent));
-	}
-	
-	/**
-	 * 生成Money
-	 *
-	 * @param cent 单位：分
-	 * @return
-	 */
-	public static Money getMoney(Long cent) {
-		
-		Money money = new Money();
-		//注意钱可能有负值
-		//if (cent != null && cent > 0) {
-		if (cent != null) {
-			money.setCent(cent);
-		}
-		
-		return money;
-	}
-	
-	/**
-	 * 获取money的绝对值
-	 * 
-	 * @param money
-	 * @return
-	 */
-	public static Money absMoney(Money money) {
-		if (money.getCent() >= 0) {
-			return money;
-		}
-		return new Money().subtractFrom(money);
-	}
+    /**
+     * @param money
+     * @return
+     */
+    public static String moneyToCent(Money money) {
+        if (money == null) {
+            return null;
+        }
+        return String.valueOf(money.getCent());
+    }
 
-	/**
-	 * 判断money对象是否在范围之间
-	 * 
-	 * @param money	
-	 * @param min
-	 * @param max
-	 * @return 
-	 * @return boolean min<=money<=max 返回true 
-	 * @exception 
-	 * @since  1.0.0
-	 */
-	public static boolean isBetween(Money money,double min,double max){
-		boolean flag = false;
-		BigDecimal bMoney = money.getAmount();
-		BigDecimal bMin = new BigDecimal(min);
-		BigDecimal bMax = new BigDecimal(max);
-		int minRet = bMoney.compareTo(bMin);
-		int maxRet = bMoney.compareTo(bMax);
-		if(minRet>=0&&maxRet<=0){
-			flag = true;
-		}
-		return flag;
-	}
-	
-	/**
-	 * 判断money对象是否在范围之间
-	 * 
-	 * @param money	
-	 * @param min
-	 * @param max
-	 * @return 
-	 * @return boolean min<=money<=max 返回true 
-	 * @exception 
-	 * @since  1.0.0
-	 */
-	public static boolean isBetween(Money money,String min,String max){
-		boolean flag = false;
-		BigDecimal bMoney = money.getAmount();
-		BigDecimal bMin = new BigDecimal(min);
-		BigDecimal bMax = new BigDecimal(max);
-		int minRet = bMoney.compareTo(bMin);
-		int maxRet = bMoney.compareTo(bMax);
-		if(minRet>=0&&maxRet<=0){
-			flag = true;
-		}
-		return flag;
-	}
+    /**
+     * @param money
+     * @return
+     */
+    public static String moneyToYuan(Money money) {
+        if (money == null) {
+            return null;
+        }
+        return new BigDecimal(money.getCent()).divide(new BigDecimal(100)).toString();
+    }
+
+    /**
+     * 将money对象转换成BigDecimal类型
+     * @param     money    金额
+     * @return    BigDecimal
+     */
+    public static BigDecimal moneyToYuanDecimal(Money money) {
+        if (money == null) {
+            return null;
+        }
+
+        return new BigDecimal(money.getCent()).divide(new BigDecimal(100));
+    }
+
+    /**
+     * @param cent
+     * @return
+     */
+    public static Money centToMoney(String cent) {
+        return getMoney(Long.valueOf(cent));
+    }
+
+    /**
+     * 生成Money
+     *
+     * @param cent 单位：分
+     * @return
+     */
+    public static Money getMoney(Long cent) {
+
+        Money money = new Money();
+        //注意钱可能有负值
+        //if (cent != null && cent > 0) {
+        if (cent != null) {
+            money.setCent(cent);
+        }
+
+        return money;
+    }
+
+    /**
+     * 获取money的绝对值
+     *
+     * @param money
+     * @return
+     */
+    public static Money absMoney(Money money) {
+        if (money.getCent() >= 0) {
+            return money;
+        }
+        return new Money().subtractFrom(money);
+    }
+
+    /**
+     * 判断money对象是否在范围之间
+     *
+     * @param money
+     * @param min
+     * @param max
+     * @return
+     * @return boolean min<=money<=max 返回true
+     * @exception
+     * @since  1.0.0
+     */
+    public static boolean isBetween(Money money,double min,double max){
+        boolean flag = false;
+        BigDecimal bMoney = money.getAmount();
+        BigDecimal bMin = new BigDecimal(min);
+        BigDecimal bMax = new BigDecimal(max);
+        int minRet = bMoney.compareTo(bMin);
+        int maxRet = bMoney.compareTo(bMax);
+        if(minRet>=0&&maxRet<=0){
+            flag = true;
+        }
+        return flag;
+    }
+
+    /**
+     * 判断money对象是否在范围之间
+     *
+     * @param money
+     * @param min
+     * @param max
+     * @return
+     * @return boolean min<=money<=max 返回true
+     * @exception
+     * @since  1.0.0
+     */
+    public static boolean isBetween(Money money,String min,String max){
+        boolean flag = false;
+        BigDecimal bMoney = money.getAmount();
+        BigDecimal bMin = new BigDecimal(min);
+        BigDecimal bMax = new BigDecimal(max);
+        int minRet = bMoney.compareTo(bMin);
+        int maxRet = bMoney.compareTo(bMax);
+        if(minRet>=0&&maxRet<=0){
+            flag = true;
+        }
+        return flag;
+    }
 }

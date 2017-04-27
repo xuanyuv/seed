@@ -93,22 +93,22 @@ import javax.servlet.jsp.tagext.TagSupport;
  * Created by 玄玉<https://jadyer.github.io/> on 2015/3/4 10:47.
  */
 public abstract class PermissionTag extends TagSupport {
-	private static final long serialVersionUID = 4677922552292876458L;
+    private static final long serialVersionUID = 4677922552292876458L;
 
-	@Override
-	public int doStartTag() throws JspException {
-		if(this.showTagBody()){
-			return TagSupport.EVAL_BODY_INCLUDE;
-		}else{
-			return TagSupport.SKIP_BODY;
-		}
-	}
-	
-	boolean isPermitted(){
-		HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
-		//return null != request.getSession().getAttribute(Constants.USER);
-		return null != request.getSession().getAttribute("user");
-	}
-	
-	protected abstract boolean showTagBody();
+    @Override
+    public int doStartTag() throws JspException {
+        if(this.showTagBody()){
+            return TagSupport.EVAL_BODY_INCLUDE;
+        }else{
+            return TagSupport.SKIP_BODY;
+        }
+    }
+
+    boolean isPermitted(){
+        HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
+        //return null != request.getSession().getAttribute(Constants.USER);
+        return null != request.getSession().getAttribute("user");
+    }
+
+    protected abstract boolean showTagBody();
 }

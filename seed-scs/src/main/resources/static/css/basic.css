@@ -15,35 +15,35 @@ del     { text-decoration:line-through;}
 table   { border-collapse:collapse; border-spacing:0; line-height:1.5; font-family:"微软雅黑"; font-size:14px; color:#666;}
 em,b,s,i{ font-style:normal; font-weight:normal; text-decoration:none;}
 a,input {
-	color:#666;
+    color:#666;
     text-decoration:none;
     hide-focus:expression_r(this.hideFocus=true); /* for ie 5+ */
     star:expression_r(this.onFocus=this.blur()); /* for Ie*/
     outline:none; /* for firefox 1.5 + */
 }
 a       {
-	-webkit-transition: color 0.3s ease-in;
-	   -moz-transition: color 0.3s ease-in;
+    -webkit-transition: color 0.3s ease-in;
+       -moz-transition: color 0.3s ease-in;
          -o-transition: color 0.3s ease-in;
-		-ms-transition: color 0.3s ease-in;
-			transition: color 0.3s ease-in;
+        -ms-transition: color 0.3s ease-in;
+            transition: color 0.3s ease-in;
 }
 a:hover,
 a:active { color:#09f; text-decoration:underline;}
 a.ax,
 .trans       {
-	-webkit-transition: all 0.3s ease-in;
-	   -moz-transition: all 0.3s ease-in;
+    -webkit-transition: all 0.3s ease-in;
+       -moz-transition: all 0.3s ease-in;
          -o-transition: all 0.3s ease-in;
-		-ms-transition: all 0.3s ease-in;
-			transition: all 0.3s ease-in;
+        -ms-transition: all 0.3s ease-in;
+            transition: all 0.3s ease-in;
 }
 a.ax:hover   {
-	-webkit-transform: rotate(360deg);
-	   -moz-transform: rotate(360deg);
-	     -o-transform: rotate(360deg);
-		-ms-transform: rotate(360deg);
-			transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+       -moz-transform: rotate(360deg);
+         -o-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+            transform: rotate(360deg);
 }
 
 /*float*/

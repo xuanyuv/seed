@@ -11,17 +11,17 @@ package com.jadyer.seed.mpp.sdk.qq.model.menu;
  * Created by 玄玉<https://jadyer.github.io/> on 2015/11/28 20:58.
  */
 public class QQMenu {
-	private QQButton[] button;
+    private QQButton[] button;
 
-	public QQMenu(QQButton[] button) {
-		this.button = button;
-	}
+    public QQMenu(QQButton[] button) {
+        this.button = button;
+    }
 
-	public QQButton[] getButton() {
-		return button;
-	}
+    public QQButton[] getButton() {
+        return button;
+    }
 
-	public void setButton(QQButton[] button) {
-		this.button = button;
-	}
+    public void setButton(QQButton[] button) {
+        this.button = button;
+    }
 }

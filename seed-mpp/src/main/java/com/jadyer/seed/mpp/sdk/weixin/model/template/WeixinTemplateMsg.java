@@ -64,9 +64,9 @@ public class WeixinTemplateMsg {
             this.value = value;
         }
         public DItem(String value, String color) {
-			this.value = value;
-			this.color = color;
-		}
+            this.value = value;
+            this.color = color;
+        }
 
         public String getValue() {
             return value;

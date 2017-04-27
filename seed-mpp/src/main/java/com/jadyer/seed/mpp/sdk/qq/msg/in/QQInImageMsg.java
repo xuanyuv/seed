@@ -19,58 +19,58 @@ package com.jadyer.seed.mpp.sdk.qq.msg.in;
  * @see -----------------------------------------------------------------------------------------------------------
  * @see HTTP请求报文体格式化后是下面这样
  * @see <xml>
- * @see 	<ToUserName><![CDATA[2878591677]]></ToUserName>
- * @see 	<FromUserName><![CDATA[E12D231CFC30438FB6970B0C7669C101]]></FromUserName>
- * @see 	<CreateTime>1448710809</CreateTime>
- * @see 	<MsgType><![CDATA[image]]></MsgType>
- * @see 	<PicUrl><![CDATA[http://c2cpicdw.qpic.cn/offpic_new/2878591677//20a4d5c4-674d-4341-b118-c22ee91b23ac/0?vuin=2878591677&term=255&srvver=]]></PicUrl>
- * @see 	<MsgId>909665634</MsgId>
+ * @see     <ToUserName><![CDATA[2878591677]]></ToUserName>
+ * @see     <FromUserName><![CDATA[E12D231CFC30438FB6970B0C7669C101]]></FromUserName>
+ * @see     <CreateTime>1448710809</CreateTime>
+ * @see     <MsgType><![CDATA[image]]></MsgType>
+ * @see     <PicUrl><![CDATA[http://c2cpicdw.qpic.cn/offpic_new/2878591677//20a4d5c4-674d-4341-b118-c22ee91b23ac/0?vuin=2878591677&term=255&srvver=]]></PicUrl>
+ * @see     <MsgId>909665634</MsgId>
  * @see </xml>
  * @see -----------------------------------------------------------------------------------------------------------
  * @create Nov 28, 2015 7:40:59 PM
  * @author 玄玉<https://jadyer.github.io/>
  */
 public class QQInImageMsg extends QQInMsg {
-	/**
-	 * 图片链接
-	 */
-	private String picUrl;
+    /**
+     * 图片链接
+     */
+    private String picUrl;
 
-//	/**
-//	 * 图片消息媒体id(可以调用多媒体文件下载接口拉取数据)
-//	 */
-//	private String mediaId;
-	
-	/**
-	 * 64位整型的消息id
-	 */
-	private String msgId;
-	
-	public QQInImageMsg(String toUserName, String fromUserName, long createTime, String msgType) {
-		super(toUserName, fromUserName, createTime, msgType);
-	}
+//    /**
+//     * 图片消息媒体id(可以调用多媒体文件下载接口拉取数据)
+//     */
+//    private String mediaId;
 
-	public String getPicUrl() {
-		return picUrl;
-	}
+    /**
+     * 64位整型的消息id
+     */
+    private String msgId;
 
-	public void setPicUrl(String picUrl) {
-		this.picUrl = picUrl;
-	}
+    public QQInImageMsg(String toUserName, String fromUserName, long createTime, String msgType) {
+        super(toUserName, fromUserName, createTime, msgType);
+    }
 
-//	public String getMediaId() {
-//		return mediaId;
-//	}
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+    }
+
+//    public String getMediaId() {
+//        return mediaId;
+//    }
 //
-//	public void setMediaId(String mediaId) {
-//		this.mediaId = mediaId;
-//	}
+//    public void setMediaId(String mediaId) {
+//        this.mediaId = mediaId;
+//    }
 
-	public String getMsgId() {
-		return msgId;
-	}
+    public String getMsgId() {
+        return msgId;
+    }
 
-	public void setMsgId(String msgId) {
-		this.msgId = msgId;
-	}
+    public void setMsgId(String msgId) {
+        this.msgId = msgId;
+    }
 }

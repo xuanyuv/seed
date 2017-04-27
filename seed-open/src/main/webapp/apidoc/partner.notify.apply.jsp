@@ -2,16 +2,16 @@
 <jsp:include page="/apidoc/header.jsp"/>
 <h1>合作侧审批通知</h1>
 <ol type="1">
-	<li>
-		<h2>请求报文</h2>
-		<table width="1260" border="0" cellspacing="1" bgcolor="#000000">
-			<tr bgcolor="#8CB3E2">
-				<th width="20%">名称</th>
-				<th width="10%" align="center">类型</th>
-				<th width="5%" align="center">必传</th>
-				<th width="65%">说明</th>
-			</tr>
-			<tr bgcolor="#FFFFFF">
+    <li>
+        <h2>请求报文</h2>
+        <table width="1260" border="0" cellspacing="1" bgcolor="#000000">
+            <tr bgcolor="#8CB3E2">
+                <th width="20%">名称</th>
+                <th width="10%" align="center">类型</th>
+                <th width="5%" align="center">必传</th>
+                <th width="65%">说明</th>
+            </tr>
+            <tr bgcolor="#FFFFFF">
                 <td>partnerApplyNo</td>
                 <td align="center">VARCHAR2(32)</td>
                 <td align="center">Y</td>
@@ -35,8 +35,8 @@
                 <td align="center">N</td>
                 <td>申请单审批备注</td>
             </tr>
-		</table>
-		<br/>
+        </table>
+        <br/>
         <table width="1260" border="0" cellspacing="1" bgcolor="#000000">
             <tr bgcolor="#FFFFFF">
                 <td>
@@ -56,10 +56,10 @@
                 </td>
             </tr>
         </table>
-	</li>
-	<li>
-		<h2>响应报文</h2>
-		应答字符串”SUCCESS”（大写的）表示已收到通知。
-	</li>
+    </li>
+    <li>
+        <h2>响应报文</h2>
+        应答字符串”SUCCESS”（大写的）表示已收到通知。
+    </li>
 </ol>
 <jsp:include page="/apidoc/footer.jsp"/>

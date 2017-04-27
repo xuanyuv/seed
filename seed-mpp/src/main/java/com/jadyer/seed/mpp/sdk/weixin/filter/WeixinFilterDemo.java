@@ -23,44 +23,44 @@ import java.io.PrintWriter;
  * @author 玄玉<https://jadyer.github.io/>
  */
 public class WeixinFilterDemo implements Filter {
-	@Override
-	public void destroy() {}
+    @Override
+    public void destroy() {}
 
-	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {}
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {}
 
-	@Override
-	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
-		HttpServletRequest request = (HttpServletRequest)req;
-		HttpServletResponse response = (HttpServletResponse)resp;
-		String appid = request.getParameter("appid");
-		if(StringUtils.isNotBlank(appid) && "base".equals(request.getParameter("oauth")) && "openid".equals(request.getParameter("openid"))){
-			if(JadyerUtil.isAjaxRequest(request)){
-				throw new RuntimeException("请不要通过Ajax获取粉丝信息");
-			}
-			String userAgent = request.getHeader("User-Agent");
-			if(!userAgent.contains("MicroMessenger") || (!userAgent.contains("iPhone") && !userAgent.contains("Android"))){
-				response.setCharacterEncoding(HttpUtil.DEFAULT_CHARSET);
-				response.setContentType("text/plain; charset=" + HttpUtil.DEFAULT_CHARSET);
-				response.setHeader("Cache-Control", "no-cache");
-				response.setHeader("Pragma", "no-cache");
-				response.setDateHeader("Expires", 0);
-				PrintWriter out = response.getWriter();
-				out.print("请于iPhone或Android微信端访问");
-				out.flush();
-				out.close();
-				return;
-			}
-			String fullURL = request.getRequestURL().toString() + (null==request.getQueryString()?"":"?"+request.getQueryString());
-			String state = fullURL.replace("?", "/").replaceAll("&", "/").replace("/oauth=base", "");
-			LogUtil.getLogger().info("计算粉丝请求的资源得到state=[{}]", state);
-			//String appurl = ConfigUtil.INSTANCE.getProperty("appurl");
-			String appurl = null;
-			String redirectURL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appid + "&redirect_uri=" + (appurl+"/weixin/helper/oauth/"+appid) + "&response_type=code&scope=snsapi_base&state=" + state + "#wechat_redirect";
-			LogUtil.getLogger().info("计算请求到微信服务器的redirectURL=[{}]", redirectURL);
-			response.sendRedirect(redirectURL);
-		}else{
-			chain.doFilter(req, resp);
-		}
-	}
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest)req;
+        HttpServletResponse response = (HttpServletResponse)resp;
+        String appid = request.getParameter("appid");
+        if(StringUtils.isNotBlank(appid) && "base".equals(request.getParameter("oauth")) && "openid".equals(request.getParameter("openid"))){
+            if(JadyerUtil.isAjaxRequest(request)){
+                throw new RuntimeException("请不要通过Ajax获取粉丝信息");
+            }
+            String userAgent = request.getHeader("User-Agent");
+            if(!userAgent.contains("MicroMessenger") || (!userAgent.contains("iPhone") && !userAgent.contains("Android"))){
+                response.setCharacterEncoding(HttpUtil.DEFAULT_CHARSET);
+                response.setContentType("text/plain; charset=" + HttpUtil.DEFAULT_CHARSET);
+                response.setHeader("Cache-Control", "no-cache");
+                response.setHeader("Pragma", "no-cache");
+                response.setDateHeader("Expires", 0);
+                PrintWriter out = response.getWriter();
+                out.print("请于iPhone或Android微信端访问");
+                out.flush();
+                out.close();
+                return;
+            }
+            String fullURL = request.getRequestURL().toString() + (null==request.getQueryString()?"":"?"+request.getQueryString());
+            String state = fullURL.replace("?", "/").replaceAll("&", "/").replace("/oauth=base", "");
+            LogUtil.getLogger().info("计算粉丝请求的资源得到state=[{}]", state);
+            //String appurl = ConfigUtil.INSTANCE.getProperty("appurl");
+            String appurl = null;
+            String redirectURL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appid + "&redirect_uri=" + (appurl+"/weixin/helper/oauth/"+appid) + "&response_type=code&scope=snsapi_base&state=" + state + "#wechat_redirect";
+            LogUtil.getLogger().info("计算请求到微信服务器的redirectURL=[{}]", redirectURL);
+            response.sendRedirect(redirectURL);
+        }else{
+            chain.doFilter(req, resp);
+        }
+    }
 }

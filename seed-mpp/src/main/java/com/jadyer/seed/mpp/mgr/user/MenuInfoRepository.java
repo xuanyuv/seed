@@ -9,11 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface MenuInfoRepository extends BaseRepository<MenuInfo, Long> {
-	@Query("FROM MenuInfo WHERE uid=?1")
-	List<MenuInfo> findMenuListByUID(long uid);
+    @Query("FROM MenuInfo WHERE uid=?1")
+    List<MenuInfo> findMenuListByUID(long uid);
 
-	@Modifying
-	@Transactional
-	@Query("UPDATE MenuInfo SET menuJson=?1 WHERE type=3 AND uid=?2")
-	int updateJson(String menuJson, long uid);
+    @Modifying
+    @Transactional
+    @Query("UPDATE MenuInfo SET menuJson=?1 WHERE type=3 AND uid=?2")
+    int updateJson(String menuJson, long uid);
 }

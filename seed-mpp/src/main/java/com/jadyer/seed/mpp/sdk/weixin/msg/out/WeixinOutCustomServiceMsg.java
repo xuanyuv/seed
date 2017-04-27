@@ -8,8 +8,8 @@ import com.jadyer.seed.mpp.sdk.weixin.msg.in.WeixinInMsg;
  * @author 玄玉<https://jadyer.github.io/>
  */
 public class WeixinOutCustomServiceMsg extends WeixinOutMsg {
-	public WeixinOutCustomServiceMsg(WeixinInMsg inMsg) {
-		super(inMsg);
-		this.msgType = "transfer_customer_service";
-	}
+    public WeixinOutCustomServiceMsg(WeixinInMsg inMsg) {
+        super(inMsg);
+        this.msgType = "transfer_customer_service";
+    }
 }

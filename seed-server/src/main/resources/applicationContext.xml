@@ -1,41 +1,41 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
-						http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
-						http://www.springframework.org/schema/context
-						http://www.springframework.org/schema/context/spring-context-3.2.xsd">
-	<context:property-placeholder location="classpath:config.properties"/>
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+    <context:property-placeholder location="classpath:config.properties"/>
 
-	<context:component-scan base-package="com.jadyer.seed">
-		<context:exclude-filter type="regex" expression="com.jadyer.seed.comm.exception.*"/>
-	</context:component-scan>
+    <context:component-scan base-package="com.jadyer.seed">
+        <context:exclude-filter type="regex" expression="com.jadyer.seed.comm.exception.*"/>
+    </context:component-scan>
 
-	<bean class="com.jadyer.seed.server.core.MinaStartup" init-method="bind">
-		<property name="reuseAddress" value="${server.port.reuse}"/>
-		<property name="writeTimeout" value="${server.timeout.write}"/>
-		<property name="bothIdleTime" value="${server.timeout.bothidle}"/>
-		<property name="socketAddresses">
-			<list>
-				<bean class="java.net.InetSocketAddress">
-					<constructor-arg index="0" value="${server.port.tcp}"/>
-				</bean>
-				<bean class="java.net.InetSocketAddress">
-					<constructor-arg index="0" value="${server.port.http}"/>
-				</bean>
-			</list>
-		</property>
-		<property name="handler">
-			<bean class="com.jadyer.seed.server.core.ServerHandler">
-				<property name="busiProcessMap">
-					<map key-type="java.lang.String" value-type="com.jadyer.seed.server.core.GenericAction">
-						<entry key="10005" value-ref="orderResultNotifyAction"/>
-						<entry key="/notify_boc" value-ref="netBankResultNotifyBOCAction"/>
-						<entry key="/notify_yeepay" value-ref="netBankResultNotifyYEEPAYAction"/>
-					</map>
-				</property>
-			</bean>
-		</property>
-	</bean>
+    <bean class="com.jadyer.seed.server.core.MinaStartup" init-method="bind">
+        <property name="reuseAddress" value="${server.port.reuse}"/>
+        <property name="writeTimeout" value="${server.timeout.write}"/>
+        <property name="bothIdleTime" value="${server.timeout.bothidle}"/>
+        <property name="socketAddresses">
+            <list>
+                <bean class="java.net.InetSocketAddress">
+                    <constructor-arg index="0" value="${server.port.tcp}"/>
+                </bean>
+                <bean class="java.net.InetSocketAddress">
+                    <constructor-arg index="0" value="${server.port.http}"/>
+                </bean>
+            </list>
+        </property>
+        <property name="handler">
+            <bean class="com.jadyer.seed.server.core.ServerHandler">
+                <property name="busiProcessMap">
+                    <map key-type="java.lang.String" value-type="com.jadyer.seed.server.core.GenericAction">
+                        <entry key="10005" value-ref="orderResultNotifyAction"/>
+                        <entry key="/notify_boc" value-ref="netBankResultNotifyBOCAction"/>
+                        <entry key="/notify_yeepay" value-ref="netBankResultNotifyYEEPAYAction"/>
+                    </map>
+                </property>
+            </bean>
+        </property>
+    </bean>
 </beans>

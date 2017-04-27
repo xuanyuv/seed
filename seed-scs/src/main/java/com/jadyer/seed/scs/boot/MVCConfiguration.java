@@ -14,30 +14,30 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 public class MVCConfiguration extends WebMvcConfigurerAdapter {
-	@Bean
-	public EmbeddedServletContainerCustomizer containerCustomizer(){
-		return new EmbeddedServletContainerCustomizer() {
-			@Override
-			public void customize(ConfigurableEmbeddedServletContainer container) {
-				container.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/WEB-INF/jsp/comm/404.jsp"));
-				container.addErrorPages(new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/WEB-INF/jsp/comm/500.jsp"));
-			}
-		};
-	}
+    @Bean
+    public EmbeddedServletContainerCustomizer containerCustomizer(){
+        return new EmbeddedServletContainerCustomizer() {
+            @Override
+            public void customize(ConfigurableEmbeddedServletContainer container) {
+                container.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/WEB-INF/jsp/comm/404.jsp"));
+                container.addErrorPages(new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/WEB-INF/jsp/comm/500.jsp"));
+            }
+        };
+    }
 
-	@Override
-	public void addViewControllers(ViewControllerRegistry registry) {
-		//registry.addViewController("/").setViewName("forward:/building.jsp");
-		registry.addViewController("/").setViewName("forward:/portal/index.jsp");
-		registry.addViewController("/login").setViewName("forward:/login.jsp");
-	}
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        //registry.addViewController("/").setViewName("forward:/building.jsp");
+        registry.addViewController("/").setViewName("forward:/portal/index.jsp");
+        registry.addViewController("/login").setViewName("forward:/login.jsp");
+    }
 
-	@Override
-	public void configureViewResolvers(ViewResolverRegistry registry) {
-		InternalResourceViewResolver irvr = new InternalResourceViewResolver();
-		irvr.setPrefix("/WEB-INF/jsp/");
-		irvr.setSuffix(".jsp");
-		irvr.setViewClass(JstlView.class);
-		registry.viewResolver(irvr);
-	}
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        InternalResourceViewResolver irvr = new InternalResourceViewResolver();
+        irvr.setPrefix("/WEB-INF/jsp/");
+        irvr.setSuffix(".jsp");
+        irvr.setViewClass(JstlView.class);
+        registry.viewResolver(irvr);
+    }
 }

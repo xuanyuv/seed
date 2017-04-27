@@ -11,9 +11,9 @@ import org.springframework.context.ApplicationListener;
  * Created by 玄玉<https://jadyer.github.io/> on 2015/12/08 19:09.
  */
 public class ApplicationFailedEventListener implements ApplicationListener<ApplicationFailedEvent> {
-	@Override
-	public void onApplicationEvent(ApplicationFailedEvent event) {
-		Throwable cause = event.getException();
-		System.out.println("SpringBoot启动异常-->" + cause.getMessage());
-	}
+    @Override
+    public void onApplicationEvent(ApplicationFailedEvent event) {
+        Throwable cause = event.getException();
+        System.out.println("SpringBoot启动异常-->" + cause.getMessage());
+    }
 }

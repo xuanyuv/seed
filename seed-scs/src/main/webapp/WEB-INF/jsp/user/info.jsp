@@ -89,58 +89,58 @@ function uploadIcons(){
 }
 function validateForm(){
     //var imgSrc = $('#id_img').attr("src");
-	if(isEmpty($("#appid").val())){
-		$.promptBox("请填入appid", "#ffb848");
-	}else if(isEmpty($("#appsecret").val())){
-		$.promptBox("请填入appsecret", "#ffb848");
-	}else if(isEmpty($("#mpid").val())){
-		$.promptBox("请填入公众号原始ID", "#ffb848");
-	}else{
-		return true;
-	}
+    if(isEmpty($("#appid").val())){
+        $.promptBox("请填入appid", "#ffb848");
+    }else if(isEmpty($("#appsecret").val())){
+        $.promptBox("请填入appsecret", "#ffb848");
+    }else if(isEmpty($("#mpid").val())){
+        $.promptBox("请填入公众号原始ID", "#ffb848");
+    }else{
+        return true;
+    }
 }
 function submit(){
-	if(validateForm()){
-		alert("操作成功！！\r\n请于公众号回复\“你最牛逼\”完成绑定");
-	}
+    if(validateForm()){
+        alert("操作成功！！\r\n请于公众号回复\“你最牛逼\”完成绑定");
+    }
 }
 </script>
 
 <div class="c_nav">
-	<div class="ti">个人资料</div>
+    <div class="ti">个人资料</div>
 </div>
 <!--Content-->
 <div class="c_content">
-	<!--Table order list-->
-	<table class="tab_head tab_in tab_list2" width="100%">
-		<tr class="ti"><th colspan="2">个人信息</th></tr>
-		<tr><th width="15%">用户名：</th><td>${not empty uname ? uname : user.username}</td></tr>
-		<tr>
-		    <th>平台类型：</th>
-		    <td>
-		        <c:if test="${fn:length(user.mptype) gt 32}">
+    <!--Table order list-->
+    <table class="tab_head tab_in tab_list2" width="100%">
+        <tr class="ti"><th colspan="2">个人信息</th></tr>
+        <tr><th width="15%">用户名：</th><td>${not empty uname ? uname : user.username}</td></tr>
+        <tr>
+            <th>平台类型：</th>
+            <td>
+                <c:if test="${fn:length(user.mptype) gt 32}">
                     ${fn:substring(user.mptype,0,32)}...
                 </c:if>
                 <c:if test="${fn:length(user.mptype) le 32}">
                     ${advice.content}
                 </c:if>
-		    </td>
-		</tr>
-		<tr><th>绑解状态：</th><td>${user.bindStatus eq 0 ? '<span class="cf30 fw">未绑定</span>' : '<span class="cgre fw">已绑定</span>'}</td></tr>
-		<tr><th>绑解时间：</th><td><fmt:formatDate value="${user.bindTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td></tr>
-	</table>
-	<!--/Table order list-->
-	<form id="userBindForm">
-		<table class="tab_head tab_in tab_list2" width="100%">
-			<tr class="ti"><th colspan="2">公众信息</th></tr>
-			<tr><th width="15%">URL：</th><td>${mpurl}</td></tr>
-			<tr><th>Token：</th><td>${token}</td></tr>
-			<tr><th>appid：</th><td><input class="inpte" type="text" id="appid" name="appid" value="${user.appid}" maxlength="32"/></td></tr>
-			<tr><th>appsecret：</th><td><input class="inpte" type="text" id="appsecret" name="appsecret" value="${user.appsecret}" maxlength="64"/></td></tr>
-			<tr><th>原始ID：</th><td><input class="inpte" type="text" id="mpid" name="mpid" value="${user.mpid}" maxlength="32"/></td></tr>
-			<tr><th>公众号：</th><td><input class="inpte" type="text" id="mpno" name="mpno" value="${user.mpno}" maxlength="32"/></td></tr>
-			<tr><th>公众名：</th><td><input class="inpte" type="text" id="mpname" name="mpname" value="${user.mpname}" maxlength="32"/></td></tr>
-			<tr>
+            </td>
+        </tr>
+        <tr><th>绑解状态：</th><td>${user.bindStatus eq 0 ? '<span class="cf30 fw">未绑定</span>' : '<span class="cgre fw">已绑定</span>'}</td></tr>
+        <tr><th>绑解时间：</th><td><fmt:formatDate value="${user.bindTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td></tr>
+    </table>
+    <!--/Table order list-->
+    <form id="userBindForm">
+        <table class="tab_head tab_in tab_list2" width="100%">
+            <tr class="ti"><th colspan="2">公众信息</th></tr>
+            <tr><th width="15%">URL：</th><td>${mpurl}</td></tr>
+            <tr><th>Token：</th><td>${token}</td></tr>
+            <tr><th>appid：</th><td><input class="inpte" type="text" id="appid" name="appid" value="${user.appid}" maxlength="32"/></td></tr>
+            <tr><th>appsecret：</th><td><input class="inpte" type="text" id="appsecret" name="appsecret" value="${user.appsecret}" maxlength="64"/></td></tr>
+            <tr><th>原始ID：</th><td><input class="inpte" type="text" id="mpid" name="mpid" value="${user.mpid}" maxlength="32"/></td></tr>
+            <tr><th>公众号：</th><td><input class="inpte" type="text" id="mpno" name="mpno" value="${user.mpno}" maxlength="32"/></td></tr>
+            <tr><th>公众名：</th><td><input class="inpte" type="text" id="mpname" name="mpname" value="${user.mpname}" maxlength="32"/></td></tr>
+            <tr>
                 <th>
                     <%--
                     1)<img>不属于<form>元素，故需隐藏域接收图片
@@ -158,12 +158,12 @@ function submit(){
                     <input type="hidden" id="icons" name="icons" src="${ctx}/img/qrcode.jpg"/>
                 </td>
             </tr>
-		</table>
-		<table class="tab_head tab_in tab_list2" width="100%">
-			<tr class="ti"><th colspan="3">操作</th></tr>
-			<tr><td class="txt_l"><a class="btn_g" href="javascript:submit();">绑定公众号</a></td></tr>
-		</table>
-	</form>
+        </table>
+        <table class="tab_head tab_in tab_list2" width="100%">
+            <tr class="ti"><th colspan="3">操作</th></tr>
+            <tr><td class="txt_l"><a class="btn_g" href="javascript:submit();">绑定公众号</a></td></tr>
+        </table>
+    </form>
 </div>
 <!--/Content-->
 

@@ -8,19 +8,19 @@ import com.jadyer.seed.mpp.sdk.weixin.msg.in.WeixinInMsg;
  * @author 玄玉<https://jadyer.github.io/>
  */
 public class WeixinOutTextMsg extends WeixinOutMsg {
-	private String content;
+    private String content;
 
-	public WeixinOutTextMsg(WeixinInMsg inMsg) {
-		super(inMsg);
-		this.msgType = "text";
-	}
+    public WeixinOutTextMsg(WeixinInMsg inMsg) {
+        super(inMsg);
+        this.msgType = "text";
+    }
 
-	public String getContent() {
-		return content;
-	}
-	
-	public WeixinOutTextMsg setContent(String content) {
-		this.content = content;
-		return this;
-	}
+    public String getContent() {
+        return content;
+    }
+
+    public WeixinOutTextMsg setContent(String content) {
+        this.content = content;
+        return this;
+    }
 }

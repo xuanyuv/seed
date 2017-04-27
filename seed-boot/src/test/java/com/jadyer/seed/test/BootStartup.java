@@ -8,15 +8,15 @@ import com.jadyer.seed.boot.event.ApplicationStartedEventListener;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
 public class BootStartup {
-	public static void main(String[] args) {
-		//SpringApplication.run(BootStarp.class, args);
-		//new SpringApplicationBuilder().sources(BootStrap.class).profiles("local").run(args);
-		new SpringApplicationBuilder().sources(BootStrap.class)
-				.listeners(new ApplicationStartedEventListener())
-				.listeners(new ApplicationEnvironmentPreparedEventListener())
-				.listeners(new ApplicationPreparedEventListener())
-				.listeners(new ApplicationFailedEventListener())
-				.profiles("local")
-				.run(args);
-	}
+    public static void main(String[] args) {
+        //SpringApplication.run(BootStarp.class, args);
+        //new SpringApplicationBuilder().sources(BootStrap.class).profiles("local").run(args);
+        new SpringApplicationBuilder().sources(BootStrap.class)
+                .listeners(new ApplicationStartedEventListener())
+                .listeners(new ApplicationEnvironmentPreparedEventListener())
+                .listeners(new ApplicationPreparedEventListener())
+                .listeners(new ApplicationFailedEventListener())
+                .profiles("local")
+                .run(args);
+    }
 }

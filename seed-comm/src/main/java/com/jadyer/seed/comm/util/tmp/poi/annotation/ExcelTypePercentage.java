@@ -8,9 +8,9 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExcelTypePercentage {
-	/**
-	 * 数值格式的小数位数
-	 * @see 默认值为2
-	 */
-	public int decimalDigits() default 2;
+    /**
+     * 数值格式的小数位数
+     * @see 默认值为2
+     */
+    public int decimalDigits() default 2;
 }

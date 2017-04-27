@@ -13,49 +13,49 @@ import javax.persistence.Table;
 @DynamicUpdate
 @Table(name="t_reply_info")
 public class ReplyInfo extends BaseEntity<Long> {
-	private static final long serialVersionUID = -9162851555238487580L;
-	private long uid;
-	private int category;
-	private int type;
-	private String keyword;
-	private String content;
-	@Column(name="plugin_id")
-	private String pluginId;
+    private static final long serialVersionUID = -9162851555238487580L;
+    private long uid;
+    private int category;
+    private int type;
+    private String keyword;
+    private String content;
+    @Column(name="plugin_id")
+    private String pluginId;
 
-	public long getUid() {
-		return uid;
-	}
-	public void setUid(long uid) {
-		this.uid = uid;
-	}
-	public int getCategory() {
-		return category;
-	}
-	public void setCategory(int category) {
-		this.category = category;
-	}
-	public int getType() {
-		return type;
-	}
-	public void setType(int type) {
-		this.type = type;
-	}
-	public String getKeyword() {
-		return keyword;
-	}
-	public void setKeyword(String keyword) {
-		this.keyword = keyword;
-	}
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
-	}
-	public String getPluginId() {
-		return pluginId;
-	}
-	public void setPluginId(String pluginId) {
-		this.pluginId = pluginId;
-	}
+    public long getUid() {
+        return uid;
+    }
+    public void setUid(long uid) {
+        this.uid = uid;
+    }
+    public int getCategory() {
+        return category;
+    }
+    public void setCategory(int category) {
+        this.category = category;
+    }
+    public int getType() {
+        return type;
+    }
+    public void setType(int type) {
+        this.type = type;
+    }
+    public String getKeyword() {
+        return keyword;
+    }
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+    public String getContent() {
+        return content;
+    }
+    public void setContent(String content) {
+        this.content = content;
+    }
+    public String getPluginId() {
+        return pluginId;
+    }
+    public void setPluginId(String pluginId) {
+        this.pluginId = pluginId;
+    }
 }

@@ -23,46 +23,46 @@ import org.apache.mina.filter.codec.demux.MessageDecoderResult;
  * Created by 玄玉<https://jadyer.github.io/> on 2012/12/21 14:52.
  */
 public class ServerProtocolTCPDecoder implements MessageDecoder {
-	/**
-	 * 该方法相当于预读取,用于判断是否是可用的解码器,这里对IoBuffer读取不会影响数据包的大小
-	 * 该方法结束后IoBuffer会复原,所以不必担心调用该方法时,position已经不在缓冲区起始位置
-	 */
-	@Override
-	public MessageDecoderResult decodable(IoSession session, IoBuffer in) {
-		//in.remaining()=in.limit()-in.position();
-		if(in.remaining() < 6){
-			return MessageDecoderResult.NEED_DATA;
-		}
-		if(session.getLocalAddress().toString().contains(":" + ConfigUtil.INSTANCE.getProperty("server.port.tcp"))){
-			byte[] messageLength = new byte[6];
-			in.get(messageLength);
-			if(in.limit() >= Integer.parseInt(JadyerUtil.getString(messageLength, MinaUtil.DEFAULT_CHARSET))){
-				return MessageDecoderResult.OK;
-			}else{
-				return MessageDecoderResult.NEED_DATA;
-			}
-		}else{
-			return MessageDecoderResult.NOT_OK;
-		}
-	}
+    /**
+     * 该方法相当于预读取,用于判断是否是可用的解码器,这里对IoBuffer读取不会影响数据包的大小
+     * 该方法结束后IoBuffer会复原,所以不必担心调用该方法时,position已经不在缓冲区起始位置
+     */
+    @Override
+    public MessageDecoderResult decodable(IoSession session, IoBuffer in) {
+        //in.remaining()=in.limit()-in.position();
+        if(in.remaining() < 6){
+            return MessageDecoderResult.NEED_DATA;
+        }
+        if(session.getLocalAddress().toString().contains(":" + ConfigUtil.INSTANCE.getProperty("server.port.tcp"))){
+            byte[] messageLength = new byte[6];
+            in.get(messageLength);
+            if(in.limit() >= Integer.parseInt(JadyerUtil.getString(messageLength, MinaUtil.DEFAULT_CHARSET))){
+                return MessageDecoderResult.OK;
+            }else{
+                return MessageDecoderResult.NEED_DATA;
+            }
+        }else{
+            return MessageDecoderResult.NOT_OK;
+        }
+    }
 
-	@Override
-	public MessageDecoderResult decode(IoSession session, IoBuffer in, ProtocolDecoderOutput out) throws Exception {
-		byte[] message = new byte[in.limit()];
-		in.get(message);
-		String fullMessage = JadyerUtil.getString(message, MinaUtil.DEFAULT_CHARSET);
-		Token token = new Token();
-		token.setBusiCharset(MinaUtil.DEFAULT_CHARSET);
-		token.setBusiType(Token.BUSI_TYPE_TCP);
-		token.setBusiCode(fullMessage.substring(6, 11));
-		token.setBusiMessage(fullMessage);
-		token.setFullMessage(fullMessage);
-		out.write(token);
-		return MessageDecoderResult.OK;
-	}
+    @Override
+    public MessageDecoderResult decode(IoSession session, IoBuffer in, ProtocolDecoderOutput out) throws Exception {
+        byte[] message = new byte[in.limit()];
+        in.get(message);
+        String fullMessage = JadyerUtil.getString(message, MinaUtil.DEFAULT_CHARSET);
+        Token token = new Token();
+        token.setBusiCharset(MinaUtil.DEFAULT_CHARSET);
+        token.setBusiType(Token.BUSI_TYPE_TCP);
+        token.setBusiCode(fullMessage.substring(6, 11));
+        token.setBusiMessage(fullMessage);
+        token.setFullMessage(fullMessage);
+        out.write(token);
+        return MessageDecoderResult.OK;
+    }
 
-	@Override
-	public void finishDecode(IoSession session, ProtocolDecoderOutput out) throws Exception {
-		//暂时什么都不做
-	}
+    @Override
+    public void finishDecode(IoSession session, ProtocolDecoderOutput out) throws Exception {
+        //暂时什么都不做
+    }
 }

@@ -15,14 +15,14 @@ import org.springframework.core.env.PropertySource;
  * Created by 玄玉<https://jadyer.github.io/> on 2015/12/08 18:56.
  */
 public class ApplicationEnvironmentPreparedEventListener implements ApplicationListener<ApplicationEnvironmentPreparedEvent> {
-	@Override
-	public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) {
-		ConfigurableEnvironment envi = event.getEnvironment();
-		MutablePropertySources mps = envi.getPropertySources();
-		if(null != mps){
-			for (PropertySource<?> ps : mps) {
-				System.out.println("SpringBoot对应Enviroment已经准备完毕，但此时上下文Context还没有创建，得到PropertySource-->" + ps);
-			}
-		}
-	}
+    @Override
+    public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) {
+        ConfigurableEnvironment envi = event.getEnvironment();
+        MutablePropertySources mps = envi.getPropertySources();
+        if(null != mps){
+            for (PropertySource<?> ps : mps) {
+                System.out.println("SpringBoot对应Enviroment已经准备完毕，但此时上下文Context还没有创建，得到PropertySource-->" + ps);
+            }
+        }
+    }
 }

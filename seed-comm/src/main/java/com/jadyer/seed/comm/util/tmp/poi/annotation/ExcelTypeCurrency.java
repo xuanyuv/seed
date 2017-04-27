@@ -8,15 +8,15 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExcelTypeCurrency {
-	/**
-	 * 数值格式的小数位数
-	 * @see 默认值为2
-	 */
-	public int decimalDigits() default 2;
+    /**
+     * 数值格式的小数位数
+     * @see 默认值为2
+     */
+    public int decimalDigits() default 2;
 
-	/**
-	 * 货币符号
-	 * @see 默认为[￥]
-	 */
-	public String currencySymbol() default "￥";
+    /**
+     * 货币符号
+     * @see 默认为[￥]
+     */
+    public String currencySymbol() default "￥";
 }

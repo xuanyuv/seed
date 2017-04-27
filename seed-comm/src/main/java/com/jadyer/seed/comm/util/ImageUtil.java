@@ -24,45 +24,45 @@ import java.io.IOException;
  * @author 玄玉<https://jadyer.github.io/>
  */
 public final class ImageUtil {
-	private ImageUtil(){}
-	
-	/**
-	 * 压缩图片：Resizing the image by percentage of the original.
-	 * @param sourceImagePath   源图片路径
-	 * @param destImagePath     生成的目标图片路径
+    private ImageUtil(){}
+
+    /**
+     * 压缩图片：Resizing the image by percentage of the original.
+     * @param sourceImagePath   源图片路径
+     * @param destImagePath     生成的目标图片路径
      * @param percentOfOriginal 压缩比例,可输入1--100的整数,100表示原尺寸压缩
-	 * @create Aug 15, 2015 4:05:28 PM
-	 * @author 玄玉<https://jadyer.github.io/>
-	 */
-	public static void resize(String sourceImagePath, String destImagePath, int percentOfOriginal){
-		EasyImage easyimage = new EasyImage(sourceImagePath);
-		easyimage.resize(percentOfOriginal);
-		easyimage.saveAs(destImagePath);
-	}
-	
-	
-	/**
-	 * 融合两张图片
-	 * @create Aug 15, 2015 4:13:52 PM
-	 * @author 玄玉<https://jadyer.github.io/>
-	 */
-	public static void combineWithPicture(String sourceImagePathA, String sourceImagePathB, String destImagePath){
-		EasyImage easyimage = new EasyImage(sourceImagePathA);
-		easyimage.combineWithPicture(sourceImagePathB);
-		easyimage.saveAs(destImagePath);
-	}
-	
-	
-	/**
-	 * 强调图像的某个部分(有点高亮的意思)
-	 * @create Aug 15, 2015 4:21:21 PM
-	 * @author 玄玉<https://jadyer.github.io/>
-	 */
-	public static void emphasize(String sourceImagePath, String destImagePath, int startX, int startY, int endX, int endY){
-		EasyImage easyimage = new EasyImage(sourceImagePath);
-		easyimage.emphasize(startX, startY, endX, endY);
-		easyimage.saveAs(destImagePath);
-	}
+     * @create Aug 15, 2015 4:05:28 PM
+     * @author 玄玉<https://jadyer.github.io/>
+     */
+    public static void resize(String sourceImagePath, String destImagePath, int percentOfOriginal){
+        EasyImage easyimage = new EasyImage(sourceImagePath);
+        easyimage.resize(percentOfOriginal);
+        easyimage.saveAs(destImagePath);
+    }
+
+
+    /**
+     * 融合两张图片
+     * @create Aug 15, 2015 4:13:52 PM
+     * @author 玄玉<https://jadyer.github.io/>
+     */
+    public static void combineWithPicture(String sourceImagePathA, String sourceImagePathB, String destImagePath){
+        EasyImage easyimage = new EasyImage(sourceImagePathA);
+        easyimage.combineWithPicture(sourceImagePathB);
+        easyimage.saveAs(destImagePath);
+    }
+
+
+    /**
+     * 强调图像的某个部分(有点高亮的意思)
+     * @create Aug 15, 2015 4:21:21 PM
+     * @author 玄玉<https://jadyer.github.io/>
+     */
+    public static void emphasize(String sourceImagePath, String destImagePath, int startX, int startY, int endX, int endY){
+        EasyImage easyimage = new EasyImage(sourceImagePath);
+        easyimage.emphasize(startX, startY, endX, endY);
+        easyimage.saveAs(destImagePath);
+    }
 }
 
 

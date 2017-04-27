@@ -53,10 +53,10 @@ public class AuthConfiguration {
         @Override
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         /*
-		 * http://121.199.22.212/JadyerWeb/user/get/2?uname=玄玉
-		 * 121.199.22.212是服务器的IP，119.85.113.63是我的IP，即我本地访问服务器接口时本地的IP
+         * http://121.199.22.212/JadyerWeb/user/get/2?uname=玄玉
+         * 121.199.22.212是服务器的IP，119.85.113.63是我的IP，即我本地访问服务器接口时本地的IP
          * 下面列出的是HttpServletRequest属性的控制台输出，输出值前后手工增加了[]
-		 */
+         */
             //fullURL=request.getRequestURI() + (null==request.getQueryString()?"":"?"+request.getQueryString());
             //fullURL=[/JadyerWeb/user/get/2?uname=%E7%8E%84%E7%8E%89]
             //request.getRequestURI()=[/JadyerWeb/user/get/2]

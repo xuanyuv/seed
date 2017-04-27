@@ -25,86 +25,86 @@ import java.util.Set;
 @ConditionalOnClass({JedisCluster.class})
 @ConfigurationProperties(prefix="redis")
 public class RedisConfiguration {
-	//各个getter应该是public的才可以，否则其它地方使用JedisCluster对象时会报告空指针
-	private int connectionTimeout = 2000;
-	private int soTimeout = 5000;
-	private int maxRedirections = 5;
-	private int maxTotal = 16;
-	private int maxIdle = 8;
-	private int minIdle = 0;
-	private List<String> nodes = new ArrayList<>();
+    //各个getter应该是public的才可以，否则其它地方使用JedisCluster对象时会报告空指针
+    private int connectionTimeout = 2000;
+    private int soTimeout = 5000;
+    private int maxRedirections = 5;
+    private int maxTotal = 16;
+    private int maxIdle = 8;
+    private int minIdle = 0;
+    private List<String> nodes = new ArrayList<>();
 
-	@Bean
-	public JedisCluster jedisCluster(){
-		Set<HostAndPort> nodes = new HashSet<>();
-		for(String node : this.getNodes()){
-			try{
-				String[] parts = StringUtils.split(node, ":");
-				Assert.state(parts.length==2, "redis node shoule be defined as 'host:port', not '" + Arrays.toString(parts) + "'");
-				nodes.add(new HostAndPort(parts[0], Integer.parseInt(parts[1])));
-			}catch(RuntimeException e){
-				throw new IllegalStateException("Invalid redis cluster nodes property '" + node + "'", e);
-			}
-		}
-		if(nodes.isEmpty()){
-			return null;
-		}
-		GenericObjectPoolConfig config = new GenericObjectPoolConfig();
-		config.setMaxTotal(this.getMaxTotal());
-		config.setMaxIdle(this.getMaxIdle());
-		config.setMinIdle(this.getMinIdle());
-		return new JedisCluster(nodes, this.getConnectionTimeout(), this.getSoTimeout(), this.getMaxRedirections(), config);
-	}
+    @Bean
+    public JedisCluster jedisCluster(){
+        Set<HostAndPort> nodes = new HashSet<>();
+        for(String node : this.getNodes()){
+            try{
+                String[] parts = StringUtils.split(node, ":");
+                Assert.state(parts.length==2, "redis node shoule be defined as 'host:port', not '" + Arrays.toString(parts) + "'");
+                nodes.add(new HostAndPort(parts[0], Integer.parseInt(parts[1])));
+            }catch(RuntimeException e){
+                throw new IllegalStateException("Invalid redis cluster nodes property '" + node + "'", e);
+            }
+        }
+        if(nodes.isEmpty()){
+            return null;
+        }
+        GenericObjectPoolConfig config = new GenericObjectPoolConfig();
+        config.setMaxTotal(this.getMaxTotal());
+        config.setMaxIdle(this.getMaxIdle());
+        config.setMinIdle(this.getMinIdle());
+        return new JedisCluster(nodes, this.getConnectionTimeout(), this.getSoTimeout(), this.getMaxRedirections(), config);
+    }
 
-	public int getConnectionTimeout() {
-		return connectionTimeout;
-	}
+    public int getConnectionTimeout() {
+        return connectionTimeout;
+    }
 
-	public void setConnectionTimeout(int connectionTimeout) {
-		this.connectionTimeout = connectionTimeout;
-	}
+    public void setConnectionTimeout(int connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
+    }
 
-	public int getSoTimeout() {
-		return soTimeout;
-	}
+    public int getSoTimeout() {
+        return soTimeout;
+    }
 
-	public void setSoTimeout(int soTimeout) {
-		this.soTimeout = soTimeout;
-	}
+    public void setSoTimeout(int soTimeout) {
+        this.soTimeout = soTimeout;
+    }
 
-	public int getMaxRedirections() {
-		return maxRedirections;
-	}
+    public int getMaxRedirections() {
+        return maxRedirections;
+    }
 
-	public void setMaxRedirections(int maxRedirections) {
-		this.maxRedirections = maxRedirections;
-	}
+    public void setMaxRedirections(int maxRedirections) {
+        this.maxRedirections = maxRedirections;
+    }
 
-	public int getMaxTotal() {
-		return maxTotal;
-	}
+    public int getMaxTotal() {
+        return maxTotal;
+    }
 
-	public void setMaxTotal(int maxTotal) {
-		this.maxTotal = maxTotal;
-	}
+    public void setMaxTotal(int maxTotal) {
+        this.maxTotal = maxTotal;
+    }
 
-	public int getMaxIdle() {
-		return maxIdle;
-	}
+    public int getMaxIdle() {
+        return maxIdle;
+    }
 
-	public void setMaxIdle(int maxIdle) {
-		this.maxIdle = maxIdle;
-	}
+    public void setMaxIdle(int maxIdle) {
+        this.maxIdle = maxIdle;
+    }
 
-	public int getMinIdle() {
-		return minIdle;
-	}
+    public int getMinIdle() {
+        return minIdle;
+    }
 
-	public void setMinIdle(int minIdle) {
-		this.minIdle = minIdle;
-	}
+    public void setMinIdle(int minIdle) {
+        this.minIdle = minIdle;
+    }
 
-	public List<String> getNodes() {
-		return nodes;
-	}
+    public List<String> getNodes() {
+        return nodes;
+    }
 }

@@ -6,46 +6,46 @@ package com.jadyer.seed.mpp.sdk.weixin.msg.in;
  * @author 玄玉<https://jadyer.github.io/>
  */
 public class WeixinInImageMsg extends WeixinInMsg {
-	/**
-	 * 图片链接
-	 */
-	private String picUrl;
+    /**
+     * 图片链接
+     */
+    private String picUrl;
 
-	/**
-	 * 图片消息媒体id(可以调用多媒体文件下载接口拉取数据)
-	 */
-	private String mediaId;
-	
-	/**
-	 * 64位整型的消息id
-	 */
-	private String msgId;
-	
-	public WeixinInImageMsg(String toUserName, String fromUserName, long createTime, String msgType) {
-		super(toUserName, fromUserName, createTime, msgType);
-	}
+    /**
+     * 图片消息媒体id(可以调用多媒体文件下载接口拉取数据)
+     */
+    private String mediaId;
 
-	public String getPicUrl() {
-		return picUrl;
-	}
+    /**
+     * 64位整型的消息id
+     */
+    private String msgId;
 
-	public void setPicUrl(String picUrl) {
-		this.picUrl = picUrl;
-	}
+    public WeixinInImageMsg(String toUserName, String fromUserName, long createTime, String msgType) {
+        super(toUserName, fromUserName, createTime, msgType);
+    }
 
-	public String getMediaId() {
-		return mediaId;
-	}
+    public String getPicUrl() {
+        return picUrl;
+    }
 
-	public void setMediaId(String mediaId) {
-		this.mediaId = mediaId;
-	}
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+    }
 
-	public String getMsgId() {
-		return msgId;
-	}
+    public String getMediaId() {
+        return mediaId;
+    }
 
-	public void setMsgId(String msgId) {
-		this.msgId = msgId;
-	}
+    public void setMediaId(String mediaId) {
+        this.mediaId = mediaId;
+    }
+
+    public String getMsgId() {
+        return msgId;
+    }
+
+    public void setMsgId(String msgId) {
+        this.msgId = msgId;
+    }
 }

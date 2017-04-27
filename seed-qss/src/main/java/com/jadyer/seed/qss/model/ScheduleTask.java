@@ -43,104 +43,104 @@ import java.util.Date;
 @DynamicUpdate
 @Table(name="t_schedule_task")
 public class ScheduleTask extends BaseEntity<Long> {
-	private static final long serialVersionUID = 6239479172908393534L;
-	public static final int STATUS_RUNNING     = 1; //启动
-	public static final int STATUS_NOT_RUNNING = 0; //停止
-	public static final int STATUS_PAUSE       = 2; //暂停
-	public static final int STATUS_RESUME      = 3; //暂停后恢复
-	public static final int CONCURRENT_YES     = 1; //允许并发执行
-	public static final int CONCURRENT_NO      = 0; //不允许并发执行
-	public static final String JOB_DATAMAP_KEY = "scheduleTask"; //存放在Quartz测JobDataMap中的key
+    private static final long serialVersionUID = 6239479172908393534L;
+    public static final int STATUS_RUNNING     = 1; //启动
+    public static final int STATUS_NOT_RUNNING = 0; //停止
+    public static final int STATUS_PAUSE       = 2; //暂停
+    public static final int STATUS_RESUME      = 3; //暂停后恢复
+    public static final int CONCURRENT_YES     = 1; //允许并发执行
+    public static final int CONCURRENT_NO      = 0; //不允许并发执行
+    public static final String JOB_DATAMAP_KEY = "scheduleTask"; //存放在Quartz测JobDataMap中的key
 
-	/** 定时任务名称 */
-	private String name;
+    /** 定时任务名称 */
+    private String name;
 
-	/** 定时任务执行的CronExpression */
-	private String cron;
-	
-	/** 定时任务状态：0--停止，1--启动，2--挂起，3--恢复 */
-	private int status;
-	
-	/** 定时任务是否允许并行执行：0--不允许，1--允许 */
-	private int concurrent;
-	
-	/** 定时任务URL */
-	private String url;
-	
-	/** 定时任务描述 */
-	@Basic(fetch=FetchType.LAZY)
-	private String comment;
-	
-	/** 定时任务下次触发时间 */
-	//指明被标注的变量不需要被映射到数据库表中
-	@Transient
-	private Date nextFireTime;
+    /** 定时任务执行的CronExpression */
+    private String cron;
 
-	/** 定时任务上次触发时间 */
-	@Transient
-	private Date previousFireTime;
+    /** 定时任务状态：0--停止，1--启动，2--挂起，3--恢复 */
+    private int status;
 
-	public String getName() {
-		return name;
-	}
+    /** 定时任务是否允许并行执行：0--不允许，1--允许 */
+    private int concurrent;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    /** 定时任务URL */
+    private String url;
 
-	public String getCron() {
-		return cron;
-	}
+    /** 定时任务描述 */
+    @Basic(fetch=FetchType.LAZY)
+    private String comment;
 
-	public void setCron(String cron) {
-		this.cron = cron;
-	}
+    /** 定时任务下次触发时间 */
+    //指明被标注的变量不需要被映射到数据库表中
+    @Transient
+    private Date nextFireTime;
 
-	public int getStatus() {
-		return status;
-	}
+    /** 定时任务上次触发时间 */
+    @Transient
+    private Date previousFireTime;
 
-	public void setStatus(int status) {
-		this.status = status;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public int getConcurrent() {
-		return concurrent;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setConcurrent(int concurrent) {
-		this.concurrent = concurrent;
-	}
+    public String getCron() {
+        return cron;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public void setCron(String cron) {
+        this.cron = cron;
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    public int getStatus() {
+        return status;
+    }
 
-	public String getComment() {
-		return comment;
-	}
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
+    public int getConcurrent() {
+        return concurrent;
+    }
 
-	public Date getNextFireTime() {
-		return nextFireTime;
-	}
+    public void setConcurrent(int concurrent) {
+        this.concurrent = concurrent;
+    }
 
-	public void setNextFireTime(Date nextFireTime) {
-		this.nextFireTime = nextFireTime;
-	}
+    public String getUrl() {
+        return url;
+    }
 
-	public Date getPreviousFireTime() {
-		return previousFireTime;
-	}
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-	public void setPreviousFireTime(Date previousFireTime) {
-		this.previousFireTime = previousFireTime;
-	}
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Date getNextFireTime() {
+        return nextFireTime;
+    }
+
+    public void setNextFireTime(Date nextFireTime) {
+        this.nextFireTime = nextFireTime;
+    }
+
+    public Date getPreviousFireTime() {
+        return previousFireTime;
+    }
+
+    public void setPreviousFireTime(Date previousFireTime) {
+        this.previousFireTime = previousFireTime;
+    }
 }

@@ -6,20 +6,20 @@ package com.jadyer.seed.mpp.sdk.weixin.model.custom;
  * @author 玄玉<https://jadyer.github.io/>
  */
 public abstract class WeixinCustomMsg {
-	/**
-	 * 普通用户openid
-	 */
-	private String touser;
+    /**
+     * 普通用户openid
+     */
+    private String touser;
 
-	public WeixinCustomMsg(String touser) {
-		this.touser = touser;
-	}
+    public WeixinCustomMsg(String touser) {
+        this.touser = touser;
+    }
 
-	public String getTouser() {
-		return touser;
-	}
+    public String getTouser() {
+        return touser;
+    }
 
-	public void setTouser(String touser) {
-		this.touser = touser;
-	}
+    public void setTouser(String touser) {
+        this.touser = touser;
+    }
 }

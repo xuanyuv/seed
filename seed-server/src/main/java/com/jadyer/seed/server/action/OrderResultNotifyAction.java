@@ -11,9 +11,9 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 public class OrderResultNotifyAction implements GenericAction {
-	@Override
-	public String execute(String message) {
-		LogUtil.getLogger().info("商户订单结果通知-->收到请求报文[" + message + "]");
-		return MessageBuilder.buildHTTPResponseMessage("您已成功连接本系统TCP服务器...");
-	}
+    @Override
+    public String execute(String message) {
+        LogUtil.getLogger().info("商户订单结果通知-->收到请求报文[" + message + "]");
+        return MessageBuilder.buildHTTPResponseMessage("您已成功连接本系统TCP服务器...");
+    }
 }

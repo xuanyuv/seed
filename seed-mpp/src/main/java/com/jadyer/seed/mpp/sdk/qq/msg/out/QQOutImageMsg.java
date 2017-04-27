@@ -8,19 +8,19 @@ import com.jadyer.seed.mpp.sdk.qq.msg.in.QQInMsg;
  * @author 玄玉<https://jadyer.github.io/>
  */
 public class QQOutImageMsg extends QQOutMsg {
-	private String mediaId;
+    private String mediaId;
 
-	public QQOutImageMsg(QQInMsg inMsg) {
-		super(inMsg);
-		this.msgType = "image";
-	}
+    public QQOutImageMsg(QQInMsg inMsg) {
+        super(inMsg);
+        this.msgType = "image";
+    }
 
-	public String getMediaId() {
-		return mediaId;
-	}
+    public String getMediaId() {
+        return mediaId;
+    }
 
-	public QQOutImageMsg setMediaId(String mediaId) {
-		this.mediaId = mediaId;
-		return this;
-	}
+    public QQOutImageMsg setMediaId(String mediaId) {
+        this.mediaId = mediaId;
+        return this;
+    }
 }
