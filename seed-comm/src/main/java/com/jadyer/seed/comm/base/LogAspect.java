@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
  *         此时就只会切public的方法，而不会受其它方法修饰符的影响，推荐使用
  *     </li>
  * </ul>
- * Created by 玄玉<https://jadyer.github.io/> on 2015/8/18 9:49.
+ * Created by 玄玉<http://jadyer.cn/> on 2015/8/18 9:49.
  */
 @Aspect
 @Component

@@ -1,7 +1,7 @@
 package com.jadyer.seed.open.model;
 
 /**
- * Created by 玄玉<https://jadyer.github.io/> on 2016/5/8 19:57.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/5/8 19:57.
  */
 public class ReqData {
     private String method;

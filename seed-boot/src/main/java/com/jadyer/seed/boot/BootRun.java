@@ -56,7 +56,7 @@ import javax.servlet.Filter;
  * idea会优先读取/src/main/webapp/下的文件，找不到时才会去找/src/main/resources/META-INF/resources/下的文件
  * -------------------------------------------------------------------------------------------------------
  * IntelliJ IDEA 中通过本类启动应用的方式，有三种
- * 1、https://jadyer.github.io/2016/07/29/idea-springboot-jsp/
+ * 1、http://jadyer.cn/2016/07/29/idea-springboot-jsp/
  * 2、直接运行com.jadyer.seed.test.BootStartup.java
  * 3、直接运行该类
  *    不过由于这里配置了characterEncodingFilter，它用到了javax.servlet.Filter

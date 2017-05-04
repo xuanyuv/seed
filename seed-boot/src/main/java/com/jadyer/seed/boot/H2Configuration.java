@@ -64,7 +64,7 @@ import java.sql.SQLException;
  *     <li>INIT=RUNSCRIPT FROM '~/create.sql'：Execute SQL on connection</li>
  * </ul>
  * --------------------------------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2016/5/22 22:35.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/5/22 22:35.
  */
 //@Configuration
 //Only activate this in the "dev" profile

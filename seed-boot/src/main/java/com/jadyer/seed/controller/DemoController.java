@@ -20,14 +20,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by 玄玉<https://jadyer.github.io/> on 2016/5/7 17:43.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/5/7 17:43.
  */
 @ApiIgnore
 @Controller
 //@RestController//它就相当于@Controller和@ResponseBody注解
 public class DemoController {
     //若配置文件中未找到该属性，则为其赋默认值为冒号后面的字符串
-    @Value("${user.blog:https://jadyer.github.io/}")
+    @Value("${user.blog:http://jadyer.cn/}")
     private String blog;
     @Value("${user.weight}")
     private long weight;

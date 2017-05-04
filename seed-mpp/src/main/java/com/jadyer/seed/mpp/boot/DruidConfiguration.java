@@ -93,7 +93,7 @@ public class DruidConfiguration {
         servletRegistrationBean.setServlet(new StatViewServlet());
         servletRegistrationBean.addUrlMappings("/druid/*");
         servletRegistrationBean.addInitParameter(ResourceServlet.PARAM_NAME_USERNAME, "druid");
-        servletRegistrationBean.addInitParameter(ResourceServlet.PARAM_NAME_PASSWORD, "https://jadyer.github.io/");
+        servletRegistrationBean.addInitParameter(ResourceServlet.PARAM_NAME_PASSWORD, "http://jadyer.cn/");
         return servletRegistrationBean;
     }
 }

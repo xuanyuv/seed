@@ -2,7 +2,7 @@ package com.jadyer.seed.server.core;
 
 /**
  * 客户端请求应答顶层接口
- * Created by 玄玉<https://jadyer.github.io/> on 2012/12/23 19:25.
+ * Created by 玄玉<http://jadyer.cn/> on 2012/12/23 19:25.
  */
 public interface GenericAction {
     /**

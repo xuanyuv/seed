@@ -52,7 +52,7 @@ import java.util.List;
  * @history v1.1-->增加<code>deleteFileAndLogout(String, String, String, String)<code>删除FTP文件的方法
  * @history v1.0-->新建并提供了上传和下载文件的方法,以及操作完成后自动logout并释放连接
  * -----------------------------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2015/06/22 11:22.
+ * Created by 玄玉<http://jadyer.cn/> on 2015/06/22 11:22.
  */
 public final class FtpUtil {
     private static final String DEFAULT_CHARSET = "UTF-8";
@@ -802,7 +802,7 @@ public final class FtpUtil {
  *     0%   101894  33KB/s  58351458   3s
  *     0%   101895  33KB/s  58351458   3s
  *     0%   101896  33KB/s  58351458   3s
- * Created by 玄玉<https://jadyer.github.io/> on 2015/10/22 09:42.
+ * Created by 玄玉<http://jadyer.cn/> on 2015/10/22 09:42.
  */
 class FTPProcess implements CopyStreamListener {
     private long fileSize;
@@ -846,7 +846,7 @@ class FTPProcess implements CopyStreamListener {
  *     92%   18376883  17946KB/s  19903865   1s
  *     92%   18409524  17978KB/s  19903865   1s
  *     92%   18442165  18009KB/s  19903865   1s
- * Created by 玄玉<https://jadyer.github.io/> on 2015/10/22 10:46.
+ * Created by 玄玉<http://jadyer.cn/> on 2015/10/22 10:46.
  */
 class SFTPProcess implements SftpProgressMonitor {
     private long fileSize;

@@ -44,7 +44,7 @@
             <a href="#"><span>平台设置</span><i></i></a>
             <div>
                 <a href="javascript:alert('暂未开放');"><span>公众菜单</span></a>
-                <a href="${ctx}/sample/view?url=user/info&uname=玄玉&token=https://github.com/jadyer&mpurl=https://jadyer.github.io/"><span>个人资料</span></a>
+                <a href="${ctx}/sample/view?url=user/info&uname=玄玉&token=https://github.com/jadyer&mpurl=http://jadyer.cn/"><span>个人资料</span></a>
                 <a href="javascript:alert('暂未开放');"><span>修改密码</span></a>
             </div>
         </li>

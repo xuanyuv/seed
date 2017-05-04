@@ -20,7 +20,7 @@ import org.apache.mina.filter.codec.demux.MessageDecoderResult;
  * 在decode()方法进行读取操作会影响数据包的大小，decode需要判断协议中哪些已经decode完，哪些还没decode
  * decode完成后，通过ProtocolDecoderOutput.write()输出，并返回MessageDecoderResult.OK表示decode完毕
  * ------------------------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2012/12/21 14:52.
+ * Created by 玄玉<http://jadyer.cn/> on 2012/12/21 14:52.
  */
 public class ServerProtocolTCPDecoder implements MessageDecoder {
     /**

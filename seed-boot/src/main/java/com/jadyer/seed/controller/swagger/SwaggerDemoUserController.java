@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by 玄玉<https://jadyer.github.io/> on 2016/9/26 13:06.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/9/26 13:06.
  */
 @RestController
 @RequestMapping("/user")

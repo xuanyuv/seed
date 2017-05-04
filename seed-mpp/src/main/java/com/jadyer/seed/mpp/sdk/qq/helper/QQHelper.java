@@ -29,7 +29,7 @@ public final class QQHelper {
      * @see {"errcode":40001,"errmsg":"\u83b7\u53d6access_token\u65f6AppSecret\u9519\u8bef\uff0c\u6216\u8005access_token\u65e0\u6548"}
      * @return 获取失败时将抛出RuntimeException
      * @create Nov 28, 2015 8:40:36 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * @author 玄玉<http://jadyer.cn/>
      */
     static String getQQAccessToken(String appid, String appsecret) throws IllegalAccessException {
         String reqURL = QQConstants.URL_QQ_GET_ACCESSTOKEN.replace(QQConstants.URL_PLACEHOLDER_APPID, appid).replace(QQConstants.URL_PLACEHOLDER_APPSECRET, appsecret);
@@ -51,7 +51,7 @@ public final class QQHelper {
      * 获取QQjsapi_ticket
      * @return 获取失败时将抛出RuntimeException
      * @create Nov 28, 2015 8:40:46 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * @author 玄玉<http://jadyer.cn/>
      */
     static String getQQJSApiTicket(String accesstoken) throws IllegalAccessException {
         String reqURL = QQConstants.URL_QQ_GET_JSAPI_TICKET.replace(QQConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
@@ -76,7 +76,7 @@ public final class QQHelper {
      * @param code      换取access_token的有效期为5分钟的票据
      * @return 返回获取到的网页access_token(获取失败时的应答码也在该返回中)
      * @create Nov 28, 2015 8:41:39 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * @author 玄玉<http://jadyer.cn/>
      */
     static QQOAuthAccessToken getQQOAuthAccessToken(String appid, String appsecret, String code){
         String reqURL = QQConstants.URL_QQ_OAUTH2_GET_ACCESSTOKEN.replace(QQConstants.URL_PLACEHOLDER_APPID, appid)
@@ -102,7 +102,7 @@ public final class QQHelper {
      * @param state       重定向后会带上state参数(开发者可以填写a-zA-Z0-9的参数值,最多128字节)
      * @param redirectURI 授权后重定向的回调链接地址(请使用urlencode对链接进行处理)
      * @create Nov 28, 2015 8:42:01 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * @author 玄玉<http://jadyer.cn/>
      */
     public static String buildQQOAuthCodeURL(String appid, String scope, String state, String redirectURI){
         try {
@@ -125,7 +125,7 @@ public final class QQHelper {
      * @see 4.修改菜单时(修改内容或菜单数量等)不需要删除菜单,直接调用创建接口即可,QQ会自动覆盖以前创建的菜单
      * @see -----------------------------------------------------------------------------------------------------------
      * @create Nov 28, 2015 8:43:13 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * @author 玄玉<http://jadyer.cn/>
      */
     public static QQErrorInfo createQQMenu(String accesstoken, QQMenu menu){
         String reqURL = QQConstants.URL_QQ_GET_CREATE_MENU.replace(QQConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
@@ -146,10 +146,10 @@ public final class QQHelper {
 
     /**
      * 创建自定义菜单
-     * @see String menuJson = "{\"button\":[{\"type\":\"view\", \"name\":\"我的博客\", \"url\":\"https://jadyer.github.io/\"}, {\"type\":\"click\", \"name\":\"今日歌曲\", \"key\":\"V1001_TODAY_MUSIC\"}, {\"name\":\"个人中心\", \"sub_button\": [{\"type\":\"view\", \"name\":\"搜索\", \"url\":\"http://www.soso.com/\"}, {\"type\":\"view\", \"name\":\"视频\", \"url\":\"http://v.qq.com/\"}, {\"type\":\"click\", \"name\":\"赞一下我们\", \"key\":\"V1001_GOOD\"}]}]}";
-     * @see String menuJson = "{\"button\":[{\"type\":\"view\", \"name\":\"我的博客\", \"url\":\"https://jadyer.github.io/\"}, {\"name\":\"个人中心\", \"sub_button\": [{\"type\":\"view\", \"name\":\"搜索\", \"url\":\"http://www.soso.com/\"}, {\"type\":\"view\", \"name\":\"视频\", \"url\":\"http://v.qq.com/\"}, {\"type\":\"click\", \"name\":\"赞一下我们\", \"key\":\"V1001_GOOD\"}]}]}";
+     * @see String menuJson = "{\"button\":[{\"type\":\"view\", \"name\":\"我的博客\", \"url\":\"http://jadyer.cn/\"}, {\"type\":\"click\", \"name\":\"今日歌曲\", \"key\":\"V1001_TODAY_MUSIC\"}, {\"name\":\"个人中心\", \"sub_button\": [{\"type\":\"view\", \"name\":\"搜索\", \"url\":\"http://www.soso.com/\"}, {\"type\":\"view\", \"name\":\"视频\", \"url\":\"http://v.qq.com/\"}, {\"type\":\"click\", \"name\":\"赞一下我们\", \"key\":\"V1001_GOOD\"}]}]}";
+     * @see String menuJson = "{\"button\":[{\"type\":\"view\", \"name\":\"我的博客\", \"url\":\"http://jadyer.cn/\"}, {\"name\":\"个人中心\", \"sub_button\": [{\"type\":\"view\", \"name\":\"搜索\", \"url\":\"http://www.soso.com/\"}, {\"type\":\"view\", \"name\":\"视频\", \"url\":\"http://v.qq.com/\"}, {\"type\":\"click\", \"name\":\"赞一下我们\", \"key\":\"V1001_GOOD\"}]}]}";
      * @create Nov 28, 2015 8:44:47 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * @author 玄玉<http://jadyer.cn/>
      */
     public static QQErrorInfo createQQMenu(String accesstoken, String menuJson){
         String reqURL = QQConstants.URL_QQ_GET_CREATE_MENU.replace(QQConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
@@ -179,7 +179,7 @@ public final class QQHelper {
      * @see
      * @see {"subscribe":1,"openid":"E12D231CFC30438FB6970B0C7669C101","nickname":"玄玉","sex":0,"language":"zh_CN","city":"","province":"","country":"","headimgurl":"http://q3.qlogo.cn/g?b=qq&k=FMnTHnicr3kJvcZyG9UatiaQ&s=40&t=1371634951","subscribe_time":1448711806,"remark":"","groupid":1}
      * @create Nov 28, 2015 8:45:20 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * @author 玄玉<http://jadyer.cn/>
      */
     public static QQFansInfo getQQFansInfo(String accesstoken, String openid){
         String reqURL = QQConstants.URL_QQ_GET_FANSINFO.replace(QQConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken).replace(QQConstants.URL_PLACEHOLDER_OPENID, openid);
@@ -191,7 +191,7 @@ public final class QQHelper {
     /**
      * 单发主动推消息
      * @create Nov 28, 2015 8:47:36 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * @author 玄玉<http://jadyer.cn/>
      */
     public static QQErrorInfo pushQQMsgToFans(String accesstoken, QQCustomMsg customMsg){
         String reqURL = QQConstants.URL_QQ_CUSTOM_PUSH_MESSAGE.replace(QQConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
@@ -213,7 +213,7 @@ public final class QQHelper {
     /**
      * 单发主动推模板消息
      * @create Dec 30, 2015 11:31:36 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * @author 玄玉<http://jadyer.cn/>
      */
     public static QQErrorInfo pushQQTemplateMsgToFans(String accesstoken, QQTemplateMsg templateMsg){
         String reqURL = QQConstants.URL_QQ_TEMPLATE_PUSH_MESSAGE.replace(QQConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
@@ -239,7 +239,7 @@ public final class QQHelper {
      * @param timestamp 时间戳
      * @param url       当前网页的URL,不包含#及其后面部分
      * @create Nov 28, 2015 8:48:52 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * @author 玄玉<http://jadyer.cn/>
      */
     public static String signQQJSSDK(String appid, String noncestr, String timestamp, String url){
         StringBuilder sb = new StringBuilder();
@@ -255,7 +255,7 @@ public final class QQHelper {
      * 获取临时素材
      * @return 获取成功时返回文件保存在本地的路径,获取失败时将抛出RuntimeException
      * @create Nov 28, 2015 8:49:15 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * @author 玄玉<http://jadyer.cn/>
      */
     public static String downloadQQTempMediaFile(String accesstoken, String mediaId){
         String reqURL = QQConstants.URL_QQ_GET_TEMP_MEDIA_FILE.replace(QQConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken).replace(QQConstants.URL_PLACEHOLDER_MEDIAID, mediaId);

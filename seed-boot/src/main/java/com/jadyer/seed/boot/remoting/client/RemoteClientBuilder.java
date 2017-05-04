@@ -52,7 +52,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *     private IFSService ifsService;
  * }
  * -------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2016/11/21 16:36.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/11/21 16:36.
  */
 @Component
 @Order(Ordered.LOWEST_PRECEDENCE - 2)

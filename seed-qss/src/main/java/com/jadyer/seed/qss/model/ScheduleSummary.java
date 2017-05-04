@@ -10,7 +10,7 @@ package com.jadyer.seed.qss.model;
  * 1. 定义结果集的接口，接口中只需要提供getter方法即可，不需要定义属性
  * 2. Repository中的@Query里面写的JPQL注意查询的字段，都需要显式使用别名
  * ---------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2017/4/27 14:15.
+ * Created by 玄玉<http://jadyer.cn/> on 2017/4/27 14:15.
  */
 public interface ScheduleSummary {
     String getName();

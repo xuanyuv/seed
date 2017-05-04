@@ -119,7 +119,7 @@ public class UserController{
         if(2 == userInfo.getMptype()){
             sb.append("/qq/").append(userInfo.getUuid());
         }
-        request.setAttribute("token", DigestUtils.md5Hex(userInfo.getUuid() + "https://jadyer.github.io/" + userInfo.getUuid()));
+        request.setAttribute("token", DigestUtils.md5Hex(userInfo.getUuid() + "http://jadyer.cn/" + userInfo.getUuid()));
         request.setAttribute("mpurl", sb.toString());
         return "user/info";
     }

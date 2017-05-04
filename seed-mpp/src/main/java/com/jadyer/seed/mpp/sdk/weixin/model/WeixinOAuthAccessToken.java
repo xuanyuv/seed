@@ -3,7 +3,7 @@ package com.jadyer.seed.mpp.sdk.weixin.model;
 /**
  * 封装获取到的微信网页授权的网页access_token
  * @create Oct 19, 2015 9:32:58 PM
- * @author 玄玉<https://jadyer.github.io/>
+ * @author 玄玉<http://jadyer.cn/>
  */
 public class WeixinOAuthAccessToken {
     /**

@@ -20,7 +20,7 @@ import java.net.MalformedURLException;
  * @version v1.1
  * @history v1.1-->抽取拷贝远程文件公共方法,使之共通用
  * @history v1.0-->初建
- * Created by 玄玉<https://jadyer.github.io/> on 2013/4/22 23:48.
+ * Created by 玄玉<http://jadyer.cn/> on 2013/4/22 23:48.
  */
 public final class JCifsUtil {
     private JCifsUtil(){}

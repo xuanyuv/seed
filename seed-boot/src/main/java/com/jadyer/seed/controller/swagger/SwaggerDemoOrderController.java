@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
 /**
- * Created by 玄玉<https://jadyer.github.io/> on 2016/9/26 14:40.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/9/26 14:40.
  */
 @RestController
 @RequestMapping("/order")

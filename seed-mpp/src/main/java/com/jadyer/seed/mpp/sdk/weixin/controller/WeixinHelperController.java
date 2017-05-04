@@ -30,7 +30,7 @@ import java.util.Map;
 /**
  * 接收微信服务器回调以及其它的辅助功能
  * @create Oct 19, 2015 8:30:44 PM
- * @author 玄玉<https://jadyer.github.io/>
+ * @author 玄玉<http://jadyer.cn/>
  */
 @Controller
 @RequestMapping(value="/weixin/helper")
@@ -101,7 +101,7 @@ public class WeixinHelperController {
      * 下载微信临时媒体文件
      * @param mediaId 媒体文件ID
      * @create Nov 9, 2015 5:06:19 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * @author 玄玉<http://jadyer.cn/>
      */
     @RequestMapping(value="/tempMediaFile/get/{appid}/{mediaId}")
     public void tempMediaFileGet(@PathVariable String appid, @PathVariable String mediaId, HttpServletResponse response) throws Exception {
@@ -126,7 +126,7 @@ public class WeixinHelperController {
      * 删除存储在本地的微信临时媒体文件
      * @param fileFullPath 存储在本地的微信临时媒体文件的完整路径
      * @create Nov 9, 2015 9:06:35 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * @author 玄玉<http://jadyer.cn/>
      */
     @ResponseBody
     @RequestMapping(value="/tempMediaFile/delete/{appid}/{mediaId}")
@@ -148,7 +148,7 @@ public class WeixinHelperController {
      * @param sceneId       二维码参数场景值ID,临时二维码时为32位非0整型,永久二维码时值为1--100000
      * @param sceneStr      二维码参数场景值ID,字符串形式的ID,字符串类型,长度限制为1到64,仅永久二维码支持此字段
      * @create Feb 22, 2016 11:15:08 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * @author 玄玉<http://jadyer.cn/>
      */
     @RequestMapping(value="/getQrcodeURL")
     public void getQrcodeURL(String appid, int type, String expireSeconds, String sceneId, String sceneStr, HttpServletResponse response) throws IOException{

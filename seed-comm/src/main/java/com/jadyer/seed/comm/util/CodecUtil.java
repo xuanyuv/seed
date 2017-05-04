@@ -90,7 +90,7 @@ import java.util.Map;
  * @history v1.1-->增加AES,DES,DESede等算法的加解密方法
  * @history v1.0-->新增buildHexSign()的签名方法，目前支持<code>MD5,SHA,SHA1,SHA-1,SHA-256,SHA-384,SHA-512</code>算法
  * -----------------------------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2013/10/06 00:00.
+ * Created by 玄玉<http://jadyer.cn/> on 2013/10/06 00:00.
  */
 public final class CodecUtil {
     public static final String CHARSET = "UTF-8";

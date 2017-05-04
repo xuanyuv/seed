@@ -18,7 +18,7 @@ import java.util.Set;
 /**
  * 这是Redis3.0的集成方法
  * 另经测试：当应用正常运行过程中，RedisCluster突然宕掉后过一段时间又恢复，这里会自动重连
- * Created by 玄玉<https://jadyer.github.io/> on 2016/11/24 10:46.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/11/24 10:46.
  */
 //@Configuration
 @SuppressWarnings("WeakerAccess")

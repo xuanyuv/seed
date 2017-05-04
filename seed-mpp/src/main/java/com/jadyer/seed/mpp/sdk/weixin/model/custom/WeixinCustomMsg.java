@@ -3,7 +3,7 @@ package com.jadyer.seed.mpp.sdk.weixin.model.custom;
 /**
  * 客服接口请求参数的基类
  * @create Oct 18, 2015 10:37:58 PM
- * @author 玄玉<https://jadyer.github.io/>
+ * @author 玄玉<http://jadyer.cn/>
  */
 public abstract class WeixinCustomMsg {
     /**

@@ -3,7 +3,7 @@ package com.jadyer.seed.mpp.sdk.weixin.model.template;
 /**
  * 微信模板对象
  * <p>用于接收模板列表获取接口返回值</p>
- * Created by 玄玉<https://jadyer.github.io/> on 2016/5/20 13:07.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/5/20 13:07.
  */
 public class WeixinTemplate {
     /**

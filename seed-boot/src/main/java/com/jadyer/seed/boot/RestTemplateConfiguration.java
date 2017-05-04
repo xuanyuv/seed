@@ -84,7 +84,7 @@ import java.util.List;
  * 这种情况下没有办法单独针对某个Service设置超时时间等参数
  * 因为这时候所有的Http连接池都是由this.restTemplate统一管理的
  * -------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2016/11/21 17:47.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/11/21 17:47.
  */
 //@Configuration
 @ConditionalOnClass({RestTemplate.class, HttpClient.class})

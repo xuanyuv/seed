@@ -22,13 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by 玄玉<https://jadyer.github.io/> on 2017/3/4 18:39.
+ * Created by 玄玉<http://jadyer.cn/> on 2017/3/4 18:39.
  */
 @EntityScan(basePackages="${scan.base.packages}")
 @EnableJpaRepositories(basePackages="${scan.base.packages}")
 @SpringBootApplication(scanBasePackages="${scan.base.packages}")
 public class QssBootStrap extends SpringBootServletInitializer {
-    //启动方式：https://jadyer.github.io/2016/07/29/idea-springboot-jsp/
+    //启动方式：http://jadyer.cn/2016/07/29/idea-springboot-jsp/
     public static void main(String[] args) {
         new SpringApplicationBuilder().sources(QssBootStrap.class).profiles("local").run(args);
     }

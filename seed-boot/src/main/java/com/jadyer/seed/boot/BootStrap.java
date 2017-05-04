@@ -75,7 +75,7 @@ import javax.servlet.Filter;
  * org.springframework.boot.context.web.SpringBootServletInitializer 变为了 org.springframework.boot.web.support.SpringBootServletInitializer
  * org.springframework.boot.test.SpringApplicationConfiguration 变为了 org.springframework.boot.test.context.SpringBootTest
  * -----------------------------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2015/11/29 15:35.
+ * Created by 玄玉<http://jadyer.cn/> on 2015/11/29 15:35.
  */
 @SpringBootApplication(scanBasePackages="${scan.base.packages}", exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class BootStrap extends SpringBootServletInitializer {

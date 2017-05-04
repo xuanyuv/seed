@@ -23,7 +23,7 @@ package com.jadyer.seed.mpp.sdk.weixin.msg.in.event;
  * @see </xml>
  * @see -----------------------------------------------------------------------------------------------------------
  * @create Oct 18, 2015 5:26:59 PM
- * @author 玄玉<https://jadyer.github.io/>
+ * @author 玄玉<http://jadyer.cn/>
  */
 public class WeixinInFollowEventMsg extends WeixinInEventMsg {
     /**

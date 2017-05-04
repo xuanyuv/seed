@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 参考https://github.com/spring-projects/spring-session/blob/master/spring-session/src/main/java/org/springframework/session/MapSession.java
- * Created by 玄玉<https://jadyer.github.io/> on 2016/6/19 18:36.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/6/19 18:36.
  */
 class MapSession implements Serializable {
     private static final long serialVersionUID = -8704705569479113790L;

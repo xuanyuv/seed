@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  *         }
  *     }
  * </code>
- * Created by 玄玉<https://jadyer.github.io/> on 2016/7/8 18:58.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/7/8 18:58.
  */
 public class RedisDistributedLock implements DistributedLock {
     private JedisCluster jedisCluster;

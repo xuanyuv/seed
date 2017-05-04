@@ -30,7 +30,7 @@
         <table width="1260" border="0" cellspacing="1" bgcolor="#000000">
             <tr bgcolor="#FFFFFF">
                 <td>
-                    &lt;form action=&quot;http://jadyer.github.io/open/router/rest&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;<br/>
+                    &lt;form action=&quot;http://jadyer.cn/open/router/rest&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;<br/>
                     &nbsp;&nbsp;&nbsp;&nbsp;&lt;table border=&quot;9&quot;&gt;<br/>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br/>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;th&gt;公参method接口名称&lt;/th&gt;<br/>

@@ -16,7 +16,7 @@ import java.text.DecimalFormat;
 
 /**
  * 这里要用到poi-3.9-20121203.jar和poi-ooxml-3.9-20121203.jar
- * Created by 玄玉<https://jadyer.github.io/> on 2013/07/09 19:54.
+ * Created by 玄玉<http://jadyer.cn/> on 2013/07/09 19:54.
  */
 public class JadyerPOIDemo {
     public static void writeExcel() throws IOException {

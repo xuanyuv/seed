@@ -18,7 +18,7 @@ import java.util.Map;
  * @history v1.1-->增加获取服务端IP的方法
  * @history v1.0-->增加获取客户端IP的方法
  * ----------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2015/4/14 20:55.
+ * Created by 玄玉<http://jadyer.cn/> on 2015/4/14 20:55.
  */
 public final class IPUtil {
     private IPUtil(){}

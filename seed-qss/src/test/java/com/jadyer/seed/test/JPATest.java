@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
- * Created by 玄玉<https://jadyer.github.io/> on 2017/4/27 18:29.
+ * Created by 玄玉<http://jadyer.cn/> on 2017/4/27 18:29.
  */
 @RunWith(SpringRunner.class)
 @Profile("local")

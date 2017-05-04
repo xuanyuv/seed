@@ -15,7 +15,7 @@ import java.sql.SQLException;
 /**
  * 有时间研究研究这里面的属性https://github.com/alibaba/druid/issues/1344
  * 另经测试：当应用正常运行过程中，数据库突然宕掉后过一段时间又恢复，druid会自动重连
- * Created by 玄玉<https://jadyer.github.io/> on 2016/01/24 12:09.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/01/24 12:09.
  */
 //@Configuration
 public class DruidConfiguration {
@@ -97,7 +97,7 @@ public class DruidConfiguration {
         servletRegistrationBean.setServlet(new StatViewServlet());
         servletRegistrationBean.addUrlMappings("/druid/*");
         servletRegistrationBean.addInitParameter(ResourceServlet.PARAM_NAME_USERNAME, "druid");
-        servletRegistrationBean.addInitParameter(ResourceServlet.PARAM_NAME_PASSWORD, "https://jadyer.github.io/");
+        servletRegistrationBean.addInitParameter(ResourceServlet.PARAM_NAME_PASSWORD, "http://jadyer.cn/");
         return servletRegistrationBean;
     }
 }

@@ -6,7 +6,7 @@ import com.jadyer.seed.mpp.sdk.weixin.msg.in.WeixinInMsg;
  * 被动回复消息的公共类
  * @see 禁止SDK接入方使用此类
  * @create Oct 18, 2015 11:52:55 AM
- * @author 玄玉<https://jadyer.github.io/>
+ * @author 玄玉<http://jadyer.cn/>
  */
 public class WeixinOutMsg {
     /**

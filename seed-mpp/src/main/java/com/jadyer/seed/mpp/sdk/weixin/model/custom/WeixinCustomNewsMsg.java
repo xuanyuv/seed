@@ -3,7 +3,7 @@ package com.jadyer.seed.mpp.sdk.weixin.model.custom;
 /**
  * 客服接口发送图文消息
  * @create Oct 18, 2015 10:46:59 PM
- * @author 玄玉<https://jadyer.github.io/>
+ * @author 玄玉<http://jadyer.cn/>
  */
 public class WeixinCustomNewsMsg extends WeixinCustomMsg {
     /**

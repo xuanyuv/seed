@@ -27,7 +27,7 @@ import java.util.Arrays;
 /**
  * 接收QQ服务器消息，自动解析成com.jadyer.seed.mpp.sdk.qq.msg.in.QQInMsg
  * 并分发到相应的处理方法，得到处理后的com.jadyer.seed.mpp.sdk.qq.msg.out.QQOutMsg并回复给QQ服务器
- * Created by 玄玉<https://jadyer.github.io/> on 2015/11/26 19:22.
+ * Created by 玄玉<http://jadyer.cn/> on 2015/11/26 19:22.
  */
 public abstract class QQMsgController {
     @RequestMapping(value="/{token}")
@@ -39,7 +39,7 @@ public abstract class QQMsgController {
         //GET过来的请求表示更新开发者服务器URL
         if("GET".equalsIgnoreCase(request.getMethod())){
             //验签
-            if(!this.verifySignature(DigestUtils.md5Hex(token+"https://jadyer.github.io/"+token), request)){
+            if(!this.verifySignature(DigestUtils.md5Hex(token+"http://jadyer.cn/"+token), request)){
                 out.write("verify signature failed");
                 out.flush();
                 out.close();

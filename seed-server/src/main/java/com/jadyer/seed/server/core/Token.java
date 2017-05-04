@@ -2,7 +2,7 @@ package com.jadyer.seed.server.core;
 
 /**
  * 封装客户端请求报文
- * Created by 玄玉<https://jadyer.github.io/> on 2012/12/23 20:35.
+ * Created by 玄玉<http://jadyer.cn/> on 2012/12/23 20:35.
  */
 class Token {
     static final String BUSI_TYPE_TCP = "TCP";

@@ -20,7 +20,7 @@ import java.io.PrintWriter;
  * 用于处理微信相关的Filter
  * @see 自行提供appid和appurl,请求参数需包含appid=wx63ae5326e400cca2&oauth=base&openid=openid
  * @create Oct 19, 2015 4:45:35 PM
- * @author 玄玉<https://jadyer.github.io/>
+ * @author 玄玉<http://jadyer.cn/>
  */
 public class WeixinFilterDemo implements Filter {
     @Override

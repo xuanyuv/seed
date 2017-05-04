@@ -80,7 +80,7 @@ editor.config.uploadImgUrl = '${ctx}/sample/wangEditor/uploadImg';
 editor.config.uploadImgFileName = 'minefile';
 editor.config.uploadParams = {
     username: 'jadyer',
-    password: 'https://jadyer.github.io/'
+    password: 'http://jadyer.cn/'
 };
 
 //创建编辑器

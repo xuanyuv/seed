@@ -20,7 +20,7 @@ import java.io.PrintWriter;
 
 /**
  * 用于处理QQ相关的Filter
- * Created by 玄玉<https://jadyer.github.io/> on 2015/12/24 12:00.
+ * Created by 玄玉<http://jadyer.cn/> on 2015/12/24 12:00.
  */
 public class QQFilter implements Filter {
     @Override

@@ -21,7 +21,7 @@ import java.io.PrintWriter;
 /**
  * 用于处理微信相关的Filter
  * @create Oct 19, 2015 4:45:35 PM
- * @author 玄玉<https://jadyer.github.io/>
+ * @author 玄玉<http://jadyer.cn/>
  */
 public class WeixinFilter implements Filter {
     @Override

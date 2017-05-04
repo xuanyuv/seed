@@ -30,7 +30,7 @@ import java.util.Map;
  *
  * SUCCESS YeePay Return OK !!!
  * -----------------------------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2013/9/3 20:42.
+ * Created by 玄玉<http://jadyer.cn/> on 2013/9/3 20:42.
  */
 @Controller
 public class NetBankResultNotifyYEEPAYAction implements GenericAction {

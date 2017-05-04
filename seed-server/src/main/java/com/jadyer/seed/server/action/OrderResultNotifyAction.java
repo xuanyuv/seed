@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 
 /**
  * 商户订单结果通知
- * Created by 玄玉<https://jadyer.github.io/> on 2013/9/3 20:38.
+ * Created by 玄玉<http://jadyer.cn/> on 2013/9/3 20:38.
  */
 @Controller
 public class OrderResultNotifyAction implements GenericAction {

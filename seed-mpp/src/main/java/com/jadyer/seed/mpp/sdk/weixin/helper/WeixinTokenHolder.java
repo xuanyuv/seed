@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @see 1.appid和appsecret是与Token息息相关的,故一并缓存于此处
  * @see 2.flag常量均加了appid是考虑到更换绑定的公众号时,获取到access_token是旧的,从而影响自定义菜单发布
  * @create Oct 29, 2015 8:11:50 PM
- * @author 玄玉<https://jadyer.github.io/>
+ * @author 玄玉<http://jadyer.cn/>
  */
 public class WeixinTokenHolder {
     private static final String FLAG_WEIXIN_ACCESSTOKEN = "weixin_access_token_";
@@ -31,7 +31,7 @@ public class WeixinTokenHolder {
      * 登记微信appid和appsecret
      * @return 返回已登记的微信appsecret
      * @create Jan 3, 2016 3:07:12 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * @author 玄玉<http://jadyer.cn/>
      */
     public static String setWeixinAppidAppsecret(String appid, String appsecret){
         for(Map.Entry<String,Object> entry : tokenMap.entrySet()){
@@ -47,7 +47,7 @@ public class WeixinTokenHolder {
     /**
      * 获取已登记的微信appsecret
      * @create Jan 3, 2016 3:07:21 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * @author 玄玉<http://jadyer.cn/>
      */
     public static String getWeixinAppsecret(String appid){
         String appsecret = (String)tokenMap.get(appid);
@@ -64,7 +64,7 @@ public class WeixinTokenHolder {
      * @param localFileFullPath 微信媒体文件存储在本地的完整路径
      * @return 返回已设置的微信媒体文件存储在本地的完整路径
      * @create Nov 9, 2015 9:21:28 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * @author 玄玉<http://jadyer.cn/>
      */
     public static String setMediaIdFilePath(String appid, String mediaId, String localFileFullPath){
         tokenMap.put(appid+"_"+mediaId, localFileFullPath);
@@ -77,7 +77,7 @@ public class WeixinTokenHolder {
      * @param mediaId 微信媒体文件ID
      * @return 返回微信媒体文件存储在本地的完整路径
      * @create Nov 9, 2015 9:21:52 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * @author 玄玉<http://jadyer.cn/>
      */
     public static String getMediaIdFilePath(String appid, String mediaId){
         String localFileFullPath = (String)tokenMap.get(appid+"_"+mediaId);
@@ -93,7 +93,7 @@ public class WeixinTokenHolder {
      * @see 这里只缓存7000s,详细介绍见http://mp.weixin.qq.com/wiki/11/0e4b294685f817b95cbed85ba5e82b8f.html
      * @see 7000s到期时,一个请求在更新access_token的过程中,另一个请求进来时,其取到的是旧的access_token(200s内都是有效的)
      * @create Oct 29, 2015 8:13:24 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * @author 玄玉<http://jadyer.cn/>
      */
     public static String getWeixinAccessToken(String appid){
         Long expireTime = (Long)tokenMap.get(FLAG_WEIXIN_ACCESSTOKEN_EXPIRETIME + appid);
@@ -119,7 +119,7 @@ public class WeixinTokenHolder {
      * 获取微信jsapi_ticket
      * @see 这里只缓存7000s,详细介绍见http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
      * @create Oct 29, 2015 9:55:33 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * @author 玄玉<http://jadyer.cn/>
      */
     public static String getWeixinJSApiTicket(String appid){
         Long expireTime = (Long)tokenMap.get(FLAG_WEIXIN_JSAPI_TICKET_EXPIRETIME + appid);
@@ -147,7 +147,7 @@ public class WeixinTokenHolder {
      * @param code 换取access_token的有效期为5分钟的票据
      * @return 返回获取到的网页access_token(获取失败时的应答码也在该返回中)
      * @create Oct 29, 2015 9:32:01 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * @author 玄玉<http://jadyer.cn/>
      */
     public static WeixinOAuthAccessToken getWeixinOAuthAccessToken(String appid, String code){
         //Long expireTime = (Long)tokenMap.get(FLAG_WEIXIN_OAUTH_ACCESSTOKEN_EXPIRETIME + appid);

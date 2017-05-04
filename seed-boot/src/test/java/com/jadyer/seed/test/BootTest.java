@@ -40,7 +40,7 @@ public class BootTest {
     public void jasyptTest(){
         PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
         SimpleStringPBEConfig config = new SimpleStringPBEConfig();
-        config.setPassword("https://jadyer.github.io/");
+        config.setPassword("http://jadyer.cn/");
         config.setAlgorithm("PBEWithMD5AndDES");
         config.setKeyObtentionIterations("1000");
         config.setPoolSize("1");

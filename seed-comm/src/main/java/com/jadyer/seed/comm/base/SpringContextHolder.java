@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
  * 比如实现BeanFactoryAware的Bean在被初始化之后，Spring容器会注入BeanFactory的实例
  * 而实现了ApplicationContextAware的Bean在被初始化之后，会被注入ApplicationContext的实例
  * --------------------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2015/2/27 10:01.
+ * Created by 玄玉<http://jadyer.cn/> on 2015/2/27 10:01.
  */
 @Component
 public class SpringContextHolder implements ApplicationContextAware, DisposableBean {

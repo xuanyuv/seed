@@ -3,7 +3,7 @@ package com.jadyer.seed.mpp.sdk.qq.model.custom;
 /**
  * 单发请求参数的基类
  * @create Nov 28, 2015 9:39:07 PM
- * @author 玄玉<https://jadyer.github.io/>
+ * @author 玄玉<http://jadyer.cn/>
  */
 public abstract class QQCustomMsg {
     /**

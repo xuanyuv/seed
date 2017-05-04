@@ -36,7 +36,7 @@ package com.jadyer.seed.mpp.sdk.qq.msg.in.event;
  *     <Status><![CDATA[failed: system failed]]></Status>
  * </xml>
  * -----------------------------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2016/5/19 18:44.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/5/19 18:44.
  */
 public class QQInTemplateEventMsg extends QQInEventMsg {
     /**

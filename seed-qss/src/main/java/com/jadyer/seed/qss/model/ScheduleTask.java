@@ -36,7 +36,7 @@ import java.util.Date;
  * 3、IntelliJ IDEA 需要安装 Lombok Plugin
  * 接下来就可以在其它地方直接调用setter或者getter
  * -----------------------------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2015/08/08 20:18.
+ * Created by 玄玉<http://jadyer.cn/> on 2015/08/08 20:18.
  */
 @Entity
 @DynamicInsert

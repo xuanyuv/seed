@@ -34,7 +34,7 @@ import java.util.Map;
  * 2、logback.xml 中的 PROJECT_NAME 修改为 工程名
  * 3、放置业务代码的包名由 com.jadyer.seed 修改为 com.jadyer.工程名
  * --------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2017/3/10 6:00.
+ * Created by 玄玉<http://jadyer.cn/> on 2017/3/10 6:00.
  */
 @Controller
 @RequestMapping(value="/sample")

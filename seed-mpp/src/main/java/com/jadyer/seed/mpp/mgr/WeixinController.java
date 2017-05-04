@@ -46,13 +46,13 @@ public class WeixinController extends WeixinMsgControllerCustomServiceAdapter {
         /*
         //回复带链接和表情的文本消息
         if("blog".equals(inTextMsg.getContent())){
-            return new WeixinOutTextMsg(inTextMsg).setContent("[右哼哼]欢迎访问<a href=\"https://jadyer.github.io/\">我的博客</a>[左哼哼]");
+            return new WeixinOutTextMsg(inTextMsg).setContent("[右哼哼]欢迎访问<a href=\"http://jadyer.cn/\">我的博客</a>[左哼哼]");
         }
         //回复多图文
         WeixinOutNewsMsg outMsg = new WeixinOutNewsMsg(inTextMsg);
-        outMsg.addNews("第一个大图文标题", "第一个大图文描述", "http://avatar.csdn.net/6/0/B/1_jadyer.jpg", "https://jadyer.github.io/");
+        outMsg.addNews("第一个大图文标题", "第一个大图文描述", "http://avatar.csdn.net/6/0/B/1_jadyer.jpg", "http://jadyer.cn/");
         outMsg.addNews("第二个图文的标题", "第二个图文的描述", "http://img.my.csdn.net/uploads/201507/26/1437881866_3678.png", "https://github.com/jadyer");
-        outMsg.addNews("第三个图文的标题", "第三个图文的描述", "http://img.my.csdn.net/uploads/201009/14/7892753_1284475095fyR0.jpg", "https://jadyer.github.io/2015/10/20/wechat-dev-ngrok-pagekite/");
+        outMsg.addNews("第三个图文的标题", "第三个图文的描述", "http://img.my.csdn.net/uploads/201009/14/7892753_1284475095fyR0.jpg", "http://jadyer.cn/2015/10/20/wechat-dev-ngrok-pagekite/");
         return outMsg;
         */
         //防伪
@@ -169,7 +169,7 @@ public class WeixinController extends WeixinMsgControllerCustomServiceAdapter {
         WeixinTemplateMsg templateMsg = new WeixinTemplateMsg();
         templateMsg.setTouser(openid);
         templateMsg.setTemplate_id(templateid);
-        templateMsg.setUrl("https://jadyer.github.io/");
+        templateMsg.setUrl("http://jadyer.cn/");
         templateMsg.setData(data);
         return WeixinHelper.pushWeixinTemplateMsgToFans(WeixinTokenHolder.getWeixinAccessToken(appid), templateMsg);
     }
@@ -189,7 +189,7 @@ public class WeixinController extends WeixinMsgControllerCustomServiceAdapter {
     @RequestMapping(value="/createWeixinMenu")
     public WeixinErrorInfo createWeixinMenu(){
         String accesstoken = "nHVQXjVPWlyvdglrU6EgGnH_MzvdltddS4HOzUJocjX-wb_NVOi-6rJjumZJayRqwHT7xx80ziBaDCXc6dqddVHheP7g6aJAxv71Lwj3Cxg";
-        WeixinSubViewButton btn11 = new WeixinSubViewButton("我的博客", "https://jadyer.github.io/");
+        WeixinSubViewButton btn11 = new WeixinSubViewButton("我的博客", "http://jadyer.cn/");
         WeixinSubViewButton btn22 = new WeixinSubViewButton("我的GitHub", "http://jadyer.tunnel.mobi/weixin/getOpenid?oauth=base&openid=openid");
         WeixinSubClickButton btn33 = new WeixinSubClickButton("历史上的今天", "123abc");
         WeixinSubClickButton btn44 = new WeixinSubClickButton("天气预报", "456");
@@ -210,7 +210,7 @@ public class WeixinController extends WeixinMsgControllerCustomServiceAdapter {
         WeixinCustomTextMsg customTextMsg = new WeixinCustomTextMsg(openid, new WeixinCustomTextMsg.Text("[呲牙]SDK已发布，详见<a href=\"https://github.com/jadyer/seed\">我的Github</a>[呲牙]"));
         WeixinHelper.pushWeixinMsgToFans(accesstoken, customTextMsg);
         //推图文消息
-        WeixinCustomNewsMsg.News.Article article11 = new WeixinCustomNewsMsg.News.Article("欢迎访问玄玉博客", "玄玉博客是一个开放态度的Java生态圈", "http://avatar.csdn.net/6/0/B/1_jadyer.jpg", "https://jadyer.github.io/");
+        WeixinCustomNewsMsg.News.Article article11 = new WeixinCustomNewsMsg.News.Article("欢迎访问玄玉博客", "玄玉博客是一个开放态度的Java生态圈", "http://avatar.csdn.net/6/0/B/1_jadyer.jpg", "http://jadyer.cn/");
         WeixinCustomNewsMsg.News.Article article22 = new WeixinCustomNewsMsg.News.Article("玄玉微信SDK", "玄玉微信SDK是一个正在研发中的SDK", "http://img.my.csdn.net/uploads/201507/26/1437881866_3678.png", "https://github.com/jadyer");
         WeixinCustomNewsMsg customNewsMsg = new WeixinCustomNewsMsg(openid, new WeixinCustomNewsMsg.News(new WeixinCustomNewsMsg.News.Article[]{article11, article22}));
         return WeixinHelper.pushWeixinMsgToFans(accesstoken, customNewsMsg);

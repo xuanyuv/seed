@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 /**
- * Created by 玄玉<https://jadyer.github.io/> on 2017/3/10 5:35.
+ * Created by 玄玉<http://jadyer.cn/> on 2017/3/10 5:35.
  */
 @Component
 class ScsHelper {

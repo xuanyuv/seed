@@ -80,7 +80,7 @@ function login(){
         function(data){
             if(0 == data.code){
                 //window.location.href = [[@{/view?url=admin/info}]];
-                window.location.href = [[@{/view(url='admin/info',token='https://github.com/jadyer',mpurl='https://jadyer.github.io/')}]];
+                window.location.href = [[@{/view(url='admin/info',token='https://github.com/jadyer',mpurl='http://jadyer.cn/')}]];
             }else{
                 o.attr("disabled", false).text("登录").css({"background":"#5bb75b", "cursor":"auto"});
                  $.promptBox(data.msg, "#ffb848");

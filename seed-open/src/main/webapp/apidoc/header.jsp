@@ -38,7 +38,7 @@ $(function(){
         <td width="10" rowspan="4" bgcolor="#C2C2FE">&nbsp;</td>
         <td width="120" align="center"><a href="${ctx_apidoc}/code.rule.jsp"><font color="#009900">接口规则</font></a></td>
         <td width="10" rowspan="4" bgcolor="#C2C2FE">&nbsp;</td>
-        <td align="center"><a href="https://jadyer.github.io/" target="_blank"><font color="#009900">我的博客</font></a></td>
+        <td align="center"><a href="http://jadyer.cn/" target="_blank"><font color="#009900">我的博客</font></a></td>
     </tr>
     <tr>
         <td><a href="${ctx_apidoc}/boot.user.blacklist.get.jsp">黑名单查询</a></td>
@@ -49,7 +49,7 @@ $(function(){
         <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td align="center"><a href="${ctx_apidoc}/code.status.jsp"><font color="#009900">附录A：状态码</font></a></td>
-        <td width="120" align="center"><a href="http://jadyer.github.io" target="_blank"><font color="#009900">轻松一刻</font></a></td>
+        <td width="120" align="center"><a href="http://jadyer.cn" target="_blank"><font color="#009900">轻松一刻</font></a></td>
     </tr>
     <tr>
         <td><a href="${ctx_apidoc}/boot.apidoc.h5.jsp">接口文档页</a></td>

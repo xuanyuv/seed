@@ -78,7 +78,7 @@ import java.util.Set;
  * @history v1.2-->部分细节优化及增加描述：验证对象若其父类的属性也有验证注解则会一并验证
  * @history v1.1-->增加将验证的错误信息存入Map<String,String>后返回的<code>validateToMap()<code>方法
  * @history v1.0-->新建
- * Created by 玄玉<https://jadyer.github.io/> on 2015/06/09 23:25.
+ * Created by 玄玉<http://jadyer.cn/> on 2015/06/09 23:25.
  */
 public final class ValidatorUtil {
     private static Validator validator = null;

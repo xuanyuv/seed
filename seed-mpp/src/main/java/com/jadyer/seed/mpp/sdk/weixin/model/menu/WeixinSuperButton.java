@@ -6,7 +6,7 @@ package com.jadyer.seed.mpp.sdk.weixin.model.menu;
  * @see   而sub_button是一个可能为SubClickButton或SubViewButton子菜单项数组
  * @see 2.这里的父菜单指的是包含有二级菜单项的一级菜单
  * @create Oct 18, 2015 8:55:19 PM
- * @author 玄玉<https://jadyer.github.io/>
+ * @author 玄玉<http://jadyer.cn/>
  */
 public class WeixinSuperButton extends WeixinButton {
     private WeixinButton[] sub_button;

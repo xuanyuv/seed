@@ -33,7 +33,7 @@ import java.util.List;
  * 它可以不提供setter，但必须提供getter，且必须为public（即便该属性只给自己类里面被调用）
  * 注意：只是List、Map等等是这样，其它类型的属性必须同时提供setter和getter
  * -----------------------------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2015/11/29 15:30.
+ * Created by 玄玉<http://jadyer.cn/> on 2015/11/29 15:30.
  */
 @Component
 @ConfigurationProperties(prefix=BootProperties.PREFIX)

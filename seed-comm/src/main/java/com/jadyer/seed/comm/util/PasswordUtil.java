@@ -19,7 +19,7 @@ import java.security.spec.InvalidKeySpecException;
  * @version 1.0
  * @history 1.0-->初始化，增加加盐Hash以及密码验证的方法
  * @update 2016/7/7 13:12.
- * Created by 玄玉<https://jadyer.github.io/> on 2016/7/7 9:37.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/7/7 9:37.
  */
 public final class PasswordUtil {
     private static final String PBKDF2_ALGORITHM = "PBKDF2WithHmacSHA1";

@@ -1,7 +1,7 @@
 package com.jadyer.seed.controller.swagger;
 
 /**
- * Created by 玄玉<https://jadyer.github.io/> on 2016/9/26 14:41.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/9/26 14:41.
  */
 class SwaggerDemoUser {
     private long id;

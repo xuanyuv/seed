@@ -25,7 +25,7 @@ import java.util.concurrent.Future;
  * 2.有人说：也可以在接口上使用@Transactional显式指定事务属性，它将覆盖Spring-Data-JPA提供的默认值
  *   但经过我的试验，发现save()/delete()方法还是使用了@Transactional，而非@Transactional(readOnly=true)
  * -----------------------------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2015/08/29 18:04.
+ * Created by 玄玉<http://jadyer.cn/> on 2015/08/29 18:04.
  */
 public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Long> {
     @Query("SELECT st.name as name, st.url as url FROM ScheduleTask st WHERE st.id IN (?1)")

@@ -39,7 +39,7 @@ import org.springframework.core.io.support.ResourcePropertySource;
  * 它可以从配置文件中，读取对应的key-value，然后会放到Environment
  * 它可以读取'键值对'的配置文件，且支持读取多个配置文件中的属性值，读取后会放到Environment中
  * ----------------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2016/5/14 13:22.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/5/14 13:22.
  */
 @Configuration
 @ConditionalOnClass(StringEncryptor.class)
@@ -75,7 +75,7 @@ public class JasyptConfiguration implements EnvironmentAware {
         SimpleStringPBEConfig config = new SimpleStringPBEConfig();
 
         //Master Password used for Encryption/Decryption of properties.
-        config.setPassword(this.getProperty(this.environment, "jasypt.encryptor.password", "https://jadyer.github.io/"));
+        config.setPassword(this.getProperty(this.environment, "jasypt.encryptor.password", "http://jadyer.cn/"));
 
         //Encryption/Decryption Algorithm to be used by Jasypt.
         //For more info on how to get available algorithms visit: <a href="http://www.jasypt.org/cli.html"/>Jasypt CLI Tools Page</a>.

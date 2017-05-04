@@ -15,7 +15,7 @@ endpoints:
 # 此配置仅供http://127.0.0.1/info使用
 info:
   myversion: 8.7.0
-  myblogurl: https://jadyer.github.io/
+  myblogurl: http://jadyer.cn/
 
 
 # 配置文件属性读取之扫描包、多属性、随机数（各参数间也可直接引用来使用，且随机数支持随机字符串和数字）

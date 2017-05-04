@@ -14,7 +14,7 @@ import org.apache.mina.filter.codec.demux.MessageDecoderResult;
  * <p>
  *     用于解码接收到的HTTP请求报文，目前只支持HTTP/1.0和HTTP/1.1
  * </p>
- * Created by 玄玉<https://jadyer.github.io/> on 2012/09/03 22:27.
+ * Created by 玄玉<http://jadyer.cn/> on 2012/09/03 22:27.
  */
 public class ServerProtocolHTTPDecoder implements MessageDecoder {
     @Override
@@ -117,7 +117,7 @@ public class ServerProtocolHTTPDecoder implements MessageDecoder {
      * cooBankNo=CMBC_CREDIT&signType=MD5&amount=499900&orderValidityNum=15&CVVNo=255
      * ----------------------------------------------------------------------------------------------
      * 至于上面所列的GET和POST请求原始报文中为何会出现^M
-     * 我的博客上有详细说明：https://jadyer.github.io/2012/11/22/linux-crlf/
+     * 我的博客上有详细说明：http://jadyer.cn/2012/11/22/linux-crlf/
      * ----------------------------------------------------------------------------------------------
      * @param in 装载HTTP请求报文的IoBuffer
      */

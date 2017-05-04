@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  * @history v2.0-->采用枚举的方式实现单例
  * @history v1.0-->通过内部类实现单例
  * -----------------------------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2012/6/7 17:30.
+ * Created by 玄玉<http://jadyer.cn/> on 2012/6/7 17:30.
  */
 public enum ConfigUtil {
     INSTANCE;

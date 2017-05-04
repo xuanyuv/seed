@@ -15,7 +15,7 @@ import redis.clients.jedis.JedisCluster;
  *     <li>https://www.v2ex.com/t/186712</li>
  *     <li>http://stackoverflow.com/questions/38234507/redis-cluster-update-keys-in-different-node-with-lua-script</li>
  * </ul>
- * Created by 玄玉<https://jadyer.github.io/> on 2016/9/18 12:22.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/9/18 12:22.
  */
 public final class RateLimiterLua {
     private JedisCluster jedisCluster;
@@ -111,7 +111,7 @@ import redis.clients.jedis.JedisCluster;
 import java.util.HashMap;
 import java.util.Map;
 //TokenBucket算法實現（易引发RaceCondition）
-//Created by 玄玉<https://jadyer.github.io/> on 2016/9/12 10:41.
+//Created by 玄玉<http://jadyer.cn/> on 2016/9/12 10:41.
 @Deprecated
 public class RateLimiter {
     private JedisCluster jedisCluster;

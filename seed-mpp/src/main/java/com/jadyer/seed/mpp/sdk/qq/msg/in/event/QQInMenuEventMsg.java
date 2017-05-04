@@ -24,7 +24,7 @@ package com.jadyer.seed.mpp.sdk.qq.msg.in.event;
  * @see </xml>
  * @see -----------------------------------------------------------------------------------------------------------
  * @create Nov 26, 2015 7:39:34 PM
- * @author 玄玉<https://jadyer.github.io/>
+ * @author 玄玉<http://jadyer.cn/>
  */
 public class QQInMenuEventMsg extends QQInEventMsg {
     /**

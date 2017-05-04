@@ -10,7 +10,7 @@ import com.jadyer.seed.mpp.sdk.weixin.msg.out.WeixinOutTextMsg;
 /**
  * 回复微信公众号消息的构建器
  * @create Oct 18, 2015 2:01:23 PM
- * @author 玄玉<https://jadyer.github.io/>
+ * @author 玄玉<http://jadyer.cn/>
  */
 public class WeixinOutMsgXmlBuilder {
     private WeixinOutMsgXmlBuilder(){}
@@ -51,7 +51,7 @@ public class WeixinOutMsgXmlBuilder {
      * 回复文本消息
      * @see -----------------------------------------------------------------------------------------------------------
      * @see 1.汉字直接传入即可,不需要手工编码,微信上回显的不会乱码(微信服务器POST消息时用的是UTF-8编码,响应消息时也要UTF-8编码)
-     * @see 2.若想在文本中写链接,那么传入"欢迎访问<a href=\"https://jadyer.github.io/\">我的博客</a>"即可
+     * @see 2.若想在文本中写链接,那么传入"欢迎访问<a href=\"http://jadyer.cn/\">我的博客</a>"即可
      * @see 3.下面是开发者服务器回复给微信服务器的XML报文格式
      * @see <xml>
      * @see     <ToUserName><![CDATA[toUser]]></ToUserName>

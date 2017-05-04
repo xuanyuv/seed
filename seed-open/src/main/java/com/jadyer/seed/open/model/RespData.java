@@ -1,7 +1,7 @@
 package com.jadyer.seed.open.model;
 
 /**
- * Created by 玄玉<https://jadyer.github.io/> on 2016/5/8 19:58.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/5/8 19:58.
  */
 public class RespData {
     private String code;

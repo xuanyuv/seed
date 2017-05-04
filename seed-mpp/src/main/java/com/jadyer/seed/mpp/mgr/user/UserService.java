@@ -17,7 +17,7 @@ public class UserService {
     private MenuInfoRepository menuInfoRepository;
 
     private String buildEncryptPassword(String password){
-        return DigestUtils.md5Hex(password + "https://jadyer.github.io/");
+        return DigestUtils.md5Hex(password + "http://jadyer.cn/");
     }
 
     UserInfo findByUsernameAndPassword(String username, String password){

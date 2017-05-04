@@ -118,7 +118,7 @@ public class QssController {
      */
     private boolean verifyDynamicPassword(String dynamicPassword){
         String timeFlag = DateFormatUtils.format(new Date(), "HHmm").substring(0, 3) + "0";
-        String generatePassword = DigestUtils.md5Hex(timeFlag + "https://jadyer.github.io/" + timeFlag);
+        String generatePassword = DigestUtils.md5Hex(timeFlag + "http://jadyer.cn/" + timeFlag);
         return StringUtils.isNotBlank(dynamicPassword) && generatePassword.equalsIgnoreCase(dynamicPassword);
     }
 }

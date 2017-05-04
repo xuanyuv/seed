@@ -13,7 +13,7 @@ import org.apache.mina.filter.codec.demux.DemuxingProtocolCodecFactory;
  * 只要发现一个MessageDecoder不是对应的解码器，就从数组中移除，直到找到合适的MessageDecoder
  * 如果最后发现数组为空，就表示没有找到对应的MessageDecoder，最后抛出异常
  * ----------------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2012/12/22 19:24.
+ * Created by 玄玉<http://jadyer.cn/> on 2012/12/22 19:24.
  */
 class ServerProtocolCodecFactory extends DemuxingProtocolCodecFactory {
     ServerProtocolCodecFactory(){

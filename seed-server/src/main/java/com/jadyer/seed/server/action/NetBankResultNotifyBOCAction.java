@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 
 /**
  * 中国银行网银结果通知
- * Created by 玄玉<https://jadyer.github.io/> on 2013/9/3 20:40.
+ * Created by 玄玉<http://jadyer.cn/> on 2013/9/3 20:40.
  */
 @Controller
 public class NetBankResultNotifyBOCAction implements GenericAction {

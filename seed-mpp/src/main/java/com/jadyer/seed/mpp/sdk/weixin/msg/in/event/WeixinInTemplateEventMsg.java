@@ -51,7 +51,7 @@ package com.jadyer.seed.mpp.sdk.weixin.msg.in.event;
  *     <Status><![CDATA[success]]></Status>
  * </xml>
  * -----------------------------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2016/5/18 20:06.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/5/18 20:06.
  */
 public class WeixinInTemplateEventMsg extends WeixinInEventMsg {
     /**

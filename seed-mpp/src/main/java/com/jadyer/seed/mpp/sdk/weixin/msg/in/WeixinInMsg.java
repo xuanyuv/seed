@@ -5,7 +5,7 @@ package com.jadyer.seed.mpp.sdk.weixin.msg.in;
  * @see 1.禁止SDK接入方使用此类
  * @see 2.由于事件推送类消息没有msgId,所以没有在这里定义
  * @create Oct 18, 2015 11:18:47 AM
- * @author 玄玉<https://jadyer.github.io/>
+ * @author 玄玉<http://jadyer.cn/>
  */
 public abstract class WeixinInMsg {
     /**

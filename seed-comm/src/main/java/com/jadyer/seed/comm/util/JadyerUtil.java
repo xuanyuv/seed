@@ -121,7 +121,7 @@ import java.util.Map;
  * @history v1.3-->修改<code>getSysJournalNo()</code>实现细节为<code>java.util.UUID.randomUUID()</code>
  * @history v1.2-->新增<code>getString()</code>字节数组转为字符串方法
  * @history v1.1-->新增<code>getHexSign()</code>通过指定算法签名字符串方法
- * Created by 玄玉<https://jadyer.github.io/> on 2012/12/22 19:00.
+ * Created by 玄玉<http://jadyer.cn/> on 2012/12/22 19:00.
  */
 public final class JadyerUtil {
     private static BigInteger sequenceNo = new BigInteger("0");
@@ -426,7 +426,7 @@ public final class JadyerUtil {
     /**
      * 判断是否为Ajax请求
      * @create Nov 1, 2015 1:30:55 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * @author 玄玉<http://jadyer.cn/>
      */
     public static boolean isAjaxRequest(HttpServletRequest request){
         String requestType = request.getHeader("X-Requested-With");
@@ -444,7 +444,7 @@ public final class JadyerUtil {
      * @see 且只能处理当前类,暂不能处理父类和子类
      * @see 且类属性只能是String
      * @create Dec 17, 2015 4:44:47 PM
-     * @author 玄玉<https://jadyer.github.io/>
+     * @author 玄玉<http://jadyer.cn/>
      */
     public static <T> T requestToBean(HttpServletRequest request, Class<T> beanClass){
         try{
@@ -1248,11 +1248,11 @@ public final class JadyerUtil {
             case "xml":
                 multiCommentPrefix[0] = "<!--";
                 multiCommentSuffix[0] = "-->";
-                singleCommentPrefix = "https://jadyer.github.io/";
+                singleCommentPrefix = "http://jadyer.cn/";
                 break;
             case "properties":
-                multiCommentPrefix[0] = "https://jadyer.github.io/";
-                multiCommentSuffix[0] = "https://jadyer.github.io/";
+                multiCommentPrefix[0] = "http://jadyer.cn/";
+                multiCommentSuffix[0] = "http://jadyer.cn/";
                 singleCommentPrefix = "#";
                 break;
             case "jsp":
@@ -1277,9 +1277,9 @@ public final class JadyerUtil {
                 singleCommentPrefix = "//";
                 break;
             default:
-                multiCommentPrefix[0] = "https://jadyer.github.io/";
-                multiCommentSuffix[0] = "https://jadyer.github.io/";
-                singleCommentPrefix = "https://jadyer.github.io/";
+                multiCommentPrefix[0] = "http://jadyer.cn/";
+                multiCommentSuffix[0] = "http://jadyer.cn/";
+                singleCommentPrefix = "http://jadyer.cn/";
                 break;
         }
         /*
@@ -1302,8 +1302,8 @@ public final class JadyerUtil {
                     //css和js标记的起始标签分别有不止一种的写法,故startsWith
                     if(content.startsWith("<style") || content.startsWith("<script")){
                         //这里之所以取下标为0的元素,是因为上面在初始化多行的注释标记时,均将页面中的<!---->注释标记放置在第0个元素
-                        multiCommentPrefix[0] = "https://jadyer.github.io/";
-                        multiCommentSuffix[0] = "https://jadyer.github.io/";
+                        multiCommentPrefix[0] = "http://jadyer.cn/";
+                        multiCommentSuffix[0] = "http://jadyer.cn/";
                     }
                     if(content.equals("</style>") || content.equals("</script>")){
                         multiCommentPrefix[0] = "<!--";

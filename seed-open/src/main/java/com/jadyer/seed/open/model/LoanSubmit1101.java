@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * 针对1101产品的申请单参数
- * Created by 玄玉<https://jadyer.github.io/> on 2016/5/11 13:15.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/5/11 13:15.
  */
 public class LoanSubmit1101 extends LoanSubmit {
     @Size(min=4, max=4)

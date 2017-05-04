@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by 玄玉<https://jadyer.github.io/> on 2016/6/26 11:03.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/6/26 11:03.
  */
 @Configuration
 @ConfigurationProperties(prefix="auth")
@@ -36,7 +36,7 @@ public class AuthConfiguration {
 
     /**
      * 权限验证
-     * Created by 玄玉<https://jadyer.github.io/> on 2014/11/3 10:39.
+     * Created by 玄玉<http://jadyer.cn/> on 2014/11/3 10:39.
      */
     private static class AuthFilter extends OncePerRequestFilter {
         private String url;

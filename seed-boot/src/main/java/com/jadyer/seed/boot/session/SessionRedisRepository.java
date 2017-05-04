@@ -8,7 +8,7 @@ import redis.clients.jedis.JedisCluster;
 import java.io.Serializable;
 
 /**
- * Created by 玄玉<https://jadyer.github.io/> on 2016/6/19 19:56.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/6/19 19:56.
  */
 class SessionRedisRepository {
     private JedisCluster jedisCluster;

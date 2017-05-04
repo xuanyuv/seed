@@ -34,7 +34,7 @@ import java.util.Map;
  * @see 经测试:用微信扫描GBK编码的中文二维码时出现乱码,用UTF-8编码时微信可正常识别
  * @see       并且MultiFormatWriter.encode()时若传入hints参数来指定UTF-8编码中文时,微信压根就不识别所生成的二维码
  * @see       所以这里使用的是这种方式new String(content.getBytes("UTF-8"), "ISO-8859-1")
- * @see       encodeQRCodeImage("我的博客：https://jadyer.github.io/", null, "C:/Users/Jadyer/Desktop/myQRCodeImage.png", 300, 300, "C:/Users/Jadyer/Desktop/玄玉.png");
+ * @see       encodeQRCodeImage("我的博客：http://jadyer.cn/", null, "C:/Users/Jadyer/Desktop/myQRCodeImage.png", 300, 300, "C:/Users/Jadyer/Desktop/玄玉.png");
  * @see       System.out.println(decodeQRCodeImage("C:/Users/Jadyer/Desktop/myQRCodeImage.png", null));
  * @see -----------------------------------------------------------------------------------------------------------------------
  * @see 将logo图片加入二维码中间时,需注意以下几点
@@ -46,7 +46,7 @@ import java.util.Map;
  * @history v1.0-->方法新建,目前仅支持二维码的生成和解析,生成二维码时支持添加logo头像
  * @editor Sep 10, 2013 9:32:23 PM
  * @create Sep 10, 2013 2:08:16 PM
- * @author 玄玉<https://jadyer.github.io/>
+ * @author 玄玉<http://jadyer.cn/>
  */
 public final class ZXingUtil {
     private ZXingUtil(){}

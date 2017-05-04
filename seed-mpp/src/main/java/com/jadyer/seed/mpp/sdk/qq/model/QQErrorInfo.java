@@ -5,7 +5,7 @@ package com.jadyer.seed.mpp.sdk.qq.model;
  * @see 自定义菜单创建成功时QQ返回{"errcode":0,"errmsg":"ok"}
  * @see 自定义菜单创建失败时QQ返回{"errcode":40018,"errmsg":"invalid button name size"}
  * @create Nov 28, 2015 8:35:57 PM
- * @author 玄玉<https://jadyer.github.io/>
+ * @author 玄玉<http://jadyer.cn/>
  */
 public class QQErrorInfo {
     private int errcode;

@@ -2,7 +2,7 @@ package com.jadyer.seed.server.model;
 
 /**
  * 对应沃前置系统的订单支付后台通知接口
- * Created by 玄玉<https://jadyer.github.io/> on 2012/12/25 22:10.
+ * Created by 玄玉<http://jadyer.cn/> on 2012/12/25 22:10.
  */
 public class OrderResultNotify {
     private String merNo;          //商户号

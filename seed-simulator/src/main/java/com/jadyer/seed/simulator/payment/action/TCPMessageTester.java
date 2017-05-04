@@ -14,7 +14,7 @@ import java.util.Map;
 
 /**
  * TCP报文测试器
- * Created by 玄玉<https://jadyer.github.io/> on 2013/04/05 21:32.
+ * Created by 玄玉<http://jadyer.cn/> on 2013/04/05 21:32.
  */
 public class TCPMessageTester extends JPanel implements ActionListener {
     private static final long serialVersionUID = -2783534335348156619L;

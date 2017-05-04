@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * 参考http://www.infoq.com/cn/articles/Next-Generation-Session-Management-with-Spring-Session
  * 参考https://github.com/spring-projects/spring-session/blob/master/spring-session/src/main/java/org/springframework/session/web/http/SessionRepositoryFilter.java
- * Created by 玄玉<https://jadyer.github.io/> on 2016/6/19 18:21.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/6/19 18:21.
  */
 class SessionRedisFilter extends OncePerRequestFilter {
     private static final String DEFAULT_SESSION_ALIAS_PARAM_NAME = "_s";

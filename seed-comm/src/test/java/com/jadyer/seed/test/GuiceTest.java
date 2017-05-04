@@ -14,7 +14,7 @@ import org.junit.Test;
  * https://github.com/google/guice有两种启动模式
  * 1.Stage.DEVELOPMENT即开发模式，Guice会根据需要加载单件对象，这样应用程序可以快速启动，只加载正在测试的部分
  * 2.Stage.PRODUCTION即产品模式，Guice会在启动时加载全部单件对象，可以帮助我们尽早捕获错误，提前优化性能
- * Created by 玄玉<https://jadyer.github.io/> on 2015/11/15 20:07.
+ * Created by 玄玉<http://jadyer.cn/> on 2015/11/15 20:07.
  */
 public class GuiceTest {
     /**
@@ -82,7 +82,7 @@ interface UserService{
 class UserServiceImpl implements UserService{
     @Override
     public void blog() {
-        System.out.println("my blog is https://jadyer.github.io/");
+        System.out.println("my blog is http://jadyer.cn/");
     }
 }
 

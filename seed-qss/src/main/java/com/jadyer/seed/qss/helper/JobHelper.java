@@ -47,7 +47,7 @@ class JobHelper {
 
     /**
      * 通过HTTP接口调用任务
-     * Created by 玄玉<https://jadyer.github.io/> on 2015/8/8 20:33.
+     * Created by 玄玉<http://jadyer.cn/> on 2015/8/8 20:33.
      */
     static void invokMethod(ScheduleTask task){
         LogUtil.getLogger().info("start-->定时任务{}=[{}]", task.getName(), task.getUrl());

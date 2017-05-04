@@ -52,7 +52,7 @@ package com.jadyer.seed.comm.exception;
  *     ... 68 more
  * [20150828 10:34:59][qtp594160358-16][AbstractHandlerExceptionResolver.logException]Handler execution resulted in exception: CronExpression不正确
  * -----------------------------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2015/8/28 10:37.
+ * Created by 玄玉<http://jadyer.cn/> on 2015/8/28 10:37.
  */
 public class SeedException extends RuntimeException {
     private static final long serialVersionUID = 601366631919634564L;

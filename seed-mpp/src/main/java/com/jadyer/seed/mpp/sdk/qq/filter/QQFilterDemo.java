@@ -21,7 +21,7 @@ import java.io.PrintWriter;
  * <p>
  *     自行提供appid和appurl，请求参数需包含appid=123456789&oauth=base&openid=openid
  * </p>
- * Created by 玄玉<https://jadyer.github.io/> on 2015/12/24 12:12.
+ * Created by 玄玉<http://jadyer.cn/> on 2015/12/24 12:12.
  */
 public class QQFilterDemo implements Filter {
     @Override

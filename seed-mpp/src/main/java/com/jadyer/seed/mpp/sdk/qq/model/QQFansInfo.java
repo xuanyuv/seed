@@ -4,7 +4,7 @@ package com.jadyer.seed.mpp.sdk.qq.model;
  * 封装粉丝基本信息
  * @see <<QQ公众号API文档.pdf>>-20150907版中没有写返回openid,但在20151128222421时测试发现会返回openid
  * @create Nov 28, 2015 8:45:49 PM
- * @author 玄玉<https://jadyer.github.io/>
+ * @author 玄玉<http://jadyer.cn/>
  */
 public class QQFansInfo {
     private int subscribe;         //用户是否订阅该公众号标识,值为0时,代表此用户没有关注该公众号,拉取不到其余信息

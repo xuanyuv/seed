@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 
 /**
  * 申请单基本参数
- * Created by 玄玉<https://jadyer.github.io/> on 2016/5/10 18:58.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/5/10 18:58.
  */
 public class LoanSubmit {
     @NotBlank

@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  * @history v1.1-->编码器和解码器中的字符处理,升级为Mina2.x提供的<code>putString()</code>方法来处理
  * @history v1.0-->初建
  * ------------------------------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2012/10/03 00:42.
+ * Created by 玄玉<http://jadyer.cn/> on 2012/10/03 00:42.
  */
 public final class MinaUtil {
     public static final String DEFAULT_CHARSET = "UTF-8";          //设置默认通信报文编码为UTF-8

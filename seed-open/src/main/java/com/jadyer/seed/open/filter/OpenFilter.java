@@ -45,7 +45,7 @@ import java.util.Vector;
  * <p>
  *     负责解析请求参数以及加解密等操作
  * </p>
- * Created by 玄玉<https://jadyer.github.io/> on 2016/5/8 19:34.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/5/8 19:34.
  */
 public class OpenFilter extends OncePerRequestFilter {
     private static final int TIMESTAMP_VALID_MILLISECONDS = 1000 * 60 * 10; //时间戳验证：服务端允许客户端请求最大时间误差为10分钟

@@ -16,7 +16,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * -------------------------------------------------------------------
  * 接口地址为：http://127.0.0.1/boot/swagger-ui.html
  * -------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2016/9/26 13:55.
+ * Created by 玄玉<http://jadyer.cn/> on 2016/9/26 13:55.
  */
 @Configuration
 @EnableSwagger2
@@ -25,7 +25,7 @@ public class SwaggerConfiguration {
         return new ApiInfoBuilder()
                 .title("SpringBoot集成Swagger2的示例")
                 .description("REST风格的APIs")
-                .termsOfServiceUrl("https://jadyer.github.io/")
+                .termsOfServiceUrl("http://jadyer.cn/")
                 .contact(new Contact("玄玉", "https://github.com/jadyer/seed", "jadyer@yeah.net"))
                 .version("1.0")
                 .build();

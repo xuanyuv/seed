@@ -38,7 +38,7 @@ import org.quartz.JobExecutionException;
  * 所谓幂等性即该方法同样的参数至少在一个时间区间内，调用1次和调用10次100次结果都是一样的
  * 支持幂等性最好在进入方法时就判断，发现已经执行过就立即返回而不是再再执行一遍，以节省资源
  * ------------------------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2015/8/8 20:50.
+ * Created by 玄玉<http://jadyer.cn/> on 2015/8/8 20:50.
  */
 @DisallowConcurrentExecution
 public class JobDisallowConcurrentFactory implements Job {

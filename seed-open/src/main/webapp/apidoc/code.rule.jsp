@@ -27,9 +27,9 @@
         </ul>
     </li>
     <li>
-        测试环境地址为：http://jadyer.github.io/open/router/rest<br/>
-        生产环境地址为：http://jadyer.github.io/open/router/rest<br/>
-        <font color="blue">注①：H5地址为：http://jadyer.github.io/open/router/rest/h5</font><br/>
+        测试环境地址为：http://jadyer.cn/open/router/rest<br/>
+        生产环境地址为：http://jadyer.cn/open/router/rest<br/>
+        <font color="blue">注①：H5地址为：http://jadyer.cn/open/router/rest/h5</font><br/>
         <font color="green">注②：连接生产环境，合作方需提供客户端IP，开放平台将其纳入白名单</font><br/>
         <font color="#FF00FF">注③：接口日调用次数限制，目前后台统一配置为999,999,999，等于未做限制</font>
     </li>

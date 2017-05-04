@@ -18,13 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by 玄玉<https://jadyer.github.io/> on 2017/3/10 5:27.
+ * Created by 玄玉<http://jadyer.cn/> on 2017/3/10 5:27.
  */
 //@EntityScan(basePackages="${scan.base.packages}")
 //@EnableJpaRepositories(basePackages="${scan.base.packages}")
 @SpringBootApplication(scanBasePackages="${scan.base.packages}", exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class ScsBootStrap extends SpringBootServletInitializer {
-    //启动方式：https://jadyer.github.io/2016/07/29/idea-springboot-jsp/
+    //启动方式：http://jadyer.cn/2016/07/29/idea-springboot-jsp/
     public static void main(String[] args) {
         new SpringApplicationBuilder().sources(ScsBootStrap.class).profiles("local").run(args);
     }
