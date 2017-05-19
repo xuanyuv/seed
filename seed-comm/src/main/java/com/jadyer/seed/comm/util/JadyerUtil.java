@@ -1,4 +1,4 @@
-/**
+/*
  *                    _ooOoo_
  *                   o8888888o
  *                   88" . "88
@@ -24,7 +24,7 @@
  * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
  */
 
-/**
+/*
 =======================================================
                 .----.
              _.'__    `.
@@ -150,59 +150,32 @@ public final class JadyerUtil {
     /**
      * 获取Map中的属性
      * <p>
-     *     由于Map.toString()打印出来的参数值对，是横着一排的...参数多的时候，不便于查看各参数值
+     *     由于Map.toString()打印出来的参数值对，是横着一排的...参数多的时候，不便于查看各个值
      *     故此仿照commons-lang3.jar中的ReflectionToStringBuilder.toString()编写了本方法
      * </p>
-     * @return String key11=value11 \n key22=value22 \n key33=value33 \n......
-     */
-    public static String buildStringFromMap(Map<String, String> map){
-        if(null==map || map.isEmpty()){
-            return "";
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append(map.getClass().getName()).append("@").append(map.hashCode()).append("[");
-        for(Map.Entry<String,String> entry : map.entrySet()){
-            sb.append("\n").append(entry.getKey()).append("=").append(entry.getValue());
-        }
-        return sb.append("\n]").toString();
-    }
-
-
-    /**
-     * 获取Map中的属性
      * <p>
-     *     该方法的参数适用于打印Map<String, String[]>的情况，用途描述见{@link #buildStringFromMap(Map)}
+     *     目前只支持Map<String,String>、Map<String,String[]>、Map<String,byte[]>三种类型
      * </p>
-     * @return String key11=value11 \n key22=value22 \n key33=value33 \n......
      */
-    public static String buildStringFromMapWithStringArray(Map<String, String[]> map){
+    public static String buildStringFromMap(Map<String, ?> map){
         if(null==map || map.isEmpty()){
             return "";
         }
         StringBuilder sb = new StringBuilder();
         sb.append(map.getClass().getName()).append("@").append(map.hashCode()).append("[");
-        for(Map.Entry<String,String[]> entry : map.entrySet()){
-            sb.append("\n").append(entry.getKey()).append("=").append(Arrays.toString(entry.getValue()));
-        }
-        return sb.append("\n]").toString();
-    }
-
-
-    /**
-     * 获取Map中的属性
-     * <p>
-     *     该方法的参数适用于打印Map<String, byte[]>的情况，用途描述见{@link #buildStringFromMap(Map)}
-     * </p>
-     * @return String key11=value11 \n key22=value22 \n key33=value33 \n......
-     */
-    public static String buildStringFromMapWithByteArray(Map<String, byte[]> map){
-        if(null==map || map.isEmpty()){
-            return "";
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append(map.getClass().getName()).append("@").append(map.hashCode()).append("[");
-        for(Map.Entry<String,byte[]> entry : map.entrySet()){
-            sb.append("\n").append(entry.getKey()).append("=").append(new String(entry.getValue()));
+        for(Map.Entry<String, ?> entry : map.entrySet()){
+            sb.append("\n").append(entry.getKey()).append("=");
+            //打印方式随值类型不同而不同
+            Object _value = entry.getValue();
+            if(_value instanceof String){
+                sb.append(_value);
+            }
+            if(_value instanceof String[]){
+                sb.append(Arrays.toString((String[])_value));
+            }
+            if(_value instanceof byte[]){
+                sb.append(new String((byte[])_value));
+            }
         }
         return sb.append("\n]").toString();
     }
@@ -216,22 +189,22 @@ public final class JadyerUtil {
      * </p>
      * @return String key11=value11 \n key22=value22 \n key33=value33 \n......
      */
-    public static String buildStringFromObjectWithByte(Object obj){
-        if(null == obj){
+    public static String buildStringFromJavaBeanOfByte(Object bean){
+        if(null == bean){
             return "";
         }
         //局部的StringBuffer一律StringBuilder之
         StringBuilder sb = new StringBuilder();
-        sb.append(obj.getClass().getName()).append("@").append(obj.hashCode()).append("[");
-        for(Field field : obj.getClass().getDeclaredFields()){
+        sb.append(bean.getClass().getName()).append("@").append(bean.hashCode()).append("[");
+        for(Field field : bean.getClass().getDeclaredFields()){
             //构造getter方法
             String methodName = "get" + StringUtils.capitalize(field.getName());
             Object fieldValue;
             try{
                 //执行getter方法,获取其返回值
-                fieldValue = obj.getClass().getDeclaredMethod(methodName).invoke(obj);
+                fieldValue = bean.getClass().getDeclaredMethod(methodName).invoke(bean);
             }catch(Exception e){
-                //一旦发生异常,便将属性值置为UnKnown,故此处没必要一一捕获所有异常
+                //一旦发生异常，便将属性值置为UnKnown，故此处没必要一一捕获所有异常
                 sb.append("\n").append(field.getName()).append("=UnKnown");
                 continue;
             }
@@ -371,18 +344,6 @@ public final class JadyerUtil {
 
 
     /**
-     * 判断一个整数是否为奇数
-     * @see 1.本方法中0/-0/-2/2都不是奇数,-1/1/-3/3都是奇数
-     * @see 2.算术运算和逻辑运行要比乘除运算更高效,计算的结果也会更快
-     * @see 3.如果使用num % 2 == 1作为判断条件,那么负奇数的话就不适用了
-     * @return true--是奇数,false--不是奇数
-     */
-    public static boolean isOddNumber(int num){
-        return (num & 1) != 0;
-    }
-
-
-    /**
      * 判断是否为Ajax请求
      */
     public static boolean isAjaxRequest(HttpServletRequest request){
@@ -392,6 +353,18 @@ public final class JadyerUtil {
         }
         requestType = request.getHeader("x-requested-with");
         return null!=requestType && "XMLHttpRequest".equals(requestType);
+    }
+
+
+    /**
+     * 判断一个整数是否为奇数
+     * @see 1.本方法中0/-0/-2/2都不是奇数,-1/1/-3/3都是奇数
+     * @see 2.算术运算和逻辑运行要比乘除运算更高效,计算的结果也会更快
+     * @see 3.如果使用num % 2 == 1作为判断条件,那么负奇数的话就不适用了
+     * @return true--是奇数,false--不是奇数
+     */
+    public static boolean isOddNumber(int num){
+        return (num & 1) != 0;
     }
 
 
@@ -553,7 +526,7 @@ public final class JadyerUtil {
     public static Map<String, String> formatXMLString(String xmlString) {
         Map<String, String> resultMap = new HashMap<>();
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        transformerFactory.setAttribute("indent-number", new Integer(2));
+        transformerFactory.setAttribute("indent-number", 2);
         StringWriter writer = new StringWriter();
         Transformer transformer;
         try {
@@ -736,7 +709,7 @@ public final class JadyerUtil {
         if(!allowFileTypeList.contains(codeFileSuffix)){
             return;
         }
-        /**
+        /*
          * 初始化代码中的注释标记
          */
         int countsTotal = 0;    //合计行数

@@ -82,7 +82,7 @@ public class OpenFilter extends OncePerRequestFilter {
         //将请求入参解析到ReqData
         String method = request.getParameter("method");
         if(StringUtils.isNotBlank(method) && (method.endsWith("file.upload")||method.endsWith("h5"))){
-            reqDataStr = JadyerUtil.buildStringFromMapWithStringArray(request.getParameterMap());
+            reqDataStr = JadyerUtil.buildStringFromMap(request.getParameterMap());
             LogUtil.getLogger().debug("收到客户端IP=[{}]的请求报文为-->{}", reqIp, reqDataStr);
             reqData = BeanUtil.requestToBean(request, ReqData.class);
         }else{

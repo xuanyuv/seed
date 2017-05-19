@@ -3,13 +3,20 @@ package com.jadyer.seed.comm.util;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * @version v1.0
+ * @version v1.1
+ * @history v1.1-->增加beanToMap()方法
  * @history v1.0-->初建
  * Created by 玄玉<https://jadyer.github.io/> on 2017/5/18 17:22.
  */
@@ -52,7 +59,7 @@ public class BeanUtil {
      *     <li>实测拷贝效率由低到高依次为（最快的目前是cglib，也是推荐采用的）</li>
      *     <li>net.sf.cglib.beans.BeanCopier.copy()</li>
      *     <li>org.springframework.beans.BeanUtils.copyProperties()</li>
-     *     <li>com.jadyer.engine.common.util.JadyerUtil.beanCopyProperties()</li>
+     *     <li>com.jadyer.seed.comm.util.BeanUtil.copyProperties()</li>
      *     <li>org.apache.commons.beanutils.BeanUtils.copyProperties()</li>
      * </ul>
      * <p>
@@ -99,5 +106,42 @@ public class BeanUtil {
                 }
             }
         }
+    }
+
+
+    /**
+     * Bean属性转为Map，其中key=属性名，value=属性值
+     */
+    public static Map<String, String> beanToMap(Object bean) {
+        Map<String, String> dataMap = new HashMap<>();
+        //得到Bean的属性、暴露的方法和事件
+        //http://jadyer.cn/2013/09/24/spring-introspector-cleanup-listener/
+        BeanInfo beanInfo;
+        try {
+            beanInfo = Introspector.getBeanInfo(bean.getClass());
+        } catch (IntrospectionException e) {
+            throw new RuntimeException("分析类属性失败，堆栈轨迹如下", e);
+        }
+        //得到属性描述
+        PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+        for(PropertyDescriptor obj : propertyDescriptors){
+            //得到属性名
+            String propertyName = obj.getName();
+            if(!"class".equals(propertyName)){
+                try {
+                    ////获得setter
+                    //Method setterMethod = obj.getWriteMethod();
+                    //获得并执行getter
+                    Object result = obj.getReadMethod().invoke(bean);
+                    //放入Map
+                    dataMap.put(propertyName, null==result ? "" : result.toString());
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException("实例化JavaBean失败，堆栈轨迹如下", e);
+                } catch (InvocationTargetException e) {
+                    throw new RuntimeException("调用getter失败，堆栈轨迹如下", e);
+                }
+            }
+        }
+        return dataMap;
     }
 }

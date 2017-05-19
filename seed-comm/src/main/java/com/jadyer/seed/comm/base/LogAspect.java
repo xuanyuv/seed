@@ -56,7 +56,7 @@ public class LogAspect {
          *   所以此时request.getParameter()是无法获取到表单中的文本域的，这时可以借助文件上传组件来获取比如org.apache.commons.fileupload.FileItem
          */
         HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-        LogUtil.getLogger().info("{}()-->{}被调用, 客户端IP={}, 入参为[{}]", methodInfo, request.getRequestURI(), IPUtil.getClientIP(request), JadyerUtil.buildStringFromMapWithStringArray(request.getParameterMap()));
+        LogUtil.getLogger().info("{}()-->{}被调用, 客户端IP={}, 入参为[{}]", methodInfo, request.getRequestURI(), IPUtil.getClientIP(request), JadyerUtil.buildStringFromMap(request.getParameterMap()));
         /*
          * 表单验证
          */
