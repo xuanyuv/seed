@@ -1,12 +1,16 @@
 package com.jadyer.seed.server.helper;
 
+import com.jadyer.seed.comm.util.DateUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.MinaUtil;
 import com.jadyer.seed.server.model.NetBankResultNotify;
 import com.jadyer.seed.server.model.OrderResultNotify;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Properties;
@@ -19,6 +23,19 @@ public final class MessageBuilder {
     private MessageBuilder(){}
 
     /**
+     * 字符串转为字节数组
+     */
+    private static byte[] getBytes(String data, String charset){
+        data = (null==data ? "" : data);
+        try {
+            return data.getBytes(charset);
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException("Unsupported Encoding-->[" + charset + "]");
+        }
+    }
+
+
+    /**
      * 构建响应给支付处理系统的响应报文头
      * @param respCode 应答码
      * @param respDesc 应答描述,注意该参数的字节长度要小于等于100
@@ -29,8 +46,8 @@ public final class MessageBuilder {
         sb.append(respCode)                                 //respCode------固长8,应答码
           .append(JadyerUtil.rightPadUseByte(respDesc))     //respDesc------固长100,应答描述
           .append(JadyerUtil.buildSerialNo())               //respSerialNo--固长20,应答流水号
-          .append(JadyerUtil.getCurrentTime())              //respTime------固长14,应答日期时间yyyyMMddhhmmss
-          .append(JadyerUtil.getCurrentDate());             //accountDate---固长8,账务日期时间yyyMMdd
+          .append(DateUtil.getCurrentTime())              //respTime------固长14,应答日期时间yyyyMMddhhmmss
+          .append(DateUtil.getCurrentDate());             //accountDate---固长8,账务日期时间yyyMMdd
         return sb.toString();
     }
 
@@ -45,7 +62,7 @@ public final class MessageBuilder {
         sb.append(busiCode)                                 //busiCode------固长5,消息码
           .append("206")                                    //reqSysType----固长3,请求系统类型
           .append("00001")                                  //reqSysCode----固长5,请求系统编码
-          .append(JadyerUtil.getCurrentTime())              //reqTime-------固长14,请求日期时间yyyyMMddhhmmss
+          .append(DateUtil.getCurrentTime())              //reqTime-------固长14,请求日期时间yyyyMMddhhmmss
           .append("06")                                     //tradeChannel--固长2,交易渠道
           .append(JadyerUtil.buildSerialNo());              //reqSerialNo---固长20,请求流水
         return sb.toString();
@@ -62,20 +79,20 @@ public final class MessageBuilder {
         sb.append(busiCode)                                 //busiCode------固长5,请求交易编码
           .append("001")                                    //reqSysType----固长3,请求系统类型
           .append("00001")                                  //reqSysCode----固长5,请求系统编码
-          .append(JadyerUtil.getCurrentTime());             //reqTime-------固长14,请求时间yyyyMMddhhmmss
+          .append(DateUtil.getCurrentTime());             //reqTime-------固长14,请求时间yyyyMMddhhmmss
         return sb.toString();
     }
 
 
     /**
      * 构建待发送或待响应的完整报文
-     * @see 该方法主要用于计算报文真实长度,并使用真实长度替换掉报文中原有的长度标识
-     * @see 报文长度不足6位时,自动用0x30左侧填充
+     * @see 该方法主要用于计算报文真实长度，并使用真实长度替换掉报文中原有的长度标识
+     * @see 报文长度不足6位时，自动用0x30左侧填充
      * @param message 包含了报文头和报文体的完整TCP报文
      * @return 计算并修正了真实长度后的可以发送出去的完整报文
      */
     private static String buildFullMessage(String message){
-        StringBuilder sb = new StringBuilder(String.valueOf(JadyerUtil.getBytes(message, MinaUtil.DEFAULT_CHARSET).length));
+        StringBuilder sb = new StringBuilder(String.valueOf(getBytes(message, MinaUtil.DEFAULT_CHARSET).length));
         while(sb.length() < 6){
             sb.insert(0, "0");
         }
@@ -185,7 +202,7 @@ public final class MessageBuilder {
             sb.append("HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=");
             sb.append(MinaUtil.DEFAULT_CHARSET);
             sb.append("\r\nContent-Length: ");
-            sb.append(JadyerUtil.getBytes(httpResponseMessageBody, MinaUtil.DEFAULT_CHARSET).length);
+            sb.append(getBytes(httpResponseMessageBody, MinaUtil.DEFAULT_CHARSET).length);
             sb.append("\r\n\r\n");
             sb.append(httpResponseMessageBody);
             return sb.toString();
@@ -206,10 +223,11 @@ public final class MessageBuilder {
      * @param messageHeahLength 报文头长度,如支付处理响应的报文头长度固定为156,沃前置则为128
      */
     public static String getTCPMessageBody(String respData, int messageHeahLength){
-        int messageBodyLength = Integer.parseInt(respData.substring(0,6)) - messageHeahLength; //计算报文体长度(报文总长度-报文头长度)
+        //计算报文体长度（报文总长度 - 报文头长度）
+        int messageBodyLength = Integer.parseInt(respData.substring(0,6)) - messageHeahLength;
         byte[] messageBodys = new byte[messageBodyLength];
-        System.arraycopy(JadyerUtil.getBytes(respData, MinaUtil.DEFAULT_CHARSET), messageHeahLength, messageBodys, 0, messageBodyLength);
-        return JadyerUtil.getString(messageBodys, MinaUtil.DEFAULT_CHARSET);
+        System.arraycopy(getBytes(respData, MinaUtil.DEFAULT_CHARSET), messageHeahLength, messageBodys, 0, messageBodyLength);
+        return StringUtils.toEncodedString(messageBodys, Charset.forName(MinaUtil.DEFAULT_CHARSET));
     }
 
 
@@ -222,7 +240,7 @@ public final class MessageBuilder {
      * @param length   报文头中自起始截止到应答描述字段时的长度,如支付处理的为114,沃前置则为128
      */
     public static String getTCPMessageHeadRespDesc(String respData, int length){
-        byte[] srcByte = JadyerUtil.getBytes(respData, MinaUtil.DEFAULT_CHARSET);
+        byte[] srcByte = getBytes(respData, MinaUtil.DEFAULT_CHARSET);
         int respDesclength = 0;     //有效的应答描述字节长度
         if(srcByte[length-1] != 0){ //应答描述的字节长度为固长100,不足时0x00右侧自动补齐
             respDesclength = 100;
@@ -236,7 +254,7 @@ public final class MessageBuilder {
         }
         byte[] destByte = new byte[respDesclength];
         System.arraycopy(srcByte, length-100, destByte, 0, respDesclength); //从源数组的应答描述起始下标开始拷贝
-        return JadyerUtil.getString(destByte, MinaUtil.DEFAULT_CHARSET);
+        return StringUtils.toEncodedString(destByte, Charset.forName(MinaUtil.DEFAULT_CHARSET));
     }
 
 

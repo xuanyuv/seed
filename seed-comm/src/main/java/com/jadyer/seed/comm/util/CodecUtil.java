@@ -15,6 +15,7 @@ import javax.crypto.spec.DESedeKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.security.AlgorithmParameters;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -539,38 +540,45 @@ public final class CodecUtil {
 
     /**
      * Hmac签名
-     * Calculates the algorithm digest and returns the value as a hex string
-     * If system dosen't support this <code>algorithm</code>, return "" not null
      * @param data      待签名的明文字符串
      * @param key       签名用到的密钥字符串
-     * @param algorithm 目前其有效值为<code>HmacSHA1,HmacSHA256,HmacSHA512,HmacMD5</code>
-     * @update 2016-02-20 21:21 HmacMD5和HmacSHA1已经是不安全的了,不推荐使用
+     * @param algorithm 可传：HmacMD5、HmacSHA1、HmacSHA256、HmacSHA512
+     * @update 2016-02-20 21:21 HmacMD5和HmacSHA1已经是不安全的了，不推荐使用
      * @return String algorithm digest as a lowerCase hex string
      */
     public static String buildHmacSign(String data, String key, String algorithm){
+        if("HmacMD5".equals(algorithm) || "HmacSHA1".equals(algorithm)){
+            LogUtil.getLogger().warn("HmacMD5和HmacSHA1已经是不安全的了，不推荐使用");
+        }
         SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(), algorithm);
         Mac mac;
         try {
             mac = Mac.getInstance(algorithm);
             mac.init(secretKey);
         } catch (InvalidKeyException e) {
-            throw new IllegalArgumentException("签名字符串[" + data + "]时发生异常,Invalid key-->[" + key + "]");
+            throw new IllegalArgumentException("签名字符串[" + data + "]时发生异常：Invalid key-->[" + key + "]");
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalArgumentException("签名字符串[" + data + "]时发生异常,No such algorithm-->[" + algorithm + "]");
+            throw new IllegalArgumentException("签名字符串[" + data + "]时发生异常：No Such Algorithm-->[" + algorithm + "]");
         }
-        return Hex.encodeHexString(mac.doFinal(JadyerUtil.getBytes(data, CHARSET)));
+        byte[] dataBytes;
+        try {
+            dataBytes = data.getBytes(CHARSET);
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException("将字符串[" + data + "]转为byte[]时发生异常：Unsupported Encoding-->[" + CHARSET + "]");
+        }
+        return Hex.encodeHexString(mac.doFinal(dataBytes));
     }
 
 
     /**
      * 根据指定的签名密钥和算法签名Map<String,String>
      * 方法内部首先会过滤Map<String,String>参数中的部分键值对
-     * 过滤规则为移除键名为"cert","hmac","signMsg"及键值为null或键值长度为零的键值对
-     * 过滤后会产生一个字符串,其格式为按照键名升序排序的key11=value11|key22=value22|key=signKey
-     * 最后调用 {@link #buildHexSign(String, String, String)} 签名,返回签名后的小写的十六进制字符串
+     * 过滤规则为移除键名为cert、hmac、signMsg及键值为null或键值长度为零的键值对
+     * 过滤后会产生一个字符串，其格式为按照键名升序排序的key11=value11|key22=value22|key=signKey
+     * 最后调用 {@link #buildHexSign(String, String, String)} 签名，返回签名后的小写的十六进制字符串
      * @param param     待签名的Map<String,String>
      * @param charset   签名时转码用到的字符集
-     * @param algorithm 签名时所使用的算法,其有效值包括<code>MD5,SHA,SHA1,SHA-1,SHA-256,SHA-384,SHA-512</code>
+     * @param algorithm 可传：MD5、SHA、SHA1、SHA-1、SHA-256、SHA-384、SHA-512
      * @param signKey   签名用到的密钥
      * @return String algorithm digest as a lowerCase hex string
      */
@@ -592,27 +600,30 @@ public final class CodecUtil {
 
     /**
      * 通过指定算法签名字符串
-     * Calculates the algorithm digest and returns the value as a hex string
-     * If system dosen't support this <code>algorithm</code>, return "" not null
-     * It will Calls {@link JadyerUtil#getBytes(String, String)}
-     * 若系统不支持<code>charset</code>字符集,则按照系统默认字符集进行转换
-     * commons-codec.jar中的DigestUtils.md5Hex(String data)与本方法buildHexSign(data, "UTF-8", "MD5")结果相同
-     * @param data        Data to digest
+     * <p>
+     *     commons-codec.jar中的DigestUtils.md5Hex(String data)与本方法buildHexSign(data, "UTF-8", "MD5")结果相同
+     * </p>
+     * @param data        待签名数据
      * @param charset     字符串转码为byte[]时使用的字符集
-     * @param algorithm   目前其有效值为<code>MD5,SHA,SHA1,SHA-1,SHA-256,SHA-384,SHA-512</code>
+     * @param algorithm   可传：MD5、SHA、SHA1、SHA-1、SHA-256、SHA-384、SHA-512
      * @return String algorithm digest as a lowerCase hex string
      */
     public static String buildHexSign(String data, String charset, String algorithm){
-        char[] DIGITS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-        byte[] dataBytes = JadyerUtil.getBytes(data, charset);
+        byte[] dataBytes;
+        try {
+            dataBytes = data.getBytes(charset);
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException("将字符串[" + data + "]转为byte[]时发生异常：Unsupported Encoding-->[" + charset + "]");
+        }
         byte[] algorithmData;
         try {
             //get an algorithm digest instance
             algorithmData = MessageDigest.getInstance(algorithm).digest(dataBytes);
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalArgumentException("签名字符串[" + data + "]时发生异常,No such algorithm-->[" + algorithm + "]");
+            throw new IllegalArgumentException("签名字符串[" + data + "]时发生异常：No Such Algorithm-->[" + algorithm + "]");
         }
         char[] respData = new char[algorithmData.length << 1];
+        char[] DIGITS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
         //two characters form the hex value
         for(int i=0,j=0; i<algorithmData.length; i++){
             respData[j++] = DIGITS[(0xF0 & algorithmData[i]) >>> 4];

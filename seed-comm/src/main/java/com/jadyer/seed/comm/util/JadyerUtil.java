@@ -45,10 +45,9 @@
 package com.jadyer.seed.comm.util;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.commons.lang3.time.DateUtils;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -72,17 +71,12 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.math.BigInteger;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -91,7 +85,8 @@ import java.util.Map;
 
 /**
  * 玄玉的开发工具类
- * @version v3.13
+ * @version v3.14
+ * @history v3.14-->移动requestToBean()和beanCopyProperties()至BeanUtil.java，并移除若干重复造轮子的方法
  * @history v3.13-->增加获取本周第一天、判断是否本周第一天、判断是否本月第一天的三个方法
  * @history v3.12-->增加获取应用运行进程的PID的方法getPID()
  * @history v3.11-->增加十六进制字符串转为byte[]的方法hexToBytes()
@@ -272,7 +267,7 @@ public final class JadyerUtil {
      * @return 格式化后的十六进制字符串
      */
     private static String buildHexStringWithASCII(byte[] data, int offset, int length){
-        if(isEmpty(data)){
+        if(ArrayUtils.isEmpty(data)){
             return "";
         }
         int end = offset + length;
@@ -329,7 +324,7 @@ public final class JadyerUtil {
      * @see 使用说明详见<code>formatToHexStringWithASCII(byte[], int, int)</code>方法
      */
     public static String buildHexStringWithASCIIForHex(byte[] hexData, int offset, int length){
-        if(isEmpty(hexData)){
+        if(ArrayUtils.isEmpty(hexData)){
             return "";
         }
         byte[] data = new byte[hexData.length];
@@ -388,45 +383,7 @@ public final class JadyerUtil {
 
 
     /**
-     * 判断输入的字符串参数是否为空
-     * @return boolean 空则返回true,非空则flase
-     */
-    public static boolean isEmpty(String input) {
-        return null==input || 0==input.length() || 0==input.replaceAll("\\s", "").length();
-    }
-
-
-    /**
-     * 判断输入的字节数组是否为空
-     * @return boolean 空则返回true,非空则flase
-     */
-    public static boolean isEmpty(byte[] bytes){
-        return null==bytes || 0==bytes.length;
-    }
-
-
-    /**
-     * 判断输入的字符串参数是否为非空
-     * @return boolean 非空则返回true,空则flase
-     */
-    public static boolean isNotEmpty(String input){
-        return !isEmpty(input);
-    }
-
-
-    /**
-     * 判断输入的字节数组是否为非空
-     * @return boolean 非空则返回true,空则flase
-     */
-    public static boolean isNotEmpty(byte[] bytes){
-        return !isEmpty(bytes);
-    }
-
-
-    /**
      * 判断是否为Ajax请求
-     * @create Nov 1, 2015 1:30:55 PM
-     * @author 玄玉<http://jadyer.cn/>
      */
     public static boolean isAjaxRequest(HttpServletRequest request){
         String requestType = request.getHeader("X-Requested-With");
@@ -435,293 +392,6 @@ public final class JadyerUtil {
         }
         requestType = request.getHeader("x-requested-with");
         return null!=requestType && "XMLHttpRequest".equals(requestType);
-    }
-
-
-    /**
-     * HttpServletRequest参数值转为JavaBean
-     * @see 该方法目前只能处理所有属性均为String的JavaBean
-     * @see 且只能处理当前类,暂不能处理父类和子类
-     * @see 且类属性只能是String
-     * @create Dec 17, 2015 4:44:47 PM
-     * @author 玄玉<http://jadyer.cn/>
-     */
-    public static <T> T requestToBean(HttpServletRequest request, Class<T> beanClass){
-        try{
-            T bean = beanClass.newInstance();
-            //getFields()能获取到父类和子类中所有public的属性
-            //getDeclaredFields()能获取到类的所有属性（不受访问权限控制，也不包括父类）
-            for(Field field : beanClass.getDeclaredFields()){
-                //构造setter方法
-                String methodName = "set" + StringUtils.capitalize(field.getName());
-                try{
-                    //执行setter方法
-                    beanClass.getMethod(methodName, String.class).invoke(bean, URLDecode(request.getParameter(field.getName())));
-                }catch(Exception e){
-                    //ignore exception
-                }
-            }
-            return bean;
-        }catch(Exception e){
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    /**
-     * 采用反射实现的JavaBean属性拷贝
-     * <ul>
-     *     <li>实测拷贝效率由低到高依次为（最快的目前是cglib，也是推荐采用的）</li>
-     *     <li>net.sf.cglib.beans.BeanCopier.copy()</li>
-     *     <li>org.springframework.beans.BeanUtils.copyProperties()</li>
-     *     <li>com.jadyer.engine.common.util.JadyerUtil.beanCopyProperties()</li>
-     *     <li>org.apache.commons.beanutils.BeanUtils.copyProperties()</li>
-     * </ul>
-     * <p>
-     *     曾试过优化一下BeanCopier，把这个对象放到全局的ConcurrentHashMap<String, BeanCopier>里面<br>
-     *     放进去的beanCopier对象就是BeanCopier.create(source.getClass(), target.getClass(), false)<br>
-     *     意味着只要是从相同的source拷贝属性给target，就不用每次create()，而是直接从ConcurrentHashMap中取<br>
-     *     不过测试发现，放到ConcurrentHashMap之后的效率反倒不如每次都BeanCopier.create()，以后有时间再研究吧
-     * </p>
-     * <p>
-     *     另外，这里自己写的反射获取Setter有点复杂了好像，可以参考上面的requestToBean()方法<br>
-     *     以后真正用的时候再改，今天没心情......
-     * </p>
-     * @create 2016/6/16 16:35
-     */
-    public static <T, E> void beanCopyProperties(T source, E target){
-        //采用Cglib实现
-        //net.sf.cglib.beans.BeanCopier beanCopier = BeanCopier.create(source.getClass(), target.getClass(), false);
-        //beanCopier.copy(source, target, null);
-        //采用Spring实现
-        //org.springframework.beans.BeanUtils.copyProperties(source, target);
-        //采用反射实现
-        Method[] sourceMethods = source.getClass().getDeclaredMethods();
-        Method[] targetMethods = target.getClass().getDeclaredMethods();
-        for(Method sourceMethod : sourceMethods){
-            if(sourceMethod.getName().startsWith("get") || sourceMethod.getName().startsWith("is")){
-                //得到源对象的Setter
-                String sourceFieldName;
-                if(sourceMethod.getName().startsWith("get")){
-                    sourceFieldName = "set" + sourceMethod.getName().substring(3);
-                }else{
-                    sourceFieldName = "set" + sourceMethod.getName().substring(2);
-                }
-                for(Method targetMethod : targetMethods){
-                    if(targetMethod.getName().equals(sourceFieldName)){
-                        //参数类型和返回类型判断
-                        if(sourceMethod.getReturnType().isAssignableFrom(targetMethod.getParameterTypes()[0])){
-                            try {
-                                targetMethod.invoke(target, sourceMethod.invoke(source));
-                                break;
-                            } catch (IllegalAccessException | InvocationTargetException e) {
-                                throw new RuntimeException("属性拷贝失败", e);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
-    /**
-     * 字符串转为字节数组
-     * @see 该方法默认以ISO-8859-1转码
-     * @see 若想自己指定字符集,可以使用<code>getBytes(String str, String charset)</code>方法
-     */
-    public static byte[] getBytes(String data){
-        return getBytes(data, "ISO-8859-1");
-    }
-
-
-    /**
-     * 字符串转为字节数组
-     * @see 如果系统不支持所传入的<code>charset</code>字符集,则按照系统默认字符集进行转换
-     */
-    public static byte[] getBytes(String data, String charset){
-        data = (data==null ? "" : data);
-        if(isEmpty(charset)){
-            return data.getBytes();
-        }
-        try {
-            return data.getBytes(charset);
-        } catch (UnsupportedEncodingException e) {
-            LogUtil.getLogger().error("将字符串[" + data + "]转为byte[]时发生异常:系统不支持该字符集[" + charset + "]");
-            return data.getBytes();
-        }
-    }
-
-
-    /**
-     * 字节数组转为字符串
-     * @see 该方法默认以ISO-8859-1转码
-     * @see 若想自己指定字符集,可以使用<code>getString(byte[] data, String charset)</code>方法
-     */
-    public static String getString(byte[] data){
-        return getString(data, "ISO-8859-1");
-    }
-
-
-    /**
-     * 字节数组转为字符串
-     * @see 如果系统不支持所传入的<code>charset</code>字符集,则按照系统默认字符集进行转换
-     */
-    public static String getString(byte[] data, String charset){
-        if(isEmpty(data)){
-            return "";
-        }
-        if(isEmpty(charset)){
-            return new String(data);
-        }
-        try {
-            return new String(data, charset);
-        } catch (UnsupportedEncodingException e) {
-            LogUtil.getLogger().error("将byte数组[" + Arrays.toString(data) + "]转为String时发生异常:系统不支持该字符集[" + charset + "]");
-            return new String(data);
-        }
-    }
-
-
-    /**
-     * 获取当前方法的名字
-     */
-    public static String getCurrentMethodName(){
-        return Thread.currentThread().getStackTrace()[1].getMethodName();
-    }
-
-
-    /**
-     * 判断是否本月第一天
-     */
-    public static boolean isFirstDayOfMonth(){
-        return "01".equals(DateFormatUtils.format(new Date(), "dd"));
-    }
-
-
-    /**
-     * 判断是否本周第一天
-     */
-    public static boolean isFirstDayOfWeek(){
-        return 0 == DateUtils.truncatedCompareTo(new Date(), getFirstDayOfWeek(), Calendar.DAY_OF_MONTH);
-    }
-
-
-    /**
-     * 获取本周第一天
-     */
-    public static Date getFirstDayOfWeek(){
-        //使用默认时区和语言环境获得一个基于当前时间的日历
-        Calendar cal = Calendar.getInstance();
-        //设置一个星期的第一天是哪一天（也可以用cal.add(Calendar.DAY_OF_MONTH, -1)，二者都是解决周日时获取到的是下一周的情况）
-        cal.setFirstDayOfWeek(Calendar.MONDAY);
-        //将给定的日历字段设置为给定值
-        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        return cal.getTime();
-    }
-
-
-    /**
-     * 获取前一天日期yyyyMMdd
-     * @see 经测试，针对闰年02月份或跨年等情况，该代码仍有效。测试代码如下
-     * @see calendar.set(Calendar.YEAR, 2013);
-     * @see calendar.set(Calendar.MONTH, 0);
-     * @see calendar.set(Calendar.DATE, 1);
-     * @see 测试时，将其放到<code>calendar.add(Calendar.DATE, -1);</code>前面即可
-     * @return 返回的日期格式为yyyyMMdd
-     */
-    public static String getYestoday(){
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE, -1);
-        return new SimpleDateFormat("yyyyMMdd").format(calendar.getTime());
-    }
-
-
-    /**
-     * 获取格式化的详细日期
-     * @param dateStr yyyyMMdd格式的日期字符串
-     * @return yyyy-MM-dd格式的日期字符串
-     */
-    public static String getDetailDate(String dateStr){
-        try {
-            return String.format("%tF", DateUtils.parseDate(dateStr, "yyyyMMdd"));
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    /**
-     * 获取当前的日期yyyyMMdd
-     */
-    public static String getCurrentDate(){
-        return new SimpleDateFormat("yyyyMMdd").format(new Date());
-    }
-
-
-    /**
-     * 获取当前的时间yyyyMMddHHmmss
-     */
-    public static String getCurrentTime(){
-        return new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-    }
-
-
-    /**
-     * 获取本周开始的时间
-     */
-    public static Date getCurrentWeekStartDate(){
-        Calendar currentDate = Calendar.getInstance();
-        currentDate.setFirstDayOfWeek(Calendar.MONDAY);
-        currentDate.set(Calendar.HOUR_OF_DAY, 0);
-        currentDate.set(Calendar.MINUTE, 0);
-        currentDate.set(Calendar.SECOND, 0);
-        currentDate.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        return currentDate.getTime();
-    }
-
-
-    /**
-     * 获取本周结束的时间
-     */
-    public static Date getCurrentWeekEndDate(){
-        Calendar currentDate = Calendar.getInstance();
-        currentDate.setFirstDayOfWeek(Calendar.MONDAY);
-        currentDate.set(Calendar.HOUR_OF_DAY, 23);
-        currentDate.set(Calendar.MINUTE, 59);
-        currentDate.set(Calendar.SECOND, 59);
-        currentDate.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-        return currentDate.getTime();
-    }
-
-
-    /**
-     * 计算两个日期的相差时间
-     * @param begin 起始日期
-     * @param end   终止日期
-     * @return xx天xx小时xx分xx秒
-     */
-    public static String getDistanceTime(Date begin, Date end) {
-        long time = end.getTime() - begin.getTime();
-        long day = time / (24 * 60 * 60 * 1000);
-        long hour = (time / (60 * 60 * 1000) - day * 24);
-        long minute = ((time / (60 * 1000)) - day * 24 * 60 - hour * 60);
-        long second = (time / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - minute * 60);
-        return day + "天" + hour + "小时" + minute + "分" + second + "秒";
-    }
-
-
-    /**
-     * 获取指定日期相隔一定天数后的日期
-     * @see 该方法等效于org.apache.commons.lang3.time.DateUtils.addDays(startDate, days)
-     * @param startDate 参照日期
-     * @param days      相隔的天数,正数时则往后计算,负数则往前计算
-     */
-    public static Date getIncreaseDate(Date startDate, int days){
-        final Calendar cal = Calendar.getInstance();
-        cal.setTime(startDate);
-        cal.add(Calendar.DAY_OF_MONTH, days);
-        return cal.getTime();
     }
 
 
@@ -743,166 +413,6 @@ public final class JadyerUtil {
 
 
     /**
-     * 字符编码
-     * @see 该方法默认会以UTF-8编码字符串
-     * @see 若想自己指定字符集,可以使用<code>encode(String chinese, String charset)</code>方法
-     */
-    public static String URLEncode(String chinese){
-        return URLEncode(chinese, "UTF-8");
-    }
-
-
-    /**
-     * 字符编码
-     * @see 该方法通常用于对中文进行编码
-     * @see 若系统不支持指定的编码字符集,则直接将<code>chinese</code>原样返回
-     */
-    public static String URLEncode(String chinese, String charset){
-        chinese = (chinese==null ? "" : chinese);
-        try {
-            return URLEncoder.encode(chinese, charset);
-        } catch (UnsupportedEncodingException e) {
-            LogUtil.getLogger().error("编码字符串[" + chinese + "]时发生异常:系统不支持该字符集[" + charset + "]");
-            return chinese;
-        }
-    }
-
-
-    /**
-     * 字符解码
-     * @see 该方法默认会以UTF-8解码字符串
-     * @see 若想自己指定字符集,可以使用<code>decode(String chinese, String charset)</code>方法
-     */
-    public static String URLDecode(String chinese){
-        return URLDecode(chinese, "UTF-8");
-    }
-
-
-    /**
-     * 字符解码
-     * @see 该方法通常用于对中文进行解码
-     * @see 若系统不支持指定的解码字符集,则直接将<code>chinese</code>原样返回
-     */
-    public static String URLDecode(String chinese, String charset){
-        chinese = (chinese==null ? "" : chinese);
-        try {
-            return URLDecoder.decode(chinese, charset);
-        } catch (UnsupportedEncodingException e) {
-            LogUtil.getLogger().error("解码字符串[" + chinese + "]时发生异常:系统不支持该字符集[" + charset + "]");
-            return chinese;
-        }
-    }
-
-
-    /**
-     * 金额元转分
-     * @see 注意:该方法可处理贰仟万以内的金额,且若有小数位,则不限小数位的长度
-     * @see 注意:如果你的金额达到了贰仟万以上,则不推荐使用该方法,否则计算出来的结果会令人大吃一惊
-     * @param amount  金额的元进制字符串
-     * @return String 金额的分进制字符串
-     */
-    public static String moneyYuanToFen(String amount){
-        if(isEmpty(amount)){
-            return amount;
-        }
-        //传入的金额字符串代表的是一个整数
-        if(!amount.contains(".")){
-            return Integer.parseInt(amount) * 100 + "";
-        }
-        //传入的金额字符串里面含小数点-->取小数点前面的字符串,并将之转换成单位为分的整数表示
-        int money_fen = Integer.parseInt(amount.substring(0, amount.indexOf("."))) * 100;
-        //取到小数点后面的字符串
-        String pointBehind = (amount.substring(amount.indexOf(".") + 1));
-        //amount=12.3
-        if(pointBehind.length() == 1){
-            return money_fen + Integer.parseInt(pointBehind)*10 + "";
-        }
-        //小数点后面的第一位字符串的整数表示
-        int pointString_1 = Integer.parseInt(pointBehind.substring(0, 1));
-        //小数点后面的第二位字符串的整数表示
-        int pointString_2 = Integer.parseInt(pointBehind.substring(1, 2));
-        //amount==12.03,amount=12.00,amount=12.30
-        if(pointString_1 == 0){
-            return money_fen + pointString_2 + "";
-        }else{
-            return money_fen + pointString_1*10 + pointString_2 + "";
-        }
-    }
-
-
-    /**
-     * 金额元转分
-     * @see 该方法会将金额中小数点后面的数值,四舍五入后只保留两位....如12.345-->12.35
-     * @see 注意:该方法可处理贰仟万以内的金额
-     * @see 注意:如果你的金额达到了贰仟万以上,则非常不建议使用该方法,否则计算出来的结果会令人大吃一惊
-     * @param amount  金额的元进制字符串
-     * @return String 金额的分进制字符串
-     */
-    public static String moneyYuanToFenByRound(String amount){
-        if(isEmpty(amount)){
-            return amount;
-        }
-        if(!amount.contains(".")){
-            return Integer.parseInt(amount) * 100 + "";
-        }
-        int money_fen = Integer.parseInt(amount.substring(0, amount.indexOf("."))) * 100;
-        String pointBehind = (amount.substring(amount.indexOf(".") + 1));
-        if(pointBehind.length() == 1){
-            return money_fen + Integer.parseInt(pointBehind)*10 + "";
-        }
-        int pointString_1 = Integer.parseInt(pointBehind.substring(0, 1));
-        int pointString_2 = Integer.parseInt(pointBehind.substring(1, 2));
-        //下面这种方式用于处理pointBehind=245,286,295,298,995,998等需要四舍五入的情况
-        if(pointBehind.length() > 2){
-            int pointString_3 = Integer.parseInt(pointBehind.substring(2, 3));
-            if(pointString_3 >= 5){
-                if(pointString_2 == 9){
-                    if(pointString_1 == 9){
-                        money_fen = money_fen + 100;
-                        pointString_1 = 0;
-                        pointString_2 = 0;
-                    }else{
-                        pointString_1 = pointString_1 + 1;
-                        pointString_2 = 0;
-                    }
-                }else{
-                    pointString_2 = pointString_2 + 1;
-                }
-            }
-        }
-        if(pointString_1 == 0){
-            return money_fen + pointString_2 + "";
-        }else{
-            return money_fen + pointString_1*10 + pointString_2 + "";
-        }
-    }
-
-
-    /**
-     * 金额分转元
-     * @see 注意:如果传入的参数中含小数点,则直接原样返回
-     * @see 该方法返回的金额字符串格式为<code>00.00</code>,其整数位有且至少有一个,小数位有且长度固定为2
-     * @param amount  金额的分进制字符串
-     * @return String 金额的元进制字符串
-     */
-    public static String moneyFenToYuan(String amount){
-        if(isEmpty(amount)){
-            return amount;
-        }
-        if(amount.contains(".")){
-            return amount;
-        }
-        if(amount.length() == 1){
-            return "0.0" + amount;
-        }else if(amount.length() == 2){
-            return "0." + amount;
-        }else{
-            return amount.substring(0, amount.length()-2) + "." + amount.substring(amount.length()-2);
-        }
-    }
-
-
-    /**
      * 字符串右补字节
      * @see 鉴于该方法常用于构造响应给支付平台相关系统的响应报文头,故其默认采用0x00右补字节且总字节长度为100字节
      * @see 若想自己指定所补字节,可以使用<code>rightPadForByte(String str, int size, int padStrByASCII)</code>方法
@@ -914,11 +424,11 @@ public final class JadyerUtil {
 
     /**
      * 字符串右补字节
-     * @see 若str对应的byte[]长度不小于size,则按照size截取str对应的byte[],而非原样返回str
-     * @see 所以size参数很关键..事实上之所以这么处理,是由于支付处理系统接口文档规定了字段的最大长度
-     * @see 若对普通字符串进行右补字符,建议org.apache.commons.lang.StringUtils.rightPad(...)
-     * @param size          该参数指的不是字符串长度,而是字符串所对应的byte[]长度
-     * @param padStrByASCII 该值为所补字节的ASCII码,如32表示空格,48表示0,64表示@等
+     * @see 若str对应的byte[]长度不小于size，则按照size截取str对应的byte[]，而非原样返回str
+     * @see 所以size参数很关键..事实上之所以这么处理，是由于支付处理系统接口文档规定了字段的最大长度
+     * @see 若对普通字符串进行右补字符，建议org.apache.commons.lang.StringUtils.rightPad(...)
+     * @param size          该参数指的不是字符串长度，而是字符串所对应的byte[]长度
+     * @param padStrByASCII 该值为所补字节的ASCII码，如32表示空格，48表示0，64表示@等
      * @param charset       由右补字节后的字节数组生成新字符串时所采用的字符集
      */
     public static String rightPadUseByte(String str, int size, int padStrByASCII, String charset){
@@ -930,7 +440,7 @@ public final class JadyerUtil {
             destByte = Arrays.copyOf(srcByte, size);
             Arrays.fill(destByte, srcByte.length, size, (byte)padStrByASCII);
         }
-        return getString(destByte, charset);
+        return StringUtils.toEncodedString(destByte, Charset.forName(charset));
     }
 
 
@@ -960,7 +470,7 @@ public final class JadyerUtil {
         }else{
             System.arraycopy(srcByte, 0, destByte, size-srcByte.length, srcByte.length);
         }
-        return getString(destByte, charset);
+        return StringUtils.toEncodedString(destByte, Charset.forName(charset));
     }
 
 
@@ -976,8 +486,8 @@ public final class JadyerUtil {
      * @return String 过滤后的字符串
      */
     public static String escapeHtml(String input) {
-        if(isEmpty(input)){
-            return input;
+        if(StringUtils.isBlank(input)){
+            return "";
         }
         input = input.replaceAll("&", "&amp;");
         input = input.replaceAll("<", "&lt;");
@@ -995,8 +505,8 @@ public final class JadyerUtil {
      * @return String 过滤后的字符串
      */
     public static String escapeXml(String input) {
-        if(isEmpty(input)){
-            return input;
+        if(StringUtils.isBlank(input)){
+            return "";
         }
         input = input.replaceAll("&", "&amp;");
         input = input.replaceAll("<", "&lt;");
@@ -1072,7 +582,7 @@ public final class JadyerUtil {
      * @return 抓屏成功返回true，反之false
      */
     public static boolean captureScreen(String fileName, boolean isAutoOpenImage){
-        if(isEmpty(fileName)){
+        if(StringUtils.isBlank(fileName)){
             String desktop = FileSystemView.getFileSystemView().getHomeDirectory().getPath();
             String separator = System.getProperty("file.separator");
             String imageName = "截屏_" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".png";
@@ -1371,5 +881,13 @@ public final class JadyerUtil {
     public static String getPID(){
         String jvmName = ManagementFactory.getRuntimeMXBean().getName();
         return jvmName.split("@")[0];
+    }
+
+
+    /**
+     * 获取当前方法的名字
+     */
+    public static String getCurrentMethodName(){
+        return Thread.currentThread().getStackTrace()[1].getMethodName();
     }
 }

@@ -7,6 +7,7 @@ import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +35,14 @@ public class ServerHandler extends IoHandlerAdapter {
         }else if(token.getBusiCode().startsWith("/notify_")){
             LogUtil.getWebLogger();
         }
-        LogUtil.getLogger().info("渠道:"+token.getBusiType()+"  交易码:"+token.getBusiCode()+"  完整报文(HEX):"+ JadyerUtil.buildHexStringWithASCII(JadyerUtil.getBytes(token.getFullMessage(), token.getBusiCharset())));
+        byte[] msgbytes;
+        try {
+            msgbytes = token.getFullMessage().getBytes(token.getBusiCharset());
+        } catch (UnsupportedEncodingException e) {
+            LogUtil.getLogger().warn("将接收到的完整报文转为byte[]时发生异常：Unsupported Encoding-->[" + token.getBusiCharset() + "]，转为使用默认字符集转码");
+            msgbytes = token.getFullMessage().getBytes();
+        }
+        LogUtil.getLogger().info("渠道:"+token.getBusiType()+"  交易码:"+token.getBusiCode()+"  完整报文(HEX):"+ JadyerUtil.buildHexStringWithASCII(msgbytes));
         StringBuilder sb = new StringBuilder();
         sb.append("\r\n------------------------------------------------------------------------------------------");
         sb.append("\r\n【通信双方】").append(session);

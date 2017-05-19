@@ -104,7 +104,7 @@ public class TCPMessageTester extends JPanel implements ActionListener {
             @Override
             public void keyReleased(KeyEvent e) {
                 try {
-                    tfMsgLen.setText(String.valueOf(JadyerUtil.getBytes(TCPMessageTester.this.tpReqMsg.getText(), StandardCharsets.UTF_8.toString()).length));
+                    tfMsgLen.setText(String.valueOf(TCPMessageTester.this.tpReqMsg.getText().getBytes(StandardCharsets.UTF_8.toString()).length));
                 } catch (Exception e1) {
                     tpRespMsg.setText(JadyerUtil.extractStackTrace(e1));
                 }
