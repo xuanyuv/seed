@@ -22,6 +22,7 @@ info:
 scan:
   base:
     packages: com.jadyer.seed
+    secretName: 测试的密文的用户为：${encrypt.username}
     detailInfo: 本工程扫描的包名为：${scan.base.packages}
     addressList:
       - Haerbin

@@ -3,7 +3,7 @@ package com.jadyer.seed.controller.swagger;
 /**
  * Created by 玄玉<http://jadyer.cn/> on 2016/9/26 14:41.
  */
-class SwaggerDemoUser {
+public class SwaggerDemoUser {
     private long id;
     private String username;
     private String position;

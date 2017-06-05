@@ -69,6 +69,7 @@ public class DemoController {
         map.put("encryptUsername", this.encryptUsername);
         map.put("encryptPassword", this.encryptPassword);
         map.put("packages", this.bootProperties.getPackages());
+        map.put("secretName", this.bootProperties.getSecretName());
         map.put("detailInfo", this.bootProperties.getDetailInfo());
         map.put("addressList", this.bootProperties.getAddressList());
         return map;

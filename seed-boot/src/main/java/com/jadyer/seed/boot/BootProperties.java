@@ -41,6 +41,7 @@ public class BootProperties {
     static final String PREFIX = "scan.base";
     private String packages;
     private String detailInfo;
+    private String secretName;
     private List<String> addressList = new ArrayList<>();
 
     public String getPackages() {
@@ -49,6 +50,14 @@ public class BootProperties {
 
     public void setPackages(String packages) {
         this.packages = packages;
+    }
+
+    public String getSecretName() {
+        return secretName;
+    }
+
+    public void setSecretName(String secretName) {
+        this.secretName = secretName;
     }
 
     public void setDetailInfo(String detailInfo) {

@@ -54,8 +54,13 @@ public class LogAspect {
          *   所以这里通过RequestContextHolder来获取HttpServletRequest
          * 2.当上传文件时，由于表单设置了enctype="multipart/form-data"，会将表单用其它的文本域与file域一起作为流提交
          *   所以此时request.getParameter()是无法获取到表单中的文本域的，这时可以借助文件上传组件来获取比如org.apache.commons.fileupload.FileItem
+         * 3.RabbitMQ订阅过来的消息时，这里得到的servletRequestAttributes==null，所以加了一个判断
          */
-        HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+        if(null == servletRequestAttributes){
+            return joinPoint.proceed();
+        }
+        HttpServletRequest request = servletRequestAttributes.getRequest();
         LogUtil.getLogger().info("{}()-->{}被调用, 客户端IP={}, 入参为[{}]", methodInfo, request.getRequestURI(), IPUtil.getClientIP(request), JadyerUtil.buildStringFromMap(request.getParameterMap()));
         /*
          * 表单验证
