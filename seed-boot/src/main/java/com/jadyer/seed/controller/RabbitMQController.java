@@ -14,6 +14,11 @@ import javax.annotation.Resource;
 /**
  * RabbitMQ之TopicExchange发送和接收的演示
  * ----------------------------------------------------------------------------------------------------
+ * 下面是几个SpringBoot整合RabbitMQ的例子，个人觉得要么太单一，要么太复杂
+ * https://segmentfault.com/a/1190000004401870
+ * http://blog.didispace.com/spring-boot-rabbitmq/
+ * http://www.ityouknow.com/springboot/2016/11/30/springboot(八)-RabbitMQ详解.html
+ * ----------------------------------------------------------------------------------------------------
  * 测试时，先在RabbitMQ管理界面做如下准备工作
  * 1.Admin菜单下，新建Users：xuanyu
  * 2.Admin菜单下，新建Virtual Hosts：myvhost，并设置用户xuanyu可以访问myvhost
