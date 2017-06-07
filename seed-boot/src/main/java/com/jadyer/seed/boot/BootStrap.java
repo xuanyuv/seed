@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.servlet.Filter;
@@ -68,15 +69,9 @@ import javax.servlet.Filter;
  * 才会解析RabbitAutoConfiguration.java，否则直接跳过不解析
  * 这也是为什么没有导入RabbitMQ的依赖Jar时，工程仍能正常启动的原因
  * -----------------------------------------------------------------------------------------------------------
- * SpringBoot-1.3.x 到 1.4.x 的变化之一就是：
- * org.springframework.boot.context.embedded.ErrorPage 变为了 org.springframework.boot.web.servlet.ErrorPage
- * org.springframework.boot.context.embedded.FilterRegistrationBean 变为了 org.springframework.boot.web.servlet.FilterRegistrationBean
- * org.springframework.boot.context.embedded.ServletRegistrationBean 变为了 org.springframework.boot.web.servlet.ServletRegistrationBean
- * org.springframework.boot.context.web.SpringBootServletInitializer 变为了 org.springframework.boot.web.support.SpringBootServletInitializer
- * org.springframework.boot.test.SpringApplicationConfiguration 变为了 org.springframework.boot.test.context.SpringBootTest
- * -----------------------------------------------------------------------------------------------------------
  * Created by 玄玉<http://jadyer.cn/> on 2015/11/29 15:35.
  */
+@EnableAsync
 @SpringBootApplication(scanBasePackages="${scan.base.packages}", exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class BootStrap extends SpringBootServletInitializer {
     @Override

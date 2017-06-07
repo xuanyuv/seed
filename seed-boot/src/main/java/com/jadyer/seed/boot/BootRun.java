@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.servlet.Filter;
@@ -64,6 +65,7 @@ import javax.servlet.Filter;
  * 说明：后两种的不同在于使用的启动类不同，一个是BootStrap，一个是BootRun自身
  * -------------------------------------------------------------------------------------------------------
  */
+@EnableAsync
 @SpringBootApplication(scanBasePackages="${scan.base.packages}", exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class BootRun {
     private static final Logger log = LoggerFactory.getLogger(BootRun.class);
