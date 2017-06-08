@@ -12,8 +12,8 @@ import java.util.concurrent.TimeUnit;
  * Created by 玄玉<https://jadyer.github.io/> on 2017/6/7 10:26.
  */
 @Component
+@Async("mySimpleExecutor")
 class AsyncDemoTask {
-    @Async("mySimpleExecutor")
     void doTaskOne(){
         try{
             LogUtil.getLogger().info("任务一开始执行");
@@ -26,7 +26,6 @@ class AsyncDemoTask {
         }
     }
 
-    @Async("mySimpleExecutor")
     void doTaskTwo(){
         try{
             LogUtil.getLogger().info("任务二开始执行");
@@ -39,7 +38,6 @@ class AsyncDemoTask {
         }
     }
 
-    @Async("mySimpleExecutor")
     void doTaskThree(){
         try{
             LogUtil.getLogger().info("任务三开始执行");
