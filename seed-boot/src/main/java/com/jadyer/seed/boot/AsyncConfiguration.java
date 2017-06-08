@@ -20,9 +20,14 @@ import java.util.concurrent.ThreadPoolExecutor;
  * 如果没有像本类中那样自定义Executor，那么就会使用系统默认的ThreadPoolTaskExecutor
  * 同样@Async()注解也就不用指定线程池了，直接写成“@Async()”就可以了
  * -----------------------------------------------------------------------------------------------------
+ * 当@Async或@Transational交叉使用或调用时，需要注意一下
+ * 同一个类中，一个方法调用另外一个有注解的方法，注解是不会生效的
+ * 可参考http://blog.csdn.net/clementad/article/details/47339519
+ * -----------------------------------------------------------------------------------------------------
  * <ul>
+ *     <li>@Async标注的方法不能是static的，否则该方法只会被同步调用</li>
  *     <li>为使@Async生效，还要在SpringBoot启动程序中配置@EnableAsync</li>
- *     <li>@Async的方法不能是static的，否则该方法不会被异步调用，而是被同步调用，即便使用了@Async修饰</li>
+ *     <li>当@Async标注在方法上时，该方法会异步执行，标注在类上时，该类的所有方法都会异步执行</li>
  * </ul>
  * -----------------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.github.io/> on 2017/6/8 14:06.
@@ -49,7 +54,7 @@ public class AsyncConfiguration {
         executor.setThreadNamePrefix("MySimpleExecutor-");
         executor.setCorePoolSize(10); //线程池最小数量
         executor.setMaxPoolSize(200); //线程池最大数量
-        executor.setQueueCapacity(5); //队列大小
+        executor.setQueueCapacity(5); //队列大小（最小的线程数被占满后，新任务会放进queue）
         executor.initialize();
         return executor;
     }
