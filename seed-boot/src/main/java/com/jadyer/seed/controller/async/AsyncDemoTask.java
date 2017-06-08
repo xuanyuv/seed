@@ -8,7 +8,11 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 使用@Async实现异步调用（为使之生效，还要在SpringBoot启动程序中配置@EnableAsync）
+ * 使用@Async实现异步调用
+ * <ul>
+ *     <li>为使@Async生效，还要在SpringBoot启动程序中配置@EnableAsync</li>
+ *     <li>@Async的方法不能是static的，否则该方法不会被异步调用，而是被同步调用，即便使用了@Async修饰</li>
+ * </ul>
  * Created by 玄玉<https://jadyer.github.io/> on 2017/6/7 10:26.
  */
 @Component
