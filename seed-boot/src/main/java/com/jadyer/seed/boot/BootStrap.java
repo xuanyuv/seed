@@ -51,6 +51,7 @@ import javax.servlet.Filter;
  *   另外，http://127.0.0.1/shutdown支持POST，但不支持GET请求
  *   它在收到请求，关闭应用时，本例中的SpringContextHolder.clearHolder()方法会被调用
  *   并返回该字符串给调用方（包括小括号）：{"message":"Shutting down, bye..."}
+ * 另外：可以通过spring-boot-admin实现应用监控，相关示例见https://my.oschina.net/u/1266221/blog/805596
  * -----------------------------------------------------------------------------------------------------------
  * 条件注解
  * 它是Sring-boot封装了Spring4.x开始提供的@Conditional注解实现的新注解，主要分以下几类
