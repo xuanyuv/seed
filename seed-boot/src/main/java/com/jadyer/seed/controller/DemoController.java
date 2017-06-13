@@ -4,7 +4,12 @@ import com.jadyer.seed.boot.BootProperties;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
 import com.jadyer.seed.comm.constant.Constants;
+import com.jadyer.seed.comm.util.JadyerUtil;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,8 +17,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +49,10 @@ public class DemoController {
     private String encryptUsername;
     @Value("${encrypt.password:Jasypt未启用}")
     private String encryptPassword;
+    @Value("${spring.mail.username}")
+    private String mailFrom;
+    @Resource
+    private JavaMailSender javaMailSender;
     @Resource
     private BootProperties bootProperties;
 
@@ -73,6 +85,36 @@ public class DemoController {
         map.put("detailInfo", this.bootProperties.getDetailInfo());
         map.put("addressList", this.bootProperties.getAddressList());
         return map;
+    }
+
+
+    @ResponseBody
+    @GetMapping("/mail")
+    public CommonResult mail(){
+        //发送一封简单的邮件
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setFrom(this.mailFrom);
+        simpleMailMessage.setTo("jadyer@yeah.net");
+        simpleMailMessage.setSubject("下午开会准时参加");
+        simpleMailMessage.setText("15点26楼会议室");
+        this.javaMailSender.send(simpleMailMessage);
+        //发送一封复杂的邮件
+        //注意addInline()里面的"huiyi"要与"cid:huiyi"一致
+        //注意addAttachment()方法用于添加附件
+        try{
+            MimeMessage mimeMessage = this.javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+            helper.setFrom(this.mailFrom);
+            helper.setTo("jadyer@yeah.net");
+            helper.setSubject("请查收会议纪要");
+            helper.setText("<html><body><span style='color:#F00'>会议截图如下，完整图片见附件。</span><br><img src=\\\"cid:huiyi\\\" ></body></html>", true);
+            helper.addInline("huiyi", new FileSystemResource(new File("E:\\Jadyer\\Stripes.jpg")));
+            helper.addAttachment("会议纪要完整图片.jpg", new FileSystemResource(new File("E:\\Jadyer\\Fedora13.jpg")));
+            this.javaMailSender.send(mimeMessage);
+        }catch(MessagingException e){
+            return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "邮件发送失败，堆栈轨迹如下："+ JadyerUtil.extractStackTrace(e));
+        }
+        return new CommonResult();
     }
 
 
