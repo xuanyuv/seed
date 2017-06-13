@@ -56,7 +56,7 @@ jasypt:
 
 spring:
   thymeleaf:
-      cache: false   # 禁用Thymeleaf页面缓存
+    cache: false      # 禁用Thymeleaf页面缓存
   h2:
     console:
       path: /myh2

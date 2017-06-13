@@ -56,11 +56,11 @@ public class LogAspect {
          *   所以此时request.getParameter()是无法获取到表单中的文本域的，这时可以借助文件上传组件来获取比如org.apache.commons.fileupload.FileItem
          * 3.RabbitMQ订阅过来的消息时，这里得到的servletRequestAttributes==null，所以加了一个判断
          */
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
-        if(null == servletRequestAttributes){
+        ServletRequestAttributes attributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+        if(null == attributes){
             return joinPoint.proceed();
         }
-        HttpServletRequest request = servletRequestAttributes.getRequest();
+        HttpServletRequest request = attributes.getRequest();
         LogUtil.getLogger().info("{}()-->{}被调用, 客户端IP={}, 入参为[{}]", methodInfo, request.getRequestURI(), IPUtil.getClientIP(request), JadyerUtil.buildStringFromMap(request.getParameterMap()));
         /*
          * 表单验证
