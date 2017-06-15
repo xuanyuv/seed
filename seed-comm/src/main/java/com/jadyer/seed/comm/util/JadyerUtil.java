@@ -151,7 +151,7 @@ public final class JadyerUtil {
      * 获取Map中的属性
      * <p>
      *     由于Map.toString()打印出来的参数值对，是横着一排的...参数多的时候，不便于查看各个值
-     *     故此仿照commons-lang3.jar中的ReflectionToStringBuilder.toString()编写了本方法
+     *     故此仿照commons-lang3.jar中的{@link org.apache.commons.lang3.builder.ReflectionToStringBuilder#toString(Object)}编写了本方法
      * </p>
      * <p>
      *     目前只支持Map<String,String>、Map<String,String[]>、Map<String,byte[]>三种类型
@@ -220,8 +220,9 @@ public final class JadyerUtil {
 
     /**
      * 通过ASCII码将十进制的字节数组格式化为十六进制字符串
-     * @see 该方法会将字节数组中的所有字节均格式化为字符串
-     * @see 使用说明详见<code>formatToHexStringWithASCII(byte[], int, int)</code>方法
+     * <p>
+     *     使用说明详见{@link #buildHexStringWithASCII(byte[], int, int)}
+     * </p>
      */
     public static String buildHexStringWithASCII(byte[] data){
         return buildHexStringWithASCII(data, 0, data.length);
@@ -230,13 +231,15 @@ public final class JadyerUtil {
 
     /**
      * 通过ASCII码将十进制的字节数组格式化为十六进制字符串
-     * @see 该方法常用于字符串的十六进制打印,打印时左侧为十六进制数值,右侧为对应的字符串原文
-     * @see 在构造右侧的字符串原文时,该方法内部使用的是平台的默认字符集,来解码byte[]数组
-     * @see 该方法在将字节转为十六进制时,默认使用的是<code>java.util.Locale.getDefault()</code>
-     * @see 详见String.format(String, Object...)方法和new String(byte[], int, int)构造方法
+     * <ul>
+     *     <li>该方法常用于字符串的十六进制打印，打印时左侧为十六进制数值，右侧为对应的字符串原文</li>
+     *     <li>在构造右侧的字符串原文时，该方法内部使用的是平台的默认字符集，来解码byte[]数组</li>
+     *     <li>该方法在将字节转为十六进制时，默认使用的是{@link java.util.Locale#getDefault()}</li>
+     *     <li>详见{@link java.lang.String#format(String, Object...)}方法和{@link java.lang.String#String(byte[], int, int)}构造方法</li>
+     * </ul>
      * @param data   十进制的字节数组
-     * @param offset 数组下标,标记从数组的第几个字节开始格式化输出
-     * @param length 格式长度,其不得大于数组长度,否则抛出java.lang.ArrayIndexOutOfBoundsException
+     * @param offset 数组下标，标记从数组的第几个字节开始格式化输出
+     * @param length 格式长度，其不得大于数组长度，否则抛出java.lang.ArrayIndexOutOfBoundsException
      * @return 格式化后的十六进制字符串
      */
     private static String buildHexStringWithASCII(byte[] data, int offset, int length){
@@ -294,7 +297,9 @@ public final class JadyerUtil {
 
     /**
      * 通过ASCII码将十六进制的字节数组格式化为十六进制字符串
-     * @see 使用说明详见<code>formatToHexStringWithASCII(byte[], int, int)</code>方法
+     * <p>
+     *     使用说明详见{@link #buildHexStringWithASCII(byte[], int, int)}
+     * </p>
      */
     public static String buildHexStringWithASCIIForHex(byte[] hexData, int offset, int length){
         if(ArrayUtils.isEmpty(hexData)){
@@ -311,7 +316,9 @@ public final class JadyerUtil {
 
     /**
      * convert byte to hex
-     * <p>等效于org.apache.commons.codec.binary.Hex.encodeHexString(in, true)</p>
+     * <p>
+     *     等效于{@link org.apache.commons.codec.binary.Hex#encodeHexString(byte[])}
+     * </p>
      */
     public static String bytesToHex(byte[] in, boolean toLowerCase){
         //String hex = new BigInteger(1, in).toString(16);
@@ -332,7 +339,10 @@ public final class JadyerUtil {
 
     /**
      * convert hex to byte
-     * <p>等效于org.apache.commons.codec.binary.Hex.decodeHex(hex.toCharArray())</p>
+     * <p>
+     *     等效于{@link org.apache.commons.codec.binary.Hex#decodeHex(char[])}
+     *     本例的参数可传hex.toCharArray()
+     * </p>
      */
     public static byte[] hexToBytes(String hex){
         byte[] binary = new byte[hex.length() / 2];
@@ -387,8 +397,10 @@ public final class JadyerUtil {
 
     /**
      * 字符串右补字节
-     * @see 鉴于该方法常用于构造响应给支付平台相关系统的响应报文头,故其默认采用0x00右补字节且总字节长度为100字节
-     * @see 若想自己指定所补字节,可以使用<code>rightPadForByte(String str, int size, int padStrByASCII)</code>方法
+     * <ul>
+     *     <li>鉴于该方法常用于构造响应给支付平台相关系统的响应报文头，故其默认采用0x00右补字节且总字节长度为100字节</li>
+     *     <li>若想自己指定所补字节，可以使用{@link #rightPadUseByte(String, int, int, String)}</li>
+     * </ul>
      */
     public static String rightPadUseByte(String str){
         return rightPadUseByte(str, 100, 0, "UTF-8");
@@ -397,9 +409,11 @@ public final class JadyerUtil {
 
     /**
      * 字符串右补字节
-     * @see 若str对应的byte[]长度不小于size，则按照size截取str对应的byte[]，而非原样返回str
-     * @see 所以size参数很关键..事实上之所以这么处理，是由于支付处理系统接口文档规定了字段的最大长度
-     * @see 若对普通字符串进行右补字符，建议org.apache.commons.lang.StringUtils.rightPad(...)
+     * <ul>
+     *     <li>若str对应的byte[]长度不小于size，则按照size截取str对应的byte[]，而非原样返回str</li>
+     *     <li>所以size参数很关键...事实上之所以这么处理，是由于支付处理系统接口文档规定了字段的最大长度</li>
+     *     <li>若对普通字符串进行右补字符，建议{@link org.apache.commons.lang.StringUtils#rightPad(String, int, String)}</li>
+     * </ul>
      * @param size          该参数指的不是字符串长度，而是字符串所对应的byte[]长度
      * @param padStrByASCII 该值为所补字节的ASCII码，如32表示空格，48表示0，64表示@等
      * @param charset       由右补字节后的字节数组生成新字符串时所采用的字符集
@@ -419,8 +433,10 @@ public final class JadyerUtil {
 
     /**
      * 字符串左补字节
-     * @see 该方法默认采用0x00左补字节
-     * @see 若想自己指定所补字节,可以使用<code>leftPadForByte(String str, int size, int padStrByASCII)</code>方法
+     * <ul>
+     *     <li>该方法默认采用0x00左补字节</li>
+     *     <li>若想自己指定所补字节,可以使用{@link #leftPadUseByte(String, int, int, String)}</li>
+     * </ul>
      */
     public static String leftPadUseByte(String str, int size, String charset){
         return leftPadUseByte(str, size, 0, "UTF-8");
@@ -429,9 +445,11 @@ public final class JadyerUtil {
 
     /**
      * 字符串左补字节
-     * @see 若str对应的byte[]长度不小于size,则按照size截取str对应的byte[],而非原样返回str
-     * @see 所以size参数很关键..事实上之所以这么处理,是由于支付处理系统接口文档规定了字段的最大长度
-     * @param padStrByASCII 该值为所补字节的ASCII码,如32表示空格,48表示0,64表示@等
+     * <ul>
+     *     <li>若str对应的byte[]长度不小于size，则按照size截取str对应的byte[]，而非原样返回str</li>
+     *     <li>所以size参数很关键...事实上之所以这么处理，是由于支付处理系统接口文档规定了字段的最大长度</li>
+     * </ul>
+     * @param padStrByASCII 该值为所补字节的ASCII码，如32表示空格，48表示0，64表示@
      * @param charset       由左补字节后的字节数组生成新字符串时所采用的字符集
      */
     public static String leftPadUseByte(String str, int size, int padStrByASCII, String charset){
@@ -449,13 +467,15 @@ public final class JadyerUtil {
 
     /**
      * 转义HTML字符串
-     * @see 对输入参数中的敏感字符进行过滤替换,防止用户利用JavaScript等方式输入恶意代码
-     * @see String input = <img src='http://t1.baidu.com/it/fm=0&gp=0.jpg'/>
-     * @see HtmlUtils.htmlEscape(input);         //from spring.jar
-     * @see StringEscapeUtils.escapeHtml(input); //from commons-lang.jar
-     * @see 尽管Spring和Apache都提供了字符转义的方法,但Apache的StringEscapeUtils功能要更强大一些
-     * @see StringEscapeUtils提供了对HTML,Java,JavaScript,SQL,XML等字符的转义和反转义
-     * @see 但二者在转义HTML字符时,都不会对单引号和空格进行转义,而本方法则提供了对它们的转义
+     * <ul>
+     *     <li>对输入参数中的敏感字符进行过滤替换，防止用户利用JavaScript等方式输入恶意代码</li>
+     *     <li>String input = <img src='http://t1.baidu.com/it/fm=0&gp=0.jpg'/></li>
+     *     <li>HtmlUtils.htmlEscape(input);         //from spring.jar</li>
+     *     <li>StringEscapeUtils.escapeHtml(input); //from commons-lang.jar</li>
+     *     <li>尽管Spring和Apache都提供了字符转义的方法，但Apache的StringEscapeUtils功能要更强大一些</li>
+     *     <li>StringEscapeUtils提供了对HTML,Java,JavaScript,SQL,XML等字符的转义和反转义</li>
+     *     <li>但二者在转义HTML字符时，都不会对单引号和空格进行转义，而本方法则提供了对它们的转义</li>
+     * </ul>
      * @return String 过滤后的字符串
      */
     public static String escapeHtml(String input) {
@@ -586,7 +606,7 @@ public final class JadyerUtil {
     /**
      * 提取堆栈信息
      * <p>
-     *     等价于org.apache.commons.lang3.exception.ExceptionUtils.getStackTrace(cause);
+     *     等价于{@link org.apache.commons.lang3.exception.ExceptionUtils#getStackTrace(Throwable)}
      * </p>
      */
     public static String extractStackTrace(Throwable cause){
@@ -655,25 +675,25 @@ public final class JadyerUtil {
      * 统计代码行数
      * -------------------------------------------------------------------------------------------------------------
      * 1)目前仅支持*.java;*.xml;*.properties;*.jsp;*.htm;*.html六种文件格式
-     * 2)在统计jsp或htm或html文件时,也会将文件中的js或css标签里面的代码统计进去,即也会正确计算页面中js或css代码的注释或空行等
-     * 3)要注意两种特殊情况,对于这种特殊情况,本方法也进行了处理
+     * 2)在统计jsp或htm或html文件时，也会将文件中的js或css标签里面的代码统计进去，即也会正确计算页面中js或css代码的注释或空行等
+     * 3)要注意两种特殊情况，对于这种特殊情况，本方法也进行了处理
      *   <style type="text/css"><!--css code//--></style>
      *   <script type="text/javascript"><!--js code//--></script>
-     * 4)本方法也支持统计*.js和*.css文件中的代码行数,只不过实际中js和css文件通常是现成的,只有很少的一部分才是程序员自己写的代码
-     *   而这一部分代码通常都写在jsp或html页面中,故本方法未统计*.js和*.css文件
-     *   如需统计,则只需初始化一下js和css的注释标记,并在允许的文件类型列表中将js和css添加进去即可
+     * 4)本方法也支持统计*.js和*.css文件中的代码行数，只不过实际中js和css文件通常是现成的，只有很少的一部分才是程序员自己写的代码
+     *   而这一部分代码通常都写在jsp或html页面中，故本方法未统计*.js和*.css文件
+     *   如需统计，则只需初始化一下js和css的注释标记，并在允许的文件类型列表中将js和css添加进去即可
      * 5)本方法会将统计结果放到参数resultMap中
-     * 6)不可在本方法中为resultMap的几个键的值设定初始值,因为本方法内部存在递归操作...但可以在调用方传入参数前初始化,如下所示
+     * 6)不可在本方法中为resultMap的几个键的值设定初始值，因为本方法内部存在递归操作...但可以在调用方传入参数前初始化，如下所示
      *   Map<String, Integer> resultMap = new HashMap<String, Integer>();
      *   resultMap.put("total", 0);
      *   resultMap.put("code", 0);
      *   resultMap.put("comment", 0);
      *   resultMap.put("blank", 0);
      *   然后在调用本方法时传进来即可:JadyerUtil.getCodeLineCounts(file, resultMap);
-     *   待本方法执行完毕后,传进来的resultMap里面就有值了,调用方就可以获取到里面的值进行业务处理了
+     *   待本方法执行完毕后，传进来的resultMap里面就有值了，调用方就可以获取到里面的值进行业务处理了
      * -------------------------------------------------------------------------------------------------------------
-     * @param codeFile  待统计的File类,可以是具体的文件或目录
-     * @param resultMap 用于记录统计结果,键为total,code,comment,blank
+     * @param codeFile  待统计的File类，可以是具体的文件或目录
+     * @param resultMap 用于记录统计结果，键为total、code、comment、blank
      */
     public static void getCodeLineCounts(File codeFile, Map<String, Integer> resultMap){
         boolean isLoopOver = false;
