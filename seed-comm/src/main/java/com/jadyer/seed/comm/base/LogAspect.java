@@ -2,18 +2,21 @@ package com.jadyer.seed.comm.base;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.jadyer.seed.comm.annotation.SeedLog;
 import com.jadyer.seed.comm.util.IPUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
 
 /**
  * 日志记录切面器
@@ -36,7 +39,7 @@ public class LogAspect {
     public Object log(ProceedingJoinPoint joinPoint) throws Throwable {
         Object respData;
         long startTime = System.currentTimeMillis();
-        String className = joinPoint.getTarget().getClass().getSimpleName(); //获取类名(这里只切面了Controller类)
+        String className = joinPoint.getTarget().getClass().getSimpleName(); //获取类名（这里只切面了Controller类）
         String methodName = joinPoint.getSignature().getName();              //获取方法名
         String methodInfo = className + "." + methodName;                    //组织类名.方法名
         //Object[] objs = joinPoint.getArgs();                               //获取方法参数
@@ -61,7 +64,16 @@ public class LogAspect {
             return joinPoint.proceed();
         }
         HttpServletRequest request = attributes.getRequest();
-        LogUtil.getLogger().info("{}()-->{}被调用, 客户端IP={}, 入参为[{}]", methodInfo, request.getRequestURI(), IPUtil.getClientIP(request), JadyerUtil.buildStringFromMap(request.getParameterMap()));
+        LogUtil.getLogger().info("{}()-->{}被调用，客户端IP={}，入参为[{}]", methodInfo, request.getRequestURI(), IPUtil.getClientIP(request), JadyerUtil.buildStringFromMap(request.getParameterMap()));
+        /*
+         * 使用自定义注解
+         */
+        Method method = ((MethodSignature)joinPoint.getSignature()).getMethod();
+        if(method.isAnnotationPresent(SeedLog.class)){
+            SeedLog seedLog = method.getAnnotation(SeedLog.class);
+            String logData = "动作：" + seedLog.action().getCode() + "（" + seedLog.action().getMsg() +"）" + "，描述：" + seedLog.value();
+            LogUtil.getLogger().info("{}()-->{}被调用，客户端IP={}，Log注解为[{}]", methodInfo, request.getRequestURI(), IPUtil.getClientIP(request), logData);
+        }
         /*
          * 表单验证
          */
@@ -87,7 +99,7 @@ public class LogAspect {
         }else{
             returnInfo = JSON.toJSONStringWithDateFormat(respData, JSON.DEFFAULT_DATE_FORMAT, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero, SerializerFeature.WriteNullListAsEmpty, SerializerFeature.WriteNullBooleanAsFalse);
         }
-        LogUtil.getLogger().info("{}()-->{}被调用, 出参为[{}], Duration[{}]ms", methodInfo, request.getRequestURI(), returnInfo, endTime-startTime);
+        LogUtil.getLogger().info("{}()-->{}被调用，出参为[{}]，Duration[{}]ms", methodInfo, request.getRequestURI(), returnInfo, endTime-startTime);
         LogUtil.getLogger().info("---------------------------------------------------------------------------------------------");
         //注意這里一定要原封不动的返回joinPoint.proceed()结果，若返回JSON.toJSONString(respData)则会报告下面的异常
         //java.lang.String cannot be cast to com.jadyer.seed.comm.constant.CommonResult

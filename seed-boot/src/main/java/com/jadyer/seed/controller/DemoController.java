@@ -1,6 +1,8 @@
 package com.jadyer.seed.controller;
 
 import com.jadyer.seed.boot.BootProperties;
+import com.jadyer.seed.comm.annotation.ActionEnum;
+import com.jadyer.seed.comm.annotation.SeedLog;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
 import com.jadyer.seed.comm.constant.Constants;
@@ -70,6 +72,7 @@ public class DemoController {
      */
     @ResponseBody
     @GetMapping("/prop")
+    @SeedLog(action=ActionEnum.LIST, value="读取配置文件中的属性")
     public Map<String, Object> prop(){
         Map<String, Object> map = new HashMap<>();
         map.put("weight", this.weight);
