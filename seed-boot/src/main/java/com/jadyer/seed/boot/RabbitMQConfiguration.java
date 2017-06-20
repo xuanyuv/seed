@@ -35,8 +35,9 @@ import org.springframework.context.annotation.Bean;
  * 接收端写法如下（接收从RabbitMQ订阅的消息）
  * @Component
  * class ApplyService {
+ *     //spring.rabbitmq.queues=myapi.get.apply.status
  *     //containerFactory指定的是com.jadyer.seed.boot.RabbitMQConfiguration.java里面声明的Bean
- *     @RabbitListener(queues="myapi.get.apply.status", containerFactory="jadyerRabbitListenerContainerFactory")
+ *     @RabbitListener(queues="${spring.rabbitmq.queues}", containerFactory="jadyerRabbitListenerContainerFactory")
  *     public void receive(User user){
  *         System.out.println("收到从RabbitMQ订阅过来的消息-->[" + ReflectionToStringBuilder.toString(user) + "]");
  *     }
