@@ -42,6 +42,7 @@
     <logger name="org.hibernate" level="WARN"/>
     <logger name="org.thymeleaf" level="WARN"/>
     <logger name="org.springframework" level="WARN"/>
+
     <logger name="webLogger" level="INFO" additivity="true">
         <appender-ref ref="WEB_LOG"/>
     </logger>

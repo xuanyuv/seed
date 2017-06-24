@@ -41,6 +41,12 @@ logging:
   config: classpath:config/logback.xml
 
 
+# 关闭安全认证校验（动态修改日志级别时会用到）
+management:
+  security:
+    enabled: false
+
+
 # 文件上传限制
 multipart:
   enabled: true

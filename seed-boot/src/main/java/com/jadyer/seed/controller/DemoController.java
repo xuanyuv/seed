@@ -1,12 +1,15 @@
 package com.jadyer.seed.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.jadyer.seed.boot.BootProperties;
 import com.jadyer.seed.comm.annotation.ActionEnum;
 import com.jadyer.seed.comm.annotation.SeedLog;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
 import com.jadyer.seed.comm.constant.Constants;
+import com.jadyer.seed.comm.util.HttpUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
+import com.jadyer.seed.comm.util.LogUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
@@ -88,6 +91,31 @@ public class DemoController {
         map.put("detailInfo", this.bootProperties.getDetailInfo());
         map.put("addressList", this.bootProperties.getAddressList());
         return map;
+    }
+
+
+    /**
+     * 动态修改日志级别
+     * @param name  日志端点，可传logback.xml里面配置的<logger name=""/>、或者com.jadyer、或者com.jadyer.seed
+     * @param level 修改后的日志级别，可传info、inFO、debug、error、ErrOR等等
+     */
+    @ResponseBody
+    @GetMapping("/loglevel/{name}/{level}")
+    public CommonResult loglevel(@PathVariable String name, @PathVariable String level){
+        LogUtil.getLogger().info("这是info级别的日志");
+        LogUtil.getLogger().debug("这是debug级别的日志");
+        LogUtil.getLogger().error("这是error级别的日志");
+        String reqData = JSON.toJSONString(new HashMap<String, String>(){
+            private static final long serialVersionUID = 2268259870612640575L;
+            {
+                put("configuredLevel", level);
+            }
+        });
+        HttpUtil.post("http://127.0.0.1/boot/loggers/"+name, reqData, "application/json; charset=UTF-8");
+        LogUtil.getLogger().info("这是info级别的日志");
+        LogUtil.getLogger().debug("这是debug级别的日志");
+        LogUtil.getLogger().error("这是error级别的日志");
+        return new CommonResult();
     }
 
 

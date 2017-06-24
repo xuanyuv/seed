@@ -43,14 +43,19 @@ import javax.servlet.Filter;
  *   metrics------显示应用的性能指标
  *   mappings-----显示SpringMVC应用中通过@RequestMapping添加的路径映射
  *   trace--------显示应用相关的跟踪信息
+ *   loggers------显示日志级别（SpringBoot-1.5.x才开始提供的新功能）
  *   shutdown-----关闭应用
- * 2.http://127.0.0.1/health可以查看应用的健康状态,实现HealthIndicator接口后还可以自定义Health服务
- * 3.http://127.0.0.1/info会将应用中任何以"info."开头的配置参数暴露出去,详见application.properties写法
+ * 2.http://127.0.0.1/health可以查看应用的健康状态，实现HealthIndicator接口后还可以自定义Health服务
+ * 3.http://127.0.0.1/info会将应用中任何以"info."开头的配置参数暴露出去，详见application.properties写法
  * 4.http://127.0.0.1/shutdown属于敏感操作，故此功能默认是关闭的（其它的actuator都不是敏感操作，所以默认都是开启的）
  *   通过配置endpoints.shutdown.enabled=true即可启用
  *   另外，http://127.0.0.1/shutdown支持POST，但不支持GET请求
  *   它在收到请求，关闭应用时，本例中的SpringContextHolder.clearHolder()方法会被调用
  *   并返回该字符串给调用方（包括小括号）：{"message":"Shutting down, bye..."}
+ * 5.http://127.0.0.1/loggers/日志端点/新的日志级别
+ *   可以动态修改日志级别，示例代码见{@link com.jadyer.seed.controller.DemoController#loglevel(String, String)}
+ *   并且，GET请求“http://127.0.0.1/loggers/日志端点”还可以查看其当前的日志级别
+ *   需要注意的是：该功能需要配置management.security.enabled=false来关闭安全认证校验
  * 另外：可以通过spring-boot-admin实现应用监控，相关示例见https://my.oschina.net/u/1266221/blog/805596
  * -----------------------------------------------------------------------------------------------------------
  * 条件注解
