@@ -72,12 +72,30 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/qss?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull
     username: root
     password: xuanyu
-    minIdle: 5
-    maxActive: 50
-    initialSize: 5
-    maxWait: 60000
-    minEvictableIdleTimeMillis: 300000
-    timeBetweenEvictionRunsMillis: 60000
+    # 更多属性：https://github.com/alibaba/druid/issues/1344
+    # 另经测试：应用正常运行中，数据库突然宕掉后过一段时间又恢复，druid会自动重连
+    # https://github.com/alibaba/druid/tree/master/druid-spring-boot-starter
+    druid:
+      filters: wall,mergeStat
+      initialSize: 5               # 配置初始化大小、最小、最大
+      minIdle: 5                   # 配置初始化大小、最小、最大
+      maxActive: 100              # 配置初始化大小、最小、最大
+      maxWait: 60000              # 配置获取连接等待超时的时间
+      validationQuery: SELECT 1  # 默认的testWhileIdle=true、testOnBorrow=false、testOnReturn=false
+      minEvictableIdleTimeMillis: 300000     # 配置一个连接在池中最小生存的时间，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000  # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      poolPreparedStatements: true                     # 打开PSCache(preparedStatement)，并且指定每个连接上PSCache的大小
+      maxPoolPreparedStatementPerConnectionSize: 20  # http://www.infoq.com/cn/news/2017/03/Analysis-errors-MySQL-JDBC
+      WebStatFilter:
+        enabled: true
+        profileEnable: true
+        urlPattern: /*
+        #exclusions: *.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*
+      StatViewServlet:
+        enabled: true
+        urlPattern: /druid/*
+        loginUsername: druid
+        loginPassword: http://jadyer.cn/
   jpa:
     showSql: true
     database: MYSQL

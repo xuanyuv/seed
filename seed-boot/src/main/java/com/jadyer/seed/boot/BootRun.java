@@ -1,5 +1,6 @@
 package com.jadyer.seed.boot;
 
+import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
 import com.jadyer.seed.boot.event.ApplicationEnvironmentPreparedEventListener;
 import com.jadyer.seed.boot.event.ApplicationFailedEventListener;
 import com.jadyer.seed.boot.event.ApplicationPreparedEventListener;
@@ -66,7 +67,7 @@ import javax.servlet.Filter;
  * -------------------------------------------------------------------------------------------------------
  */
 @EnableAsync
-@SpringBootApplication(scanBasePackages="${scan.base.packages}", exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
+@SpringBootApplication(scanBasePackages="${scan.base.packages}", exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class, DruidDataSourceAutoConfigure.class})
 public class BootRun {
     private static final Logger log = LoggerFactory.getLogger(BootRun.class);
 

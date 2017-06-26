@@ -19,12 +19,26 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/scs?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull
     username: root
     password: xuanyu
-    minIdle: 5
-    maxActive: 50
-    initialSize: 5
-    maxWait: 60000
-    minEvictableIdleTimeMillis: 300000
-    timeBetweenEvictionRunsMillis: 60000
+    druid:
+      filters: wall,mergeStat
+      initialSize: 5
+      minIdle: 5
+      maxActive: 100
+      maxWait: 60000
+      validationQuery: SELECT 1
+      minEvictableIdleTimeMillis: 300000
+      timeBetweenEvictionRunsMillis: 60000
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      WebStatFilter:
+        enabled: true
+        profileEnable: true
+        urlPattern: /*
+      StatViewServlet:
+        enabled: true
+        urlPattern: /druid/*
+        loginUsername: druid
+        loginPassword: http://jadyer.cn/
   jpa:
     showSql: false
     database: MYSQL
