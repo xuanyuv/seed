@@ -15,6 +15,10 @@ multipart:
 
 
 spring:
+  async:
+    corePoolSize: 100
+    maxPoolSize: 500
+    queueCapacity: 1000
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/mpp?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull
     username: root

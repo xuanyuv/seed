@@ -3,7 +3,6 @@ package com.jadyer.seed.mpp.mgr.user;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
 import com.jadyer.seed.comm.constant.Constants;
-import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.mpp.mgr.user.model.UserInfo;
 import com.jadyer.seed.mpp.sdk.qq.helper.QQHelper;
 import com.jadyer.seed.mpp.sdk.qq.helper.QQTokenHolder;
@@ -25,9 +24,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 @Controller
 @RequestMapping(value="/user")
@@ -35,34 +31,37 @@ public class UserController{
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Resource
     private UserService userService;
+    @Resource
+    private AppidSignupAsync appidSignupAsync;
 
     @PostConstruct
     public void scheduleReport(){
-        Executors.newScheduledThreadPool(1).schedule(new Runnable(){
-            @Override
-            public void run() {
-                try {
-                    List<UserInfo> userinfoList = userService.findAll();
-                    if(userinfoList.isEmpty()){
-                        logger.info("未查询到需要登记的appid");
-                    }
-                    for(UserInfo obj : userinfoList){
-                        if(1 == obj.getBindStatus()){
-                            if(1 == obj.getMptype()){
-                                WeixinTokenHolder.setWeixinAppidAppsecret(obj.getAppid(), obj.getAppsecret());
-                                logger.info("登记微信appid=[{}]，appsecret=[{}]完毕", obj.getAppid(), obj.getAppsecret());
-                            }
-                            if(2 == obj.getMptype()){
-                                QQTokenHolder.setQQAppidAppsecret(obj.getAppid(), obj.getAppsecret());
-                                logger.info("登记QQappid=[{}]，appsecret=[{}]完毕", obj.getAppid(), obj.getAppsecret());
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    LogUtil.getLogger().info("登记appid时发生异常，堆栈轨迹如下", e);
-                }
-            }
-        }, 6, TimeUnit.SECONDS);
+        appidSignupAsync.signup();
+        //Executors.newScheduledThreadPool(1).schedule(new Runnable(){
+        //    @Override
+        //    public void run() {
+        //        try {
+        //            List<UserInfo> userinfoList = userService.findAll();
+        //            if(userinfoList.isEmpty()){
+        //                logger.info("未查询到需要登记的appid");
+        //            }
+        //            for(UserInfo obj : userinfoList){
+        //                if(1 == obj.getBindStatus()){
+        //                    if(1 == obj.getMptype()){
+        //                        WeixinTokenHolder.setWeixinAppidAppsecret(obj.getAppid(), obj.getAppsecret());
+        //                        logger.info("登记微信appid=[{}]，appsecret=[{}]完毕", obj.getAppid(), obj.getAppsecret());
+        //                    }
+        //                    if(2 == obj.getMptype()){
+        //                        QQTokenHolder.setQQAppidAppsecret(obj.getAppid(), obj.getAppsecret());
+        //                        logger.info("登记QQappid=[{}]，appsecret=[{}]完毕", obj.getAppid(), obj.getAppsecret());
+        //                    }
+        //                }
+        //            }
+        //        } catch (Exception e) {
+        //            LogUtil.getLogger().info("登记appid时发生异常，堆栈轨迹如下", e);
+        //        }
+        //    }
+        //}, 6, TimeUnit.SECONDS);
     }
 
 

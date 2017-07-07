@@ -3,7 +3,7 @@ package com.jadyer.seed.mpp.mgr;
 import com.jadyer.seed.comm.constant.Constants;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.mpp.mgr.fans.FansInfoRepository;
-import com.jadyer.seed.mpp.mgr.fans.FansSaveThread;
+import com.jadyer.seed.mpp.mgr.fans.FansSaveAsync;
 import com.jadyer.seed.mpp.mgr.reply.ReplyInfoRepository;
 import com.jadyer.seed.mpp.mgr.reply.model.ReplyInfo;
 import com.jadyer.seed.mpp.mgr.user.UserService;
@@ -28,14 +28,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @Controller
 @RequestMapping(value="/weixin")
 public class WeixinController extends WeixinMsgControllerCustomServiceAdapter {
     @Resource
     private UserService userService;
+    @Resource
+    private FansSaveAsync fansSaveAsync;
     @Resource
     private FansInfoRepository fansInfoRepository;
     @Resource
@@ -115,10 +115,8 @@ public class WeixinController extends WeixinMsgControllerCustomServiceAdapter {
             return new WeixinOutTextMsg(inFollowEventMsg).setContent("该公众号未绑定");
         }
         if(WeixinInFollowEventMsg.EVENT_INFOLLOW_SUBSCRIBE.equals(inFollowEventMsg.getEvent())){
-            //记录粉丝关注情况
-            ExecutorService threadPool = Executors.newSingleThreadExecutor();
-            threadPool.execute(new FansSaveThread(userInfo, inFollowEventMsg.getFromUserName()));
-            threadPool.shutdown();
+            //异步记录粉丝关注情况
+            fansSaveAsync.save(userInfo, inFollowEventMsg.getFromUserName());
             //目前设定关注后回复文本
             List<ReplyInfo> replyInfoList = replyInfoRepository.findByCategory(userInfo.getId(), 1);
             if(replyInfoList.isEmpty()){

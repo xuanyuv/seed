@@ -3,7 +3,7 @@ package com.jadyer.seed.mpp.mgr;
 import com.jadyer.seed.comm.constant.Constants;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.mpp.mgr.fans.FansInfoRepository;
-import com.jadyer.seed.mpp.mgr.fans.FansSaveThread;
+import com.jadyer.seed.mpp.mgr.fans.FansSaveAsync;
 import com.jadyer.seed.mpp.mgr.reply.ReplyInfoRepository;
 import com.jadyer.seed.mpp.mgr.reply.model.ReplyInfo;
 import com.jadyer.seed.mpp.mgr.user.UserService;
@@ -29,14 +29,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @Controller
 @RequestMapping(value="/qq")
 public class QQController extends QQMsgController {
     @Resource
     private UserService userService;
+    @Resource
+    private FansSaveAsync fansSaveAsync;
     @Resource
     private FansInfoRepository fansInfoRepository;
     @Resource
@@ -118,10 +118,9 @@ public class QQController extends QQMsgController {
             return new QQOutTextMsg(inFollowEventMsg).setContent("该公众号未绑定");
         }
         if(QQInFollowEventMsg.EVENT_INFOLLOW_SUBSCRIBE.equals(inFollowEventMsg.getEvent())){
-            //记录粉丝关注情况
-            ExecutorService threadPool = Executors.newSingleThreadExecutor();
-            threadPool.execute(new FansSaveThread(userInfo, inFollowEventMsg.getFromUserName()));
-            threadPool.shutdown();
+            //异步记录粉丝关注情况
+            fansSaveAsync.save(userInfo, inFollowEventMsg.getFromUserName());
+            //目前设定关注后固定回复
             QQOutNewsMsg outMsg = new QQOutNewsMsg(inFollowEventMsg);
             outMsg.addNews("欢迎关注", "更多精彩请访问我的博客", "http://img.my.csdn.net/uploads/201507/26/1437881866_3678.png", "http://jadyer.cn/");
             return outMsg;
