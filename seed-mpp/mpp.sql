@@ -103,7 +103,7 @@ category    TINYINT(1)    NOT NULL COMMENT '回复的类别：0--通用的回复
 type        TINYINT(1)    NOT NULL COMMENT '回复的类型：0--文本，1--图文，2--图片，3--活动，4--转发到多客服',
 keyword     VARCHAR(16)   COMMENT '关键字',
 content     VARCHAR(2048) COMMENT '回复的内容',
-plugin_id    INT           COMMENT '活动插件ID，对应t_plugin#id',
+plugin_id   INT           COMMENT '活动插件ID，对应t_plugin#id',
 create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
 UNIQUE INDEX unique_index_uid_keyword(uid, keyword)
