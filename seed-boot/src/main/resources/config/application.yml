@@ -69,9 +69,10 @@ spring:
       enabled: true  # 啟用H2控制台並自定義訪問地址
   datasource:
     #url: jdbc:h2:mem:jadyer;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    url: jdbc:mysql://127.0.0.1:3306/qss?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull
-    username: root
-    password: xuanyu
+    #url: jdbc:mysql://127.0.0.1:3306/qss?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://${db.host}:${db.port}/${db.name}?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull
+    username: ${db.username}
+    password: ${db.password}
     # 更多属性：https://github.com/alibaba/druid/issues/1344
     # 另经测试：应用正常运行中，数据库突然宕掉后过一段时间又恢复，druid会自动重连
     # https://github.com/alibaba/druid/tree/master/druid-spring-boot-starter
