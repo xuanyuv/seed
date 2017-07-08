@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.servlet.Filter;
@@ -78,7 +77,6 @@ import javax.servlet.Filter;
  * -----------------------------------------------------------------------------------------------------------
  * Created by 玄玉<http://jadyer.cn/> on 2015/11/29 15:35.
  */
-@EnableAsync
 @SpringBootApplication(scanBasePackages="${scan.base.packages}", exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class, DruidDataSourceAutoConfigure.class})
 public class BootStrap extends SpringBootServletInitializer {
     @Override

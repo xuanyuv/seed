@@ -14,7 +14,8 @@ import java.util.concurrent.ThreadPoolExecutor;
  * -----------------------------------------------------------------------------------------------------
  * Spring提供了异步执行和任务调度的抽象接口TaskExecutor和TaskScheduler，并对其实现类支持线程池和代理
  * 本工程演示的是TaskExecutor的用法
- * 对于TaskScheduler，也是类似的通过@EnableScheduling启用@Scheduled(cron="")
+ * 对于TaskScheduler的用法，也是类似的通过@EnableScheduling启用@Scheduled(cron="")
+ * 示例代码见{@link com.jadyer.seed.controller.quartz.QuartzDemo#justDoIt()}
  * -----------------------------------------------------------------------------------------------------
  * 关于自定义线程池
  * 如果没有像本类中那样自定义Executor，那么就会使用系统默认的ThreadPoolTaskExecutor
