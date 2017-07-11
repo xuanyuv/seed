@@ -25,6 +25,8 @@ public class UserInfo extends BaseEntity<Long> {
     private String mpname;
     private String appid;
     private String appsecret;
+    private String mchid;
+    private String mchkey;
     @Column(name="bind_status")
     private int bindStatus;
     @Column(name="bind_time")
@@ -95,6 +97,18 @@ public class UserInfo extends BaseEntity<Long> {
     }
     public void setBindStatus(int bindStatus) {
         this.bindStatus = bindStatus;
+    }
+    public String getMchid() {
+        return mchid;
+    }
+    public void setMchid(String mchid) {
+        this.mchid = mchid;
+    }
+    public String getMchkey() {
+        return mchkey;
+    }
+    public void setMchkey(String mchkey) {
+        this.mchkey = mchkey;
     }
     public Date getBindTime() {
         return bindTime;

@@ -1,5 +1,7 @@
 package com.jadyer.seed.mpp.mgr.user;
 
+import com.jadyer.seed.comm.constant.CodeEnum;
+import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.mpp.mgr.user.model.MenuInfo;
 import com.jadyer.seed.mpp.mgr.user.model.UserInfo;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -54,7 +56,7 @@ public class UserService {
     @Transactional(rollbackFor=Exception.class)
     UserInfo passwordUpdate(UserInfo userInfo, String oldPassword, String newPassword){
         if(!userInfo.getPassword().equals(buildEncryptPassword(oldPassword))){
-            return null;
+            throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "原密码不正确");
         }
         userInfo.setPassword(buildEncryptPassword(newPassword));
         return userInfoRepository.saveAndFlush(userInfo);

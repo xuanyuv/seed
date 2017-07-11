@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
@@ -15,12 +14,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @version v1.1
+ * Bean工具类
+ * @version v1.2
+ * @history v1.2-->增加mapTobean()方法
  * @history v1.1-->增加beanToMap()方法
  * @history v1.0-->初建
- * Created by 玄玉<https://jadyer.github.io/> on 2017/5/18 17:22.
+ * Created by 玄玉<http://jadyer.cn/> on 2017/5/18 17:22.
  */
-public class BeanUtil {
+public final class BeanUtil {
     private BeanUtil(){}
 
     /**
@@ -110,38 +111,70 @@ public class BeanUtil {
 
 
     /**
-     * Bean属性转为Map，其中key=属性名，value=属性值
+     * Bean属性转为Map（key=属性名，value=属性值）
+     * <p>
+     *     另附注意事项：http://jadyer.cn/2013/09/24/spring-introspector-cleanup-listener/
+     * </p>
      */
     public static Map<String, String> beanToMap(Object bean) {
-        Map<String, String> dataMap = new HashMap<>();
-        //得到Bean的属性、暴露的方法和事件
-        //http://jadyer.cn/2013/09/24/spring-introspector-cleanup-listener/
-        BeanInfo beanInfo;
-        try {
-            beanInfo = Introspector.getBeanInfo(bean.getClass());
-        } catch (IntrospectionException e) {
-            throw new RuntimeException("分析类属性失败，堆栈轨迹如下", e);
+        if(null == bean){
+            return new HashMap<>();
         }
-        //得到属性描述
-        PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
-        for(PropertyDescriptor obj : propertyDescriptors){
-            //得到属性名
-            String propertyName = obj.getName();
-            if(!"class".equals(propertyName)){
-                try {
+        try {
+            Map<String, String> dataMap = new HashMap<>();
+            //得到Bean的属性、暴露的方法和事件
+            BeanInfo beanInfo = Introspector.getBeanInfo(bean.getClass());
+            //得到属性描述
+            PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+            for(PropertyDescriptor obj : propertyDescriptors){
+                //得到属性名
+                String propertyName = obj.getName();
+                //过滤class属性
+                if(!"class".equals(propertyName)){
                     ////获得setter
                     //Method setterMethod = obj.getWriteMethod();
                     //获得并执行getter
                     Object result = obj.getReadMethod().invoke(bean);
                     //放入Map
-                    dataMap.put(propertyName, null==result ? "" : result.toString());
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException("实例化JavaBean失败，堆栈轨迹如下", e);
-                } catch (InvocationTargetException e) {
-                    throw new RuntimeException("调用getter失败，堆栈轨迹如下", e);
+                    if(null != result){
+                        dataMap.put(propertyName, result.toString());
+                    }
                 }
             }
+            return dataMap;
+        }catch(Exception e){
+            throw new RuntimeException("beanToMap发生异常，堆栈轨迹如下", e);
         }
-        return dataMap;
+    }
+
+
+    /**
+     * Map转为Bean（根据key找到属性名，再将value作为属性值）
+     * <p>
+     *     另附注意事项：http://jadyer.cn/2013/09/24/spring-introspector-cleanup-listener/
+     * </p>
+     */
+    public static <T> T mapTobean(Map<String, String> dataMap, Class<T> beanClass) {
+        try{
+            T bean = beanClass.newInstance();
+            if(null==dataMap || dataMap.isEmpty()){
+                return bean;
+            }
+            //得到Bean的属性、暴露的方法和事件
+            BeanInfo beanInfo = Introspector.getBeanInfo(bean.getClass());
+            //得到属性描述
+            PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+            for(PropertyDescriptor obj : propertyDescriptors){
+                //得到属性名
+                String propertyName = obj.getName();
+                if(dataMap.containsKey(propertyName)){
+                    //获得并执行setter
+                    obj.getWriteMethod().invoke(bean, dataMap.get(propertyName));
+                }
+            }
+            return bean;
+        }catch(Exception e){
+            throw new RuntimeException("mapTobean发生异常，堆栈轨迹如下", e);
+        }
     }
 }

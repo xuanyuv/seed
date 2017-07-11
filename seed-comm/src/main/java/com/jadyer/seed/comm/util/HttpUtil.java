@@ -3,6 +3,7 @@ package com.jadyer.seed.comm.util;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.exception.SeedException;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
@@ -40,6 +41,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -50,8 +52,7 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
+import java.security.KeyStore;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -244,6 +245,57 @@ public final class HttpUtil {
 
 
     /**
+     * 使用.p12商户证书文件发送HTTP_POST请求
+     * @see 1)该方法允许自定义任何格式和内容的HTTP请求报文体
+     * @see 2)该方法会自动关闭连接,释放资源
+     * @see 3)方法内设置了连接和读取超时(时间由本工具类全局变量限定),超时或发生其它异常将抛出RuntimeException
+     * @see 4)请求参数含中文等特殊字符时,可直接传入本方法,方法内部会使用本工具类设置的全局DEFAULT_CHARSET对其转码
+     * @see 5)该方法在解码响应报文时所采用的编码,取自响应消息头中的[Content-Type:text/html; charset=GBK]的charset值
+     * @see   若响应消息头中未指定Content-Type属性,则会使用HttpClient内部默认的ISO-8859-1
+     * @param reqURL      请求地址
+     * @param reqData     请求报文，无参数时传null即可，多个参数则应拼接为param11=value11&22=value22&33=value33的形式
+     * @param contentType 设置请求头的contentType，传空则默认使用application/x-www-form-urlencoded; charset=UTF-8
+     * @param filepath    证书文件路径
+     * @param password    证书密码
+     * @return 远程主机响应正文
+     */
+    public static String postWithP12(String reqURL, String reqData, String contentType, String filepath, String password){
+        LogUtil.getLogger().info("请求{}的报文为-->>[{}]", reqURL, reqData);
+        String respData = "";
+        HttpClient httpClient = new DefaultHttpClient();
+        httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, DEFAULT_CONNECTION_TIMEOUT);
+        httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, DEFAULT_SO_TIMEOUT);
+        HttpPost httpPost = new HttpPost(reqURL);
+        //由于下面使用的是new StringEntity(....),所以默认发出去的请求报文头中CONTENT_TYPE值为text/plain; charset=ISO-8859-1
+        //这就有可能会导致服务端接收不到POST过去的参数,比如运行在Tomcat6.0.36中的Servlet,所以我们手工指定CONTENT_TYPE头消息
+        if(StringUtils.isBlank(contentType)){
+            httpPost.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded; charset=" + DEFAULT_CHARSET);
+        }else{
+            httpPost.setHeader(HTTP.CONTENT_TYPE, contentType);
+        }
+        httpPost.setEntity(new StringEntity(null==reqData?"":reqData, DEFAULT_CHARSET));
+        try{
+            httpClient = addTLSSupport(httpClient, filepath, password);
+            HttpResponse response = httpClient.execute(httpPost);
+            HttpEntity entity = response.getEntity();
+            if(null != entity){
+                respData = EntityUtils.toString(entity, ContentType.getOrDefault(entity).getCharset());
+            }
+            LogUtil.getLogger().info("请求{}得到应答<<--[{}]", reqURL, respData);
+            return respData;
+        }catch(ConnectTimeoutException cte){
+            throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "请求通信[" + reqURL + "]时连接超时", cte);
+        }catch(SocketTimeoutException ste){
+            throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "请求通信[" + reqURL + "]时读取超时", ste);
+        }catch(Exception e){
+            throw new SeedException(CodeEnum.SYSTEM_ERROR.getCode(), "请求通信[" + reqURL + "]时遇到异常", e);
+        }finally{
+            httpClient.getConnectionManager().shutdown();
+        }
+    }
+
+
+    /**
      * 发送HTTP_POST请求
      * @see 1)该方法允许自定义任何格式和内容的HTTP请求报文体
      * @see 2)该方法会自动关闭连接,释放资源
@@ -251,8 +303,8 @@ public final class HttpUtil {
      * @see 4)请求参数含中文等特殊字符时,可直接传入本方法,方法内部会使用本工具类设置的全局DEFAULT_CHARSET对其转码
      * @see 5)该方法在解码响应报文时所采用的编码,取自响应消息头中的[Content-Type:text/html; charset=GBK]的charset值
      * @see   若响应消息头中未指定Content-Type属性,则会使用HttpClient内部默认的ISO-8859-1
-     * @param reqURL  请求地址
-     * @param reqData 请求报文，无参数时传null即可，多个参数则应拼接为param11=value11&22=value22&33=value33的形式
+     * @param reqURL      请求地址
+     * @param reqData     请求报文，无参数时传null即可，多个参数则应拼接为param11=value11&22=value22&33=value33的形式
      * @param contentType 设置请求头的contentType，传空则默认使用application/x-www-form-urlencoded; charset=UTF-8
      * @return 远程主机响应正文
      */
@@ -648,8 +700,8 @@ public final class HttpUtil {
      * <p>
      *     you can see {@link #postBySocket(String,String)}
      * </p>
-     * @param reqURL     请求地址
-     * @param reqParams  请求报文
+     * @param reqURL    请求地址
+     * @param reqParams 请求报文
      * @return 应答Map有两个key，reqFullData--HTTP请求完整报文，respFullData--HTTP响应完整报文，respMsgHex--HTTP响应的原始字节的十六进制表示
      */
     public static Map<String, String> postBySocket(String reqURL, Map<String, String> reqParams){
@@ -979,7 +1031,7 @@ public final class HttpUtil {
     }
 
 
-    private static HttpClient addTLSSupport(HttpClient httpClient) throws NoSuchAlgorithmException, KeyManagementException {
+    private static HttpClient addTLSSupport(HttpClient httpClient) throws Exception {
         //创建TrustManager(),用于解决javax.net.ssl.SSLPeerUnverifiedException: peer not authenticated
         X509TrustManager trustManager = new X509TrustManager(){
             @Override
@@ -1007,6 +1059,33 @@ public final class HttpUtil {
         //创建SSLSocketFactory
         SSLSocketFactory socketFactory = new SSLSocketFactory(sslContext, hostnameVerifier);
         //通过SchemeRegistry将SSLSocketFactory注册到HttpClient上
+        httpClient.getConnectionManager().getSchemeRegistry().register(new Scheme("https", 443, socketFactory));
+        return httpClient;
+    }
+
+
+    /**
+     * <p>
+     *     注意：目前支持.p12文件
+     * </p>
+     * @param filepath 证书文件路径
+     * @param password 证书密码
+     */
+    private static HttpClient addTLSSupport(HttpClient httpClient, String filepath, String password) throws Exception {
+        //KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+        KeyStore keyStore = KeyStore.getInstance("PKCS12");
+        FileInputStream fis = new FileInputStream(new File(filepath));
+        try {
+            keyStore.load(fis, password.toCharArray());
+        } finally {
+            IOUtils.closeQuietly(fis);
+        }
+        //// Trust own CA and all self-signed certs
+        //SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore, "10016225".toCharArray()).build();
+        //// Allow TLSv1 protocol only
+        //SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, new String[]{"TLSv1"}, null, SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
+        //CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(sslsf).build();
+        SSLSocketFactory socketFactory = new SSLSocketFactory(keyStore);
         httpClient.getConnectionManager().getSchemeRegistry().register(new Scheme("https", 443, socketFactory));
         return httpClient;
     }

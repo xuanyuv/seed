@@ -4,6 +4,7 @@
 
 <jsp:include page="../comm/header.jsp"/>
 
+<script src="js/webtoolkit.md5.js"></script>
 <script>
 function submit(){
     if(isEmpty($("#oldPassword").val())){
@@ -12,6 +13,10 @@ function submit(){
     }
     if(isEmpty($("#newPassword").val())){
         $.promptBox("新密码不能为空", "#ffb848");
+        return;
+    }
+    if($("#newPassword").val() == $("#oldPassword").val()){
+        $.promptBox("新密码不能与原密码相同", "#ffb848");
         return;
     }
     if(isEmpty($("#newPasswordConfirm").val())){
@@ -23,7 +28,7 @@ function submit(){
         return;
     }
     $.post("${ctx}/user/password/update",
-        {oldPassword:$("#oldPassword").val(), newPassword:$("#newPassword").val()},
+        {oldPassword:MD5($("#oldPassword").val()), newPassword:MD5($("#newPassword").val())},
         function(data){
             if(0 == data.code){
                 $.promptBox("密码修改成功", "green");

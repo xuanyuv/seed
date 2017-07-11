@@ -2,19 +2,37 @@ package com.jadyer.seed.mpp.sdk.weixin.helper;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.jadyer.seed.comm.util.BeanUtil;
+import com.jadyer.seed.comm.util.CodecUtil;
 import com.jadyer.seed.comm.util.HttpUtil;
 import com.jadyer.seed.comm.util.LogUtil;
+import com.jadyer.seed.comm.util.XmlUtil;
 import com.jadyer.seed.mpp.sdk.weixin.constant.WeixinCodeEnum;
 import com.jadyer.seed.mpp.sdk.weixin.constant.WeixinConstants;
+import com.jadyer.seed.mpp.sdk.weixin.constant.WeixinPayCodeEnum;
 import com.jadyer.seed.mpp.sdk.weixin.model.WeixinErrorInfo;
 import com.jadyer.seed.mpp.sdk.weixin.model.WeixinFansInfo;
 import com.jadyer.seed.mpp.sdk.weixin.model.WeixinOAuthAccessToken;
 import com.jadyer.seed.mpp.sdk.weixin.model.custom.WeixinCustomMsg;
 import com.jadyer.seed.mpp.sdk.weixin.model.menu.WeixinMenu;
+import com.jadyer.seed.mpp.sdk.weixin.model.pay.WeixinPayCloseorderReqData;
+import com.jadyer.seed.mpp.sdk.weixin.model.pay.WeixinPayCloseorderRespData;
+import com.jadyer.seed.mpp.sdk.weixin.model.pay.WeixinPayDownloadbillReqData;
+import com.jadyer.seed.mpp.sdk.weixin.model.pay.WeixinPayDownloadbillRespData;
+import com.jadyer.seed.mpp.sdk.weixin.model.pay.WeixinPayOrderqueryReqData;
+import com.jadyer.seed.mpp.sdk.weixin.model.pay.WeixinPayOrderqueryRespData;
+import com.jadyer.seed.mpp.sdk.weixin.model.pay.WeixinPayRefundReqData;
+import com.jadyer.seed.mpp.sdk.weixin.model.pay.WeixinPayRefundRespData;
+import com.jadyer.seed.mpp.sdk.weixin.model.pay.WeixinPayRefundqueryReqData;
+import com.jadyer.seed.mpp.sdk.weixin.model.pay.WeixinPayRefundqueryRespData;
+import com.jadyer.seed.mpp.sdk.weixin.model.pay.WeixinPayUnifiedorderReqData;
+import com.jadyer.seed.mpp.sdk.weixin.model.pay.WeixinPayUnifiedorderRespData;
 import com.jadyer.seed.mpp.sdk.weixin.model.template.WeixinTemplate;
 import com.jadyer.seed.mpp.sdk.weixin.model.template.WeixinTemplateMsg;
-import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -54,8 +72,7 @@ public final class WeixinHelper {
      * @see {"errcode":40001,"errmsg":"invalid credential, access_token is invalid or not latest hint: [3sEnya0653vr23]"}
      * @see {"errcode":0,"errmsg":"ok","ticket":"sM4AOVdWfPE4DxkXGEs8VDqmMJ5Cg8sos8UXyJqPG4FpcrJtLcmFoV69dhqNmiQdoF1HjamNrYH9c8S9r4B_MA","expires_in":7200}
      * @return 获取失败时将抛出Exception
-     * @create Oct 29, 2015 9:45:20 PM
-     * @author 玄玉<http://jadyer.cn/>
+     * Created by 玄玉<http://jadyer.cn/> on 2015/10/29 21:45.
      */
     static String getWeixinJSApiTicket(String accesstoken) throws IllegalAccessException {
         String reqURL = WeixinConstants.URL_WEIXIN_GET_JSAPI_TICKET.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
@@ -78,14 +95,14 @@ public final class WeixinHelper {
      * @param appid     微信公众号AppID
      * @param appsecret 微信公众号AppSecret
      * @param code      换取access_token的有效期为5分钟的票据
-     * @return 返回获取到的网页access_token(获取失败时的应答码也在该返回中)
+     * @return 返回获取到的网页access_token（获取失败时的应答码也在该返回中）
      */
     static WeixinOAuthAccessToken getWeixinOAuthAccessToken(String appid, String appsecret, String code){
         String reqURL = WeixinConstants.URL_WEIXIN_OAUTH2_GET_ACCESSTOKEN.replace(WeixinConstants.URL_PLACEHOLDER_APPID, appid)
                                                                       .replace(WeixinConstants.URL_PLACEHOLDER_APPSECRET, appsecret)
                                                                       .replace(WeixinConstants.URL_PLACEHOLDER_CODE, code);
         String respData = HttpUtil.post(reqURL, null, null);
-        LogUtil.getLogger().info("获取微信网页access_token,微信应答报文为-->{}", respData);
+        LogUtil.getLogger().info("获取微信网页access_token，微信应答报文为-->{}", respData);
         WeixinOAuthAccessToken weixinOauthAccessToken = JSON.parseObject(respData, WeixinOAuthAccessToken.class);
         if(weixinOauthAccessToken.getErrcode() != 0){
             String errmsg = WeixinCodeEnum.getMessageByCode(weixinOauthAccessToken.getErrcode());
@@ -165,7 +182,7 @@ public final class WeixinHelper {
 
     /**
      * 获取用户基本信息
-     * @see 微信服务器的应答报文是下面这样的,一般Content-Type里面编码都用charset,它竟然用encoding
+     * @see 微信服务器的应答报文是下面这样的，一般Content-Type里面编码都用charset，它竟然用encoding
      * @see HTTP/1.1 200 OK
      * @see Server: nginx/1.8.0
      * @see Date: Wed, 21 Oct 2015 03:56:53 GMT
@@ -185,8 +202,8 @@ public final class WeixinHelper {
     /**
      * 客服接口主动推消息
      * @see http://mp.weixin.qq.com/wiki/1/70a29afed17f56d537c833f89be979c9.html
-     * @see 目前只要粉丝在48小时内与公众号发生过互动,那么均可通过该接口主动推消息给粉丝
-     * @see 注意:如果需要以某个客服帐号来发消息,需要在请求JSON中加入customservice参数,这里暂未指定customservice
+     * @see 目前只要粉丝在48小时内与公众号发生过互动，那么均可通过该接口主动推消息给粉丝
+     * @see 注意：如果需要以某个客服帐号来发消息，需要在请求JSON中加入customservice参数，这里暂未指定customservice
      */
     public static WeixinErrorInfo pushWeixinMsgToFans(String accesstoken, WeixinCustomMsg customMsg){
         String reqURL = WeixinConstants.URL_WEIXIN_CUSTOM_PUSH_MESSAGE.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
@@ -242,31 +259,10 @@ public final class WeixinHelper {
 
 
     /**
-     * JS-SDK权限验证的签名
-     * @see 注意这里使用的是noncestr,不是nonceStr
-     * @see http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
-     * @param noncestr  随机字符串
-     * @param timestamp 时间戳
-     * @param url       当前网页的URL,不包含#及其后面部分
-     * @create Oct 29, 2015 10:11:29 PM
-     * @author 玄玉<http://jadyer.cn/>
-     */
-    public static String signWeixinJSSDK(String appid, String noncestr, String timestamp, String url){
-        StringBuilder sb = new StringBuilder();
-        sb.append("jsapi_ticket=").append(WeixinTokenHolder.getWeixinJSApiTicket(appid)).append("&")
-          .append("noncestr=").append(noncestr).append("&")
-          .append("timestamp=").append(timestamp).append("&")
-          .append("url=").append(url);
-        return DigestUtils.sha1Hex(sb.toString());
-    }
-
-
-    /**
      * 获取临时素材
      * @see http://mp.weixin.qq.com/wiki/11/07b6b76a6b6e8848e855a435d5e34a5f.html
      * @return 获取成功时返回文件保存在本地的路径,获取失败时将抛出RuntimeException
-     * @create Oct 30, 2015 4:02:43 PM
-     * @author 玄玉<http://jadyer.cn/>
+     * Created by 玄玉<http://jadyer.cn/> on 2015/10/30 16:02.
      */
     public static String downloadWeixinTempMediaFile(String accesstoken, String mediaId){
         String reqURL = WeixinConstants.URL_WEIXIN_GET_TEMP_MEDIA_FILE.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken).replace(WeixinConstants.URL_PLACEHOLDER_MEDIAID, mediaId);
@@ -292,8 +288,7 @@ public final class WeixinHelper {
      * @param expireSeconds 二维码临时有效的时间,单位为秒,最大不超过2592000s,即30天,不填则默认有效期为30s
      * @param sceneId       二维码参数场景值ID,临时二维码时为32位非0整型,永久二维码时值为1--100000
      * @param sceneStr      二维码参数场景值ID,字符串形式的ID,字符串类型,长度限制为1到64,仅永久二维码支持此字段
-     * @create Feb 22, 2016 10:33:17 PM
-     * @author 玄玉<http://jadyer.cn/>
+     * Created by 玄玉<http://jadyer.cn/> on 2016/2/22 22:33.
      */
     public static String createQrcodeTicket(String accesstoken, int type, int expireSeconds, long sceneId, String sceneStr){
         String reqURL = WeixinConstants.URL_WEIXIN_GET_QRCODE_TICKET.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
@@ -323,5 +318,246 @@ public final class WeixinHelper {
             }
             throw new RuntimeException("获取微信二维码时遇到未知异常");
         }
+    }
+
+
+    /**
+     * 微信支付--公众号支付--验签
+     * <ul>
+     *     <li>目前该方法主要用在微信公众号支付中，对于微信推送或被动回复内容的验签</li>
+     *     <li>验签未通过时，方法内部会抛出{@link com.jadyer.seed.comm.exception.SeedException#SeedException(int, String)}</li>
+     * </ul>
+     * Created by 玄玉<http://jadyer.cn/> on 2017/7/8 18:50.
+     */
+    public static void payVerifySign(Map<String, String> dataMap){
+        String sign_calc;
+        if(StringUtils.isBlank(dataMap.get("sign_type"))){
+            sign_calc = CodecUtil.buildHexSign(dataMap, "UTF-8", "MD5", WeixinTokenHolder.getWeixinMchkey(dataMap.get("appid")));
+            if(!StringUtils.equals(dataMap.get("sign"), sign_calc)){
+                sign_calc = CodecUtil.buildHmacSign(dataMap, WeixinTokenHolder.getWeixinMchkey(dataMap.get("appid")), "HmacSHA256");
+                if(!StringUtils.equals(dataMap.get("sign"), sign_calc)){
+                    throw new IllegalArgumentException("验签未通过");
+                }
+            }
+        }else{
+            String sign_type = dataMap.get("sign_type");
+            if(StringUtils.equals("MD5", sign_type)){
+                sign_calc = CodecUtil.buildHexSign(dataMap, "UTF-8", sign_type, WeixinTokenHolder.getWeixinMchkey(dataMap.get("appid")));
+            }else if(StringUtils.equals("HMAC-SHA256", sign_type)){
+                sign_calc = CodecUtil.buildHmacSign(dataMap, WeixinTokenHolder.getWeixinMchkey(dataMap.get("appid")), "HmacSHA256");
+            }else{
+                throw new IllegalArgumentException("不支持的签名算法");
+            }
+            if(!StringUtils.equals(dataMap.get("sign"), sign_calc)){
+                throw new IllegalArgumentException("验签未通过");
+            }
+        }
+    }
+
+
+    /**
+     * 微信支付--公众号支付--验证接口返回的报文是否表示交易成功
+     * <p>
+     *     return_code和result_code任意一个不为SUCCESS，则方法会抛出{@link IllegalArgumentException}
+     * </p>
+     */
+    public static void payVerifyIfSuccess(Map<String, String> dataMap){
+        if(!StringUtils.equals("SUCCESS", dataMap.get("return_code"))){
+            throw new RuntimeException(dataMap.get("return_msg"));
+        }
+        if(!StringUtils.equals("SUCCESS", dataMap.get("result_code"))){
+            String err_code = dataMap.get("err_code");
+            String err_code_des = dataMap.get("err_code_des");
+            throw new RuntimeException(StringUtils.isNotBlank(err_code_des) ? err_code_des : WeixinPayCodeEnum.getMessageByCode(err_code));
+        }
+    }
+
+
+    /**
+     * 微信支付--公众号支付--统一下单
+     * <p>
+     *     该方法会判断接口返回报文中的状态是否成功，并验签（验签失败则直接抛RuntimeException）
+     * </p>
+     * @return 前台页面呼起微信支付所需的json数据实体
+     */
+    public static WeixinPayUnifiedorderRespData payUnifiedorder(WeixinPayUnifiedorderReqData reqData){
+        LogUtil.getLogger().info("微信支付--公众号支付--统一下单接口入参为{}", ReflectionToStringBuilder.toString(reqData, ToStringStyle.MULTI_LINE_STYLE));
+        Map<String, String> reqDataMap = BeanUtil.beanToMap(reqData);
+        reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())));
+        //发送请求
+        String respXml = HttpUtil.post(WeixinConstants.URL_WEIXIN_PAY_UNIFIEDORDER, XmlUtil.mapToXml(reqDataMap), null);
+        //解析返回的xml字符串（交易是否成功、验签）
+        Map<String, String> respXmlMap = XmlUtil.xmlToMap(respXml);
+        payVerifyIfSuccess(respXmlMap);
+        payVerifySign(respXmlMap);
+        //构造前台页面呼起微信支付所需的数据
+        WeixinPayUnifiedorderRespData respData = new WeixinPayUnifiedorderRespData();
+        respData.setAppId(reqData.getAppid());
+        respData.setTimeStamp(Long.toString(System.currentTimeMillis()/1000));
+        respData.setNonceStr(RandomStringUtils.randomNumeric(16));
+        respData.setPackage_("prepay_id=" + respXmlMap.get("prepay_id"));
+        respData.setSignType("MD5");
+        respData.setPaySign(CodecUtil.buildHexSign(BeanUtil.beanToMap(respData), "UTF-8", respData.getSignType(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())));
+        LogUtil.getLogger().info("微信支付--公众号支付--统一下单接口出参为{}", ReflectionToStringBuilder.toString(respData, ToStringStyle.MULTI_LINE_STYLE));
+        return respData;
+    }
+
+
+    /**
+     * 微信支付--公众号支付--查询订单
+     * <p>
+     *     该方法会判断接口返回报文中的状态是否成功，并验签（验签失败则直接抛RuntimeException）
+     * </p>
+     */
+    public static WeixinPayOrderqueryRespData payOrderquery(WeixinPayOrderqueryReqData reqData){
+        LogUtil.getLogger().info("微信支付--公众号支付--查询订单接口入参为{}", ReflectionToStringBuilder.toString(reqData, ToStringStyle.MULTI_LINE_STYLE));
+        Map<String, String> reqDataMap = BeanUtil.beanToMap(reqData);
+        reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())));
+        //发送请求
+        String respXml = HttpUtil.post(WeixinConstants.URL_WEIXIN_PAY_ORDERQUERY, XmlUtil.mapToXml(reqDataMap), null);
+        //解析返回的xml字符串（交易是否成功、验签）
+        Map<String, String> respXmlMap = XmlUtil.xmlToMap(respXml);
+        payVerifyIfSuccess(respXmlMap);
+        payVerifySign(respXmlMap);
+        //返回（注意处理多张代金券）
+        WeixinPayOrderqueryRespData respData = BeanUtil.mapTobean(respXmlMap, WeixinPayOrderqueryRespData.class);
+        if(StringUtils.isNotBlank(respData.getCoupon_count())){
+            List<WeixinPayOrderqueryRespData.CouponInfo> couponInfoList = respData.getCouponInfoList();
+            for(int i=0; i<Integer.parseInt(respData.getCoupon_count()); i++){
+                WeixinPayOrderqueryRespData.CouponInfo couponInfo = new WeixinPayOrderqueryRespData.CouponInfo();
+                couponInfo.setCoupon_type(respXmlMap.get("coupon_type_" + i));
+                couponInfo.setCoupon_id(respXmlMap.get("coupon_id_" + i));
+                couponInfo.setCoupon_fee(respXmlMap.get("coupon_fee_" + i));
+                couponInfoList.add(couponInfo);
+            }
+        }
+        LogUtil.getLogger().info("微信支付--公众号支付--查询订单接口出参为{}", ReflectionToStringBuilder.toString(respData, ToStringStyle.MULTI_LINE_STYLE));
+        return respData;
+    }
+
+
+    /**
+     * 微信支付--公众号支付--关闭订单
+     * <p>
+     *     该方法会判断接口返回报文中的状态是否成功，并验签（验签失败则直接抛RuntimeException）
+     * </p>
+     */
+    public static WeixinPayCloseorderRespData payCloseorder(WeixinPayCloseorderReqData reqData){
+        LogUtil.getLogger().info("微信支付--公众号支付--关闭订单接口入参为{}", ReflectionToStringBuilder.toString(reqData, ToStringStyle.MULTI_LINE_STYLE));
+        Map<String, String> reqDataMap = BeanUtil.beanToMap(reqData);
+        reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())));
+        //发送请求
+        String respXml = HttpUtil.post(WeixinConstants.URL_WEIXIN_PAY_CLOSEORDER, XmlUtil.mapToXml(reqDataMap), null);
+        //解析返回的xml字符串（交易是否成功、验签）
+        Map<String, String> respXmlMap = XmlUtil.xmlToMap(respXml);
+        payVerifyIfSuccess(respXmlMap);
+        payVerifySign(respXmlMap);
+        WeixinPayCloseorderRespData respData = BeanUtil.mapTobean(respXmlMap, WeixinPayCloseorderRespData.class);
+        LogUtil.getLogger().info("微信支付--公众号支付--关闭订单接口出参为{}", ReflectionToStringBuilder.toString(respData, ToStringStyle.MULTI_LINE_STYLE));
+        return respData;
+    }
+
+
+    /**
+     * 微信支付--公众号支付--申请退款
+     * <p>
+     *     该方法会判断接口返回报文中的状态是否成功，并验签（验签失败则直接抛RuntimeException）
+     * </p>
+     * @param filepath 证书文件路径
+     */
+    public static WeixinPayRefundRespData payRefund(WeixinPayRefundReqData reqData, String filepath){
+        LogUtil.getLogger().info("微信支付--公众号支付--申请退款接口入参为{}", ReflectionToStringBuilder.toString(reqData, ToStringStyle.MULTI_LINE_STYLE));
+        Map<String, String> reqDataMap = BeanUtil.beanToMap(reqData);
+        reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())));
+        //发送请求
+        String respXml = HttpUtil.postWithP12(WeixinConstants.URL_WEIXIN_PAY_REFUND, XmlUtil.mapToXml(reqDataMap), null, filepath, WeixinTokenHolder.getWeixinMchkey(reqData.getAppid()));
+        //解析返回的xml字符串（交易是否成功、验签）
+        Map<String, String> respXmlMap = XmlUtil.xmlToMap(respXml);
+        payVerifyIfSuccess(respXmlMap);
+        payVerifySign(respXmlMap);
+        //返回（注意处理多张退款代金券）
+        WeixinPayRefundRespData respData = BeanUtil.mapTobean(respXmlMap, WeixinPayRefundRespData.class);
+        if(StringUtils.isNotBlank(respData.getCoupon_refund_count())){
+            List<WeixinPayRefundRespData.CouponInfo> couponInfoList = respData.getCouponInfoList();
+            for(int i=0; i<Integer.parseInt(respData.getCoupon_refund_count()); i++){
+                WeixinPayRefundRespData.CouponInfo couponInfo = new WeixinPayRefundRespData.CouponInfo();
+                couponInfo.setCoupon_type(respXmlMap.get("coupon_type_" + i));
+                couponInfo.setCoupon_refund_id(respXmlMap.get("coupon_refund_id_" + i));
+                couponInfo.setCoupon_refund_fee(respXmlMap.get("coupon_refund_fee_" + i));
+                couponInfoList.add(couponInfo);
+            }
+        }
+        LogUtil.getLogger().info("微信支付--公众号支付--申请退款接口出参为{}", ReflectionToStringBuilder.toString(respData, ToStringStyle.MULTI_LINE_STYLE));
+        return respData;
+    }
+
+
+    /**
+     * 微信支付--公众号支付--查询退款
+     * <p>
+     *     该方法会判断接口返回报文中的状态是否成功，并验签（验签失败则直接抛RuntimeException）
+     * </p>
+     */
+    public static WeixinPayRefundqueryRespData payRefundquery(WeixinPayRefundqueryReqData reqData){
+        LogUtil.getLogger().info("微信支付--公众号支付--查询退款接口入参为{}", ReflectionToStringBuilder.toString(reqData, ToStringStyle.MULTI_LINE_STYLE));
+        Map<String, String> reqDataMap = BeanUtil.beanToMap(reqData);
+        reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())));
+        //发送请求
+        String respXml = HttpUtil.post(WeixinConstants.URL_WEIXIN_PAY_REFUNDQUERY, XmlUtil.mapToXml(reqDataMap), null);
+        //解析返回的xml字符串（交易是否成功、验签）
+        Map<String, String> respXmlMap = XmlUtil.xmlToMap(respXml);
+        payVerifyIfSuccess(respXmlMap);
+        payVerifySign(respXmlMap);
+        //返回（注意处理多笔退款信息中的多张退款代金券）
+        WeixinPayRefundqueryRespData respData = BeanUtil.mapTobean(respXmlMap, WeixinPayRefundqueryRespData.class);
+        if(StringUtils.isNotBlank(respData.getRefund_count())){
+            List<WeixinPayRefundqueryRespData.RefundInfo> refundInfoList = respData.getRefundInfoList();
+            for(int i=0; i<Integer.parseInt(respData.getRefund_count()); i++){
+                WeixinPayRefundqueryRespData.RefundInfo refundInfo = new WeixinPayRefundqueryRespData.RefundInfo();
+                refundInfo.setOut_refund_no(respXmlMap.get("out_refund_no_" + i));
+                refundInfo.setRefund_id(respXmlMap.get("refund_id_" + i));
+                refundInfo.setRefund_channel(respXmlMap.get("refund_channel_" + i));
+                refundInfo.setRefund_fee(respXmlMap.get("refund_fee_" + i));
+                refundInfo.setSettlement_refund_fee(respXmlMap.get("settlement_refund_fee_" + i));
+                refundInfo.setCoupon_type(respXmlMap.get("coupon_type_" + i));
+                refundInfo.setCoupon_refund_fee(respXmlMap.get("coupon_refund_fee_" + i));
+                refundInfo.setRefund_status(respXmlMap.get("refund_status_" + i));
+                refundInfo.setRefund_account(respXmlMap.get("refund_account_" + i));
+                refundInfo.setRefund_recv_accout(respXmlMap.get("refund_recv_accout_" + i));
+                refundInfo.setRefund_success_time(respXmlMap.get("refund_success_time_" + i));
+                String coupon_refund_count = respXmlMap.get("coupon_refund_count_" + i);
+                if(StringUtils.isNotBlank(coupon_refund_count)){
+                    refundInfo.setCoupon_refund_count(coupon_refund_count);
+                    List<WeixinPayRefundqueryRespData.RefundInfo.CouponRefundInfo> couponRefundInfoList = refundInfo.getCouponRefundInfoList();
+                    for(int j=0; j<Integer.parseInt(coupon_refund_count); j++){
+                        WeixinPayRefundqueryRespData.RefundInfo.CouponRefundInfo couponRefundInfo = new WeixinPayRefundqueryRespData.RefundInfo.CouponRefundInfo();
+                        couponRefundInfo.setCoupon_refund_id(respXmlMap.get("coupon_refund_id_" + i + "_" + j));
+                        couponRefundInfo.setCoupon_refund_fee(respXmlMap.get("coupon_refund_fee_" + i + "_" + j));
+                        couponRefundInfoList.add(couponRefundInfo);
+                    }
+                }
+                refundInfoList.add(refundInfo);
+            }
+        }
+        LogUtil.getLogger().info("微信支付--公众号支付--查询退款接口出参为{}", ReflectionToStringBuilder.toString(respData, ToStringStyle.MULTI_LINE_STYLE));
+        return respData;
+    }
+
+
+    /**
+     * 微信支付--公众号支付--下载对账单
+     * <p>
+     *     具体实现待补充
+     * </p>
+     */
+    @Deprecated
+    public static WeixinPayDownloadbillRespData payDownloadbill(WeixinPayDownloadbillReqData reqData){
+        LogUtil.getLogger().info("微信支付--公众号支付--下载对账单接口入参为{}", ReflectionToStringBuilder.toString(reqData, ToStringStyle.MULTI_LINE_STYLE));
+        Map<String, String> reqDataMap = BeanUtil.beanToMap(reqData);
+        reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())));
+        //发送请求
+        String respXml = HttpUtil.post(WeixinConstants.URL_WEIXIN_PAY_DOWNLOADBILL, XmlUtil.mapToXml(reqDataMap), null);
+        //TODO 实现待补充
+        return new WeixinPayDownloadbillRespData();
     }
 }

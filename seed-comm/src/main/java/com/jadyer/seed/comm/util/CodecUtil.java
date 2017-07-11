@@ -3,6 +3,7 @@ package com.jadyer.seed.comm.util;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import javax.crypto.Cipher;
@@ -540,10 +541,39 @@ public final class CodecUtil {
 
     /**
      * Hmac签名
+     * 方法内部首先会过滤Map<String,String>参数中的部分键值对
+     * 过滤规则为移除键名为cert、hmac、sign、signMsg及键值为null或键值长度为零的键值对
+     * 过滤后会产生一个字符串，其格式为按照键名升序排序的key11=value11&key22=value22&key=signKey
+     * 最后调用 {@link #buildHmacSign(String, String, String)} 签名，返回签名后的小写的十六进制字符串
+     * @param param     待签名的Map<String,String>
+     * @param key       签名用到的密钥字符串
+     * @param algorithm 可传：HmacMD5、HmacSHA1、HmacSHA256、HmacSHA512
+     * @return String algorithm digest as a lowerCase hex string
+     */
+    public static String buildHmacSign(Map<String, String> param, String key, String algorithm){
+        StringBuilder sb = new StringBuilder();
+        List<String> keys = new ArrayList<>(param.keySet());
+        Collections.sort(keys);
+        for (String obj : keys) {
+            String value = param.get(obj);
+            if (obj.equalsIgnoreCase("cert") || obj.equalsIgnoreCase("hmac") || obj.equalsIgnoreCase("sign") || obj.equalsIgnoreCase("signMsg") || StringUtils.isEmpty(value)) {
+                continue;
+            }
+            sb.append(obj).append("=").append(value).append("&");
+        }
+        sb.append("key=").append(key);
+        return buildHmacSign(sb.toString(), key, algorithm);
+    }
+
+
+    /**
+     * Hmac签名
+     * <p>
+     *     2016-02-20 21:21 HmacMD5和HmacSHA1已经是不安全的了，不推荐使用
+     * </p>
      * @param data      待签名的明文字符串
      * @param key       签名用到的密钥字符串
      * @param algorithm 可传：HmacMD5、HmacSHA1、HmacSHA256、HmacSHA512
-     * @update 2016-02-20 21:21 HmacMD5和HmacSHA1已经是不安全的了，不推荐使用
      * @return String algorithm digest as a lowerCase hex string
      */
     public static String buildHmacSign(String data, String key, String algorithm){
@@ -573,7 +603,7 @@ public final class CodecUtil {
     /**
      * 根据指定的签名密钥和算法签名Map<String,String>
      * 方法内部首先会过滤Map<String,String>参数中的部分键值对
-     * 过滤规则为移除键名为cert、hmac、signMsg及键值为null或键值长度为零的键值对
+     * 过滤规则为移除键名为cert、hmac、sign、signMsg及键值为null或键值长度为零的键值对
      * 过滤后会产生一个字符串，其格式为按照键名升序排序的key11=value11|key22=value22|key=signKey
      * 最后调用 {@link #buildHexSign(String, String, String)} 签名，返回签名后的小写的十六进制字符串
      * @param param     待签名的Map<String,String>
@@ -588,7 +618,7 @@ public final class CodecUtil {
         Collections.sort(keys);
         for (String key : keys) {
             String value = param.get(key);
-            if (key.equalsIgnoreCase("cert") || key.equalsIgnoreCase("hmac") || key.equalsIgnoreCase("signMsg") || null==value || value.length()==0) {
+            if (key.equalsIgnoreCase("cert") || key.equalsIgnoreCase("hmac") || key.equalsIgnoreCase("sign") || key.equalsIgnoreCase("signMsg") || StringUtils.isEmpty(value)) {
                 continue;
             }
             sb.append(key).append("=").append(value).append("|");
@@ -601,7 +631,7 @@ public final class CodecUtil {
     /**
      * 通过指定算法签名字符串
      * <p>
-     *     commons-codec.jar中的DigestUtils.md5Hex(String data)与本方法buildHexSign(data, "UTF-8", "MD5")结果相同
+     *     buildHexSign(data, "UTF-8", "MD5") == {@link org.apache.commons.codec.digest.DigestUtils#md5Hex(String)}
      * </p>
      * @param data        待签名数据
      * @param charset     字符串转码为byte[]时使用的字符集

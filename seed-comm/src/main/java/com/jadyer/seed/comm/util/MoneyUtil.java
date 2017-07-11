@@ -17,7 +17,7 @@ public class MoneyUtil {
      * @param amount  金额的元进制字符串
      * @return String 金额的分进制字符串
      */
-    public static String moneyYuanToFen(String amount){
+    public static String yuanToFen(String amount){
         if(StringUtils.isBlank(amount)){
             return "";
         }
@@ -56,7 +56,7 @@ public class MoneyUtil {
      * @param amount  金额的元进制字符串
      * @return String 金额的分进制字符串
      */
-    public static String moneyYuanToFenByRound(String amount){
+    public static String yuanToFenByRound(String amount){
         if(StringUtils.isBlank(amount)){
             return "";
         }
@@ -105,7 +105,7 @@ public class MoneyUtil {
      * @param amount  金额的分进制字符串
      * @return String 金额的元进制字符串
      */
-    public static String moneyFenToYuan(String amount){
+    public static String fenToYuan(String amount){
         if(StringUtils.isBlank(amount)){
             return "";
         }

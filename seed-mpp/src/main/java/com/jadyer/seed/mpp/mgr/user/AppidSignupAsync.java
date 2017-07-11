@@ -4,6 +4,7 @@ import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.mpp.mgr.user.model.UserInfo;
 import com.jadyer.seed.mpp.sdk.qq.helper.QQTokenHolder;
 import com.jadyer.seed.mpp.sdk.weixin.helper.WeixinTokenHolder;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -29,11 +30,15 @@ class AppidSignupAsync {
                 if(1 == obj.getBindStatus()){
                     if(1 == obj.getMptype()){
                         WeixinTokenHolder.setWeixinAppidAppsecret(obj.getAppid(), obj.getAppsecret());
-                        LogUtil.getLogger().info("登记微信appid=[{}]，appsecret=[{}]完毕", obj.getAppid(), obj.getAppsecret());
+                        LogUtil.getLogger().info("登记微信appid=[{}]，appsecret=[{}]完毕", obj.getAppid(), WeixinTokenHolder.getWeixinAppsecret(obj.getAppid()));
+                        if(StringUtils.isNotBlank(obj.getMchid())){
+                            WeixinTokenHolder.setWeixinAppidMch(obj.getAppid(), obj.getMchid(), obj.getMchkey());
+                            LogUtil.getLogger().info("登记微信appid=[{}]，mchid=[{}]完毕", obj.getAppid(), WeixinTokenHolder.getWeixinMchid(obj.getAppid()));
+                        }
                     }
                     if(2 == obj.getMptype()){
                         QQTokenHolder.setQQAppidAppsecret(obj.getAppid(), obj.getAppsecret());
-                        LogUtil.getLogger().info("登记QQappid=[{}]，appsecret=[{}]完毕", obj.getAppid(), obj.getAppsecret());
+                        LogUtil.getLogger().info("登记QQappid=[{}]，appsecret=[{}]完毕", obj.getAppid(), QQTokenHolder.getQQAppsecret(obj.getAppid()));
                     }
                 }
             }

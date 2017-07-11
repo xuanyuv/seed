@@ -1,11 +1,15 @@
 package com.jadyer.seed.mpp.sdk.weixin.controller;
 
+import com.google.common.collect.Maps;
 import com.jadyer.seed.comm.util.HttpUtil;
+import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
+import com.jadyer.seed.comm.util.XmlUtil;
 import com.jadyer.seed.mpp.sdk.weixin.constant.WeixinConstants;
 import com.jadyer.seed.mpp.sdk.weixin.helper.WeixinHelper;
 import com.jadyer.seed.mpp.sdk.weixin.helper.WeixinTokenHolder;
 import com.jadyer.seed.mpp.sdk.weixin.model.WeixinOAuthAccessToken;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -24,13 +29,11 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
  * 接收微信服务器回调以及其它的辅助功能
- * @create Oct 19, 2015 8:30:44 PM
- * @author 玄玉<http://jadyer.cn/>
+ * Created by 玄玉<http://jadyer.cn/> on 2015/10/19 20:30.
  */
 @Controller
 @RequestMapping(value="/weixin/helper")
@@ -48,7 +51,7 @@ public class WeixinHelperController {
         if(StringUtils.isNotBlank(code)){
             WeixinOAuthAccessToken oauthAccessToken = WeixinTokenHolder.getWeixinOAuthAccessToken(appid, code);
             if(0==oauthAccessToken.getErrcode() && StringUtils.isNotBlank(oauthAccessToken.getOpenid())){
-                /**
+                /*
                  * 还原state携带过来的粉丝请求的原URL
                  * @see state=http://www.jadyer.com/mpp/weixin/getOpenid/openid=openid/test=7645
                  */
@@ -79,20 +82,27 @@ public class WeixinHelperController {
 
     /**
      * JS-SDK权限验证的签名
-     * @param url 当前网页的URL,不包含#及其后面部分
+     * http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+     * 注意：这里使用的是noncestr，非nonceStr
+     * @param url 当前网页的URL，不包含#及其后面部分
+     * Created by 玄玉<http://jadyer.cn/> on 2015/10/29 22:11.
      */
     @ResponseBody
     @RequestMapping(value="/jssdk/sign")
     public Map<String, String> jssdkSign(String appid, String url) throws UnsupportedEncodingException{
-        Map<String, String> resultMap = new HashMap<>();
-        String noncestr = RandomStringUtils.randomNumeric(16);
-        long timestamp = System.currentTimeMillis() / 1000;
         url = URLDecoder.decode(url, "UTF-8");
+        String noncestr = RandomStringUtils.randomNumeric(16);
+        String timestamp = Long.toString(System.currentTimeMillis() / 1000);
+        StringBuilder sb = new StringBuilder();
+        sb.append("jsapi_ticket=").append(WeixinTokenHolder.getWeixinJSApiTicket(appid)).append("&")
+                .append("noncestr=").append(noncestr).append("&")
+                .append("timestamp=").append(timestamp).append("&")
+                .append("url=").append(url);
+        Map<String, String> resultMap = Maps.newHashMap();
         resultMap.put("appid", appid);
         resultMap.put("timestamp", String.valueOf(timestamp));
         resultMap.put("noncestr", noncestr);
-        resultMap.put("signature", WeixinHelper.signWeixinJSSDK(appid, noncestr, String.valueOf(timestamp), url));
-        resultMap.put("url", url);
+        resultMap.put("signature", DigestUtils.sha1Hex(sb.toString()));
         return resultMap;
     }
 
@@ -100,8 +110,6 @@ public class WeixinHelperController {
     /**
      * 下载微信临时媒体文件
      * @param mediaId 媒体文件ID
-     * @create Nov 9, 2015 5:06:19 PM
-     * @author 玄玉<http://jadyer.cn/>
      */
     @RequestMapping(value="/tempMediaFile/get/{appid}/{mediaId}")
     public void tempMediaFileGet(@PathVariable String appid, @PathVariable String mediaId, HttpServletResponse response) throws Exception {
@@ -125,8 +133,6 @@ public class WeixinHelperController {
     /**
      * 删除存储在本地的微信临时媒体文件
      * @param fileFullPath 存储在本地的微信临时媒体文件的完整路径
-     * @create Nov 9, 2015 9:06:35 PM
-     * @author 玄玉<http://jadyer.cn/>
      */
     @ResponseBody
     @RequestMapping(value="/tempMediaFile/delete/{appid}/{mediaId}")
@@ -147,8 +153,6 @@ public class WeixinHelperController {
      * @param expireSeconds 二维码临时有效的时间,单位为秒,最大不超过2592000s,即30天,不填则默认有效期为30s
      * @param sceneId       二维码参数场景值ID,临时二维码时为32位非0整型,永久二维码时值为1--100000
      * @param sceneStr      二维码参数场景值ID,字符串形式的ID,字符串类型,长度限制为1到64,仅永久二维码支持此字段
-     * @create Feb 22, 2016 11:15:08 PM
-     * @author 玄玉<http://jadyer.cn/>
      */
     @RequestMapping(value="/getQrcodeURL")
     public void getQrcodeURL(String appid, int type, String expireSeconds, String sceneId, String sceneStr, HttpServletResponse response) throws IOException{
@@ -167,6 +171,40 @@ public class WeixinHelperController {
         response.setDateHeader("Expires", 0);
         PrintWriter out = response.getWriter();
         out.print(qrcodeURL);
+        out.flush();
+        out.close();
+    }
+
+
+    /**
+     * 微信支付--公众号支付--支付结果通知
+     * https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_7
+     */
+    @RequestMapping("/pay/notify")
+    public void payNotify(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //日志拦截器里面读了一次，所以就不能再使用JadyerUtil.extractHttpServletRequestBodyMessage(request)
+        Map<String, String> dataMap = XmlUtil.xmlToMap(request.getParameterNames().nextElement());
+        LogUtil.getLogger().info("微信支付--公众号支付--支付结果通知-->收到的报文转为Map得到{}", JadyerUtil.buildStringFromMap(dataMap));
+        //验证交易是否成功、验签
+        WeixinHelper.payVerifyIfSuccess(dataMap);
+        WeixinHelper.payVerifySign(dataMap);
+        //校验金额
+        if(!StringUtils.equals("数据库查到的商户订单金额", dataMap.get("total_fee"))){
+            throw new IllegalArgumentException("微信公众号支付后台通知金额与商户订单金额不符");
+        }
+        //处理通知数据
+        String appid = dataMap.get("appid");
+        String transaction_id = dataMap.get("transaction_id");
+        String time_end = dataMap.get("time_end");
+        //应答成功结果
+        response.setCharacterEncoding(HttpUtil.DEFAULT_CHARSET);
+        response.setContentType("text/plain; charset=" + HttpUtil.DEFAULT_CHARSET);
+        response.setHeader("Cache-Control", "no-cache");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+        PrintWriter out = response.getWriter();
+        LogUtil.getLogger().info("微信支付--公众号支付--支付结果通知-->应答内容为：表示成功的XML");
+        out.print("<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>");
         out.flush();
         out.close();
     }

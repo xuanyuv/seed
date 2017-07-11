@@ -88,4 +88,13 @@ public class MppTest {
         templateMsg.setData(data);
         System.out.println(JSON.toJSONString(templateMsg));
     }
+
+
+    /**
+     * 推送支付通知给微信
+     */
+    @Test
+    public void pushPayNotifyToWeixin(){
+        HttpUtil.post("http://127.0.0.1/weixin/helper/pay/notify", "<xml><name>鬼谷子</name><aa><bb>老子</bb></aa></xml>", null);
+    }
 }

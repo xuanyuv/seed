@@ -3,6 +3,7 @@ package com.jadyer.seed.mpp.mgr.user;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
 import com.jadyer.seed.comm.constant.Constants;
+import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.mpp.mgr.user.model.UserInfo;
 import com.jadyer.seed.mpp.sdk.qq.helper.QQHelper;
 import com.jadyer.seed.mpp.sdk.qq.helper.QQTokenHolder;
@@ -15,15 +16,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping(value="/user")
@@ -69,10 +71,10 @@ public class UserController{
      * 登录
      */
     @ResponseBody
-    @RequestMapping(value="/login", method=RequestMethod.POST)
-    public CommonResult login(String username, String password, String captcha, HttpServletRequest request){
+    @PostMapping(value="/login")
+    public CommonResult login(String username, String password, String captcha, HttpSession session){
         if(StringUtils.isNotBlank(captcha)){
-            if(!captcha.equals(request.getSession().getAttribute("rand"))){
+            if(!captcha.equals(session.getAttribute("rand"))){
                 return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "无效的验证码");
             }
         }
@@ -80,7 +82,7 @@ public class UserController{
         if(null == userInfo){
             return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "无效的用户名或密码");
         }
-        request.getSession().setAttribute(Constants.WEB_SESSION_USER, userInfo);
+        session.setAttribute(Constants.WEB_SESSION_USER, userInfo);
         return new CommonResult();
     }
 
@@ -88,9 +90,9 @@ public class UserController{
     /**
      * 登出
      */
-    @RequestMapping("/logout")
-    public String logout(HttpServletRequest request){
-        request.getSession().removeAttribute(Constants.WEB_SESSION_USER);
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.removeAttribute(Constants.WEB_SESSION_USER);
         return InternalResourceViewResolver.REDIRECT_URL_PREFIX + "/login.jsp";
     }
 
@@ -98,7 +100,7 @@ public class UserController{
     /**
      * 平台用户信息
      */
-    @RequestMapping("/info")
+    @GetMapping("/info")
     public String info(HttpServletRequest request){
         UserInfo userInfo = (UserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER);
         //每次都取最新的
@@ -106,41 +108,41 @@ public class UserController{
         //再更新HttpSession
         request.getSession().setAttribute(Constants.WEB_SESSION_USER, userInfo);
         //拼造开发者服务器的URL和Token
-        StringBuilder sb = new StringBuilder();
-        sb.append(request.getScheme()).append("://").append(request.getServerName());
-        if(80!=request.getServerPort() && 443!=request.getServerPort()){
-            sb.append(":").append(request.getServerPort());
-        }
-        sb.append(request.getContextPath());
+        StringBuilder sb = new StringBuilder(JadyerUtil.getFullContextPath(request));
         if(1 == userInfo.getMptype()){
             sb.append("/weixin/").append(userInfo.getUuid());
         }
         if(2 == userInfo.getMptype()){
             sb.append("/qq/").append(userInfo.getUuid());
         }
-        request.setAttribute("token", DigestUtils.md5Hex(userInfo.getUuid() + "http://jadyer.cn/" + userInfo.getUuid()));
+        request.setAttribute("token", DigestUtils.md5Hex(userInfo.getUuid() + "http://jadyer.cn/"));
         request.setAttribute("mpurl", sb.toString());
         return "user/info";
     }
 
 
     /**
-     * 绑定公众号（即录库）
+     * 绑定公众号
      */
     @ResponseBody
-    @RequestMapping("/bind")
-    public CommonResult bind(UserInfo userInfo, HttpServletRequest request){
-        UserInfo _userInfo = (UserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER);
-        userInfo.setPassword(_userInfo.getPassword());
-        userInfo.setUsername(_userInfo.getUsername());
-        userInfo.setPid(_userInfo.getPid());
-        userInfo.setUuid(_userInfo.getUuid());
-        userInfo.setMptype(_userInfo.getMptype());
-        userInfo.setBindTime(new Date());
-        request.getSession().setAttribute(Constants.WEB_SESSION_USER, userService.save(userInfo));
-        //更换绑定的公众号，也要同步更新微信或QQ公众平台的appid和appsecret
+    @PostMapping("/bind")
+    public CommonResult bind(UserInfo _userInfo, HttpSession session){
+        UserInfo userInfo = (UserInfo)session.getAttribute(Constants.WEB_SESSION_USER);
+        userInfo.setBindStatus(0);
+        userInfo.setAppid(_userInfo.getAppid());
+        userInfo.setAppsecret(_userInfo.getAppsecret());
+        userInfo.setMpid(_userInfo.getMpid());
+        userInfo.setMpno(_userInfo.getMpno());
+        userInfo.setMpname(_userInfo.getMpname());
+        userInfo.setMchid(_userInfo.getMchid());
+        userInfo.setMchkey(_userInfo.getMchkey());
+        session.setAttribute(Constants.WEB_SESSION_USER, userService.save(userInfo));
+        //更换绑定的公众号，也要同步更新微信或QQ公众平台的appid、appsecret、mchid
         if(1 == userInfo.getMptype()){
             WeixinTokenHolder.setWeixinAppidAppsecret(userInfo.getAppid(), userInfo.getAppsecret());
+            if(StringUtils.isNotBlank(userInfo.getMchid())){
+                WeixinTokenHolder.setWeixinAppidMch(userInfo.getAppid(), userInfo.getMchid(), userInfo.getMchkey());
+            }
         }
         if(2 ==userInfo.getMptype()){
             QQTokenHolder.setQQAppidAppsecret(userInfo.getAppid(), userInfo.getAppsecret());
@@ -153,23 +155,20 @@ public class UserController{
      * 修改密码
      */
     @ResponseBody
-    @RequestMapping("/password/update")
-    public CommonResult passwordUpdate(String oldPassword, String newPassword, HttpServletRequest request){
-        UserInfo userInfo = (UserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER);
+    @PostMapping("/password/update")
+    public CommonResult passwordUpdate(String oldPassword, String newPassword, HttpSession session){
+        UserInfo userInfo = (UserInfo)session.getAttribute(Constants.WEB_SESSION_USER);
         UserInfo respUserInfo = userService.passwordUpdate(userInfo, oldPassword, newPassword);
-        if(null == respUserInfo){
-            return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "原密码不正确");
-        }
         //修改成功后要刷新HttpSession中的用户信息
-        request.getSession().setAttribute(Constants.WEB_SESSION_USER, respUserInfo);
+        session.setAttribute(Constants.WEB_SESSION_USER, respUserInfo);
         return new CommonResult();
     }
 
 
     @ResponseBody
-    @RequestMapping("/menu/getjson")
-    public CommonResult menuGetjson(HttpServletRequest request){
-        long uid = ((UserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId();
+    @GetMapping("/menu/getjson")
+    public CommonResult menuGetjson(HttpSession session){
+        long uid = ((UserInfo)session.getAttribute(Constants.WEB_SESSION_USER)).getId();
         return new CommonResult(userService.getMenuJson(uid));
     }
 
@@ -179,9 +178,9 @@ public class UserController{
      * @param menuJson 微信或QQ公众号自定义菜单数据的JSON串
      */
     @ResponseBody
-    @RequestMapping("/menu/create")
-    public CommonResult menuCreate(String menuJson, HttpServletRequest request){
-        UserInfo userInfo = (UserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER);
+    @PostMapping("/menu/create")
+    public CommonResult menuCreate(String menuJson, HttpSession session){
+        UserInfo userInfo = (UserInfo)session.getAttribute(Constants.WEB_SESSION_USER);
         if(0 == userInfo.getBindStatus()){
             return new CommonResult(CodeEnum.SYSTEM_ERROR.getCode(), "当前用户未绑定微信或QQ公众平台");
         }

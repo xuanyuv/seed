@@ -154,8 +154,6 @@ public enum WeixinCodeEnum {
     /**
      * 通过枚举code获取对应的message
      * @return 取不到时返回null
-     * @create 2015-6-8 下午3:41:47
-     * @author 玄玉<http://jadyer.cn/>
      */
     public static String getMessageByCode(int code){
         for(WeixinCodeEnum _enum : values()){

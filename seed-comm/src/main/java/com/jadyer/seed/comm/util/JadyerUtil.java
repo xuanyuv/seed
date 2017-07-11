@@ -52,12 +52,6 @@ import org.apache.commons.lang3.StringUtils;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.filechooser.FileSystemView;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -66,7 +60,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.management.ManagementFactory;
@@ -79,13 +72,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * 玄玉的开发工具类
- * @version v3.14
+ * @version v3.15
+ * @history v3.15-->增加getFullContextPath()用于获取应用的完整根地址并移除两个XML方法至{@link XmlUtil}
  * @history v3.14-->移动requestToBean()和beanCopyProperties()至BeanUtil.java，并移除若干重复造轮子的方法
  * @history v3.13-->增加获取本周第一天、判断是否本周第一天、判断是否本月第一天的三个方法
  * @history v3.12-->增加获取应用运行进程的PID的方法getPID()
@@ -494,23 +487,6 @@ public final class JadyerUtil {
 
 
     /**
-     * 转义XML字符串
-     * @return String 过滤后的字符串
-     */
-    public static String escapeXml(String input) {
-        if(StringUtils.isBlank(input)){
-            return "";
-        }
-        input = input.replaceAll("&", "&amp;");
-        input = input.replaceAll("<", "&lt;");
-        input = input.replaceAll(">", "&gt;");
-        input = input.replaceAll("\"", "&quot;");
-        input = input.replaceAll("'", "&apos;");
-        return input;
-    }
-
-
-    /**
      * 转义emoji表情为*星号
      * <p>
      *     现在的APP或者微信已经广泛支持Emoji表情了，但是MySQL的UTF8编码对Emoji的支持却不是很好
@@ -531,37 +507,6 @@ public final class JadyerUtil {
         }else{
             return emoji;
         }
-    }
-
-
-    /**
-     * 格式化XML格式的字符串
-     * <p>
-     *     格式化失败时返回的Map中，isPrettySuccess=no，prettyResultStr=堆栈信息
-     *     格式化成功时返回的Map中，isPrettySuccess=yes，prettyResultStr=格式化后的字符串
-     * </p>
-     * @param xmlString 待格式化的XML字符串
-     * @return 返回的Map中有两个字符串的key-value，分别为isPrettySuccess和prettyResultStr
-     */
-    public static Map<String, String> formatXMLString(String xmlString) {
-        Map<String, String> resultMap = new HashMap<>();
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        transformerFactory.setAttribute("indent-number", 2);
-        StringWriter writer = new StringWriter();
-        Transformer transformer;
-        try {
-            transformer = transformerFactory.newTransformer();
-            transformer.setOutputProperty("{http://xml.apache.org/xalan}indent-amount", "2");
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.transform(new StreamSource(new StringReader(xmlString)), new StreamResult(writer));
-        } catch (TransformerException e) {
-            resultMap.put("isPrettySuccess", "no");
-            resultMap.put("prettyResultStr", extractStackTrace(e));
-            return resultMap;
-        }
-        resultMap.put("isPrettySuccess", "yes");
-        resultMap.put("prettyResultStr", writer.toString());
-        return resultMap;
     }
 
 
@@ -882,5 +827,20 @@ public final class JadyerUtil {
      */
     public static String getCurrentMethodName(){
         return Thread.currentThread().getStackTrace()[1].getMethodName();
+    }
+
+
+    /**
+     * 获取应用的完整根地址
+     * @return http://jadyer.cn/mpp（尾部不含斜线）
+     */
+    public static String getFullContextPath(HttpServletRequest request){
+        StringBuilder sb = new StringBuilder();
+        sb.append(request.getScheme()).append("://").append(request.getServerName());
+        if(80!=request.getServerPort() && 443!=request.getServerPort()){
+            sb.append(":").append(request.getServerPort());
+        }
+        sb.append(request.getContextPath());
+        return sb.toString();
     }
 }

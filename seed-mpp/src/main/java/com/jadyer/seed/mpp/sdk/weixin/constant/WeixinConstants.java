@@ -1,5 +1,10 @@
 package com.jadyer.seed.mpp.sdk.weixin.constant;
 
+/**
+ * 微信测试号：https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login
+ * 微信红包接口：https://pay.weixin.qq.com/wiki/doc/api/tools/cash_coupon.php?chapter=13_1
+ * 微信公众号支付接口：https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=7_1
+ */
 public interface WeixinConstants {
     /**
      * 如果希望微信服务器对我们回复的消息不做任何处理,并且不会发起重试,可采用两种回复方式告之微信服务器
@@ -56,4 +61,16 @@ public interface WeixinConstants {
     String URL_WEIXIN_GET_QRCODE_TICKET      = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" + URL_PLACEHOLDER_ACCESSTOKEN;
     //获取微信二维码
     String URL_WEIXIN_GET_QRCODE             = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + URL_PLACEHOLDER_QRCODE_TICKET;
+    //微信支付--公众号支付--统计下单
+    String URL_WEIXIN_PAY_UNIFIEDORDER       = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+    //微信支付--公众号支付--查询订单
+    String URL_WEIXIN_PAY_ORDERQUERY         = "https://api.mch.weixin.qq.com/pay/orderquery";
+    //微信支付--公众号支付--关闭订单
+    String URL_WEIXIN_PAY_CLOSEORDER         = "https://api.mch.weixin.qq.com/pay/closeorder";
+    //微信支付--公众号支付--申请退款
+    String URL_WEIXIN_PAY_REFUND             = "https://api.mch.weixin.qq.com/secapi/pay/refund";
+    //微信支付--公众号支付--查询退款
+    String URL_WEIXIN_PAY_REFUNDQUERY        = "https://api.mch.weixin.qq.com/pay/refundquery";
+    //微信支付--公众号支付--下载对账单
+    String URL_WEIXIN_PAY_DOWNLOADBILL       = "https://api.mch.weixin.qq.com/pay/downloadbill";
 }

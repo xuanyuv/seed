@@ -30,8 +30,8 @@ import java.util.Arrays;
  * Created by 玄玉<http://jadyer.cn/> on 2015/11/26 19:22.
  */
 public abstract class QQMsgController {
-    @RequestMapping(value="/{token}")
-    public void index(@PathVariable String token, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @RequestMapping(value="/{uuid}")
+    public void index(@PathVariable String uuid, HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setCharacterEncoding(Constants.MPP_CHARSET_UTF8);
         PrintWriter out = response.getWriter();
         String reqBodyMsg = JadyerUtil.extractHttpServletRequestBodyMessage(request);
@@ -39,7 +39,7 @@ public abstract class QQMsgController {
         //GET过来的请求表示更新开发者服务器URL
         if("GET".equalsIgnoreCase(request.getMethod())){
             //验签
-            if(!this.verifySignature(DigestUtils.md5Hex(token+"http://jadyer.cn/"+token), request)){
+            if(!this.verifySignature(DigestUtils.md5Hex(uuid+"http://jadyer.cn/"), request)){
                 out.write("verify signature failed");
                 out.flush();
                 out.close();

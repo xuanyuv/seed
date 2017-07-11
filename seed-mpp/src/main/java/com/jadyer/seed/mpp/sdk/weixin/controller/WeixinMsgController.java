@@ -34,14 +34,14 @@ import java.util.Arrays;
  */
 //注意：从语法上讲，这里类名不需要public，但我们需要让它在SpringMVC作用下暴露接口出去，所以一定要public
 public abstract class WeixinMsgController {
-    @RequestMapping(value="/{token}")
-    public void index(@PathVariable String token, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @RequestMapping(value="/{uuid}")
+    public void index(@PathVariable String uuid, HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setCharacterEncoding(Constants.MPP_CHARSET_UTF8);
         PrintWriter out = response.getWriter();
         String reqBodyMsg = JadyerUtil.extractHttpServletRequestBodyMessage(request);
         LogUtil.getLogger().info("收到微信服务器消息如下\n{}", JadyerUtil.extractHttpServletRequestHeaderMessage(request)+"\n"+reqBodyMsg);
         //验签
-        if(!this.verifySignature(DigestUtils.md5Hex(token+"http://jadyer.cn/"+token), request)){
+        if(!this.verifySignature(DigestUtils.md5Hex(uuid+"http://jadyer.cn/"), request)){
             out.write("verify signature failed");
             out.flush();
             out.close();

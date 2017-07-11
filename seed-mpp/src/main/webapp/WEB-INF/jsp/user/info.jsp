@@ -55,9 +55,6 @@ function submit(){
     </table>
     <!--/Table order list-->
     <form id="userBindForm">
-        <input type="hidden" name="id" value="${uid}"/>
-        <input type="hidden" name="bindStatus" value="0"/>
-        <input type="hidden" name="token" value="${token}"/>
         <table class="tab_head tab_in tab_list2" width="100%">
             <tr class="ti"><th colspan="2">公众信息</th></tr>
             <tr><th width="15%">URL：</th><td>${mpurl}</td></tr>
@@ -67,6 +64,8 @@ function submit(){
             <tr><th>原始ID：</th><td><input class="inpte" type="text" id="mpid" name="mpid" value="${user.mpid}" maxlength="32"/></td></tr>
             <tr><th>公众号：</th><td><input class="inpte" type="text" id="mpno" name="mpno" value="${user.mpno}" maxlength="32"/></td></tr>
             <tr><th>公众名：</th><td><input class="inpte" type="text" id="mpname" name="mpname" value="${user.mpname}" maxlength="32"/></td></tr>
+            <tr><th>商户号：</th><td><input class="inpte" type="text" id="mchid" name="mchid" value="${user.mchid}" maxlength="64"/></td></tr>
+            <tr><th>商户Key：</th><td><input class="inpte" type="text" id="mchkey" name="mchkey" value="${user.mchkey}" maxlength="64"/></td></tr>
             <%--
             <tr>
                 <th>微信加解密方式：</th>

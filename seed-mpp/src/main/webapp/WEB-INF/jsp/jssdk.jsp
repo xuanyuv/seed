@@ -13,8 +13,8 @@ out.print(WeixinTokenHolder.getWeixinJSApiTicket());
 <script src="//res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
 $(function(){
-    $.post("${pageContext.request.contextPath}/weixin/helper/sign/jssdk",
-        {url:window.location.href.split("#")[0]},
+    $.post("${pageContext.request.contextPath}/weixin/helper/jssdk/sign",
+        {appid:'', url:window.location.href.split("#")[0]},
         function(data){
             wx.config({
                 debug: false,
