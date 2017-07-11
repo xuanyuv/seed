@@ -14,8 +14,8 @@ import java.util.List;
 /**
  * Created by 玄玉<http://jadyer.cn/> on 2017/7/7 19:46.
  */
-@Component
 @Async
+@Component
 class AppidSignupAsync {
     @Resource
     private UserService userService;
