@@ -47,7 +47,13 @@ public class WeixinPayUnifiedorderReqData extends WeixinPayReqData {
     /** 异步接收微信支付结果通知的回调地址，通知url必须为外网可访问的url，不能携带参数 */
     private String notify_url;
 
-    /** 交易类型。取值如下：JSAPI，NATIVE，APP等，说明详见参数规定：https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=4_2 */
+    /**
+     * 交易类型
+     * JSAPI---公众号支付
+     * NATIVE--原生扫码支付
+     * APP-----app支付
+     * 说明详见参数规定：https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=4_2
+     */
     private String trade_type;
 
     /** 商品ID。trade_type=NATIVE时（即扫码支付），此参数必传。此参数为二维码中包含的商品ID，商户自行定义 */
@@ -63,12 +69,65 @@ public class WeixinPayUnifiedorderReqData extends WeixinPayReqData {
      * 场景信息。该字段用于统一下单时上报场景信息，目前支持上报实际门店信息
      * <p>
      *     {
-     *         "store_id": "", //门店唯一标识，选填，String(32)
-     *         "store_name":"" //门店名称，选填，String(64)
+     *         "store_info":{
+     *             "id": "SZTX001",
+     *             "name": "腾大餐厅",
+     *             "area_code": "440305",
+     *             "address": "科技园中一路腾讯大厦"
+     *         }
      *     }
      * </p>
      */
-    private String scene_info;
+    private SceneInfo scene_info = null;
+
+    /**
+     * 场景信息
+     */
+    public static class SceneInfo{
+        /** 门店id */
+        private String id;
+
+        /** 门店名称 */
+        private String name;
+
+        /** 门店行政区划码，即门店所在地行政区划码，详细见《最新县及县以上行政区划代码》 */
+        private String area_code;
+
+        /** 门店详细地址 */
+        private String address;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getArea_code() {
+            return area_code;
+        }
+
+        public void setArea_code(String area_code) {
+            this.area_code = area_code;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+    }
 
     public String getDevice_info() {
         return device_info;
@@ -198,11 +257,11 @@ public class WeixinPayUnifiedorderReqData extends WeixinPayReqData {
         this.openid = openid;
     }
 
-    public String getScene_info() {
+    public SceneInfo getScene_info() {
         return scene_info;
     }
 
-    public void setScene_info(String scene_info) {
+    public void setScene_info(SceneInfo scene_info) {
         this.scene_info = scene_info;
     }
 }

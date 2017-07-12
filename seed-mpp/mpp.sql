@@ -73,7 +73,7 @@ update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMES
 DROP TABLE IF EXISTS t_fans_info;
 CREATE TABLE t_fans_info(
 id             INT AUTO_INCREMENT PRIMARY KEY COMMENT '主键',
-uid            INT          NOT NULL COMMENT '平台用户ID，对应t_user#id',
+uid            INT          NOT NULL COMMENT '平台用户ID，对应t_user_info#id',
 wxid           VARCHAR(32)  COMMENT '微信原始ID',
 openid         VARCHAR(64)  NOT NULL COMMENT '粉丝的openid',
 name           VARCHAR(16)  COMMENT '粉丝的真实姓名',
@@ -86,7 +86,7 @@ city           VARCHAR(32)  COMMENT '粉丝所在城市',
 country        VARCHAR(32)  COMMENT '粉丝所在国家',
 province       VARCHAR(32)  COMMENT '粉丝所在省份',
 language       VARCHAR(32)  COMMENT '粉丝的语言，简体中文为zh_CN',
-headimgurl     VARCHAR(256) COMMENT '粉丝的头像，值为腾讯服务器的图片URL',
+headimgurl     VARCHAR(512) COMMENT '粉丝的头像，值为腾讯服务器的图片URL',
 subscribe_time VARCHAR(19)  COMMENT '粉丝最后一次关注的时间，格式为yyyy-MM-dd HH:mm:ss',
 unionid        VARCHAR(64)  COMMENT '只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段',
 remark         VARCHAR(64)  COMMENT '公众号运营者对粉丝的备注',
@@ -100,7 +100,7 @@ UNIQUE INDEX unique_index_uid_openid(uid, openid)
 DROP TABLE IF EXISTS t_reply_info;
 CREATE TABLE t_reply_info(
 id          INT AUTO_INCREMENT PRIMARY KEY COMMENT '主键',
-uid         INT           NOT NULL COMMENT '平台用户ID，对应t_user#id',
+uid         INT           NOT NULL COMMENT '平台用户ID，对应t_user_info#id',
 category    TINYINT(1)    NOT NULL COMMENT '回复的类别：0--通用的回复，1--关注后回复，2--关键字回复',
 type        TINYINT(1)    NOT NULL COMMENT '回复的类型：0--文本，1--图文，2--图片，3--活动，4--转发到多客服',
 keyword     VARCHAR(16)   COMMENT '关键字',
@@ -116,7 +116,7 @@ DROP TABLE IF EXISTS t_menu_info;
 CREATE TABLE t_menu_info(
 id          INT AUTO_INCREMENT PRIMARY KEY COMMENT '主键',
 pid         INT          COMMENT '上一级菜单的ID，一级菜单情况下为0',
-uid         INT          NOT NULL COMMENT '平台用户ID，对应t_user#id',
+uid         INT          NOT NULL COMMENT '平台用户ID，对应t_user_info#id',
 type        TINYINT(1)   NOT NULL COMMENT '菜单类型：1--CLICK，2--VIEW，3--JSON',
 level       TINYINT(1)   COMMENT '菜单级别：1--一级菜单，2--二级菜单',
 name        VARCHAR(16)  COMMENT '菜单名称',

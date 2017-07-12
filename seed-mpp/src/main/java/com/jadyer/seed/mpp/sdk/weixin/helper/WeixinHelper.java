@@ -37,6 +37,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -383,6 +384,14 @@ public final class WeixinHelper {
     public static WeixinPayUnifiedorderRespData payUnifiedorder(WeixinPayUnifiedorderReqData reqData){
         LogUtil.getLogger().info("微信支付--公众号支付--统一下单接口入参为{}", ReflectionToStringBuilder.toString(reqData, ToStringStyle.MULTI_LINE_STYLE));
         Map<String, String> reqDataMap = BeanUtil.beanToMap(reqData);
+        if(null != reqData.getScene_info()){
+            reqDataMap.put("scene_info", JSON.toJSONString(new HashMap<String, WeixinPayUnifiedorderReqData.SceneInfo>(){
+                private static final long serialVersionUID = -4476694297049282617L;
+                {
+                    put("store_info", reqData.getScene_info());
+                }
+            }));
+        }
         reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())));
         //发送请求
         String respXml = HttpUtil.post(WeixinConstants.URL_WEIXIN_PAY_UNIFIEDORDER, XmlUtil.mapToXml(reqDataMap), null);
