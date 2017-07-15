@@ -28,6 +28,10 @@ public class AuthConfiguration {
         return unauthorizedUrl;
     }
 
+    public void setUnauthorizedUrl(String unauthorizedUrl) {
+        this.unauthorizedUrl = unauthorizedUrl;
+    }
+
     public List<String> getAnonymousList() {
         return anonymousList;
     }

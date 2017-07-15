@@ -49,6 +49,6 @@
         <p class="p1"><i></i><span class="fm2">您好：${user.username}，欢迎访问半步多平台，现在是：<fmt:formatDate value="<%=new Date()%>" pattern="yyyy年MM月dd日 E"/></span></p>
         <p class="p2 fm2">
             <a href="${ctx}/view?url=password" class="mr_20"><i class="i_man"></i><span class="va_m">修改密码</span></a>
-            <a href="${ctx}/user/logout"><i class="i_sw"></i><span class="va_m">退出</span></a>
+            <a href="${ctx}/mpp/user/logout"><i class="i_sw"></i><span class="va_m">退出</span></a>
         </p>
     </div>
