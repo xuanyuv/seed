@@ -286,7 +286,8 @@ public class MppController {
      */
     @ResponseBody
     @RequestMapping("/reply/keyword/upsert")
-    public CommonResult upsertKeyword(MppReplyInfo mppReplyInfo){
+    public CommonResult upsertKeyword(MppReplyInfo mppReplyInfo, HttpServletRequest request){
+        mppReplyInfo.setUid(((MppUserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId());
         return new CommonResult(mppReplyService.upsertKeyword(mppReplyInfo));
     }
 }

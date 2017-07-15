@@ -84,7 +84,6 @@ function submit(){
     <!--Table order list-->
     <form id="keywordForm">
         <input type="hidden" name="category" value="2"/>
-        <input type="hidden" name="uid" value="${uid}"/>
         <input type="hidden" name="id" value="${empty id ? 0 : id}"/>
         <table class="tab_in2" width="100%">
             <tr class="ti">

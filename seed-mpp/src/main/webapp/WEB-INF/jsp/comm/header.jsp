@@ -35,7 +35,7 @@
         <li ${currentMenu eq 'menu_mpp' ? 'class="on"' : ''}>
             <a href="#"><span>微信设置</span><i></i></a>
             <div>
-                <a href="${ctx}/view?url=mpp/mpmenu"><span>公众菜单</span></a>
+                <a href="${ctx}/view?url=mpp/mpmenu"><span>公众号菜单</span></a>
                 <a href="${ctx}/mpp/user/info"><span>公众号资料</span></a>
                 <a href="${ctx}/mpp/reply/common/get"><span>通用的回复</span></a>
                 <a href="${ctx}/mpp/reply/follow/get"><span>关注后回复</span></a>
