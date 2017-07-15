@@ -11,7 +11,7 @@ $(function(){
         $("#updateDiv").show();
     }
     if(""=="${o}" || "update"=="${o}"){
-        $.get("${ctx}/reply/keyword/get/${id}",
+        $.get("${ctx}/mpp/reply/keyword/get/${id}",
             function(data){
                 if(0 == data.code){
                     if("update" == "${o}"){
@@ -46,11 +46,11 @@ function validateForm(){
 }
 function submit(){
     if(validateForm()){
-        $.post("${ctx}/reply/keyword/upsert",
+        $.post("${ctx}/mpp/reply/keyword/upsert",
             $("#keywordForm").serialize(),
             function(data){
                 if(0 == data.code){
-                    location.href = "${ctx}/reply/keyword/list";
+                    location.href = "${ctx}/mpp/reply/keyword/list";
                 }else{
                     $.promptBox("系统繁忙或重复的关键字", "#ffb848");
                 }

@@ -20,7 +20,7 @@ public class MppMenuService {
      * 查询当前登录用户关联的公众平台自定义菜单JSON信息
      */
     public String getMenuJson(long uid){
-        List<MppMenuInfo> menuList = mppMenuInfoRepository.findByUID(uid);
+        List<MppMenuInfo> menuList = mppMenuInfoRepository.findByUid(uid);
         for(MppMenuInfo obj : menuList){
             if(3 == obj.getType()){
                 return obj.getMenuJson();
@@ -38,7 +38,7 @@ public class MppMenuService {
     @Transactional(rollbackFor=Exception.class)
     public boolean menuJsonUpsert(long uid, String menuJson){
         MppMenuInfo menu = null;
-        List<MppMenuInfo> menuList = mppMenuInfoRepository.findByUID(uid);
+        List<MppMenuInfo> menuList = mppMenuInfoRepository.findByUid(uid);
         for(MppMenuInfo obj : menuList){
             if(3 == obj.getType()){
                 menu = obj;

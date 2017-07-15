@@ -18,7 +18,7 @@ function saveOrUpdate(){
         $.promptBox("回复的文本内容不能超过1024", "#ffb848");
         return;
     }
-    $.post("${pageContext.request.contextPath}/reply/follow/upsert",
+    $.post("${pageContext.request.contextPath}/mpp/reply/follow/upsert",
         {id:id, content:$("#content").val()},
         function(data){
             if(0 == data.code){

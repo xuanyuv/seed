@@ -8,7 +8,7 @@
 <script>
 function deleteKeyword(id){
     if(confirm("确定删除此关键字么？\r\n删除后其对应的文本回复或图文回复都将失效！！")){
-        $.get("${ctx}/reply/keyword/delete/"+id,function(data){
+        $.get("${ctx}/mpp/reply/keyword/delete/"+id,function(data){
             if(0 == data.code){
                 location.reload();
             }else{
@@ -26,7 +26,7 @@ function deleteKeyword(id){
 <div class="c_content">
     <!--Title-->
     <div class="title txt_r">
-        <a class="bgre va_m" href="${ctx}/view?url=reply/keyword&o=add">+新增关键字</a>
+        <a class="bgre va_m" href="${ctx}/view?url=mpp/reply.keyword&o=add">+新增关键字</a>
     </div>
     <!--/Title-->
     <!--Table list-->
@@ -52,15 +52,15 @@ function deleteKeyword(id){
                     </span>
                 </td>
                 <td>
-                    <a class="c09f mr_15" href="${ctx}/view?url=reply/keyword&id=${reply.id}">查看</a>
-                    <a class="c09f mr_15" href="${ctx}/view?url=reply/keyword&o=update&id=${reply.id}">编辑</a>
+                    <a class="c09f mr_15" href="${ctx}/view?url=mpp/reply.keyword&id=${reply.id}">查看</a>
+                    <a class="c09f mr_15" href="${ctx}/view?url=mpp/reply.keyword&o=update&id=${reply.id}">编辑</a>
                     <a class="c09f" href="javascript:deleteKeyword('${reply.id}');">删除</a>
                 </td>
             </tr>
         </c:forEach>
     </table>
     <!--/Table list-->
-    <jsp:include page="../comm/page.jsp?requestURI=${ctx}/reply/keyword/list"/>
+    <jsp:include page="../comm/page.jsp?requestURI=${ctx}/mpp/reply/keyword/list"/>
 </div>
 <!--/Content-->
 

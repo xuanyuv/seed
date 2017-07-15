@@ -23,24 +23,22 @@ public class AppidSignupAsync {
 
     public void signup(){
         try {
-            List<MppUserInfo> userinfoList = mppUserService.findAll();
+            List<MppUserInfo> userinfoList = mppUserService.getHasBindStatus();
             if(userinfoList.isEmpty()){
                 LogUtil.getLogger().info("未查询到需要登记的appid");
             }
             for(MppUserInfo obj : userinfoList){
-                if(1 == obj.getBindStatus()){
-                    if(1 == obj.getMptype()){
-                        WeixinTokenHolder.setWeixinAppidAppsecret(obj.getAppid(), obj.getAppsecret());
-                        LogUtil.getLogger().info("登记微信appid=[{}]，appsecret=[{}]完毕", obj.getAppid(), WeixinTokenHolder.getWeixinAppsecret(obj.getAppid()));
-                        if(StringUtils.isNotBlank(obj.getMchid())){
-                            WeixinTokenHolder.setWeixinAppidMch(obj.getAppid(), obj.getMchid(), obj.getMchkey());
-                            LogUtil.getLogger().info("登记微信appid=[{}]，mchid=[{}]完毕", obj.getAppid(), WeixinTokenHolder.getWeixinMchid(obj.getAppid()));
-                        }
+                if(1 == obj.getMptype()){
+                    WeixinTokenHolder.setWeixinAppidAppsecret(obj.getAppid(), obj.getAppsecret());
+                    LogUtil.getLogger().info("登记微信appid=[{}]，appsecret=[{}]完毕", obj.getAppid(), WeixinTokenHolder.getWeixinAppsecret(obj.getAppid()));
+                    if(StringUtils.isNotBlank(obj.getMchid())){
+                        WeixinTokenHolder.setWeixinAppidMch(obj.getAppid(), obj.getMchid(), obj.getMchkey());
+                        LogUtil.getLogger().info("登记微信appid=[{}]，mchid=[{}]完毕", obj.getAppid(), WeixinTokenHolder.getWeixinMchid(obj.getAppid()));
                     }
-                    if(2 == obj.getMptype()){
-                        QQTokenHolder.setQQAppidAppsecret(obj.getAppid(), obj.getAppsecret());
-                        LogUtil.getLogger().info("登记QQappid=[{}]，appsecret=[{}]完毕", obj.getAppid(), QQTokenHolder.getQQAppsecret(obj.getAppid()));
-                    }
+                }
+                if(2 == obj.getMptype()){
+                    QQTokenHolder.setQQAppidAppsecret(obj.getAppid(), obj.getAppsecret());
+                    LogUtil.getLogger().info("登记QQappid=[{}]，appsecret=[{}]完毕", obj.getAppid(), QQTokenHolder.getQQAppsecret(obj.getAppid()));
                 }
             }
         } catch (Exception e) {

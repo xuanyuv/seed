@@ -20,30 +20,45 @@ public class MppUserService {
         return DigestUtils.md5Hex(password + "http://jadyer.cn/");
     }
 
+
     public MppUserInfo findByUsernameAndPassword(String username, String password){
         return mppUserInfoRepository.findByUsernameAndPassword(username, buildEncryptPassword(password));
     }
 
-    public MppUserInfo findOne(long id){
-        return mppUserInfoRepository.findOne(id);
+
+    /**
+     * 查询所有已绑定的公众号信息
+     */
+    public List<MppUserInfo> getHasBindStatus(){
+        return mppUserInfoRepository.findByBindStatus(1);
     }
 
-    public List<MppUserInfo> findAll(){
-        return mppUserInfoRepository.findAll();
-    }
 
     public MppUserInfo findByWxid(String mpid){
         return mppUserInfoRepository.findByWxid(mpid);
     }
 
+
     public MppUserInfo findByQqid(String mpid){
         return mppUserInfoRepository.findByQqid(mpid);
     }
+
+
+    public MppUserInfo findOne(long id){
+        return mppUserInfoRepository.findOne(id);
+    }
+
+
+    public List<MppUserInfo> findAll(){
+        return mppUserInfoRepository.findAll();
+    }
+
 
     @Transactional(rollbackFor=Exception.class)
     public MppUserInfo upsert(MppUserInfo mppUserInfo){
         return mppUserInfoRepository.saveAndFlush(mppUserInfo);
     }
+
 
     /**
      * 修改密码

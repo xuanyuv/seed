@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface MppMenuInfoRepository extends BaseRepository<MppMenuInfo, Long> {
-    List<MppMenuInfo> findByUID(long uid);
+    List<MppMenuInfo> findByUid(long uid);
 
     @Modifying
     @Transactional

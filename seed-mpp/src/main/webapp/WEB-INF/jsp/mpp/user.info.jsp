@@ -25,7 +25,7 @@ function validateForm(){
 function submit(){
     if(validateForm()){
         if("${user.bindStatus}"=="0" || ("${user.bindStatus}"!="0" && confirm("确定要重新绑定么？\r\n重绑过程中公众号将无法提供服务！！"))){
-            $.post("${ctx}/user/bind",
+            $.post("${ctx}/mpp/user/bind",
                 $("#userBindForm").serialize(),
                 function(data){
                     if(0 == data.code){

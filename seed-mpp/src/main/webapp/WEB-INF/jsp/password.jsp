@@ -27,7 +27,7 @@ function submit(){
         $.promptBox("确认密码不正确", "#ffb848");
         return;
     }
-    $.post("${ctx}/user/password/update",
+    $.post("${ctx}/mpp/user/password/update",
         {oldPassword:MD5($("#oldPassword").val()), newPassword:MD5($("#newPassword").val())},
         function(data){
             if(0 == data.code){

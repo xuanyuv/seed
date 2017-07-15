@@ -6,7 +6,7 @@
 
 <script>
 $(function(){
-    $.get("${pageContext.request.contextPath}/user/menu/getjson",
+    $.get("${pageContext.request.contextPath}/mpp/menu/getjson",
         function(data){
             if(0 == data.code){
                 $("#RawJson").text(data.data);
@@ -18,7 +18,7 @@ $(function(){
 });
 
 function deploy(){
-    $.post("${ctx}/user/menu/create",
+    $.post("${ctx}/mpp/menu/create",
         {menuJson:$("#RawJson").val()},
         function(data){
             if(0 == data.code){
