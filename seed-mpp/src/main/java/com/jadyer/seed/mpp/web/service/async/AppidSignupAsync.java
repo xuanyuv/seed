@@ -1,9 +1,10 @@
-package com.jadyer.seed.mpp.mgr.user;
+package com.jadyer.seed.mpp.web.service.async;
 
 import com.jadyer.seed.comm.util.LogUtil;
-import com.jadyer.seed.mpp.mgr.user.model.UserInfo;
+import com.jadyer.seed.mpp.web.model.MppUserInfo;
 import com.jadyer.seed.mpp.sdk.qq.helper.QQTokenHolder;
 import com.jadyer.seed.mpp.sdk.weixin.helper.WeixinTokenHolder;
+import com.jadyer.seed.mpp.web.service.MppUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -16,17 +17,17 @@ import java.util.List;
  */
 @Async
 @Component
-class AppidSignupAsync {
+public class AppidSignupAsync {
     @Resource
-    private UserService userService;
+    private MppUserService mppUserService;
 
-    void signup(){
+    public void signup(){
         try {
-            List<UserInfo> userinfoList = userService.findAll();
+            List<MppUserInfo> userinfoList = mppUserService.findAll();
             if(userinfoList.isEmpty()){
                 LogUtil.getLogger().info("未查询到需要登记的appid");
             }
-            for(UserInfo obj : userinfoList){
+            for(MppUserInfo obj : userinfoList){
                 if(1 == obj.getBindStatus()){
                     if(1 == obj.getMptype()){
                         WeixinTokenHolder.setWeixinAppidAppsecret(obj.getAppid(), obj.getAppsecret());

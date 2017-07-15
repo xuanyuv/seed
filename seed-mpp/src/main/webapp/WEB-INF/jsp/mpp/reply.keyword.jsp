@@ -46,7 +46,7 @@ function validateForm(){
 }
 function submit(){
     if(validateForm()){
-        $.post("${ctx}/reply/keyword/save",
+        $.post("${ctx}/reply/keyword/upsert",
             $("#keywordForm").serialize(),
             function(data){
                 if(0 == data.code){

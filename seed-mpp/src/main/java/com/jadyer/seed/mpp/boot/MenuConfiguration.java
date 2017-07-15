@@ -33,13 +33,13 @@ public class MenuConfiguration {
             if(request.getServletPath().startsWith("/fans")){
                 request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_fans");
             }
-            if(request.getServletPath().startsWith("/reply")){
-                request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_reply");
+            if(request.getServletPath().startsWith("/mpp")){
+                request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_mpp");
             }
             if(request.getServletPath().startsWith("/view")){
                 String url = request.getParameter("url");
-                if(url.startsWith("reply")){
-                    request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_reply");
+                if(url.startsWith("mpp")){
+                    request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_mpp");
                 }
             }
             filterChain.doFilter(request, response);

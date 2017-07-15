@@ -54,6 +54,7 @@ spring:
 
 
 auth:
+  unauthorizedUrl: /login.jsp
   anonymousList:
     - /
     - /js/**
@@ -61,10 +62,11 @@ auth:
     - /img/**
     - /qq/**
     - /weixin/**
-    - /user/login/**
+    - /mpp/user/login/**
     - /health
     - /login.jsp
     - /captcha.jsp
+    - /favicon.ico
 
 ---
 spring:

@@ -20,7 +20,12 @@ import java.util.List;
 //@Configuration
 @ConfigurationProperties(prefix="auth")
 public class AuthConfiguration {
+    private String unauthorizedUrl;
     private List<String> anonymousList = new ArrayList<>();
+
+    public String getUnauthorizedUrl() {
+        return unauthorizedUrl;
+    }
 
     public List<String> getAnonymousList() {
         return anonymousList;
@@ -29,7 +34,7 @@ public class AuthConfiguration {
 
     @Bean
     public Filter authenticationFilter(){
-        return new AuthFilter("/", this.anonymousList);
+        return new AuthFilter(this.unauthorizedUrl, this.anonymousList);
     }
 
 
@@ -42,11 +47,11 @@ public class AuthConfiguration {
      * Created by 玄玉<http://jadyer.cn/> on 2014/11/3 10:39.
      */
     private static class AuthFilter extends OncePerRequestFilter {
-        private String url;
+        private String unauthorizedUrl;
         private List<String> anonymousList = new ArrayList<>();
 
-        AuthFilter(String url, List<String> anonymousList){
-            this.url = url;
+        AuthFilter(String unauthorizedUrl, List<String> anonymousList){
+            this.unauthorizedUrl = unauthorizedUrl;
             this.anonymousList = anonymousList;
         }
 
@@ -95,7 +100,7 @@ public class AuthConfiguration {
             }
             //处理权限访问
             if(disallowAnonymousVisit && null==request.getSession().getAttribute(Constants.WEB_SESSION_USER)){
-                response.sendRedirect(request.getContextPath() + this.url);
+                response.sendRedirect(request.getContextPath() + this.unauthorizedUrl);
             }else{
                 filterChain.doFilter(request, response);
             }

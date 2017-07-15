@@ -1,4 +1,4 @@
-package com.jadyer.seed.mpp.mgr.fans.model;
+package com.jadyer.seed.mpp.web.model;
 
 import com.jadyer.seed.comm.jpa.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
@@ -11,8 +11,8 @@ import javax.persistence.Table;
 @Entity
 @DynamicInsert
 @DynamicUpdate
-@Table(name="t_fans_info")
-public class FansInfo extends BaseEntity<Long> {
+@Table(name="t_mpp_fans_info")
+public class MppFansInfo extends BaseEntity<Long> {
     private static final long serialVersionUID = 7585092842503110991L;
     private long uid;
     private String wxid;

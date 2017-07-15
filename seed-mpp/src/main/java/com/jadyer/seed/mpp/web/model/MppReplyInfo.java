@@ -1,4 +1,4 @@
-package com.jadyer.seed.mpp.mgr.reply.model;
+package com.jadyer.seed.mpp.web.model;
 
 import com.jadyer.seed.comm.jpa.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
@@ -11,8 +11,8 @@ import javax.persistence.Table;
 @Entity
 @DynamicInsert
 @DynamicUpdate
-@Table(name="t_reply_info")
-public class ReplyInfo extends BaseEntity<Long> {
+@Table(name="t_mpp_reply_info")
+public class MppReplyInfo extends BaseEntity<Long> {
     private static final long serialVersionUID = -9162851555238487580L;
     private long uid;
     private int category;

@@ -1,13 +1,7 @@
-package com.jadyer.seed.mpp.mgr;
+package com.jadyer.seed.mpp.web;
 
 import com.jadyer.seed.comm.constant.Constants;
 import com.jadyer.seed.comm.util.LogUtil;
-import com.jadyer.seed.mpp.mgr.fans.FansInfoRepository;
-import com.jadyer.seed.mpp.mgr.fans.FansSaveAsync;
-import com.jadyer.seed.mpp.mgr.reply.ReplyInfoRepository;
-import com.jadyer.seed.mpp.mgr.reply.model.ReplyInfo;
-import com.jadyer.seed.mpp.mgr.user.UserService;
-import com.jadyer.seed.mpp.mgr.user.model.UserInfo;
 import com.jadyer.seed.mpp.sdk.qq.constant.QQConstants;
 import com.jadyer.seed.mpp.sdk.qq.controller.QQMsgController;
 import com.jadyer.seed.mpp.sdk.qq.helper.QQHelper;
@@ -23,6 +17,13 @@ import com.jadyer.seed.mpp.sdk.qq.msg.in.event.QQInTemplateEventMsg;
 import com.jadyer.seed.mpp.sdk.qq.msg.out.QQOutMsg;
 import com.jadyer.seed.mpp.sdk.qq.msg.out.QQOutNewsMsg;
 import com.jadyer.seed.mpp.sdk.qq.msg.out.QQOutTextMsg;
+import com.jadyer.seed.mpp.web.model.MppReplyInfo;
+import com.jadyer.seed.mpp.web.model.MppUserInfo;
+import com.jadyer.seed.mpp.web.service.async.FansSaveAsync;
+import com.jadyer.seed.mpp.web.service.FansService;
+import com.jadyer.seed.mpp.web.service.MppReplyService;
+import com.jadyer.seed.mpp.web.service.MppUserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,36 +35,36 @@ import java.util.Date;
 @RequestMapping(value="/qq")
 public class QQController extends QQMsgController {
     @Resource
-    private UserService userService;
+    private FansService fansService;
     @Resource
     private FansSaveAsync fansSaveAsync;
     @Resource
-    private FansInfoRepository fansInfoRepository;
+    private MppUserService mppUserService;
     @Resource
-    private ReplyInfoRepository replyInfoRepository;
+    private MppReplyService mppReplyService;
 
     @Override
     protected QQOutMsg processInTextMsg(QQInTextMsg inTextMsg) {
         //防伪
-        UserInfo userInfo = userService.findByQqid(inTextMsg.getToUserName());
-        if(null == userInfo){
+        MppUserInfo mppUserInfo = mppUserService.findByQqid(inTextMsg.getToUserName());
+        if(null == mppUserInfo){
             return new QQOutTextMsg(inTextMsg).setContent("该公众号未绑定");
         }
         //没绑定就提示绑定
-        if(0==userInfo.getBindStatus() && !Constants.MPP_BIND_TEXT.equals(inTextMsg.getContent())){
+        if(0== mppUserInfo.getBindStatus() && !Constants.MPP_BIND_TEXT.equals(inTextMsg.getContent())){
             return new QQOutTextMsg(inTextMsg).setContent("账户未绑定\r请发送\"" + Constants.MPP_BIND_TEXT + "\"绑定");
         }
         //绑定
-        if(0==userInfo.getBindStatus() && Constants.MPP_BIND_TEXT.equals(inTextMsg.getContent())){
-            userInfo.setBindStatus(1);
-            userInfo.setBindTime(new Date());
-            userService.save(userInfo);
+        if(0== mppUserInfo.getBindStatus() && Constants.MPP_BIND_TEXT.equals(inTextMsg.getContent())){
+            mppUserInfo.setBindStatus(1);
+            mppUserInfo.setBindTime(new Date());
+            mppUserService.upsert(mppUserInfo);
             return new QQOutTextMsg(inTextMsg).setContent("绑定完毕，升级成功！");
         }
         //关键字查找（暂时只支持回复文本）
-        ReplyInfo replyInfo = replyInfoRepository.findByKeyword(userInfo.getId(), inTextMsg.getContent());
-        if(null!=replyInfo && 0==replyInfo.getType()){
-            return new QQOutTextMsg(inTextMsg).setContent(replyInfo.getContent());
+        MppReplyInfo mppReplyInfo = mppReplyService.getByUidAndKeyword(mppUserInfo.getId(), inTextMsg.getContent());
+        if(0 == mppReplyInfo.getType()){
+            return new QQOutTextMsg(inTextMsg).setContent(mppReplyInfo.getContent());
         }
         //否则原样返回
         //20151128183801测试发现QQ公众号暂时还不支持QQ表情的显示，但是支持在文本消息里写链接
@@ -92,17 +93,17 @@ public class QQController extends QQMsgController {
     @Override
     protected QQOutMsg processInMenuEventMsg(QQInMenuEventMsg inMenuEventMsg) {
         //防伪
-        UserInfo userInfo = userService.findByQqid(inMenuEventMsg.getToUserName());
-        if(null == userInfo){
+        MppUserInfo mppUserInfo = mppUserService.findByQqid(inMenuEventMsg.getToUserName());
+        if(null == mppUserInfo){
             return new QQOutTextMsg(inMenuEventMsg).setContent("该公众号未绑定");
         }
         //VIEW类的直接跳转过去了，CLICK类的暂定根据关键字回复
         if(QQInMenuEventMsg.EVENT_INMENU_CLICK.equals(inMenuEventMsg.getEvent())){
-            ReplyInfo replyInfo = replyInfoRepository.findByKeyword(userInfo.getId(), inMenuEventMsg.getEventKey());
-            if(null == replyInfo){
+            MppReplyInfo mppReplyInfo = mppReplyService.getByUidAndKeyword(mppUserInfo.getId(), inMenuEventMsg.getEventKey());
+            if(StringUtils.isBlank(mppReplyInfo.getKeyword())){
                 return new QQOutTextMsg(inMenuEventMsg).setContent("您刚才点击了菜单：" + inMenuEventMsg.getEventKey());
             }else{
-                return new QQOutTextMsg(inMenuEventMsg).setContent(replyInfo.getContent());
+                return new QQOutTextMsg(inMenuEventMsg).setContent(mppReplyInfo.getContent());
             }
         }
         //返回特定的消息使得QQ服务器不会回复消息给用户手机上
@@ -113,20 +114,20 @@ public class QQController extends QQMsgController {
     @Override
     protected QQOutMsg processInFollowEventMsg(QQInFollowEventMsg inFollowEventMsg) {
         //防伪
-        UserInfo userInfo = userService.findByQqid(inFollowEventMsg.getToUserName());
-        if(null == userInfo){
+        MppUserInfo mppUserInfo = mppUserService.findByQqid(inFollowEventMsg.getToUserName());
+        if(null == mppUserInfo){
             return new QQOutTextMsg(inFollowEventMsg).setContent("该公众号未绑定");
         }
         if(QQInFollowEventMsg.EVENT_INFOLLOW_SUBSCRIBE.equals(inFollowEventMsg.getEvent())){
             //异步记录粉丝关注情况
-            fansSaveAsync.save(userInfo, inFollowEventMsg.getFromUserName());
+            fansSaveAsync.save(mppUserInfo, inFollowEventMsg.getFromUserName());
             //目前设定关注后固定回复
             QQOutNewsMsg outMsg = new QQOutNewsMsg(inFollowEventMsg);
             outMsg.addNews("欢迎关注", "更多精彩请访问我的博客", "http://img.my.csdn.net/uploads/201507/26/1437881866_3678.png", "http://jadyer.cn/");
             return outMsg;
         }
         if(QQInFollowEventMsg.EVENT_INFOLLOW_UNSUBSCRIBE.equals(inFollowEventMsg.getEvent())){
-            fansInfoRepository.updateSubscribe("0", userInfo.getId(), inFollowEventMsg.getFromUserName());
+            fansService.unSubscribe(mppUserInfo.getId(), inFollowEventMsg.getFromUserName());
             LogUtil.getLogger().info("您的粉丝" + inFollowEventMsg.getFromUserName() + "取消关注了您");
         }
         //返回特定的消息使得QQ服务器不会继续发送通知

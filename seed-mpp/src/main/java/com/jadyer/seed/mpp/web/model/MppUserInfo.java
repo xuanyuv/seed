@@ -1,4 +1,4 @@
-package com.jadyer.seed.mpp.mgr.user.model;
+package com.jadyer.seed.mpp.web.model;
 
 import com.jadyer.seed.comm.jpa.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
@@ -12,8 +12,8 @@ import java.util.Date;
 @Entity
 @DynamicInsert
 @DynamicUpdate
-@Table(name="t_user_info")
-public class UserInfo extends BaseEntity<Long> {
+@Table(name="t_mpp_user_info")
+public class MppUserInfo extends BaseEntity<Long> {
     private static final long serialVersionUID = -2122414521974718376L;
     private int pid;
     private String username;

@@ -125,6 +125,7 @@ redis:
 
 # 允许匿名访问的资源列表
 auth:
+  unauthorizedUrl: /login.jsp
   anonymousList:
     - /
     - /js/**
@@ -136,6 +137,7 @@ auth:
     - /login/**
     - /prop
     - /login.jsp
+    - /favicon.ico
 
 
 ---

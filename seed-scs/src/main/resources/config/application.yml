@@ -50,6 +50,7 @@ spring:
 
 
 auth:
+  unauthorizedUrl: /login.jsp
   anonymousList:
     - /
     - /js/**

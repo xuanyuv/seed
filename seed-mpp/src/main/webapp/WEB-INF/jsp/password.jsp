@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<jsp:include page="../comm/header.jsp"/>
+<jsp:include page="comm/header.jsp"/>
 
 <script src="js/webtoolkit.md5.js"></script>
 <script>
@@ -60,4 +60,4 @@ function submit(){
 </div>
 <!--/Content-->
 
-<jsp:include page="../comm/footer.jsp"/>
+<jsp:include page="comm/footer.jsp"/>

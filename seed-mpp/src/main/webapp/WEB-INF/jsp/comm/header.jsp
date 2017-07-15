@@ -21,16 +21,8 @@
 <div class="c_main_l">
     <div class="c_logo"><img height="35" src="${ctx}/img/logo.png"/></div>
     <ul class="c_menu">
-        <li ${currentMenu eq 'menu_reply' ? 'class="on"' : ''}>
-            <a href="#"><span>回复设置</span><i></i></a>
-            <div>
-                <a href="${ctx}/reply/keyword/list"><span>关键字回复</span></a>
-                <a href="${ctx}/reply/follow/get"><span>关注后回复</span></a>
-                <a href="${ctx}/reply/common/get"><span>通用的回复</span></a>
-            </div>
-        </li>
-        <li ${currentMenu eq 'menu_plugin' ? 'class="on"' : ''}>
-            <a href="#"><span>插件管理</span><i></i></a>
+        <li ${currentMenu eq 'menu_sys' ? 'class="on"' : ''}>
+            <a href="#"><span>业务管理</span><i></i></a>
             <div>
                 <a href="javascript:alert('暂未开放');"><span>一站到底</span></a>
                 <a href="javascript:alert('暂未开放');"><span>员工之家</span></a>
@@ -40,12 +32,14 @@
         <li ${currentMenu eq 'menu_fans' ? 'class="on"' : ''}>
             <a href="${ctx}/fans/list"><span>粉丝管理</span><i></i></a>
         </li>
-        <li ${currentMenu eq 'menu_sys' ? 'class="on"' : ''}>
-            <a href="#"><span>平台设置</span><i></i></a>
+        <li ${currentMenu eq 'menu_mpp' ? 'class="on"' : ''}>
+            <a href="#"><span>微信设置</span><i></i></a>
             <div>
-                <a href="${ctx}/view?url=user/mpmenu"><span>公众菜单</span></a>
-                <a href="${ctx}/user/info"><span>个人资料</span></a>
-                <a href="${ctx}/view?url=user/password"><span>修改密码</span></a>
+                <a href="${ctx}/view?url=mpp/mpmenu"><span>公众菜单</span></a>
+                <a href="${ctx}/mpp/user/info"><span>公众号资料</span></a>
+                <a href="${ctx}/mpp/reply/common/get"><span>通用的回复</span></a>
+                <a href="${ctx}/mpp/reply/follow/get"><span>关注后回复</span></a>
+                <a href="${ctx}/mpp/reply/keyword/list"><span>关键字回复</span></a>
             </div>
         </li>
     </ul>
@@ -54,7 +48,7 @@
     <div class="c_topBar">
         <p class="p1"><i></i><span class="fm2">您好：${user.username}，欢迎访问半步多平台，现在是：<fmt:formatDate value="<%=new Date()%>" pattern="yyyy年MM月dd日 E"/></span></p>
         <p class="p2 fm2">
-            <a href="javascript:alert('暂未开放');" class="mr_20"><i class="i_man"></i><span class="va_m">修改信息</span></a>
+            <a href="${ctx}/view?url=password" class="mr_20"><i class="i_man"></i><span class="va_m">修改密码</span></a>
             <a href="${ctx}/user/logout"><i class="i_sw"></i><span class="va_m">退出</span></a>
         </p>
     </div>

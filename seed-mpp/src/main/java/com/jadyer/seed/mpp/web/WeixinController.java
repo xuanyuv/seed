@@ -1,13 +1,7 @@
-package com.jadyer.seed.mpp.mgr;
+package com.jadyer.seed.mpp.web;
 
 import com.jadyer.seed.comm.constant.Constants;
 import com.jadyer.seed.comm.util.LogUtil;
-import com.jadyer.seed.mpp.mgr.fans.FansInfoRepository;
-import com.jadyer.seed.mpp.mgr.fans.FansSaveAsync;
-import com.jadyer.seed.mpp.mgr.reply.ReplyInfoRepository;
-import com.jadyer.seed.mpp.mgr.reply.model.ReplyInfo;
-import com.jadyer.seed.mpp.mgr.user.UserService;
-import com.jadyer.seed.mpp.mgr.user.model.UserInfo;
 import com.jadyer.seed.mpp.sdk.weixin.constant.WeixinConstants;
 import com.jadyer.seed.mpp.sdk.weixin.controller.WeixinMsgControllerCustomServiceAdapter;
 import com.jadyer.seed.mpp.sdk.weixin.helper.WeixinHelper;
@@ -21,6 +15,13 @@ import com.jadyer.seed.mpp.sdk.weixin.msg.in.event.WeixinInMenuEventMsg;
 import com.jadyer.seed.mpp.sdk.weixin.msg.out.WeixinOutCustomServiceMsg;
 import com.jadyer.seed.mpp.sdk.weixin.msg.out.WeixinOutMsg;
 import com.jadyer.seed.mpp.sdk.weixin.msg.out.WeixinOutTextMsg;
+import com.jadyer.seed.mpp.web.model.MppReplyInfo;
+import com.jadyer.seed.mpp.web.model.MppUserInfo;
+import com.jadyer.seed.mpp.web.service.async.FansSaveAsync;
+import com.jadyer.seed.mpp.web.service.FansService;
+import com.jadyer.seed.mpp.web.service.MppReplyService;
+import com.jadyer.seed.mpp.web.service.MppUserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,13 +34,13 @@ import java.util.List;
 @RequestMapping(value="/weixin")
 public class WeixinController extends WeixinMsgControllerCustomServiceAdapter {
     @Resource
-    private UserService userService;
+    private FansService fansService;
     @Resource
     private FansSaveAsync fansSaveAsync;
     @Resource
-    private FansInfoRepository fansInfoRepository;
+    private MppUserService mppUserService;
     @Resource
-    private ReplyInfoRepository replyInfoRepository;
+    private MppReplyService mppReplyService;
 
     @Override
     protected WeixinOutMsg processInTextMsg(WeixinInTextMsg inTextMsg) {
@@ -56,29 +57,29 @@ public class WeixinController extends WeixinMsgControllerCustomServiceAdapter {
         return outMsg;
         */
         //防伪
-        UserInfo userInfo = userService.findByWxid(inTextMsg.getToUserName());
-        if(null == userInfo){
+        MppUserInfo mppUserInfo = mppUserService.findByWxid(inTextMsg.getToUserName());
+        if(null == mppUserInfo){
             return new WeixinOutTextMsg(inTextMsg).setContent("该公众号未绑定");
         }
         //没绑定就提示绑定
-        if(0==userInfo.getBindStatus() && !Constants.MPP_BIND_TEXT.equals(inTextMsg.getContent())){
+        if(0== mppUserInfo.getBindStatus() && !Constants.MPP_BIND_TEXT.equals(inTextMsg.getContent())){
             return new WeixinOutTextMsg(inTextMsg).setContent("账户未绑定\r请发送\"" + Constants.MPP_BIND_TEXT + "\"绑定");
         }
         //绑定
-        if(0==userInfo.getBindStatus() && Constants.MPP_BIND_TEXT.equals(inTextMsg.getContent())){
-            userInfo.setBindStatus(1);
-            userInfo.setBindTime(new Date());
-            userService.save(userInfo);
+        if(0== mppUserInfo.getBindStatus() && Constants.MPP_BIND_TEXT.equals(inTextMsg.getContent())){
+            mppUserInfo.setBindStatus(1);
+            mppUserInfo.setBindTime(new Date());
+            mppUserService.upsert(mppUserInfo);
             return new WeixinOutTextMsg(inTextMsg).setContent("绑定完毕，升级成功！");
         }
         //关键字查找（暂时只支持回复文本或转发到多客服）
-        ReplyInfo replyInfo = replyInfoRepository.findByKeyword(userInfo.getId(), inTextMsg.getContent());
-        if(null!=replyInfo && 0==replyInfo.getType()){
-            return new WeixinOutTextMsg(inTextMsg).setContent(replyInfo.getContent());
+        MppReplyInfo mppReplyInfo = mppReplyService.getByUidAndKeyword(mppUserInfo.getId(), inTextMsg.getContent());
+        if(0 == mppReplyInfo.getType()){
+            return new WeixinOutTextMsg(inTextMsg).setContent(mppReplyInfo.getContent());
         }
         //查找通用的回复（暂时设定为转发到多客服）
-        List<ReplyInfo> replyInfoList = replyInfoRepository.findByCategory(userInfo.getId(), 0);
-        if(!replyInfoList.isEmpty() && 4==replyInfoList.get(0).getType()){
+        mppReplyInfo = mppReplyService.getByUidAndCategory(mppUserInfo.getId(), 0);
+        if(4 == mppReplyInfo.getType()){
             return new WeixinOutCustomServiceMsg(inTextMsg);
         }
         //否则原样返回
@@ -89,17 +90,17 @@ public class WeixinController extends WeixinMsgControllerCustomServiceAdapter {
     @Override
     protected WeixinOutMsg processInMenuEventMsg(WeixinInMenuEventMsg inMenuEventMsg) {
         //防伪
-        UserInfo userInfo = userService.findByWxid(inMenuEventMsg.getToUserName());
-        if(null == userInfo){
+        MppUserInfo mppUserInfo = mppUserService.findByWxid(inMenuEventMsg.getToUserName());
+        if(null == mppUserInfo){
             return new WeixinOutTextMsg(inMenuEventMsg).setContent("该公众号未绑定");
         }
         //VIEW类的直接跳转过去了，CLICK类的暂定根据关键字回复（找不到关键字就转发到多客服）
         if(WeixinInMenuEventMsg.EVENT_INMENU_CLICK.equals(inMenuEventMsg.getEvent())){
-            ReplyInfo replyInfo = replyInfoRepository.findByKeyword(userInfo.getId(), inMenuEventMsg.getEventKey());
-            if(null == replyInfo){
+            MppReplyInfo mppReplyInfo = mppReplyService.getByUidAndKeyword(mppUserInfo.getId(), inMenuEventMsg.getEventKey());
+            if(StringUtils.isBlank(mppReplyInfo.getKeyword())){
                 return new WeixinOutCustomServiceMsg(inMenuEventMsg);
             }else{
-                return new WeixinOutTextMsg(inMenuEventMsg).setContent(replyInfo.getContent());
+                return new WeixinOutTextMsg(inMenuEventMsg).setContent(mppReplyInfo.getContent());
             }
         }
         //跳到URL时，返回特定的消息使得微信服务器不会回复消息给用户手机上
@@ -110,23 +111,23 @@ public class WeixinController extends WeixinMsgControllerCustomServiceAdapter {
     @Override
     protected WeixinOutMsg processInFollowEventMsg(WeixinInFollowEventMsg inFollowEventMsg) {
         //防伪
-        UserInfo userInfo = userService.findByWxid(inFollowEventMsg.getToUserName());
-        if(null == userInfo){
+        MppUserInfo mppUserInfo = mppUserService.findByWxid(inFollowEventMsg.getToUserName());
+        if(null == mppUserInfo){
             return new WeixinOutTextMsg(inFollowEventMsg).setContent("该公众号未绑定");
         }
         if(WeixinInFollowEventMsg.EVENT_INFOLLOW_SUBSCRIBE.equals(inFollowEventMsg.getEvent())){
             //异步记录粉丝关注情况
-            fansSaveAsync.save(userInfo, inFollowEventMsg.getFromUserName());
+            fansSaveAsync.save(mppUserInfo, inFollowEventMsg.getFromUserName());
             //目前设定关注后回复文本
-            List<ReplyInfo> replyInfoList = replyInfoRepository.findByCategory(userInfo.getId(), 1);
-            if(replyInfoList.isEmpty()){
+            MppReplyInfo mppReplyInfo = mppReplyService.getByUidAndCategory(mppUserInfo.getId(), 1);
+            if(StringUtils.isBlank(mppReplyInfo.getContent())){
                 return new WeixinOutTextMsg(inFollowEventMsg).setContent("感谢您的关注");
             }else{
-                return new WeixinOutTextMsg(inFollowEventMsg).setContent(replyInfoList.get(0).getContent());
+                return new WeixinOutTextMsg(inFollowEventMsg).setContent(mppReplyInfo.getContent());
             }
         }
         if(WeixinInFollowEventMsg.EVENT_INFOLLOW_UNSUBSCRIBE.equals(inFollowEventMsg.getEvent())){
-            fansInfoRepository.updateSubscribe("0", userInfo.getId(), inFollowEventMsg.getFromUserName());
+            fansService.unSubscribe(mppUserInfo.getId(), inFollowEventMsg.getFromUserName());
             LogUtil.getLogger().info("您的粉丝" + inFollowEventMsg.getFromUserName() + "取消关注了您");
         }
         return new WeixinOutTextMsg(inFollowEventMsg).setContent("您的粉丝" + inFollowEventMsg.getFromUserName() + "取消关注了您");

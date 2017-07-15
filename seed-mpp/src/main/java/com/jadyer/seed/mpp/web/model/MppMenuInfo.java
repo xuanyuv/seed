@@ -1,4 +1,4 @@
-package com.jadyer.seed.mpp.mgr.user.model;
+package com.jadyer.seed.mpp.web.model;
 
 import com.jadyer.seed.comm.jpa.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
@@ -11,8 +11,8 @@ import javax.persistence.Table;
 @Entity
 @DynamicInsert
 @DynamicUpdate
-@Table(name="t_menu_info")
-public class MenuInfo extends BaseEntity<Long> {
+@Table(name="t_mpp_menu_info")
+public class MppMenuInfo extends BaseEntity<Long> {
     private static final long serialVersionUID = -9022840044287534961L;
     private String pid;
     private long uid;

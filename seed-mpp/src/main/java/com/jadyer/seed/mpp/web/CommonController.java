@@ -1,4 +1,4 @@
-package com.jadyer.seed.mpp;
+package com.jadyer.seed.mpp.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -6,8 +6,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
+/**
+ * 存放一些通用功能，比如访问页面资源、上传图片、图片查看、富文本编辑器等处理
+ */
 @Controller
-public class ViewController {
+public class CommonController {
     /**
      * 直接访问页面资源
      * <p>
