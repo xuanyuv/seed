@@ -42,6 +42,7 @@ public class JPATest {
     public void selectTest() throws InterruptedException, ExecutionException, TimeoutException {
         Assert.assertEquals("test55", scheduleTaskRepository.getByName("test55").getName());
         Assert.assertEquals("test55", scheduleTaskRepository.getByNameLike("test55").get(0).getName());
+        Assert.assertEquals("test44", scheduleTaskRepository.findByNameAndCron("test44", "0/15 * * * * ?").getName());
         Assert.assertEquals("test55", scheduleTaskRepository.getByNameEndingWithAndIdLessThan("55", 9L).get(0).getName());
         Assert.assertEquals("test22", scheduleTaskRepository.getByNameStartingWithAndIdLessThan("test", 9L).get(0).getName());
         Assert.assertEquals("test33", scheduleTaskRepository.getByNameInOrIdLessThan(Arrays.asList("test44", "test22", "jadyer"), 3L).get(1).getName());
