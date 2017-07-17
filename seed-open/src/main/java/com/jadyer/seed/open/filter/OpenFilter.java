@@ -102,11 +102,11 @@ public class OpenFilter extends OncePerRequestFilter {
             String appsecret = appsecretMap.get(reqData.getAppid());
             LogUtil.getLogger().debug("通过appid=[{}]读取到合作方密钥{}", reqData.getAppid(), appsecret);
             if(appsecretMap.isEmpty() || StringUtils.isBlank(appsecret)){
-                throw new SeedException(CodeEnum.OPEN_UNKNOWN_APPID.getCode(), CodeEnum.OPEN_UNKNOWN_APPID.getMsg());
+                throw new SeedException(CodeEnum.OPEN_UNKNOWN_APPID);
             }
             //获取协议版本
             if(!Constants.OPEN_VERSION_21.equals(reqData.getVersion()) && !Constants.OPEN_VERSION_22.equals(reqData.getVersion())){
-                throw new SeedException(CodeEnum.OPEN_UNKNOWN_VERSION.getCode(), CodeEnum.OPEN_UNKNOWN_VERSION.getMsg());
+                throw new SeedException(CodeEnum.OPEN_UNKNOWN_VERSION);
             }
             //验证接口是否已授权
             this.verifyGrant(reqData.getAppid(), method);
@@ -160,7 +160,7 @@ public class OpenFilter extends OncePerRequestFilter {
         try {
             long reqTime = DateUtils.parseDate(timestamp, "yyyy-MM-dd HH:mm:ss").getTime();
             if(Math.abs(System.currentTimeMillis()-reqTime) >= TIMESTAMP_VALID_MILLISECONDS){
-                throw new SeedException(CodeEnum.OPEN_TIMESTAMP_ERROR.getCode(), CodeEnum.OPEN_TIMESTAMP_ERROR.getMsg());
+                throw new SeedException(CodeEnum.OPEN_TIMESTAMP_ERROR);
             }
         } catch (ParseException e) {
             throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "timestamp is invalid");
@@ -194,7 +194,7 @@ public class OpenFilter extends OncePerRequestFilter {
     private void verifySign(Map<String, String[]> paramMap, String appsecret){
         String signType = paramMap.get("signType")[0];
         if(!Constants.OPEN_SIGN_TYPE_md5.equals(signType) && !Constants.OPEN_SIGN_TYPE_hmac.equals(signType)){
-            throw new SeedException(CodeEnum.OPEN_UNKNOWN_SIGN.getCode(), CodeEnum.OPEN_UNKNOWN_SIGN.getMsg());
+            throw new SeedException(CodeEnum.OPEN_UNKNOWN_SIGN);
         }
         StringBuilder sb = new StringBuilder();
         List<String> keys = new ArrayList<>(paramMap.keySet());
@@ -220,7 +220,7 @@ public class OpenFilter extends OncePerRequestFilter {
             verfiyResult = sign.equals(paramMap.get("sign")[0]);
         }
         if(!verfiyResult){
-            throw new SeedException(CodeEnum.OPEN_SIGN_ERROR.getCode(), CodeEnum.OPEN_SIGN_ERROR.getMsg());
+            throw new SeedException(CodeEnum.OPEN_SIGN_ERROR);
         }
     }
 
@@ -244,7 +244,7 @@ public class OpenFilter extends OncePerRequestFilter {
             Map<String, String> dataMap = JSON.parseObject(appsecret, new TypeReference<Map<String, String>>(){});
             dataPlain = CodecUtil.buildRSADecryptByPrivateKey(reqData.getData(), dataMap.get("openPrivateKey"));
             if(!CodecUtil.buildRSAverifyByPublicKey(dataPlain, dataMap.get("publicKey"), reqData.getSign())){
-                throw new SeedException(CodeEnum.OPEN_SIGN_ERROR.getCode(), CodeEnum.OPEN_SIGN_ERROR.getMsg());
+                throw new SeedException(CodeEnum.OPEN_SIGN_ERROR);
             }
         }
         LogUtil.getLogger().info("请求参数解密得到dataPlain=[{}]", dataPlain);
