@@ -1,5 +1,7 @@
 package com.jadyer.seed.comm.exception;
 
+import com.jadyer.seed.comm.constant.CodeEnum;
+
 /**
  * 关于构造方法是否增加Throwable参数的区别
  * -----------------------------------------------------------------------------------------------------------
@@ -65,6 +67,18 @@ public class SeedException extends RuntimeException {
     //    }
     //    return this;
     //}
+
+    public SeedException(CodeEnum codeEnum){
+        super(codeEnum.getMsg());
+        this.code = codeEnum.getCode();
+        this.message = codeEnum.getMsg();
+    }
+
+    public SeedException(CodeEnum codeEnum, Throwable cause){
+        super(codeEnum.getMsg(), cause);
+        this.code = codeEnum.getCode();
+        this.message = codeEnum.getMsg();
+    }
 
     public SeedException(int code, String message){
         super(message);
