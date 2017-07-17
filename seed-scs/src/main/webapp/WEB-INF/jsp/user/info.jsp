@@ -155,7 +155,7 @@ function submit(){
                 </th>
                 <td>
                     <img id="id_img" src="${ctx}/img/qrcode.jpg" style="width:200px; height:100px;">
-                    <input type="hidden" id="icons" name="icons" src="${ctx}/img/qrcode.jpg"/>
+                    <input type="hidden" id="icons" name="icons" value="${ctx}/img/qrcode.jpg"/>
                 </td>
             </tr>
         </table>
