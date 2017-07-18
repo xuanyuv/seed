@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Async
 @Component
-public class AppidSignupAsync {
+public class AppidAsync {
     @Resource
     private MppUserService mppUserService;
 

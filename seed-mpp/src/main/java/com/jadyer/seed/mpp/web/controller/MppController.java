@@ -12,7 +12,7 @@ import com.jadyer.seed.mpp.sdk.weixin.helper.WeixinTokenHolder;
 import com.jadyer.seed.mpp.sdk.weixin.model.WeixinErrorInfo;
 import com.jadyer.seed.mpp.web.model.MppReplyInfo;
 import com.jadyer.seed.mpp.web.model.MppUserInfo;
-import com.jadyer.seed.mpp.web.service.async.AppidSignupAsync;
+import com.jadyer.seed.mpp.web.service.async.AppidAsync;
 import com.jadyer.seed.mpp.web.service.MppMenuService;
 import com.jadyer.seed.mpp.web.service.MppReplyService;
 import com.jadyer.seed.mpp.web.service.MppUserService;
@@ -38,17 +38,17 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/mpp")
 public class MppController {
     @Resource
+    private AppidAsync appidAsync;
+    @Resource
     private MppUserService mppUserService;
     @Resource
     private MppMenuService mppMenuService;
     @Resource
     private MppReplyService mppReplyService;
-    @Resource
-    private AppidSignupAsync appidSignupAsync;
 
     @PostConstruct
     public void scheduleReport(){
-        appidSignupAsync.signup();
+        appidAsync.signup();
         //Executors.newScheduledThreadPool(1).schedule(new Runnable(){
         //    @Override
         //    public void run() {
