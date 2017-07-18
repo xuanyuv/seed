@@ -68,8 +68,8 @@ public class SampleController {
     public void fileGet(String filePath, HttpServletRequest request, HttpServletResponse response) throws Exception{
         InputStream is;
         String filename;
-        if(filePath.endsWith("qrcode.png")){
-            filename = "qrcode.png";
+        if(filePath.endsWith("qrcode.jpg")){
+            filename = "qrcode.jpg";
             //这里不能使用URI来创建File，因为URI认的是这个协议：file:///D:/qrcode.jpg
             //filedata = new File(URI.create(JadyerUtil.getFullContextPath(request) + "/img/qrcode.jpg"));
             is = new URL(JadyerUtil.getFullContextPath(request) + "/img/qrcode.jpg").openStream();
