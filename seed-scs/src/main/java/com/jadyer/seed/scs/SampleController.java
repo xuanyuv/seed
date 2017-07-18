@@ -3,6 +3,7 @@ package com.jadyer.seed.scs;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
 import com.jadyer.seed.comm.constant.Constants;
+import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
@@ -69,16 +70,9 @@ public class SampleController {
         String filename;
         if(filePath.endsWith("qrcode.png")){
             filename = "qrcode.png";
-            StringBuilder sb = new StringBuilder();
-            sb.append(request.getScheme()).append("://").append(request.getServerName());
-            if(80!=request.getServerPort() && 443!=request.getServerPort()){
-                sb.append(":").append(request.getServerPort());
-            }
-            sb.append(request.getContextPath());
-            sb.append("/img/qrcode.png");
             //这里不能使用URI来创建File，因为URI认的是这个协议：file:///D:/qrcode.jpg
-            //filedata = new File(URI.create(sb.toString()));
-            is = new URL(sb.toString()).openStream();
+            //filedata = new File(URI.create(JadyerUtil.getFullContextPath(request) + "/img/qrcode.jpg"));
+            is = new URL(JadyerUtil.getFullContextPath(request) + "/img/qrcode.jpg").openStream();
         }else{
             filename = FilenameUtils.getName(filePath);
             is = FileUtils.openInputStream(new File(scsHelper.getFilePath(FilenameUtils.getBaseName(filePath).endsWith("w"))+filePath));
