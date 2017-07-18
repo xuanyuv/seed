@@ -6,6 +6,7 @@
 <jsp:include page="../comm/header.jsp"/>
 
 <script src="${ctx}/js/ajaxfileupload.js"></script>
+<script src="${ctx}/js/My97DatePicker/WdatePicker.js"></script>
 
 <script>
 /*
@@ -140,6 +141,7 @@ function submit(){
             <tr><th>原始ID：</th><td><input class="inpte" type="text" id="mpid" name="mpid" value="${user.mpid}" maxlength="32"/></td></tr>
             <tr><th>公众号：</th><td><input class="inpte" type="text" id="mpno" name="mpno" value="${user.mpno}" maxlength="32"/></td></tr>
             <tr><th>公众名：</th><td><input class="inpte" type="text" id="mpname" name="mpname" value="${user.mpname}" maxlength="32"/></td></tr>
+            <tr><th>启用时间：</th><td><input class="inpte Wdate" type="text" id="openTime" name="openTime" value="${user.openTime}" maxlength="19" onFocus="WdatePicker({readOnly:true, dateFmt:'yyyy-MM-dd HH:mm:ss'})"/></td></tr>
             <tr>
                 <th>
                     <%--

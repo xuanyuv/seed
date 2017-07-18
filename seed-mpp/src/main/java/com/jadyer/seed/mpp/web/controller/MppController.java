@@ -83,10 +83,8 @@ public class MppController {
     @ResponseBody
     @PostMapping("/user/login")
     public CommonResult login(String username, String password, String captcha, HttpSession session){
-        if(StringUtils.isNotBlank(captcha)){
-            if(!captcha.equals(session.getAttribute("rand"))){
-                return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "无效的验证码");
-            }
+        if(StringUtils.equals(captcha, (String)session.getAttribute("rand"))){
+            return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "无效的验证码");
         }
         MppUserInfo mppUserInfo = mppUserService.findByUsernameAndPassword(username, password);
         if(null == mppUserInfo){
