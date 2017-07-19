@@ -9,9 +9,15 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
+ * 日期工具类
+ * ----------------------------------------------------------------------
+ * @version v1.1
+ * @history v1.1-->增加根据日期获得星期的方法getWeekName()
+ * @history v1.0-->新建不添加若干方法
+ * ----------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.github.io/> on 2017/5/19 11:05.
  */
-public class DateUtil {
+public final class DateUtil {
     private DateUtil(){}
 
     /**
@@ -145,5 +151,21 @@ public class DateUtil {
         cal.setTime(startDate);
         cal.add(Calendar.DAY_OF_MONTH, days);
         return cal.getTime();
+    }
+
+
+    /**
+     * 根据日期获得星期
+     * @return 星期日、星期一、星期二、星期三、星期四、星期五、星期六
+     */
+    public static String getWeekName(Date date){
+        String[] weekNames = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int weekNameIndex = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        if(weekNameIndex < 0){
+            weekNameIndex = 0;
+        }
+        return weekNames[weekNameIndex];
     }
 }
