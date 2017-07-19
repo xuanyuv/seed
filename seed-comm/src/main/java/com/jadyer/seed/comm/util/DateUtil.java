@@ -156,6 +156,24 @@ public final class DateUtil {
 
     /**
      * 根据日期获得星期
+     * @param date 字符串格式的日期，可传入20170719或者2017-07-19
+     * @return 星期日、星期一、星期二、星期三、星期四、星期五、星期六
+     */
+    public static String getWeekName(String dateStr){
+        dateStr = dateStr.replaceAll("-", "");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        Date date;
+        try {
+            date = sdf.parse(dateStr);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("无效入参，格式应为20170719或者2017-07-19");
+        }
+        return getWeekName(date);
+    }
+
+
+    /**
+     * 根据日期获得星期
      * @return 星期日、星期一、星期二、星期三、星期四、星期五、星期六
      */
     public static String getWeekName(Date date){
