@@ -77,7 +77,8 @@ import java.util.Map;
 
 /**
  * 玄玉的开发工具类
- * @version v3.15
+ * @version v3.16
+ * @history v3.16-->增加leftPadUseZero()字符串左补零的方法
  * @history v3.15-->增加getFullContextPath()用于获取应用的完整根地址并移除两个XML方法至{@link XmlUtil}
  * @history v3.14-->移动requestToBean()和beanCopyProperties()至BeanUtil.java，并移除若干重复造轮子的方法
  * @history v3.13-->增加获取本周第一天、判断是否本周第一天、判断是否本月第一天的三个方法
@@ -455,6 +456,25 @@ public final class JadyerUtil {
             System.arraycopy(srcByte, 0, destByte, size-srcByte.length, srcByte.length);
         }
         return StringUtils.toEncodedString(destByte, Charset.forName(charset));
+    }
+
+
+    /**
+     * 字符串左补零
+     * @param str  待补零的字符串
+     * @param size 补零后的总长度
+     * @return 假设str=3，size=4，则返回0003
+     */
+    public static String leftPadUseZero(String str, int size){
+        char[] srcArray = str.toCharArray();
+        char[] destArray = new char[size];
+        Arrays.fill(destArray, '0');
+        if(srcArray.length >= size){
+            System.arraycopy(srcArray, 0, destArray, 0, size);
+        }else{
+            System.arraycopy(srcArray, 0, destArray, size-srcArray.length, srcArray.length);
+        }
+        return String.valueOf(destArray);
     }
 
 
