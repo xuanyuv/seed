@@ -8,35 +8,35 @@ package com.jadyer.seed.mpp.sdk.weixin.model.pay;
  * Created by 玄玉<http://jadyer.cn/> on 2017/7/10 10:39.
  */
 public class WeixinPayUnifiedorderRespData {
-    private String appid;
-    private String timestamp;
-    private String noncestr;
+    private String appId;
+    private String timeStamp;
+    private String nonceStr;
     private String package_;
-    private String signtype;
-    private String paysign;
+    private String signType;
+    private String paySign;
 
-    public String getAppid() {
-        return appid;
+    public String getAppId() {
+        return appId;
     }
 
-    public void setAppid(String appid) {
-        this.appid = appid;
+    public void setAppId(String appId) {
+        this.appId = appId;
     }
 
-    public String getTimestamp() {
-        return timestamp;
+    public String getTimeStamp() {
+        return timeStamp;
     }
 
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
-    public String getNoncestr() {
-        return noncestr;
+    public String getNonceStr() {
+        return nonceStr;
     }
 
-    public void setNoncestr(String noncestr) {
-        this.noncestr = noncestr;
+    public void setNonceStr(String nonceStr) {
+        this.nonceStr = nonceStr;
     }
 
     public String getPackage_() {
@@ -47,19 +47,19 @@ public class WeixinPayUnifiedorderRespData {
         this.package_ = package_;
     }
 
-    public String getSigntype() {
-        return signtype;
+    public String getSignType() {
+        return signType;
     }
 
-    public void setSigntype(String signtype) {
-        this.signtype = signtype;
+    public void setSignType(String signType) {
+        this.signType = signType;
     }
 
-    public String getPaysign() {
-        return paysign;
+    public String getPaySign() {
+        return paySign;
     }
 
-    public void setPaysign(String paysign) {
-        this.paysign = paysign;
+    public void setPaySign(String paySign) {
+        this.paySign = paySign;
     }
 }

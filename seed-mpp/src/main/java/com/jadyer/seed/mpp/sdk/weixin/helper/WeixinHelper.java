@@ -401,16 +401,16 @@ public final class WeixinHelper {
         payVerifySign(respXmlMap);
         //构造前台页面呼起微信支付所需的数据
         WeixinPayUnifiedorderRespData respData = new WeixinPayUnifiedorderRespData();
-        respData.setAppid(reqData.getAppid());
-        respData.setTimestamp(Long.toString(System.currentTimeMillis()/1000));
-        respData.setNoncestr(RandomStringUtils.randomNumeric(16));
+        respData.setAppId(reqData.getAppid());
+        respData.setTimeStamp(Long.toString(System.currentTimeMillis()/1000));
+        respData.setNonceStr(RandomStringUtils.randomNumeric(16));
         respData.setPackage_("prepay_id=" + respXmlMap.get("prepay_id"));
-        respData.setSigntype("MD5");
+        respData.setSignType("MD5");
         //处理特殊字段package_
         Map<String, String> respDataMap = BeanUtil.beanToMap(respData);
         respDataMap.remove("package_");
         respDataMap.put("package", respData.getPackage_());
-        respData.setPaysign(CodecUtil.buildHexSign(respDataMap, "UTF-8", respData.getSigntype(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())).toUpperCase());
+        respData.setPaySign(CodecUtil.buildHexSign(respDataMap, "UTF-8", respData.getSignType(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())).toUpperCase());
         LogUtil.getLogger().info("微信支付--公众号支付--统一下单接口出参为{}", ReflectionToStringBuilder.toString(respData, ToStringStyle.MULTI_LINE_STYLE));
         return respData;
     }
