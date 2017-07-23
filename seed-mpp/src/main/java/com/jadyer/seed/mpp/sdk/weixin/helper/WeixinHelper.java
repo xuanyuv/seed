@@ -406,7 +406,11 @@ public final class WeixinHelper {
         respData.setNoncestr(RandomStringUtils.randomNumeric(16));
         respData.setPackage_("prepay_id=" + respXmlMap.get("prepay_id"));
         respData.setSigntype("MD5");
-        respData.setPaysign(CodecUtil.buildHexSign(BeanUtil.beanToMap(respData), "UTF-8", respData.getSigntype(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())).toUpperCase());
+        //处理特殊字段package_
+        Map<String, String> respDataMap = BeanUtil.beanToMap(respData);
+        respDataMap.remove("package_");
+        respDataMap.put("package", respData.getPackage_());
+        respData.setPaysign(CodecUtil.buildHexSign(respDataMap, "UTF-8", respData.getSigntype(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())).toUpperCase());
         LogUtil.getLogger().info("微信支付--公众号支付--统一下单接口出参为{}", ReflectionToStringBuilder.toString(respData, ToStringStyle.MULTI_LINE_STYLE));
         return respData;
     }

@@ -1,7 +1,5 @@
 package com.jadyer.seed.mpp.sdk.weixin.model.pay;
 
-import com.alibaba.fastjson.annotation.JSONField;
-
 /**
  * 微信支付--公众号支付--统一下单接口出参
  * <p>
@@ -13,7 +11,6 @@ public class WeixinPayUnifiedorderRespData {
     private String appid;
     private String timestamp;
     private String noncestr;
-    @JSONField(name="package")
     private String package_;
     private String signtype;
     private String paysign;
