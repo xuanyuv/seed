@@ -639,6 +639,7 @@ public final class CodecUtil {
      * @return String algorithm digest as a lowerCase hex string
      */
     public static String buildHexSign(String data, String charset, String algorithm){
+        LogUtil.getLogger().info("待签名字符串为-->[{}]", data);
         byte[] dataBytes;
         try {
             dataBytes = data.getBytes(charset);
@@ -659,6 +660,8 @@ public final class CodecUtil {
             respData[j++] = DIGITS[(0xF0 & algorithmData[i]) >>> 4];
             respData[j++] = DIGITS[0x0F & algorithmData[i]];
         }
-        return new String(respData);
+        String sign = new String(respData);
+        LogUtil.getLogger().info("生成的签名值为-->[{}]", sign);
+        return sign;
     }
 }

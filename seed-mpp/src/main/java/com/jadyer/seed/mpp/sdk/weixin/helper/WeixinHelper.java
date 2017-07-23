@@ -334,9 +334,9 @@ public final class WeixinHelper {
         String sign_calc;
         if(StringUtils.isBlank(dataMap.get("sign_type"))){
             sign_calc = CodecUtil.buildHexSign(dataMap, "UTF-8", "MD5", WeixinTokenHolder.getWeixinMchkey(dataMap.get("appid")));
-            if(!StringUtils.equals(dataMap.get("sign"), sign_calc)){
+            if(!StringUtils.equals(dataMap.get("sign"), sign_calc.toUpperCase())){
                 sign_calc = CodecUtil.buildHmacSign(dataMap, WeixinTokenHolder.getWeixinMchkey(dataMap.get("appid")), "HmacSHA256");
-                if(!StringUtils.equals(dataMap.get("sign"), sign_calc)){
+                if(!StringUtils.equals(dataMap.get("sign"), sign_calc.toUpperCase())){
                     throw new IllegalArgumentException("验签未通过");
                 }
             }
@@ -349,7 +349,7 @@ public final class WeixinHelper {
             }else{
                 throw new IllegalArgumentException("不支持的签名算法");
             }
-            if(!StringUtils.equals(dataMap.get("sign"), sign_calc)){
+            if(!StringUtils.equals(dataMap.get("sign"), sign_calc.toUpperCase())){
                 throw new IllegalArgumentException("验签未通过");
             }
         }
@@ -392,7 +392,7 @@ public final class WeixinHelper {
                 }
             }));
         }
-        reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())));
+        reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())).toUpperCase());
         //发送请求
         String respXml = HttpUtil.post(WeixinConstants.URL_WEIXIN_PAY_UNIFIEDORDER, XmlUtil.mapToXml(reqDataMap), null);
         //解析返回的xml字符串（交易是否成功、验签）
@@ -406,7 +406,7 @@ public final class WeixinHelper {
         respData.setNonceStr(RandomStringUtils.randomNumeric(16));
         respData.setPackage_("prepay_id=" + respXmlMap.get("prepay_id"));
         respData.setSignType("MD5");
-        respData.setPaySign(CodecUtil.buildHexSign(BeanUtil.beanToMap(respData), "UTF-8", respData.getSignType(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())));
+        respData.setPaySign(CodecUtil.buildHexSign(BeanUtil.beanToMap(respData), "UTF-8", respData.getSignType(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())).toUpperCase());
         LogUtil.getLogger().info("微信支付--公众号支付--统一下单接口出参为{}", ReflectionToStringBuilder.toString(respData, ToStringStyle.MULTI_LINE_STYLE));
         return respData;
     }
@@ -421,7 +421,7 @@ public final class WeixinHelper {
     public static WeixinPayOrderqueryRespData payOrderquery(WeixinPayOrderqueryReqData reqData){
         LogUtil.getLogger().info("微信支付--公众号支付--查询订单接口入参为{}", ReflectionToStringBuilder.toString(reqData, ToStringStyle.MULTI_LINE_STYLE));
         Map<String, String> reqDataMap = BeanUtil.beanToMap(reqData);
-        reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())));
+        reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())).toUpperCase());
         //发送请求
         String respXml = HttpUtil.post(WeixinConstants.URL_WEIXIN_PAY_ORDERQUERY, XmlUtil.mapToXml(reqDataMap), null);
         //解析返回的xml字符串（交易是否成功、验签）
@@ -454,7 +454,7 @@ public final class WeixinHelper {
     public static WeixinPayCloseorderRespData payCloseorder(WeixinPayCloseorderReqData reqData){
         LogUtil.getLogger().info("微信支付--公众号支付--关闭订单接口入参为{}", ReflectionToStringBuilder.toString(reqData, ToStringStyle.MULTI_LINE_STYLE));
         Map<String, String> reqDataMap = BeanUtil.beanToMap(reqData);
-        reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())));
+        reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())).toUpperCase());
         //发送请求
         String respXml = HttpUtil.post(WeixinConstants.URL_WEIXIN_PAY_CLOSEORDER, XmlUtil.mapToXml(reqDataMap), null);
         //解析返回的xml字符串（交易是否成功、验签）
@@ -477,7 +477,7 @@ public final class WeixinHelper {
     public static WeixinPayRefundRespData payRefund(WeixinPayRefundReqData reqData, String filepath){
         LogUtil.getLogger().info("微信支付--公众号支付--申请退款接口入参为{}", ReflectionToStringBuilder.toString(reqData, ToStringStyle.MULTI_LINE_STYLE));
         Map<String, String> reqDataMap = BeanUtil.beanToMap(reqData);
-        reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())));
+        reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())).toUpperCase());
         //发送请求
         String respXml = HttpUtil.postWithP12(WeixinConstants.URL_WEIXIN_PAY_REFUND, XmlUtil.mapToXml(reqDataMap), null, filepath, WeixinTokenHolder.getWeixinMchkey(reqData.getAppid()));
         //解析返回的xml字符串（交易是否成功、验签）
@@ -510,7 +510,7 @@ public final class WeixinHelper {
     public static WeixinPayRefundqueryRespData payRefundquery(WeixinPayRefundqueryReqData reqData){
         LogUtil.getLogger().info("微信支付--公众号支付--查询退款接口入参为{}", ReflectionToStringBuilder.toString(reqData, ToStringStyle.MULTI_LINE_STYLE));
         Map<String, String> reqDataMap = BeanUtil.beanToMap(reqData);
-        reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())));
+        reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())).toUpperCase());
         //发送请求
         String respXml = HttpUtil.post(WeixinConstants.URL_WEIXIN_PAY_REFUNDQUERY, XmlUtil.mapToXml(reqDataMap), null);
         //解析返回的xml字符串（交易是否成功、验签）
@@ -563,7 +563,7 @@ public final class WeixinHelper {
     public static WeixinPayDownloadbillRespData payDownloadbill(WeixinPayDownloadbillReqData reqData){
         LogUtil.getLogger().info("微信支付--公众号支付--下载对账单接口入参为{}", ReflectionToStringBuilder.toString(reqData, ToStringStyle.MULTI_LINE_STYLE));
         Map<String, String> reqDataMap = BeanUtil.beanToMap(reqData);
-        reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())));
+        reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())).toUpperCase());
         //发送请求
         String respXml = HttpUtil.post(WeixinConstants.URL_WEIXIN_PAY_DOWNLOADBILL, XmlUtil.mapToXml(reqDataMap), null);
         //TODO 实现待补充
