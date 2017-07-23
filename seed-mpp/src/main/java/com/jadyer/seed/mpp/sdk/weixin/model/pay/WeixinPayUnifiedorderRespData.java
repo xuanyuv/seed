@@ -10,36 +10,36 @@ import com.alibaba.fastjson.annotation.JSONField;
  * Created by 玄玉<http://jadyer.cn/> on 2017/7/10 10:39.
  */
 public class WeixinPayUnifiedorderRespData {
-    private String appId;
-    private String timeStamp;
-    private String nonceStr;
+    private String appid;
+    private String timestamp;
+    private String noncestr;
     @JSONField(name="package")
     private String package_;
-    private String signType;
-    private String paySign;
+    private String signtype;
+    private String paysign;
 
-    public String getAppId() {
-        return appId;
+    public String getAppid() {
+        return appid;
     }
 
-    public void setAppId(String appId) {
-        this.appId = appId;
+    public void setAppid(String appid) {
+        this.appid = appid;
     }
 
-    public String getTimeStamp() {
-        return timeStamp;
+    public String getTimestamp() {
+        return timestamp;
     }
 
-    public void setTimeStamp(String timeStamp) {
-        this.timeStamp = timeStamp;
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 
-    public String getNonceStr() {
-        return nonceStr;
+    public String getNoncestr() {
+        return noncestr;
     }
 
-    public void setNonceStr(String nonceStr) {
-        this.nonceStr = nonceStr;
+    public void setNoncestr(String noncestr) {
+        this.noncestr = noncestr;
     }
 
     public String getPackage_() {
@@ -50,19 +50,19 @@ public class WeixinPayUnifiedorderRespData {
         this.package_ = package_;
     }
 
-    public String getSignType() {
-        return signType;
+    public String getSigntype() {
+        return signtype;
     }
 
-    public void setSignType(String signType) {
-        this.signType = signType;
+    public void setSigntype(String signtype) {
+        this.signtype = signtype;
     }
 
-    public String getPaySign() {
-        return paySign;
+    public String getPaysign() {
+        return paysign;
     }
 
-    public void setPaySign(String paySign) {
-        this.paySign = paySign;
+    public void setPaysign(String paysign) {
+        this.paysign = paysign;
     }
 }
