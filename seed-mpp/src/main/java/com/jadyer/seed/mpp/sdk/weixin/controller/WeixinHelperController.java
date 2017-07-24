@@ -179,12 +179,37 @@ public class WeixinHelperController {
     /**
      * 微信支付--公众号支付--支付结果通知
      * https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_7
+     * <ul>
+     *     <li>让这个方法不是public的，这样日志切面就不会读一次入参，否则会导致这里再读的时候独到的是[]</li>
+     *     <li>
+     *         这是读取到的入参示例（xml格式的字符串）
+     *         <xml><appid><![CDATA[wxb4c63222cebf7762]]></appid>
+     *         <attach><![CDATA[15]]></attach>
+     *         <bank_type><![CDATA[CFT]]></bank_type>
+     *         <cash_fee><![CDATA[1]]></cash_fee>
+     *         <device_info><![CDATA[WEB]]></device_info>
+     *         <fee_type><![CDATA[CNY]]></fee_type>
+     *         <is_subscribe><![CDATA[Y]]></is_subscribe>
+     *         <mch_id><![CDATA[1486165412]]></mch_id>
+     *         <nonce_str><![CDATA[625776929102925810219305306908]]></nonce_str>
+     *         <openid><![CDATA[ojZ6h1U3w-d-ueEdPv-UfttvdBcU]]></openid>
+     *         <out_trade_no><![CDATA[201707240942476418778105452615]]></out_trade_no>
+     *         <result_code><![CDATA[SUCCESS]]></result_code>
+     *         <return_code><![CDATA[SUCCESS]]></return_code>
+     *         <sign><![CDATA[8030A703149A82D8D1DD43A0D90B0D2C]]></sign>
+     *         <time_end><![CDATA[20170724094315]]></time_end>
+     *         <total_fee>1</total_fee>
+     *         <trade_type><![CDATA[JSAPI]]></trade_type>
+     *         <transaction_id><![CDATA[4000082001201707242363008429]]></transaction_id>
+     *         </xml>
+     *     </li>
+     * </ul>
      */
     @RequestMapping("/pay/notify")
-    public void payNotify(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //日志拦截器里面读了一次，所以就不能再使用JadyerUtil.extractHttpServletRequestBodyMessage(request)
-        Map<String, String> dataMap = XmlUtil.xmlToMap(request.getParameterNames().nextElement());
-        LogUtil.getLogger().info("微信支付--公众号支付--支付结果通知-->收到的报文转为Map得到{}", JadyerUtil.buildStringFromMap(dataMap));
+    void payNotify(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String reqData = JadyerUtil.extractHttpServletRequestBodyMessage(request);
+        LogUtil.getLogger().info("微信支付--公众号支付--支付结果通知-->收到报文-->[{}]", reqData);
+        Map<String, String> dataMap = XmlUtil.xmlToMap(reqData);
         //验证交易是否成功、验签
         WeixinHelper.payVerifyIfSuccess(dataMap);
         WeixinHelper.payVerifySign(dataMap);
