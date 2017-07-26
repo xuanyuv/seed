@@ -24,7 +24,7 @@ public class QuartzDemo {
         LogUtil.getLogger().info("定时任务：xxxx-->查到记录[{}]条", len);
         for(String obj : dataList){
             currIndex = JadyerUtil.leftPadUseZero(currIndex, String.valueOf(len).length());
-            LogUtil.getLogger().info("读取到数据-->[{}]", obj);
+            LogUtil.getLogger().info("读到数据：{}", obj);
             LogUtil.getLogger().info("定时任务：xxxx-->处理完毕[{}-{}]条", len, currIndex);
             currIndex = String.valueOf(Integer.parseInt(currIndex) + 1);
         }
