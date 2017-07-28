@@ -154,7 +154,8 @@ import java.util.Map;
  *     }
  * }
  * -----------------------------------------------------------------------------------------------------------
- * @version v2.8
+ * @version v2.9
+ * @history v2.9-->各个方法解码响应报文时，增加更灵活的解码字符集判断
  * @history v2.8-->增加微信支付退款和微信红包接口所需的postWithP12()方法
  * @history v2.7-->抽象出公共的HTTPS支持的设置，加入到httpclient实现的各个方法中，并更名postTSL()为post()
  * @history v2.6-->修复部分细节，增加入参出参的日志打印
@@ -176,7 +177,8 @@ import java.util.Map;
  */
 @SuppressWarnings("deprecation")
 public final class HttpUtil {
-    public static final String DEFAULT_CHARSET = "UTF-8";          //设置默认通信报文编码为UTF-8
+    public static final String DEFAULT_CHARSET = "UTF-8";           //设置默认通信报文编码为UTF-8
+    public static final String CHARSET_ISO_8859_1 = "ISO-8859-1";   //设置默认通信报文编码为UTF-8
     private static final int DEFAULT_CONNECTION_TIMEOUT = 1000 * 2; //设置默认连接超时为2s
     private static final int DEFAULT_SO_TIMEOUT = 1000 * 60;        //设置默认读取超时为60s
 
@@ -189,7 +191,7 @@ public final class HttpUtil {
      * @see 2)方法内设置了连接和读取超时(时间由本工具类全局变量限定),超时或发生其它异常将抛出RuntimeException
      * @see 3)请求参数含中文时,经测试可直接传入中文,HttpClient会自动编码发给Server,应用时应根据实际效果决定传入前是否转码
      * @see 4)该方法会自动获取到响应消息头中[Content-Type:text/html; charset=GBK]的charset值作为响应报文的解码字符集
-     * @see   若响应消息头中无Content-Type属性,则会使用HttpClient内部默认的ISO-8859-1作为响应报文的解码字符集
+     * @see   若响应头中无Content-Type或charset属性，则会使用DEFAULT_CHARSET作为响应报文的解码字符集，否则以charset的值为准
      * @param requestURL 请求地址(含参数)
      * @return 远程主机响应正文
      */
@@ -207,9 +209,16 @@ public final class HttpUtil {
             HttpResponse response = httpClient.execute(new HttpGet(reqURL));
             HttpEntity entity = response.getEntity();
             if(null != entity){
-                //Charset respCharset=EntityUtils.getContentCharSet(entity)也可以获取响应编码,但从4.1.3开始不建议使用这种方式
-                Charset respCharset = ContentType.getOrDefault(entity).getCharset();
-                respData = EntityUtils.toString(entity, respCharset);
+                String decodeCharset;
+                ContentType respContentType = ContentType.get(entity);
+                if(null == respContentType){
+                    decodeCharset = DEFAULT_CHARSET;
+                }else if(null == respContentType.getCharset()){
+                    decodeCharset = DEFAULT_CHARSET;
+                }else{
+                    decodeCharset = respContentType.getCharset().displayName();
+                }
+                respData = EntityUtils.toString(entity, decodeCharset);
                 //Consume response content,主要用来关闭输入流的,对于远程返回内容不是流时,不需要执行此方法(这里只是演示)
                 EntityUtils.consume(entity);
             }
@@ -253,7 +262,7 @@ public final class HttpUtil {
      * @see 3)方法内设置了连接和读取超时(时间由本工具类全局变量限定),超时或发生其它异常将抛出RuntimeException
      * @see 4)请求参数含中文等特殊字符时,可直接传入本方法,方法内部会使用本工具类设置的全局DEFAULT_CHARSET对其转码
      * @see 5)该方法在解码响应报文时所采用的编码,取自响应消息头中的[Content-Type:text/html; charset=GBK]的charset值
-     * @see   若响应消息头中未指定Content-Type属性,则会使用HttpClient内部默认的ISO-8859-1
+     * @see   若响应头中无Content-Type或charset属性，则会使用DEFAULT_CHARSET作为响应报文的解码字符集，否则以charset的值为准
      * @param reqURL      请求地址
      * @param reqData     请求报文，无参数时传null即可，多个参数则应拼接为param11=value11&22=value22&33=value33的形式
      * @param contentType 设置请求头的contentType，传空则默认使用application/x-www-form-urlencoded; charset=UTF-8
@@ -281,7 +290,16 @@ public final class HttpUtil {
             HttpResponse response = httpClient.execute(httpPost);
             HttpEntity entity = response.getEntity();
             if(null != entity){
-                respData = EntityUtils.toString(entity, ContentType.getOrDefault(entity).getCharset());
+                String decodeCharset;
+                ContentType respContentType = ContentType.get(entity);
+                if(null == respContentType){
+                    decodeCharset = DEFAULT_CHARSET;
+                }else if(null == respContentType.getCharset()){
+                    decodeCharset = DEFAULT_CHARSET;
+                }else{
+                    decodeCharset = respContentType.getCharset().displayName();
+                }
+                respData = EntityUtils.toString(entity, decodeCharset);
             }
             LogUtil.getLogger().info("请求{}得到应答<<--[{}]", reqURL, respData);
             return respData;
@@ -304,7 +322,7 @@ public final class HttpUtil {
      * @see 3)方法内设置了连接和读取超时(时间由本工具类全局变量限定),超时或发生其它异常将抛出RuntimeException
      * @see 4)请求参数含中文等特殊字符时,可直接传入本方法,方法内部会使用本工具类设置的全局DEFAULT_CHARSET对其转码
      * @see 5)该方法在解码响应报文时所采用的编码,取自响应消息头中的[Content-Type:text/html; charset=GBK]的charset值
-     * @see   若响应消息头中未指定Content-Type属性,则会使用HttpClient内部默认的ISO-8859-1
+     * @see   若响应头中无Content-Type或charset属性，则会使用DEFAULT_CHARSET作为响应报文的解码字符集，否则以charset的值为准
      * @param reqURL      请求地址
      * @param reqData     请求报文，无参数时传null即可，多个参数则应拼接为param11=value11&22=value22&33=value33的形式
      * @param contentType 设置请求头的contentType，传空则默认使用application/x-www-form-urlencoded; charset=UTF-8
@@ -353,7 +371,16 @@ public final class HttpUtil {
             HttpResponse response = httpClient.execute(httpPost);
             HttpEntity entity = response.getEntity();
             if(null != entity){
-                respData = EntityUtils.toString(entity, ContentType.getOrDefault(entity).getCharset());
+                String decodeCharset;
+                ContentType respContentType = ContentType.get(entity);
+                if(null == respContentType){
+                    decodeCharset = DEFAULT_CHARSET;
+                }else if(null == respContentType.getCharset()){
+                    decodeCharset = DEFAULT_CHARSET;
+                }else{
+                    decodeCharset = respContentType.getCharset().displayName();
+                }
+                respData = EntityUtils.toString(entity, decodeCharset);
             }
             LogUtil.getLogger().info("请求{}得到应答<<--[{}]", reqURL, respData);
             return respData;
@@ -377,7 +404,7 @@ public final class HttpUtil {
      * @see 4)方法内设置了连接和读取超时(时间由本工具类全局变量限定),超时或发生其它异常将抛出RuntimeException
      * @see 5)请求参数含中文等特殊字符时,可直接传入本方法,方法内部会使用本工具类设置的全局DEFAULT_CHARSET对其转码
      * @see 6)该方法在解码响应报文时所采用的编码,取自响应消息头中的[Content-Type:text/html; charset=GBK]的charset值
-     * @see   若响应消息头中未指定Content-Type属性,则会使用HttpClient内部默认的ISO-8859-1
+     * @see   若响应头中无Content-Type或charset属性，则会使用DEFAULT_CHARSET作为响应报文的解码字符集，否则以charset的值为准
      * @param reqURL 请求地址
      * @param params 请求参数,无参数时传null即可
      * @return 远程主机响应正文
@@ -404,7 +431,16 @@ public final class HttpUtil {
             HttpResponse response = httpClient.execute(httpPost);
             HttpEntity entity = response.getEntity();
             if(null != entity){
-                respData = EntityUtils.toString(entity, ContentType.getOrDefault(entity).getCharset());
+                String decodeCharset;
+                ContentType respContentType = ContentType.get(entity);
+                if(null == respContentType){
+                    decodeCharset = DEFAULT_CHARSET;
+                }else if(null == respContentType.getCharset()){
+                    decodeCharset = DEFAULT_CHARSET;
+                }else{
+                    decodeCharset = respContentType.getCharset().displayName();
+                }
+                respData = EntityUtils.toString(entity, decodeCharset);
             }
             LogUtil.getLogger().info("请求{}得到应答<<--[{}]", reqURL, respData);
             return respData;
@@ -427,7 +463,7 @@ public final class HttpUtil {
      * @see 3)方法内设置了连接和读取超时(时间由本工具类全局变量限定),超时或发生其它异常将抛出RuntimeException
      * @see 4)请求参数含中文等特殊字符时,可直接传入本方法,方法内部会使用本工具类设置的全局DEFAULT_CHARSET对其转码
      * @see 5)该方法在解码响应报文时所采用的编码,取自响应消息头中的[Content-Type:text/html; charset=GBK]的charset值
-     * @see   若响应消息头中未指定Content-Type属性,则会使用HttpClient内部默认的ISO-8859-1
+     * @see   若响应头中无Content-Type或charset属性，则会使用DEFAULT_CHARSET作为响应报文的解码字符集，否则以charset的值为准
      * @param reqURL       请求地址
      * @param filename     待上传的文件名
      * @param is           待上传的文件流
@@ -458,7 +494,16 @@ public final class HttpUtil {
             HttpResponse response = httpClient.execute(httpPost);
             HttpEntity entity = response.getEntity();
             if(null != entity){
-                respData = EntityUtils.toString(entity, ContentType.getOrDefault(entity).getCharset());
+                String decodeCharset;
+                ContentType respContentType = ContentType.get(entity);
+                if(null == respContentType){
+                    decodeCharset = DEFAULT_CHARSET;
+                }else if(null == respContentType.getCharset()){
+                    decodeCharset = DEFAULT_CHARSET;
+                }else{
+                    decodeCharset = respContentType.getCharset().displayName();
+                }
+                respData = EntityUtils.toString(entity, decodeCharset);
             }
             LogUtil.getLogger().info("请求{}得到应答<<--[{}]", reqURL, respData);
             return respData;
@@ -478,14 +523,14 @@ public final class HttpUtil {
     /**
      * 发送下载文件的HTTP_POST请求
      * @see 1)该方法用来下载文件
-     * @see 2)该方法会自动关闭连接,释放资源
-     * @see 3)方法内设置了连接和读取超时(时间由本工具类全局变量限定),超时或发生其它异常将抛出RuntimeException
-     * @see 4)请求参数含中文等特殊字符时,可直接传入本方法,方法内部会使用本工具类设置的全局DEFAULT_CHARSET对其转码
+     * @see 2)该方法会自动关闭连接，释放资源
+     * @see 3)方法内设置了连接和读取超时（时间由本工具类全局变量限定），超时或发生其它异常将抛出RuntimeException
+     * @see 4)请求参数含中文等特殊字符时，可直接传入本方法，方法内部会使用本工具类设置的全局DEFAULT_CHARSET对其转码
      * @see 5)该方法在解码响应报文时所采用的编码,取自响应消息头中的[Content-Type:text/html; charset=GBK]的charset值
-     * @see   若响应消息头中未指定Content-Type属性,则会使用HttpClient内部默认的ISO-8859-1
+     * @see   若响应头中无Content-Type或charset属性，则会使用DEFAULT_CHARSET作为响应报文的解码字符集，否则以charset的值为准
      * @see 6)下载的文件会保存在java.io.tmpdir环境变量指定的目录中
-     * @see   CentOS6.5下是/tmp,CentOS6.5下的Tomcat中是/app/tomcat/temp,Win7下是C:\Users\Jadyer\AppData\Local\Temp\
-     * @see 7)下载的文件若比较大,可能导致程序假死或内存溢出,此时可考虑在本方法内部直接输出流
+     * @see   CentOS6.5下是/tmp，CentOS6.5下的Tomcat中是/app/tomcat/temp，Win7下是C:\Users\Jadyer\AppData\Local\Temp\
+     * @see 7)下载的文件若比较大，可能导致程序假死或内存溢出，此时可考虑在本方法内部直接输出流
      * @param reqURL 请求地址
      * @param params 请求参数,无参数时传null即可
      * @return 应答Map有两个key,isSuccess--yes or no,fullPath--isSuccess为yes时返回文件完整保存路径,failReason--isSuccess为no时返回下载失败的原因
@@ -514,8 +559,17 @@ public final class HttpUtil {
             entity = response.getEntity();
             if(null==entity || null==entity.getContentType() || (!entity.getContentType().getValue().startsWith(ContentType.APPLICATION_OCTET_STREAM.getMimeType())) && !entity.getContentType().getValue().contains("image/jpeg")){
                 //文件下载失败
+                String decodeCharset;
+                ContentType respContentType = ContentType.get(entity);
+                if(null == respContentType){
+                    decodeCharset = DEFAULT_CHARSET;
+                }else if(null == respContentType.getCharset()){
+                    decodeCharset = DEFAULT_CHARSET;
+                }else{
+                    decodeCharset = respContentType.getCharset().displayName();
+                }
+                resultMap.put("failReason", null==entity ? "" : EntityUtils.toString(entity, decodeCharset));
                 resultMap.put("isSuccess", "no");
-                resultMap.put("failReason", null==entity ? "" : EntityUtils.toString(entity, ContentType.getOrDefault(entity).getCharset()));
             }else{
                 //文件下载成功
                 //respData = IOUtils.toByteArray(entity.getContent());
@@ -544,8 +598,8 @@ public final class HttpUtil {
                 }
                 File _file = new File(System.getProperty("java.io.tmpdir") + "/" + filename);
                 FileUtils.copyInputStreamToFile(entity.getContent(), _file);
-                resultMap.put("isSuccess", "yes");
                 resultMap.put("fullPath", _file.getCanonicalPath());
+                resultMap.put("isSuccess", "yes");
             }
             LogUtil.getLogger().info("请求{}得到应答<<--{}", reqURL, JadyerUtil.buildStringFromMap(resultMap));
             return resultMap;
@@ -1033,6 +1087,9 @@ public final class HttpUtil {
     }
 
 
+    /**
+     * HTTPS协议支持
+     */
     private static HttpClient addTLSSupport(HttpClient httpClient) throws Exception {
         //创建TrustManager(),用于解决javax.net.ssl.SSLPeerUnverifiedException: peer not authenticated
         X509TrustManager trustManager = new X509TrustManager(){
