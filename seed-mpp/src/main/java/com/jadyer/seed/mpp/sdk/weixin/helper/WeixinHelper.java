@@ -492,7 +492,7 @@ public final class WeixinHelper {
         Map<String, String> reqDataMap = BeanUtil.beanToMap(reqData);
         reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())).toUpperCase());
         //发送请求
-        String respXml = HttpUtil.postWithP12(WeixinConstants.URL_WEIXIN_PAY_REFUND, XmlUtil.mapToXml(reqDataMap), null, filepath, WeixinTokenHolder.getWeixinMchkey(reqData.getAppid()));
+        String respXml = HttpUtil.postWithP12(WeixinConstants.URL_WEIXIN_PAY_REFUND, XmlUtil.mapToXml(reqDataMap), null, filepath, WeixinTokenHolder.getWeixinMchid(reqData.getAppid()));
         //解析返回的xml字符串（交易是否成功、验签）
         Map<String, String> respXmlMap = XmlUtil.xmlToMap(respXml);
         payVerifyIfSuccess(respXmlMap);
@@ -594,7 +594,7 @@ public final class WeixinHelper {
         Map<String, String> reqDataMap = BeanUtil.beanToMap(reqData);
         reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", "MD5", WeixinTokenHolder.getWeixinMchkey(reqData.getWxappid())).toUpperCase());
         //发送请求
-        String respXml = HttpUtil.postWithP12(WeixinConstants.URL_WEIXIN_REDPACK_SEND, XmlUtil.mapToXml(reqDataMap), null, filepath, WeixinTokenHolder.getWeixinMchkey(reqData.getWxappid()));
+        String respXml = HttpUtil.postWithP12(WeixinConstants.URL_WEIXIN_REDPACK_SEND, XmlUtil.mapToXml(reqDataMap), null, filepath, WeixinTokenHolder.getWeixinMchid(reqData.getWxappid()));
         //解析返回的xml字符串（交易是否成功、验签）
         Map<String, String> respXmlMap = XmlUtil.xmlToMap(respXml);
         payVerifyIfSuccess(respXmlMap);
@@ -608,7 +608,7 @@ public final class WeixinHelper {
 
 
     /**
-     * 微信红包--发放普通红包
+     * 微信红包--查询红包记录
      * <p>
      *     该方法会判断接口返回报文中的状态是否成功，并验签（验签失败则直接抛RuntimeException）
      * </p>
@@ -619,7 +619,7 @@ public final class WeixinHelper {
         Map<String, String> reqDataMap = BeanUtil.beanToMap(reqData);
         reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", "MD5", WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())).toUpperCase());
         //发送请求
-        String respXml = HttpUtil.postWithP12(WeixinConstants.URL_WEIXIN_REDPACK_GETHBINFO, XmlUtil.mapToXml(reqDataMap), null, filepath, WeixinTokenHolder.getWeixinMchkey(reqData.getAppid()));
+        String respXml = HttpUtil.postWithP12(WeixinConstants.URL_WEIXIN_REDPACK_GETHBINFO, XmlUtil.mapToXml(reqDataMap), null, filepath, WeixinTokenHolder.getWeixinMchid(reqData.getAppid()));
         //解析返回的xml字符串（交易是否成功、验签）
         Map<String, String> respXmlMap = XmlUtil.xmlToMap(respXml);
         payVerifyIfSuccess(respXmlMap);
