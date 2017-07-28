@@ -212,7 +212,7 @@ public class WeixinHelperController {
         Map<String, String> dataMap = XmlUtil.xmlToMap(reqData);
         //验证交易是否成功、验签
         WeixinHelper.payVerifyIfSuccess(dataMap);
-        WeixinHelper.payVerifySign(dataMap);
+        WeixinHelper.payVerifySign(dataMap, dataMap.get("appid"));
         //校验金额
         if(!StringUtils.equals("数据库查到的商户订单金额", dataMap.get("total_fee"))){
             throw new IllegalArgumentException("微信公众号支付后台通知金额与商户订单金额不符");

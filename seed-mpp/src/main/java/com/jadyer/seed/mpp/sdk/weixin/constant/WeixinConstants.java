@@ -73,4 +73,8 @@ public interface WeixinConstants {
     String URL_WEIXIN_PAY_REFUNDQUERY        = "https://api.mch.weixin.qq.com/pay/refundquery";
     //微信支付--公众号支付--下载对账单
     String URL_WEIXIN_PAY_DOWNLOADBILL       = "https://api.mch.weixin.qq.com/pay/downloadbill";
+    //微信红包--发放普通红包
+    String URL_WEIXIN_REDPACK_SEND           = "https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack";
+    //微信红包--查询红包记录
+    String URL_WEIXIN_REDPACK_GETHBINFO      = "https://api.mch.weixin.qq.com/mmpaymkttransfers/gethbinfo";
 }

@@ -55,6 +55,45 @@ public final class XmlUtil {
                     dataMap.put(node.getNodeName(), node.getTextContent());
                 }
             }
+            /*
+            <xml>
+                <return_code><![CDATA[SUCCESS]]></return_code>
+                <hblist>
+                    <hbinfo>
+                        <openid><![CDATA[oHkLxtzmyHXX6FW_cAWo_orTSRXs]]></openid>
+                        <amount>100</amount>
+                        <rcv_time><![CDATA[2016-08-08 21:49:46]]></rcv_time>
+                    </hbinfo>
+                    <hbinfo>
+                        <openid><![CDATA[oHkLxtzmyHXX6FW_cAWo_abCDEFg]]></openid>
+                        <amount>200</amount>
+                        <rcv_time><![CDATA[2017-07-28 14:30:00]]></rcv_time>
+                    </hbinfo>
+                </hblist>
+            </xml>
+            //获取所有hbinfo节点的集合，并遍历之
+            NodeList hbinfoList = document.getElementsByTagName("hbinfo");
+            for(int i=0; i<hbinfoList.getLength(); i++){
+                //获取一个hbinfo节点
+                Node hbinfo = hbinfoList.item(i);
+                //获取hbinfo节点的所有属性集合
+                NamedNodeMap attrs = hbinfo.getAttributes();
+                //遍历hbinfo节点的属性
+                for(int j=0; i<attrs.getLength(); j++){
+                    //获取hbinfo节点的某一个属性
+                    Node attr = attrs.item(j);
+                    System.out.println("属性名==" + attr.getNodeName() + "，属性值==" + attr.getNodeValue());
+                }
+                //获取hbinfo节点的所有子节点，并遍历之
+                NodeList childNodes = hbinfo.getChildNodes();
+                for(int k=0; k<childNodes.getLength(); k++){
+                    //区分出text类型的node以及element类型的node
+                    if(childNodes.item(k).getNodeType() == Node.ELEMENT_NODE){
+                        System.out.println("子节点属性名==" + childNodes.item(k).getNodeName() + "，子节点属性值==" + childNodes.item(k).getTextContent());
+                    }
+                }
+            }
+            */
         }catch(Exception e){
             LogUtil.getLogger().error("xml字符串转Map时发生异常，堆栈轨迹如下", e);
         }

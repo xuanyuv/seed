@@ -2,15 +2,87 @@ package com.jadyer.seed.test;
 
 import com.alibaba.fastjson.JSON;
 import com.jadyer.seed.comm.util.HttpUtil;
+import com.jadyer.seed.comm.util.JadyerUtil;
+import com.jadyer.seed.comm.util.XmlUtil;
 import com.jadyer.seed.mpp.sdk.qq.helper.QQHelper;
 import com.jadyer.seed.mpp.sdk.qq.model.custom.QQCustomTextMsg;
 import com.jadyer.seed.mpp.sdk.qq.model.template.QQTemplateMsg;
 import com.jadyer.seed.mpp.sdk.weixin.model.template.WeixinTemplateMsg;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.junit.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 public class MppTest {
+    @Test
+    public void weixinDemo() throws Exception {
+        String respXml = "<xml>\n" +
+                "<return_code><![CDATA[SUCCESS]]></return_code>\n" +
+                "<return_msg><![CDATA[OK]]></return_msg>\n" +
+                "<result_code><![CDATA[SUCCESS]]></result_code>\n" +
+                "<err_code><![CDATA[SUCCESS]]></err_code>\n" +
+                "<err_code_des><![CDATA[OK]]></err_code_des>\n" +
+                "<mch_billno><![CDATA[9010080799701411170000046603]]></mch_billno>\n" +
+                "<mch_id><![CDATA[11475856]]></mch_id>\n" +
+                "<detail_id><![CDATA[10000417012016080830956240040]]></detail_id>\n" +
+                "<status><![CDATA[RECEIVED]]></status>\n" +
+                "<send_type><![CDATA[ACTIVITY]]></send_type>\n" +
+                "<hb_type><![CDATA[NORMAL]]></hb_type>\n" +
+                "<total_num>1</total_num>\n" +
+                "<total_amount>100</total_amount>\n" +
+                "<send_time><![CDATA[2016-08-08 21:49:22]]></send_time>\n" +
+                "<hblist>\n" +
+                "<hbinfo>\n" +
+                "<openid><![CDATA[oHkLxtzmyHXX6FW_cAWo_orTSRXs]]></openid>\n" +
+                "<amount>100</amount>\n" +
+                "<rcv_time><![CDATA[2016-08-08 21:49:46]]></rcv_time>\n" +
+                "</hbinfo>\n" +
+                "<hbinfo>\n" +
+                "<openid><![CDATA[oHkLxtzmyHXX6FW_cAWo_orTSRXs___999]]></openid>\n" +
+                "<amount>100</amount>\n" +
+                "<rcv_time><![CDATA[2016-08-08 21:49:46]]></rcv_time>\n" +
+                "</hbinfo>\n" +
+                "</hblist>\n" +
+                "</xml>";
+        Map<String, String> respXmlMap = XmlUtil.xmlToMap(respXml);
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document document = documentBuilder.parse(IOUtils.toInputStream(respXml, StandardCharsets.UTF_8));
+        //获取所有hbinfo节点的集合，并遍历之
+        NodeList hbinfoList = document.getElementsByTagName("hbinfo");
+        for(int i=0; i<hbinfoList.getLength(); i++){
+            //获取一个hbinfo节点
+            Node hbinfo = hbinfoList.item(i);
+            //获取hbinfo节点的所有属性集合
+            NamedNodeMap attrs = hbinfo.getAttributes();
+            //遍历hbinfo节点的属性
+            for(int j=0; i<attrs.getLength(); j++){
+                //获取hbinfo节点的某一个属性
+                Node attr = attrs.item(j);
+                System.out.println("属性名==" + attr.getNodeName() + "，属性值==" + attr.getNodeValue());
+            }
+            //获取hbinfo节点的所有子节点，并遍历之
+            NodeList childNodes = hbinfo.getChildNodes();
+            for(int k=0; k<childNodes.getLength(); k++){
+                //区分出text类型的node以及element类型的node
+                if(childNodes.item(k).getNodeType() == Node.ELEMENT_NODE){
+                    System.out.println("子节点属性名==" + childNodes.item(k).getNodeName() + "，子节点属性值==" + childNodes.item(k).getTextContent());
+                }
+            }
+        }
+        System.out.println(JadyerUtil.buildStringFromMap(respXmlMap));
+    }
+
+
     /**
      * 模拟粉丝发消息给QQ公众号后，QQ服务器推消息给开发者服务器
      */
