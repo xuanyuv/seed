@@ -599,7 +599,6 @@ public final class WeixinHelper {
         Map<String, String> respXmlMap = XmlUtil.xmlToMap(respXml);
         payVerifyIfSuccess(respXmlMap);
         payVerifySign(respXmlMap, reqData.getWxappid());
-
         //返回（注意处理多张代金券）
         WeixinRedpackSendRespData respData = BeanUtil.mapTobean(respXmlMap, WeixinRedpackSendRespData.class);
         LogUtil.getLogger().info("微信红包--发放普通红包接口出参为{}", ReflectionToStringBuilder.toString(respData, ToStringStyle.MULTI_LINE_STYLE));
