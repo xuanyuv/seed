@@ -619,7 +619,7 @@ public final class WeixinHelper {
         Map<String, String> reqDataMap = BeanUtil.beanToMap(reqData);
         reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", "MD5", WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())).toUpperCase());
         //发送请求
-        String respXml = HttpUtil.postWithP12(WeixinConstants.URL_WEIXIN_REDPACK_SEND, XmlUtil.mapToXml(reqDataMap), null, filepath, WeixinTokenHolder.getWeixinMchkey(reqData.getAppid()));
+        String respXml = HttpUtil.postWithP12(WeixinConstants.URL_WEIXIN_REDPACK_GETHBINFO, XmlUtil.mapToXml(reqDataMap), null, filepath, WeixinTokenHolder.getWeixinMchkey(reqData.getAppid()));
         //解析返回的xml字符串（交易是否成功、验签）
         Map<String, String> respXmlMap = XmlUtil.xmlToMap(respXml);
         payVerifyIfSuccess(respXmlMap);
