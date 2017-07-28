@@ -31,6 +31,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
 
 import javax.net.ssl.SSLContext;
@@ -153,7 +154,8 @@ import java.util.Map;
  *     }
  * }
  * -----------------------------------------------------------------------------------------------------------
- * @version v2.7
+ * @version v2.8
+ * @history v2.8-->增加微信支付退款和微信红包接口所需的postWithP12()方法
  * @history v2.7-->抽象出公共的HTTPS支持的设置，加入到httpclient实现的各个方法中，并更名postTSL()为post()
  * @history v2.6-->修复部分细节，增加入参出参的日志打印
  * @history v2.5-->修复<code>postWithUpload()</code>方法的<code>Map<String, String> params</code>参数传入null时无法上传文件的BUG
@@ -1065,9 +1067,70 @@ public final class HttpUtil {
 
 
     /**
-     * <p>
-     *     注意：目前支持.p12文件
-     * </p>
+     * 接入微信支付退款和微信红包接口，需要使用证书提交请求，故编写此方法
+     * <ul>
+     *     <li>亲测：post()提交请求时，微信服务器会报告异常：“java.lang.RuntimeException: 证书出错，请登录微信支付商户平台下载证书”</li>
+     *     <li>另外也试过“java InstallCert api.mch.weixin.qq.com”，仍然会报告：“PKIX path building failed”</li>
+     *     <li>所以：要使用postWithP12()，它内部会调用该方法实现证书的发送，目前该方法支持.p12文件</li>
+     *     <li>微信提供了通过证书提交请求的demo：https://pay.weixin.qq.com/wiki/doc/api/download/cert.zip，下面是实际的代码</li>
+     *     <li>
+     *         package httpstest;
+     *         import java.io.BufferedReader;
+     *         import java.io.File;
+     *         import java.io.FileInputStream;
+     *         import java.io.InputStreamReader;
+     *         import java.security.KeyStore;
+     *         import javax.net.ssl.SSLContext;
+     *         import org.apache.http.HttpEntity;
+     *         import org.apache.http.client.methods.CloseableHttpResponse;
+     *         import org.apache.http.client.methods.HttpGet;
+     *         import org.apache.http.conn.ssl.SSLContexts;
+     *         import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+     *         import org.apache.http.impl.client.CloseableHttpClient;
+     *         import org.apache.http.impl.client.HttpClients;
+     *         import org.apache.http.util.EntityUtils;
+     *         //This example demonstrates how to create secure connections with a custom SSLcontext.
+     *         public class ClientCustomSSL {
+     *             public final static void main(String[] args) throws Exception {
+     *                 KeyStore keyStore  = KeyStore.getInstance("PKCS12");
+     *                 FileInputStream instream = new FileInputStream(new File("D:/10016225.p12"));
+     *                 try {
+     *                     keyStore.load(instream, "10016225".toCharArray());
+     *                 } finally {
+     *                     instream.close();
+     *                 }
+     *                 // Trust own CA and all self-signed certs
+     *                 SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore, "10016225".toCharArray()).build();
+     *                 // Allow TLSv1 protocol only
+     *                 SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, new String[] { "TLSv1" }, null, SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
+     *                 CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(sslsf).build();
+     *                 try {
+     *                     HttpGet httpget = new HttpGet("https://api.mch.weixin.qq.com/secapi/pay/refund");
+     *                     System.out.println("executing request" + httpget.getRequestLine());
+     *                     CloseableHttpResponse response = httpclient.execute(httpget);
+     *                     try {
+     *                         HttpEntity entity = response.getEntity();
+     *                         System.out.println("----------------------------------------");
+     *                         System.out.println(response.getStatusLine());
+     *                         if (entity != null) {
+     *                             System.out.println("Response content length: " + entity.getContentLength());
+     *                             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(entity.getContent()));
+     *                             String text;
+     *                             while ((text = bufferedReader.readLine()) != null) {
+     *                                 System.out.println(text);
+     *                             }
+     *                         }
+     *                         EntityUtils.consume(entity);
+     *                     } finally {
+     *                         response.close();
+     *                     }
+     *                 } finally {
+     *                     httpclient.close();
+     *                 }
+     *             }
+     *         }
+     *     </li>
+     * </ul>
      * @param filepath 证书文件路径
      * @param password 证书密码
      */
@@ -1080,12 +1143,11 @@ public final class HttpUtil {
         } finally {
             IOUtils.closeQuietly(fis);
         }
-        //// Trust own CA and all self-signed certs
-        //SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore, "10016225".toCharArray()).build();
+        // Trust own CA and all self-signed certs
+        SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore, password.toCharArray()).build();
         //// Allow TLSv1 protocol only
         //SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, new String[]{"TLSv1"}, null, SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
-        //CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(sslsf).build();
-        SSLSocketFactory socketFactory = new SSLSocketFactory(keyStore);
+        SSLSocketFactory socketFactory = new SSLSocketFactory(sslcontext);
         httpClient.getConnectionManager().getSchemeRegistry().register(new Scheme("https", 443, socketFactory));
         return httpClient;
     }
