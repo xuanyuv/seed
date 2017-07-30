@@ -43,6 +43,7 @@ public class AppidAsync {
             }
         } catch (Exception e) {
             LogUtil.getLogger().error("登记appid时发生异常，堆栈轨迹如下", e);
+            System.exit(1);
         }
     }
 }
