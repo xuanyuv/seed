@@ -266,7 +266,7 @@ public final class HttpUtil {
      * @param reqURL      请求地址
      * @param reqData     请求报文，无参数时传null即可，多个参数则应拼接为param11=value11&22=value22&33=value33的形式
      * @param contentType 设置请求头的contentType，传空则默认使用application/x-www-form-urlencoded; charset=UTF-8
-     * @param filepath    证书文件路径
+     * @param filepath    证书文件路径（含文件名），比如：/app/p12/apiclient_cert.p12
      * @param password    证书密码
      * @return 远程主机响应正文
      */

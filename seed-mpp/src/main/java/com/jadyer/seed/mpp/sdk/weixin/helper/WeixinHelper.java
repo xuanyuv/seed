@@ -485,7 +485,7 @@ public final class WeixinHelper {
      * <p>
      *     该方法会判断接口返回报文中的状态是否成功，并验签（验签失败则直接抛RuntimeException）
      * </p>
-     * @param filepath 证书文件路径
+     * @param filepath 证书文件路径（含文件名），比如：/app/p12/apiclient_cert.p12
      */
     public static WeixinPayRefundRespData payRefund(WeixinPayRefundReqData reqData, String filepath){
         LogUtil.getLogger().info("微信支付--公众号支付--申请退款接口入参为{}", ReflectionToStringBuilder.toString(reqData, ToStringStyle.MULTI_LINE_STYLE));
@@ -587,7 +587,7 @@ public final class WeixinHelper {
      * <p>
      *     该方法会判断接口返回报文中的状态是否成功，并验签（验签失败则直接抛RuntimeException）
      * </p>
-     * @param filepath 证书文件路径
+     * @param filepath 证书文件路径（含文件名），比如：/app/p12/apiclient_cert.p12
      */
     public static WeixinRedpackSendRespData redpackSend(WeixinRedpackSendReqData reqData, String filepath){
         LogUtil.getLogger().info("微信红包--发放普通红包接口入参为{}", ReflectionToStringBuilder.toString(reqData, ToStringStyle.MULTI_LINE_STYLE));
@@ -611,7 +611,7 @@ public final class WeixinHelper {
      * <p>
      *     该方法会判断接口返回报文中的状态是否成功，并验签（验签失败则直接抛RuntimeException）
      * </p>
-     * @param filepath 证书文件路径
+     * @param filepath 证书文件路径（含文件名），比如：/app/p12/apiclient_cert.p12
      */
     public static WeixinRedpackGethbinfoRespData redpackGethbinfo(WeixinRedpackGethbinfoReqData reqData, String filepath){
         LogUtil.getLogger().info("微信红包--查询红包记录接口入参为{}", ReflectionToStringBuilder.toString(reqData, ToStringStyle.MULTI_LINE_STYLE));
