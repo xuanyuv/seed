@@ -43,7 +43,7 @@ public class WeixinRedpackGethbinfoRespData extends WeixinRedpackRespData {
     /** 红包个数 */
     private int total_num;
 
-    /** 红包总金额（单位分） */
+    /** 红包总金额（单位：分） */
     private int total_amount;
 
     /** 发送失败原因 */
@@ -52,7 +52,7 @@ public class WeixinRedpackGethbinfoRespData extends WeixinRedpackRespData {
     /** 红包发送时间，格式：2015-04-21 20:00:00 */
     private String send_time;
 
-    /** 红包的退款时间（如果其未领取的退款），格式：2015-04-21 23:03:00） */
+    /** 红包的退款时间（如果其未领取的退款），格式：2015-04-21 23:03:00 */
     private String refund_time;
 
     /** 红包退款金额 */
