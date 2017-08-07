@@ -30,7 +30,12 @@ public class WeixinRedpackSendReqData extends WeixinRedpackReqData {
     /** 调用接口的机器Ip地址 */
     private String client_ip;
 
-    /** 活动名称（最长32个字符） */
+    /**
+     * 活动名称（最长32个字符）
+     * <p>
+     *     注意：实际测试发现该值必传，否则会提示“参数错误:act_name字段必填,并且少于32个字符.”（即便是通过API发送红包）
+     * </p>
+     */
     private String act_name;
 
     /** 备注（最长256个字符） */

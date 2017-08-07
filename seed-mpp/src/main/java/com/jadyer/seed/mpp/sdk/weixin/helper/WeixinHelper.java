@@ -358,26 +358,29 @@ public final class WeixinHelper {
      * Created by 玄玉<http://jadyer.cn/> on 2017/7/8 18:50.
      */
     public static void payVerifySign(Map<String, String> dataMap, String appid){
-        String sign_calc;
-        if(StringUtils.isBlank(dataMap.get("sign_type"))){
-            sign_calc = CodecUtil.buildHexSign(dataMap, "UTF-8", "MD5", WeixinTokenHolder.getWeixinMchkey(appid));
-            if(!StringUtils.equals(dataMap.get("sign"), sign_calc.toUpperCase())){
-                sign_calc = CodecUtil.buildHmacSign(dataMap, WeixinTokenHolder.getWeixinMchkey(appid), "HmacSHA256");
+        //注意：微信红包--发放普通红包--接口返回的xml没有sign
+        if(dataMap.containsKey("sign")){
+            String sign_calc;
+            if(StringUtils.isBlank(dataMap.get("sign_type"))){
+                sign_calc = CodecUtil.buildHexSign(dataMap, "UTF-8", "MD5", WeixinTokenHolder.getWeixinMchkey(appid));
+                if(!StringUtils.equals(dataMap.get("sign"), sign_calc.toUpperCase())){
+                    sign_calc = CodecUtil.buildHmacSign(dataMap, WeixinTokenHolder.getWeixinMchkey(appid), "HmacSHA256");
+                    if(!StringUtils.equals(dataMap.get("sign"), sign_calc.toUpperCase())){
+                        throw new IllegalArgumentException("验签未通过");
+                    }
+                }
+            }else{
+                String sign_type = dataMap.get("sign_type");
+                if(StringUtils.equals("MD5", sign_type)){
+                    sign_calc = CodecUtil.buildHexSign(dataMap, "UTF-8", sign_type, WeixinTokenHolder.getWeixinMchkey(appid));
+                }else if(StringUtils.equals("HMAC-SHA256", sign_type)){
+                    sign_calc = CodecUtil.buildHmacSign(dataMap, WeixinTokenHolder.getWeixinMchkey(appid), "HmacSHA256");
+                }else{
+                    throw new IllegalArgumentException("不支持的签名算法");
+                }
                 if(!StringUtils.equals(dataMap.get("sign"), sign_calc.toUpperCase())){
                     throw new IllegalArgumentException("验签未通过");
                 }
-            }
-        }else{
-            String sign_type = dataMap.get("sign_type");
-            if(StringUtils.equals("MD5", sign_type)){
-                sign_calc = CodecUtil.buildHexSign(dataMap, "UTF-8", sign_type, WeixinTokenHolder.getWeixinMchkey(appid));
-            }else if(StringUtils.equals("HMAC-SHA256", sign_type)){
-                sign_calc = CodecUtil.buildHmacSign(dataMap, WeixinTokenHolder.getWeixinMchkey(appid), "HmacSHA256");
-            }else{
-                throw new IllegalArgumentException("不支持的签名算法");
-            }
-            if(!StringUtils.equals(dataMap.get("sign"), sign_calc.toUpperCase())){
-                throw new IllegalArgumentException("验签未通过");
             }
         }
     }
