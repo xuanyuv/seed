@@ -358,7 +358,7 @@ public final class WeixinHelper {
      * Created by 玄玉<http://jadyer.cn/> on 2017/7/8 18:50.
      */
     public static void payVerifySign(Map<String, String> dataMap, String appid){
-        //注意：微信红包--发放普通红包--接口返回的xml没有sign
+        //注意：微信红包--发放普通红包和查询红包记录--两个接口返回的<xml>都没有<sign>标签
         if(dataMap.containsKey("sign")){
             String sign_calc;
             if(StringUtils.isBlank(dataMap.get("sign_type"))){
