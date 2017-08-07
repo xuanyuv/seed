@@ -17,7 +17,12 @@ public class WeixinRedpackSendRespData extends WeixinRedpackRespData {
     /** 付款金额，单位：分 */
     private int total_amount;
 
-    /** 红包订单的微信单号 */
+    /**
+     * 红包订单的微信单号
+     * <p>
+     *     实测：发送单个普通红包时（非裂变红包），该值与WeixinRedpackGethbinfoRespData#detail_id属性相同
+     * </p>
+     */
     private String send_listid;
 
     public String getWxappid() {
