@@ -15,7 +15,8 @@ import java.util.Map;
 
 /**
  * Bean工具类
- * @version v1.2
+ * @version v1.3
+ * @history v1.3-->mapTobean()方法增加除String外的int和long类型支持
  * @history v1.2-->增加mapTobean()方法
  * @history v1.1-->增加beanToMap()方法
  * @history v1.0-->初建
