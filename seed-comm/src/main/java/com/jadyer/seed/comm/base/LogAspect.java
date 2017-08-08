@@ -98,7 +98,9 @@ public class LogAspect {
         if(null!=respData && respData.getClass().isAssignableFrom(ResponseEntity.class)){
             returnInfo = "ResponseEntity";
         }else{
-            returnInfo = JSON.toJSONStringWithDateFormat(respData, JSON.DEFFAULT_DATE_FORMAT, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero, SerializerFeature.WriteNullListAsEmpty, SerializerFeature.WriteNullBooleanAsFalse);
+            //出参就不再格式化输出了，因为通常接口返回的都是实体类，类属性很多，很占面积，影响查日志
+            //returnInfo = JSON.toJSONStringWithDateFormat(respData, JSON.DEFFAULT_DATE_FORMAT, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero, SerializerFeature.WriteNullListAsEmpty, SerializerFeature.WriteNullBooleanAsFalse);
+            returnInfo = JSON.toJSONStringWithDateFormat(respData, JSON.DEFFAULT_DATE_FORMAT, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero, SerializerFeature.WriteNullListAsEmpty, SerializerFeature.WriteNullBooleanAsFalse);
         }
         LogUtil.getLogger().info("{}()-->{}被调用，出参为[{}]，Duration[{}]ms", methodInfo, request.getRequestURI(), returnInfo, endTime-startTime);
         LogUtil.getLogger().info("---------------------------------------------------------------------------------------------");
