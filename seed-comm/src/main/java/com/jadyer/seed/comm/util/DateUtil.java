@@ -5,16 +5,19 @@ import org.apache.commons.lang3.time.DateUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 日期工具类
- * ----------------------------------------------------------------------
- * @version v1.1
+ * ----------------------------------------------------------------------------------------------------------------
+ * @version v1.2
+ * @version v1.2-->增加getCrossDayList()方法，用于获取两个日期之间的所有日期列表
  * @history v1.1-->增加根据日期获得星期的方法getWeekName()
  * @history v1.0-->新建不添加若干方法
- * ----------------------------------------------------------------------
+ * ----------------------------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.github.io/> on 2017/5/19 11:05.
  */
 public final class DateUtil {
@@ -185,5 +188,38 @@ public final class DateUtil {
             weekNameIndex = 0;
         }
         return weekNames[weekNameIndex];
+    }
+
+
+    /**
+     * 获取两个日期之间的所有日期列表
+     * @param startDate 起始日期，格式为yyyyMMdd
+     * @param  endDate  结束日期，格式为yyyyMMdd
+     * @return 返回值不包含起始日期和结束日期
+     */
+    public static List<Integer> getCrossDayList(String startDate, String endDate){
+        List<Integer> dayList = new ArrayList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        Calendar startDay = Calendar.getInstance();
+        Calendar endDay = Calendar.getInstance();
+        try {
+            startDay.setTime(sdf.parse(startDate));
+            endDay.setTime(sdf.parse(endDate));
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("无效入参：" + e.getMessage());
+        }
+        //起始日期大于等于结束日期，则返回空列表
+        if(startDay.compareTo(endDay) >= 0){
+            return dayList;
+        }
+        while(true){
+            //日期+1，并判断是否到达了结束日
+            startDay.add(Calendar.DATE, 1);
+            if(startDay.compareTo(endDay) == 0){
+                break;
+            }
+            dayList.add(Integer.parseInt(DateFormatUtils.format(startDay.getTime(), "yyyyMMdd")));
+        }
+        return dayList;
     }
 }
