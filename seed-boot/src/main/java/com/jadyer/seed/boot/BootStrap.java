@@ -52,10 +52,12 @@ import javax.servlet.Filter;
  *   另外，http://127.0.0.1/shutdown支持POST，但不支持GET请求
  *   它在收到请求，关闭应用时，本例中的SpringContextHolder.clearHolder()方法会被调用
  *   并返回该字符串给调用方（包括小括号）：{"message":"Shutting down, bye..."}
+ *   需要注意的是：该功能需要配置management.security.enabled=false来关闭安全认证校验
  * 5.http://127.0.0.1/loggers/日志端点/新的日志级别
  *   可以动态修改日志级别，示例代码见{@link com.jadyer.seed.controller.DemoController#loglevel(String, String)}
  *   并且，GET请求“http://127.0.0.1/loggers/日志端点”还可以查看其当前的日志级别
  *   需要注意的是：该功能需要配置management.security.enabled=false来关闭安全认证校验
+ * 并且：除了“/health”和”/info”以外，其它actuator监控都需要配置management.security.enabled=false
  * 另外：可以通过spring-boot-admin实现应用监控，相关示例见https://my.oschina.net/u/1266221/blog/805596
  * -----------------------------------------------------------------------------------------------------------
  * 条件注解
