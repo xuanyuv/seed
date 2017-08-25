@@ -74,6 +74,9 @@ public final class BeanUtil {
      *     另外，这里自己写的反射获取Setter有点复杂了好像，可以参考上面的requestToBean()方法<br>
      *     以后真正用的时候再改，今天没心情......
      * </p>
+     * <ul>
+     *     <li>注意：实际使用发现，属性值为Long类型时无法拷贝，属性值为long类型时可以拷贝</li>
+     * </ul>
      */
     public static <T, E> void copyProperties(T source, E target){
         //采用Cglib实现

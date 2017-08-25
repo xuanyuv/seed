@@ -1,6 +1,7 @@
 package com.jadyer.seed.test;
 
 import com.jadyer.seed.comm.util.CodecUtil;
+import com.jadyer.seed.comm.util.DateUtil;
 import com.jadyer.seed.comm.util.FtpUtil;
 import com.jadyer.seed.comm.util.HttpUtil;
 import com.jadyer.seed.comm.util.ImageUtil;
@@ -14,6 +15,7 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.validator.constraints.NotBlank;
 import org.junit.Assert;
 import org.junit.Test;
@@ -26,6 +28,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -238,6 +241,15 @@ public class UtilTest {
     public void ftpUtilForDeleteFileViaSFTPTest(){
         String remoteURL = "/upload/test/sf/20151022151451.exe";
         Assert.assertTrue("文件不存在", FtpUtil.deleteFileAndLogoutViaSFTP("192.168.2.41", 22, "yizhifu", "YMQwcUZh2LvhmR87d7tjmqoRbj6ST1", remoteURL));
+    }
+
+
+    @Test
+    public void dateUtilTest() throws ParseException {
+        Date begin = DateUtils.parseDate("20170808000800", "yyyyMMddHHmmss");
+        Date end = DateUtils.parseDate("20170818000800", "yyyyMMddHHmmss");
+        System.out.println(DateUtil.getDistanceTime(begin, end));
+        System.out.println(DateUtil.getDistanceDay(begin, end));
     }
 
 

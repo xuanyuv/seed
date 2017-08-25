@@ -99,6 +99,7 @@ public class MppReplyService {
     /**
      * saveOrUpdate关键字
      */
+    @Transactional(rollbackFor=Exception.class)
     public MppReplyInfo upsertKeyword(MppReplyInfo mppReplyInfo){
         return mppReplyInfoRepository.saveAndFlush(mppReplyInfo);
     }

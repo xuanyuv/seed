@@ -13,7 +13,8 @@ import java.util.List;
 /**
  * 日期工具类
  * ----------------------------------------------------------------------------------------------------------------
- * @version v1.2
+ * @version v1.3
+ * @version v1.3-->增加getDistanceDay()方法，用於計算兩個日期相隔的天數
  * @version v1.2-->增加getCrossDayList()方法，用于获取两个日期之间的所有日期列表
  * @history v1.1-->增加根据日期获得星期的方法getWeekName()
  * @history v1.0-->新建不添加若干方法
@@ -140,6 +141,31 @@ public final class DateUtil {
         long minute = ((time / (60 * 1000)) - day * 24 * 60 - hour * 60);
         long second = (time / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - minute * 60);
         return day + "天" + hour + "小时" + minute + "分" + second + "秒";
+    }
+
+
+    /**
+     * 计算两个日期的相隔的天數
+     * <ul>
+     *     關於相隔和相差（getDistanceTime()）
+     *     <li>开始日期20170824235959，结束日期20170825000000，差一秒，但其相差天數==0，相隔天數==1</li>
+     *     <li>开始日期20170824110000，结束日期20170825105959，差一秒，但其相差天數==0，相隔天數==1</li>
+     *     <li>开始日期20170824110000，结束日期20170825110000，相同，但其相差天數==1，相隔天數==1</li>
+     * </ul>
+     * @param begin 起始日期
+     * @param end   终止日期
+     * @return 相隔的天數
+     */
+    public static long getDistanceDay(Date begin, Date end) {
+        String pattern = "yyyyMMdd";
+        try {
+            begin = DateUtils.parseDate(DateFormatUtils.format(begin, pattern), pattern);
+            end = DateUtils.parseDate(DateFormatUtils.format(end, pattern), pattern);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long time = end.getTime() - begin.getTime();
+        return time / (24 * 60 * 60 * 1000);
     }
 
 

@@ -1,23 +1,28 @@
 package com.jadyer.seed.test;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 
-import java.util.Enumeration;
-import java.util.Properties;
+import java.text.ParseException;
+import java.util.Date;
 
 /**
  * Created by 玄玉<http://jadyer.cn/> on 2017/3/14 16:57.
  */
 public class CommTest {
     @Test
-    public void evnPropTest(){
-        Properties properties = System.getProperties();
-        Enumeration<Object> enums = properties.keys();
-        while(enums.hasMoreElements()){
-            Object key = enums.nextElement();
-            System.out.println(key + "=" + properties.get(key));
+    public void evnPropTest() throws ParseException {
+        Date edate = DateUtils.parseDate("201708241600", "yyyyMMddHHmm");
+        if(new Date().compareTo(edate)>=0 && new Date().compareTo(DateUtils.addMinutes(edate, 3))<=0){
+            System.out.println("成功--");
+        }else{
+            System.out.println("失敗--");
         }
-        System.out.println("---------" + System.getProperty("java.io.tmpdir"));
+        if((new Date().compareTo(edate)>=0) && (new Date().compareTo(DateUtils.addMinutes(edate, 3))<=0)){
+            System.out.println("成功");
+        }else{
+            System.out.println("失敗");
+        }
     }
 
 
