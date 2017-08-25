@@ -3,7 +3,7 @@ package com.jadyer.seed.scs.boot;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
-import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4;
+import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
@@ -57,7 +57,7 @@ public class ScsBootStrap extends SpringBootServletInitializer {
         fastJsonConfig.setCharset(StandardCharsets.UTF_8);
         fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
         fastJsonConfig.setSerializerFeatures(serializerFeatures);
-        FastJsonHttpMessageConverter4 fastjson = new FastJsonHttpMessageConverter4();
+        FastJsonHttpMessageConverter fastjson = new FastJsonHttpMessageConverter();
         fastjson.setFastJsonConfig(fastJsonConfig);
         return new HttpMessageConverters(fastjson);
     }

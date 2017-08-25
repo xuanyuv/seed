@@ -2,7 +2,7 @@ package com.jadyer.seed.qss.boot;
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
-import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4;
+import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
@@ -68,7 +68,7 @@ public class QssBootStrap extends SpringBootServletInitializer {
         fastJsonConfig.setCharset(StandardCharsets.UTF_8);
         fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
         fastJsonConfig.setSerializerFeatures(serializerFeatures);
-        FastJsonHttpMessageConverter4 fastjson = new FastJsonHttpMessageConverter4();
+        FastJsonHttpMessageConverter fastjson = new FastJsonHttpMessageConverter();
         fastjson.setFastJsonConfig(fastJsonConfig);
         return new HttpMessageConverters(fastjson);
     }

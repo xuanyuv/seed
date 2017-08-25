@@ -75,7 +75,6 @@ spring:
     password: ${db.password}
     # 更多属性：https://github.com/alibaba/druid/issues/1344
     # 另经测试：应用正常运行中，数据库突然宕掉后过一段时间又恢复，druid会自动重连
-    # https://github.com/alibaba/druid/tree/master/druid-spring-boot-starter
     druid:
       filters: wall,mergeStat
       initialSize: 5               # 配置初始化大小、最小、最大

@@ -2,7 +2,7 @@ package com.jadyer.seed.boot;
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
-import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4;
+import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,7 +51,7 @@ public class FastjsonConfiguration {
         //设置序列化输出时的一些额外属性
         fastJsonConfig.setSerializerFeatures(serializerFeatures);
 
-        FastJsonHttpMessageConverter4 fastjson = new FastJsonHttpMessageConverter4();
+        FastJsonHttpMessageConverter fastjson = new FastJsonHttpMessageConverter();
         fastjson.setFastJsonConfig(fastJsonConfig);
         return new HttpMessageConverters(fastjson);
     }
