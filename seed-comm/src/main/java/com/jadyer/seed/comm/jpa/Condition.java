@@ -10,6 +10,7 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -217,6 +218,14 @@ public class Condition<T> implements Specification<T> {
     public Condition<T> like(String property, List<String> valueList) {
         this.add(property, Operator.LIKE, valueList);
         return this;
+    }
+
+    public Condition<T> like(String property, String value) {
+        return this.like(property, Collections.singletonList(value));
+    }
+
+    public Condition<T> notLike(String property, String value) {
+        return this.notLike(property, Collections.singletonList(value));
     }
 
     public Condition<T> notLike(String property, List<String> valueList) {

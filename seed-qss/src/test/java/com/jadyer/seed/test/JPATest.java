@@ -1,6 +1,8 @@
 package com.jadyer.seed.test;
 
+import com.jadyer.seed.comm.jpa.Condition;
 import com.jadyer.seed.qss.boot.QssBootStrap;
+import com.jadyer.seed.qss.model.ScheduleTask;
 import com.jadyer.seed.qss.repository.ScheduleTaskRepository;
 import org.junit.Assert;
 import org.junit.Test;
@@ -37,7 +39,9 @@ public class JPATest {
     @Test
     public void selectTest() throws InterruptedException, ExecutionException, TimeoutException {
         //Assert.assertEquals("test55", scheduleTaskRepository.getByName("test55").getName());
-        Assert.assertEquals("test55", scheduleTaskRepository.getByNameLike("%5%").get(0).getName());
+        Condition<ScheduleTask> spec = Condition.<ScheduleTask>and().like("name", "3");
+        Assert.assertEquals("test33", scheduleTaskRepository.findAll(spec).get(0).getName());
+        Assert.assertEquals("test33", scheduleTaskRepository.getByNameLike("%3%").get(0).getName());
         //Assert.assertEquals("test44", scheduleTaskRepository.findByNameAndCron("test44", "0/15 * * * * ?").getName());
         //Assert.assertEquals("test55", scheduleTaskRepository.getByNameEndingWithAndIdLessThan("55", 9L).get(0).getName());
         //Assert.assertEquals("test22", scheduleTaskRepository.getByNameStartingWithAndIdLessThan("test", 9L).get(0).getName());
