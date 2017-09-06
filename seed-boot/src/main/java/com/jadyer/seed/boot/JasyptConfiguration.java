@@ -43,7 +43,7 @@ import org.springframework.core.io.support.ResourcePropertySource;
  */
 @Configuration
 @ConditionalOnClass(StringEncryptor.class)
-@PropertySource(value={"${jasypt.file:classpath:config/encrypted.properties}"}, ignoreResourceNotFound=true)
+@PropertySource(value={"${jasypt.file:classpath:config/encrypted.properties}"})
 public class JasyptConfiguration implements EnvironmentAware {
     private Environment environment;
 
