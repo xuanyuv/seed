@@ -11,6 +11,7 @@
             <property name="PROJECT_NAME" value="demo-boot"/>
         </else>
     </if>
+    注意：该功能需要Janino包的支持<dependency groupId="org.codehaus.janino" artifactId="janino" version="3.0.7"/>
     <if condition='property("os.name").toUpperCase().contains("WINDOWS")'>
         <then>
             <property name="PROJECT_PATH" value="/app/logs/seed-boot"/>
