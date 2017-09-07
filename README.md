@@ -5,12 +5,13 @@
 ## 模块列表
 
 * seed-boot：SpringBoot个人实践
-* seed-comm：工具类
+* seed-comm：工具包
 * seed-mpp：公众平台
 * seed-open：开放平台
 * seed-qss：定时系统（Quartz Scheduler System）
 * seed-scs：脚手架（Sample Code System）
 * seed-server：Mina实现的服务器
+* seed-simcoder：简版的代码生成器
 * seed-simulator：Swing实现的模拟器
 * .
 * ├── seed-boot
@@ -24,6 +25,8 @@
 * ├── seed-scs
 * │   └── seed-comm
 * ├── seed-server
+* │   └── seed-comm
+* └── seed-simcoder
 * │   └── seed-comm
 * └── seed-simulator
 * 　  └── seed-comm

@@ -14,6 +14,7 @@
         <module>seed-qss</module>
         <module>seed-scs</module>
         <module>seed-server</module>
+        <module>seed-simcoder</module>
         <module>seed-simulator</module>
     </modules>
 
