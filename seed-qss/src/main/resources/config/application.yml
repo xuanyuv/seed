@@ -4,7 +4,7 @@ scan:
 
 logging:
   path: /home/seed/log/qss
-  config: classpath:config/logback.xml
+  config: classpath:config/logback-qss.xml
 
 spring:
   datasource:

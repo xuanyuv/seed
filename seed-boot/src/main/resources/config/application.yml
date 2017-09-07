@@ -38,7 +38,7 @@ user:
 # 日志配置这俩属性足矣
 logging:
   path: /home/seed/log/boot
-  config: classpath:config/logback.xml
+  config: classpath:config/logback-boot.xml
 
 
 # 关闭安全认证校验（动态修改日志级别时会用到）

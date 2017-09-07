@@ -96,7 +96,7 @@ public class DemoController {
 
     /**
      * 动态修改日志级别
-     * @param name  日志端点，可传logback.xml里面配置的<logger name=""/>、或者com.jadyer、或者com.jadyer.seed
+     * @param name  日志端点，可传logback-boot.xml里面配置的<logger name=""/>、或者com.jadyer、或者com.jadyer.seed
      * @param level 修改后的日志级别，可传info、inFO、debug、error、ErrOR等等
      */
     @ResponseBody

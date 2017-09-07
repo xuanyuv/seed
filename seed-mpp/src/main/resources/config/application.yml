@@ -5,7 +5,7 @@ scan:
 
 logging:
   path: /home/seed/log/mpp
-  config: classpath:config/logback.xml
+  config: classpath:config/logback-mpp.xml
 
 
 multipart:
