@@ -113,10 +113,10 @@ public class CodeGenHelper {
         }
         if(hasDate && hasBigDecimal){
             template.binding("importBigDecimalDate", importBigDecimalAndDate);
-        }else if(hasDate){
-            template.binding("importBigDecimalDate", importDate);
         }else if(hasBigDecimal){
             template.binding("importBigDecimalDate", importBigDecimal);
+        }else if(hasDate){
+            template.binding("importBigDecimalDate", importDate);
         }
         template.renderTo(new FileWriter(new File(outdir + classname + ".java")));
     }
