@@ -1,7 +1,7 @@
-package com.jadyer.seed.mpp.web.repository;
+package ${PACKAGE_REPOSITORY};
 
 import com.jadyer.seed.comm.jpa.BaseRepository;
-import com.jadyer.seed.mpp.web.model.MppUserInfo;
+import ${PACKAGE_MODEL}.${CLASS_NAME};
 
-public interface MppUserInfoRepository extends BaseRepository<MppUserInfo, Long> {
+public interface ${CLASS_NAME}Repository extends BaseRepository<${CLASS_NAME}, Long> {
 }

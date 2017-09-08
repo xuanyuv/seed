@@ -1,4 +1,4 @@
-package com.jadyer.seed.simcoder.service;
+package com.jadyer.seed.simcoder.helper;
 
 import com.jadyer.seed.comm.util.DBUtil;
 import com.jadyer.seed.simcoder.model.Column;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by 玄玉<http://jadyer.cn/> on 2017/9/7 17:18.
  */
-public class SimcoderHelper {
+class DBHelper {
     private static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/mpp?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull";
     private static final String DB_USERNAME = "root";
     private static final String DB_PASSWORD = "xuanyu";
@@ -24,7 +24,7 @@ public class SimcoderHelper {
     /**
      * 获取数据库中的所有表信息
      */
-    public static List<Table> getTableList(String databaseName){
+    static List<Table> getTableList(String databaseName){
         List<Table> tableList = new ArrayList<>();
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -52,7 +52,7 @@ public class SimcoderHelper {
     /**
      * 获取某张表的所有列信息
      */
-    public static List<Column> getColumnList(String tableName){
+    static List<Column> getColumnList(String tableName){
         List<Column> columnList = new ArrayList<>();
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -69,11 +69,9 @@ public class SimcoderHelper {
                 column.setNullable(rs.getBoolean("nullable"));
                 column.setPrikey(rs.getBoolean("isPrikey"));
                 column.setAutoIncrement(rs.getBoolean("isAutoIncrement"));
-                //计算length和type
-                String type = rs.getString("type");
+                column.setType(rs.getString("type"));
                 String length = rs.getString("length");
-                column.setLength(StringUtils.isBlank(length) ? 0 : StringUtils.equals("longtext", type) ? 999999999 : Integer.parseInt(length));
-                column.setType(type);
+                column.setLength(StringUtils.isBlank(length) ? 0 : StringUtils.equals("longtext", column.getType()) ? 999999999 : Integer.parseInt(length));
                 columnList.add(column);
             }
         }catch(Exception e){
@@ -88,7 +86,7 @@ public class SimcoderHelper {
     /**
      * 通过表名构建类名
      */
-    public static String buildClassnameFromTablename(String tablename){
+    static String buildClassnameFromTablename(String tablename){
         if(StringUtils.isBlank(tablename)){
             throw new RuntimeException("表名不能为空");
         }
@@ -98,6 +96,26 @@ public class SimcoderHelper {
         StringBuilder sb = new StringBuilder();
         for(String obj : tablename.split("_")){
             sb.append(StringUtils.capitalize(obj));
+        }
+        return sb.toString();
+    }
+
+
+    /**
+     * 通过列名构建属性名
+     */
+    static String buildFieldnameFromColumnname(String columnname){
+        if(StringUtils.isBlank(columnname)){
+            throw new RuntimeException("列名不能为空");
+        }
+        String[] columnnames = columnname.split("_");
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i<columnnames.length; i++){
+            if(i == 0){
+                sb.append(columnnames[0]);
+            }else{
+                sb.append(StringUtils.capitalize(columnnames[i]));
+            }
         }
         return sb.toString();
     }
@@ -114,7 +132,7 @@ public class SimcoderHelper {
      *     <li>https://stackoverflow.com/questions/409286/should-i-use-field-datetime-or-timestamp：Timestamps in MySQL generally used to track changes to records, and are often updated every time the record is changed. If you want to store a specific value you should use a datetime field.</li>
      * </ul>
      */
-    public static String buildJavatypeFromDbtype(String dbtype){
+    static String buildJavatypeFromDbtype(String dbtype){
         if(StringUtils.isBlank(dbtype)){
             throw new RuntimeException("数据库列类型不能为空");
         }
