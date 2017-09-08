@@ -66,21 +66,14 @@ public class SimcoderHelper {
                 Column column = new Column();
                 column.setName(rs.getString("name"));
                 column.setComment(rs.getString("comment"));
-                column.setType(rs.getString("type"));
-                //TODO 注意MEDIUMTEXT类型的
-                String length = rs.getString("length");
-                column.setLength(null==length ? 0 : Integer.parseInt(length));
-                /*
-                if (("YES".equals(nullable)) || ("yes".equals(nullable)) || ("y".equals(nullable)) || ("Y".equals(nullable)) || ("NOT NULL".equals(nullable))) {
-      return "Y";
-    }
-    if (("NO".equals(nullable)) || ("N".equals(nullable)) || ("no".equals(nullable)) || ("n".equals(nullable)) || ("NULL".equals(nullable))) {
-      return "N";
-    }
-                */
                 column.setNullable(rs.getBoolean("nullable"));
                 column.setPrikey(rs.getBoolean("isPrikey"));
                 column.setAutoIncrement(rs.getBoolean("isAutoIncrement"));
+                //计算length和type
+                String type = rs.getString("type");
+                String length = rs.getString("length");
+                column.setLength(StringUtils.isBlank(length) ? 0 : StringUtils.equals("longtext", type) ? 999999999 : Integer.parseInt(length));
+                column.setType(type);
                 columnList.add(column);
             }
         }catch(Exception e){
@@ -95,7 +88,7 @@ public class SimcoderHelper {
     /**
      * 通过表名构建类名
      */
-    public static String buildClassnameUseTablename(String tablename){
+    public static String buildClassnameFromTablename(String tablename){
         if(StringUtils.isBlank(tablename)){
             throw new RuntimeException("表名不能为空");
         }
@@ -110,107 +103,33 @@ public class SimcoderHelper {
     }
 
 
-
-
     /**
-     * 获取类型，将类型转换
-     * @param dataType   文本截取类型
-     * @param precision  0
-     * @param scale      0
-     * @return
+     * 通过数据库列类型构建Java中的属性类型
+     * <ul>
+     *     <li>MySQL中的datetime和timestamp区别如下</li>
+     *     <li>timestamp使用4字节的存储空间，datetime则使用8字节</li>
+     *     <li>timestamp的范围为1970--2037年，datetime则为0001--9999年</li>
+     *     <li>timestamp不允许空（空的时候它会拿当前时间填充），datetime允许空</li>
+     *     <li>timestamp的值受时区的影响，datetime则不受。比如20170908174242，若修改时区为东9区（mysql> set time_zone='+9:00';），则timestamp会增加一个小时变成20170908184242，而datetime则不变</li>、
+     *     <li>https://stackoverflow.com/questions/409286/should-i-use-field-datetime-or-timestamp：Timestamps in MySQL generally used to track changes to records, and are often updated every time the record is changed. If you want to store a specific value you should use a datetime field.</li>
+     * </ul>
      */
-    public static String getType(String dataType, String precision, String scale) {
-        dataType = dataType.toLowerCase();
-        if (dataType.contains("lang varchar"))
-        {
-            dataType = "String";
+    public static String buildJavatypeFromDbtype(String dbtype){
+        if(StringUtils.isBlank(dbtype)){
+            throw new RuntimeException("数据库列类型不能为空");
         }
-        if (dataType.contains("text"))
-        {
-            dataType = "String";
-        }
-        else if (dataType.contains("char"))
-        {
-            dataType = "String";
-        }
-        else if (dataType.contains("int")){
-            dataType = "Integer";
-        }
-        else if (dataType.contains("float")){
-            dataType = "Float";
-        }
-        else if (dataType.contains("double")){
-            dataType = "Double";
-        }
-        else if (dataType.contains("number")) {
-            if ((StringUtils.isNotBlank(scale))&& (Integer.parseInt(scale) > 0))
-            {
-                dataType = "java.math.BigDecimal";
-            }
-            else if ((StringUtils.isNotBlank(precision))&& (Integer.parseInt(precision) > 6))
-            {
-                dataType = "Long";
-            }
-            else
-            {
-                dataType = "Integer";
-            }
-        }
-        else if (dataType.contains("decimal"))
-        {
-            dataType = "BigDecimal";
-        }
-        else if (dataType.contains("date"))
-        {
-            dataType = "Date";
-        }
-        else if (dataType.contains("time"))
-        {
-            dataType = "java.sql.Timestamp";
-        }
-        else if (dataType.contains("datetime"))
-        {
-            dataType = "Date";
-        }
-        else if (dataType.contains("clob"))
-        {
-            dataType = "java.sql.Clob";
-        }
-        else {
-            dataType = "Object";
-        }
-        return dataType;
-    }
-
-
-
-
-
-    public String getFieldType(String type) {
-        type = type.toLowerCase();
-        if (type.contains("varchar") || type.contains("text") || type.contains("char")) {
-            return "String";
-        } else if (type.equals("int") || type.equals("tinyint")) {
-            return "Integer";
-        } else if (type.contains("bigint") || type.contains("long") || type.contains("number")) {
-            return "Long";
-        } else if (type.contains("double")) {
-            return "Double";
-        } else if (type.contains("date") || type.contains("time")) {
-            return "Date";
-        } else if (type.contains("decimal")) {
+        if(StringUtils.equals(dbtype, "decimal")){
             return "BigDecimal";
         }
-        return "unknown";
-    }
-
-    public String getImport(String type) {
-        if (type.contains("date") || type.contains("time")) {
-            return "java.util.Date";
-        } else if (type.contains("decimal")) {
-            return "java.math.BigDecimal";
-        } else {
-            return null;
+        if(StringUtils.equalsAnyIgnoreCase(dbtype, "datetime", "timestamp")){
+            return "Date";
         }
+        if(StringUtils.equalsAnyIgnoreCase(dbtype, "tinyint", "smallint", "mediumint", "int")){
+            return "int";
+        }
+        if(StringUtils.equalsAnyIgnoreCase(dbtype, "char", "varchar", "tinytext", "text", "mediumtext")){
+            return "String";
+        }
+        throw new RuntimeException("不支持的类型[" + dbtype + "]");
     }
 }

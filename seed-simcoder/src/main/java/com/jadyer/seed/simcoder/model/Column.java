@@ -11,7 +11,7 @@ public class Column {
     private String comment;
     /** 列的数据类型 */
     private String type;
-    /** 列的最大长度（比如TINYINT(1)类型，其最大值为127，故此时length=3） */
+    /** 列的最大长度（比如TINYINT(1)类型，其最大值为127，故此时length=3，另：当type=longtext时该值固定为999999999） */
     private int length;
     /** 列是否可空（true为可空，false为不可空） */
     private boolean nullable;
