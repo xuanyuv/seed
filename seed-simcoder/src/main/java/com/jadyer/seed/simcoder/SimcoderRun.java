@@ -1,9 +1,17 @@
 package com.jadyer.seed.simcoder;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.jadyer.seed.comm.util.JadyerUtil;
+import com.jadyer.seed.simcoder.model.Column;
+import com.jadyer.seed.simcoder.model.Table;
+import com.jadyer.seed.simcoder.service.SimcoderHelper;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.beetl.core.Configuration;
+import org.beetl.core.GroupTemplate;
+import org.beetl.core.Template;
+import org.beetl.core.resource.ClasspathResourceLoader;
+
+import java.io.IOException;
 
 /**
  * Created by 玄玉<http://jadyer.cn/> on 2017/9/5 14:40.
@@ -16,78 +24,25 @@ public class SimcoderRun {
     //Repository类的完整包名
     private static final String package_Repository = "com.jadyer.seed.mpp.web.repository";
 
-    public static void main(String[] args) {
-        //for(Table obj : SimcoderHelper.getTableList("mpp")){
-        //    System.out.println(ReflectionToStringBuilder.toString(obj, ToStringStyle.MULTI_LINE_STYLE));
-        //}
-        //System.out.println("================================================");
-        //for(Column obj : SimcoderHelper.getColumnList("t_mpp_user_info")){
-        //    System.out.println(ReflectionToStringBuilder.toString(obj, ToStringStyle.MULTI_LINE_STYLE));
-        //}
-        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" +
-                "<domain>\n" +
-                "<class>\n" +
-                "/* \n" +
-                " * CreateDate: #now#\n" +
-                " *\n" +
-                " * Email：darkidiot@icloud.com \n" +
-                " * School：CUIT \n" +
-                " * Copyright For darkidiot\n" +
-                " */\n" +
-                "package #class.package#.model;\n" +
-                "\n" +
-                "import java.io.Serializable;\n" +
-                "#imports#\n" +
-                "\n" +
-                "/**\n" +
-                " * #table.desc#\n" +
-                " * \n" +
-                " * @author #author#\n" +
-                " * @version 1.0\n" +
-                " */\n" +
-                "public class #class.name# implements Serializable {\n" +
-                "\tprivate static final long serialVersionUID = #serialVersionUID#L;\n" +
-                "\t#fields#\n" +
-                "\t#methods#\n" +
-                "}\n" +
-                "</class>\n" +
-                "<import>import #import#;</import>\n" +
-                "\t\n" +
-                "\t<field>\n" +
-                "\t/** #field.name#:#field.desc# */\n" +
-                "\tprivate #field.type# #field.name#;\n" +
-                "\t</field>\n" +
-                "\n" +
-                "\t<method>\n" +
-                "\t/** 取得#field.desc# */\n" +
-                "\tpublic #field.type# #method.get#() {\n" +
-                "\t\treturn #field.name#;\n" +
-                "\t}\n" +
-                "\t\n" +
-                "\t/** 设置#field.desc# */\n" +
-                "\tpublic void #method.set#(#field.type# #field.name#) {\n" +
-                "\t\tthis.#field.name# = #field.name#;\n" +
-                "\t}\n" +
-                "\t</method>\n" +
-                "</domain>";
-        String classTemplate = matchs(xml, "<class>([\\w\\W]+?)</class>", 1).get(0);// 匹配模式是非贪婪的。非贪婪模式尽可能少的匹配所搜索的字符串，而默认的贪婪模式则尽可能多的匹配所搜索的字符串。
-        String fieldTemplate = matchs(xml, "<field>([\\w\\W]+?)</field>", 1).get(0);
-        String methodTemplate = matchs(xml, "<method>([\\w\\W]+?)</method>", 1).get(0);
-        String importTemplate = matchs(xml, "<import>([\\w\\W]+?)</import>", 1).get(0);
-        System.out.println("classTemplate = " + classTemplate);
-        System.out.println("fieldTemplate = " + fieldTemplate);
-        System.out.println("methodTemplate = " + methodTemplate);
-        System.out.println("importTemplate = " + importTemplate);
-    }
-
-
-    static List<String> matchs(String input, String regex, int group) {
-        Pattern pattern = Pattern.compile(regex);
-        Matcher match = pattern.matcher(input);
-        List<String> matches = new ArrayList<>();
-        while (match.find()) {
-            matches.add(match.group(group));
+    public static void main(String[] args) throws IOException {
+        for(Table obj : SimcoderHelper.getTableList("mpp")){
+            System.out.println(ReflectionToStringBuilder.toString(obj, ToStringStyle.MULTI_LINE_STYLE));
         }
-        return matches;
+        System.out.println("================================================");
+        for(Column obj : SimcoderHelper.getColumnList("t_mpp_user_info")){
+            System.out.println(ReflectionToStringBuilder.toString(obj, ToStringStyle.MULTI_LINE_STYLE));
+        }
+        //默认的，Configuration类总是会先加载默认的配置文件（/org/beetl/core/beetl-default.properties）
+        Configuration cfg = Configuration.defaultConfiguration();
+        GroupTemplate gt = new GroupTemplate(new ClasspathResourceLoader("templates/"), cfg);
+        Template template = gt.getTemplate("demo.btl");
+        template.binding("name", "beetl");
+        ////将渲染结果输出到Writer
+        //template.renderTo(Writer)
+        ////将渲染结果输出到OutputStream
+        //template.renderTo(OutputStream)
+        //输出渲染结果
+        System.out.println(template.render());
+        System.out.println("------>>>" + JadyerUtil.getProjectPath());
     }
 }
