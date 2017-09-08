@@ -1,6 +1,5 @@
 package com.jadyer.seed.simcoder;
 
-import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.simcoder.model.Column;
 import com.jadyer.seed.simcoder.model.Table;
 import com.jadyer.seed.simcoder.service.SimcoderHelper;
@@ -11,6 +10,9 @@ import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
 import org.beetl.core.resource.ClasspathResourceLoader;
 
+import javax.swing.filechooser.FileSystemView;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 /**
@@ -23,6 +25,8 @@ public class SimcoderRun {
     private static final String package_model = "com.jadyer.seed.mpp.web.model";
     //Repository类的完整包名
     private static final String package_Repository = "com.jadyer.seed.mpp.web.repository";
+    //桌面地址
+    private static final String DESKTOP_PATH = FileSystemView.getFileSystemView().getHomeDirectory().getPath() + System.getProperty("file.separator");
 
     public static void main(String[] args) throws IOException {
         for(Table obj : SimcoderHelper.getTableList("mpp")){
@@ -32,6 +36,7 @@ public class SimcoderRun {
         for(Column obj : SimcoderHelper.getColumnList("t_mpp_user_info")){
             System.out.println(ReflectionToStringBuilder.toString(obj, ToStringStyle.MULTI_LINE_STYLE));
         }
+        /*
         //默认的，Configuration类总是会先加载默认的配置文件（/org/beetl/core/beetl-default.properties）
         Configuration cfg = Configuration.defaultConfiguration();
         GroupTemplate gt = new GroupTemplate(new ClasspathResourceLoader("templates/"), cfg);
@@ -44,5 +49,10 @@ public class SimcoderRun {
         //输出渲染结果
         System.out.println(template.render());
         System.out.println("------>>>" + JadyerUtil.getProjectPath());
+        */
+        GroupTemplate gt = new GroupTemplate(new ClasspathResourceLoader("templates/"), Configuration.defaultConfiguration());
+        Template template = gt.getTemplate("demo.btl");
+        template.binding("name", "beetl");
+        template.renderTo(new FileWriter(new File(DESKTOP_PATH+"aa.txt")));
     }
 }

@@ -58,7 +58,7 @@ appsecret   VARCHAR(64) COMMENT '微信或QQ公众平台appsecret',
 mchid       VARCHAR(64) COMMENT '微信或QQ公众平台商户号',
 mchkey      VARCHAR(64) COMMENT '微信或QQ公众平台商户Key',
 bind_status TINYINT(1)  COMMENT '微信或QQ公众平台绑定状态：0--未绑定，1--已绑定',
-bind_time   TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT '微信或QQ公众平台绑定解绑时间',
+bind_time   DATETIME    COMMENT '微信或QQ公众平台绑定解绑时间',
 create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间'
 )ENGINE=InnoDB DEFAULT CHARSET=UTF8 COMMENT='mpplus平台用户表';
