@@ -19,7 +19,7 @@
             <artifactId>seed-comm</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-        <!-- 这里的cron模拟器不支持2.x -->
+        <!-- 这里的cron模拟器不支持2.x，故单独引用1.x -->
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
