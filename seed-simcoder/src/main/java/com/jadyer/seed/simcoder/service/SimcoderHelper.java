@@ -118,14 +118,17 @@ public class SimcoderHelper {
         if(StringUtils.isBlank(dbtype)){
             throw new RuntimeException("数据库列类型不能为空");
         }
+        if(StringUtils.equals(dbtype, "int")){
+            return "long";
+        }
+        if(StringUtils.equals(dbtype, "tinyint")){
+            return "int";
+        }
         if(StringUtils.equals(dbtype, "decimal")){
             return "BigDecimal";
         }
         if(StringUtils.equalsAnyIgnoreCase(dbtype, "datetime", "timestamp")){
             return "Date";
-        }
-        if(StringUtils.equalsAnyIgnoreCase(dbtype, "tinyint", "smallint", "mediumint", "int")){
-            return "int";
         }
         if(StringUtils.equalsAnyIgnoreCase(dbtype, "char", "varchar", "tinytext", "text", "mediumtext")){
             return "String";

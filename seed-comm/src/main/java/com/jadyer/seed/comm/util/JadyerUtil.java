@@ -46,7 +46,6 @@ package com.jadyer.seed.comm.util;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.imageio.ImageIO;
@@ -74,6 +73,7 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * 玄玉的开发工具类
@@ -133,11 +133,11 @@ public final class JadyerUtil {
 
 
     /**
-     * 获取流水号
+     * 构建serialVersionUID
      */
-    public static String buildSerialNo(){
-        //RandomStringUtils.randomAlphanumeric(20);
-        return RandomStringUtils.randomNumeric(20);
+    public static long buildSerialVersionUID(){
+        long serialVersionUID = new Random().nextLong();
+        return serialVersionUID>0 ? serialVersionUID : -serialVersionUID;
     }
 
 

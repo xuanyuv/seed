@@ -1,5 +1,6 @@
 package com.jadyer.seed.simcoder;
 
+import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.simcoder.model.Column;
 import com.jadyer.seed.simcoder.model.Table;
 import com.jadyer.seed.simcoder.service.SimcoderHelper;
@@ -11,8 +12,6 @@ import org.beetl.core.Template;
 import org.beetl.core.resource.ClasspathResourceLoader;
 
 import javax.swing.filechooser.FileSystemView;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 
 /**
@@ -53,6 +52,7 @@ public class SimcoderRun {
         GroupTemplate gt = new GroupTemplate(new ClasspathResourceLoader("templates/"), Configuration.defaultConfiguration());
         Template template = gt.getTemplate("demo.btl");
         template.binding("name", "beetl");
-        template.renderTo(new FileWriter(new File(DESKTOP_PATH+"aa.txt")));
+        //template.renderTo(new FileWriter(new File(DESKTOP_PATH+"aa.txt")));
+        System.out.println(JadyerUtil.buildSerialVersionUID());
     }
 }
