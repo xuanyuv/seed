@@ -863,4 +863,13 @@ public final class JadyerUtil {
         sb.append(request.getContextPath());
         return sb.toString();
     }
+
+
+    /**
+     * 获取项目的本地路径
+     * @return D:/Develop/Code/idea/seed（尾部不含斜线）
+     */
+    public static String getProjectPath(){
+        return System.getProperty("user.dir").replace("\\", "/");
+    }
 }

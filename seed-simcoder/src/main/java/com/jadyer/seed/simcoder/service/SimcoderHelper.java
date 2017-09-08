@@ -3,6 +3,7 @@ package com.jadyer.seed.simcoder.service;
 import com.jadyer.seed.comm.util.DBUtil;
 import com.jadyer.seed.simcoder.model.Column;
 import com.jadyer.seed.simcoder.model.Table;
+import org.apache.commons.lang3.StringUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -66,8 +67,17 @@ public class SimcoderHelper {
                 column.setName(rs.getString("name"));
                 column.setComment(rs.getString("comment"));
                 column.setType(rs.getString("type"));
+                //TODO 注意MEDIUMTEXT类型的
                 String length = rs.getString("length");
                 column.setLength(null==length ? 0 : Integer.parseInt(length));
+                /*
+                if (("YES".equals(nullable)) || ("yes".equals(nullable)) || ("y".equals(nullable)) || ("Y".equals(nullable)) || ("NOT NULL".equals(nullable))) {
+      return "Y";
+    }
+    if (("NO".equals(nullable)) || ("N".equals(nullable)) || ("no".equals(nullable)) || ("n".equals(nullable)) || ("NULL".equals(nullable))) {
+      return "N";
+    }
+                */
                 column.setNullable(rs.getBoolean("nullable"));
                 column.setPrikey(rs.getBoolean("isPrikey"));
                 column.setAutoIncrement(rs.getBoolean("isAutoIncrement"));
@@ -79,5 +89,128 @@ public class SimcoderHelper {
             DBUtil.INSTANCE.closeAll(rs, pstmt, conn);
         }
         return columnList;
+    }
+
+
+    /**
+     * 通过表名构建类名
+     */
+    public static String buildClassnameUseTablename(String tablename){
+        if(StringUtils.isBlank(tablename)){
+            throw new RuntimeException("表名不能为空");
+        }
+        if(tablename.startsWith("t_")){
+            tablename = tablename.substring(2);
+        }
+        StringBuilder sb = new StringBuilder();
+        for(String obj : tablename.split("_")){
+            sb.append(StringUtils.capitalize(obj));
+        }
+        return sb.toString();
+    }
+
+
+
+
+    /**
+     * 获取类型，将类型转换
+     * @param dataType   文本截取类型
+     * @param precision  0
+     * @param scale      0
+     * @return
+     */
+    public static String getType(String dataType, String precision, String scale) {
+        dataType = dataType.toLowerCase();
+        if (dataType.contains("lang varchar"))
+        {
+            dataType = "String";
+        }
+        if (dataType.contains("text"))
+        {
+            dataType = "String";
+        }
+        else if (dataType.contains("char"))
+        {
+            dataType = "String";
+        }
+        else if (dataType.contains("int")){
+            dataType = "Integer";
+        }
+        else if (dataType.contains("float")){
+            dataType = "Float";
+        }
+        else if (dataType.contains("double")){
+            dataType = "Double";
+        }
+        else if (dataType.contains("number")) {
+            if ((StringUtils.isNotBlank(scale))&& (Integer.parseInt(scale) > 0))
+            {
+                dataType = "java.math.BigDecimal";
+            }
+            else if ((StringUtils.isNotBlank(precision))&& (Integer.parseInt(precision) > 6))
+            {
+                dataType = "Long";
+            }
+            else
+            {
+                dataType = "Integer";
+            }
+        }
+        else if (dataType.contains("decimal"))
+        {
+            dataType = "BigDecimal";
+        }
+        else if (dataType.contains("date"))
+        {
+            dataType = "Date";
+        }
+        else if (dataType.contains("time"))
+        {
+            dataType = "java.sql.Timestamp";
+        }
+        else if (dataType.contains("datetime"))
+        {
+            dataType = "Date";
+        }
+        else if (dataType.contains("clob"))
+        {
+            dataType = "java.sql.Clob";
+        }
+        else {
+            dataType = "Object";
+        }
+        return dataType;
+    }
+
+
+
+
+
+    public String getFieldType(String type) {
+        type = type.toLowerCase();
+        if (type.contains("varchar") || type.contains("text") || type.contains("char")) {
+            return "String";
+        } else if (type.equals("int") || type.equals("tinyint")) {
+            return "Integer";
+        } else if (type.contains("bigint") || type.contains("long") || type.contains("number")) {
+            return "Long";
+        } else if (type.contains("double")) {
+            return "Double";
+        } else if (type.contains("date") || type.contains("time")) {
+            return "Date";
+        } else if (type.contains("decimal")) {
+            return "BigDecimal";
+        }
+        return "unknown";
+    }
+
+    public String getImport(String type) {
+        if (type.contains("date") || type.contains("time")) {
+            return "java.util.Date";
+        } else if (type.contains("decimal")) {
+            return "java.math.BigDecimal";
+        } else {
+            return null;
+        }
     }
 }

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="${className}">
+
+   <resultMap id="RM.${className}" type="${entityPackage}.model.$!{className}">
+       #foreach($item in $!{columnDatas})
+	   <result property="$item.columnNameLowerCase" column="$!item.columnName"/>
+	   #end
+	</resultMap>
+	<sql id="${className}.columns">
+	    <![CDATA[
+			$!{SQL.columnFields}
+	    ]]>
+	</sql>
+
+	<!-- 插入记录-->
+	<insert id="${className}.insert" useGeneratedKeys="true" keyProperty="id">
+       <![CDATA[
+		  $!{SQL.insert}
+       ]]>
+	   #if  ($keyType =='02')
+		<selectKey resultType="java.lang.Integer" keyProperty="id">
+			select LAST_INSERT_ID()
+        </selectKey>
+	   #end
+	</insert>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="${className}.update" >
+	   $!{SQL.updateSelective}
+	</update>
+
+	<!--根据BASEQUERY条件 修改记录 -->
+	<update id="${className}.updateByCond" >
+    <![CDATA[
+        UPDATE ${tableName} SET
+	        ${updatesets}
+        WHERE 
+	        ${wherecond}
+    ]]>
+	</update>
+
+	<!-- 删除记录 -->
+    <delete id="${className}.delete">
+    <![CDATA[
+        $!{SQL.delete}
+    ]]>
+    </delete>
+
+	<!-- 根据BASEQUERY条件 删除记录 -->
+    <delete id="${className}.deleteByCond">
+    <![CDATA[
+        DELETE FROM ${tableName} WHERE
+        ${wherecond} 
+    ]]>
+    </delete>
+
+	<!-- 根据ID获取记录 -->
+    <select id="${className}.getById" resultMap="RM.${className}">
+		SELECT <include refid="${className}.columns" />
+	    <![CDATA[
+		    FROM ${tableName} 
+	        WHERE 
+		        ID = #{id}
+	    ]]>
+	</select>
+
+	<!-- 查询列表 -->
+    <select id="${className}.findList" resultMap="RM.${className}">
+    	SELECT <include refid="${className}.columns" />
+	    FROM ${tableName}
+	    <if test="@Ognl@isNotEmpty(wherecond)"> 
+	    WHERE ${wherecond} 
+        </if>
+      <if test="@Ognl@isNotEmpty(sortColumns)">
+			  ORDER BY ${sortColumns}
+	  </if>
+    </select>
+
+	<!-- 分页查询列表 -->
+    <select id="${className}.findPage" resultMap="RM.${className}">
+    	SELECT <include refid="${className}.columns" />
+	    FROM ${tableName} 
+	    <if test="@Ognl@isNotEmpty(wherecond)"> 
+        WHERE ${wherecond}  
+        </if>
+		<if test="@Ognl@isNotEmpty(sortColumns)">
+			ORDER BY ${sortColumns}
+		</if>
+    </select>
+
+	<!-- 分页查询总数 -->
+    <select id="${className}.findPage.count" resultType="long">
+        SELECT count(*) FROM ${tableName} 
+	    <if test="@Ognl@isNotEmpty(wherecond)"> 
+        WHERE ${wherecond}  
+        </if>
+    </select>
+
+	<!-- 查询总数 -->
+    <select id="${className}.count" resultType="long">
+        SELECT count(*) FROM ${tableName} 
+	    <if test="@Ognl@isNotEmpty(wherecond)"> 
+        WHERE ${wherecond}  
+        </if>
+    </select>
+</mapper>
+
