@@ -25,6 +25,6 @@ public class SimcoderRun {
         System.out.println("------>>>" + JadyerUtil.getProjectPath());
         */
         String desktopPath = FileSystemView.getFileSystemView().getHomeDirectory().getPath() + System.getProperty("file.separator");
-        CodeGenHelper.genAllTable(desktopPath, "t_mpp_user_info");
+        CodeGenHelper.genAllTable(desktopPath, "advice_info");
     }
 }

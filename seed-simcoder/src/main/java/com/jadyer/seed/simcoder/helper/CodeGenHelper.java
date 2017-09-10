@@ -56,6 +56,12 @@ public class CodeGenHelper {
                 continue;
             }
             /*
+             * /** 字段注释 *\/
+             */
+            if(StringUtils.isNotBlank(columnList.get(i).getComment())){
+                fields.append("    /** ").append(columnList.get(i).getComment()).append(" */\n");
+            }
+            /*
              * @Column(name="bind_status")
              */
             String fieldname = DBHelper.buildFieldnameFromColumnname(columnList.get(i).getName());
@@ -92,8 +98,8 @@ public class CodeGenHelper {
             methods.append("    public void set").append(StringUtils.capitalize(fieldname)).append("(").append(javaType).append(" ").append(fieldname).append(") {").append("\n");
             methods.append("        this.").append(fieldname).append(" = ").append(fieldname).append(";").append("\n");
             methods.append("    }");
-            //TODO 这里有点问题，另外注释没加
-            if(i+1 != columnList.size()){
+            //约定的
+            if(i+1 != columnList.size()-2){
                 methods.append("\n\n");
             }
         }
