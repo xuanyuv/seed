@@ -3,10 +3,13 @@ package ${PACKAGE_MODEL};
 import com.jadyer.seed.comm.jpa.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-${importColumn!}
+${importColumnAnnotation!}
 import javax.persistence.Entity;
 import javax.persistence.Table;
 ${importBigDecimalDate!}
+/**
+ * ${comments}
+ */
 @Entity
 @DynamicInsert
 @DynamicUpdate
