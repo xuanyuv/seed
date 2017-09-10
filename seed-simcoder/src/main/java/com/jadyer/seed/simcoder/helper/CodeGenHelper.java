@@ -3,6 +3,7 @@ package com.jadyer.seed.simcoder.helper;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.simcoder.model.Column;
 import com.jadyer.seed.simcoder.model.Table;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.beetl.core.Configuration;
@@ -10,8 +11,8 @@ import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
 import org.beetl.core.resource.ClasspathResourceLoader;
 
+import javax.swing.filechooser.FileSystemView;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -40,17 +41,17 @@ public class CodeGenHelper {
     /**
      * 生成整个数据库的
      */
-    public static void genAllDatabase(String outdir, String databaseName){
+    public static void generateFromDatabase(String databaseName){
         List<Table> tableList = DBHelper.getTableList(databaseName);
         for(Table table : tableList){
-            genAllTable(outdir, table.getName(), table.getComment());
+            generateFromTable(table.getName(), table.getComment());
         }
     }
 
     /**
      * 生成某张表的
      */
-    public static void genAllTable(String outdir, String tablename, String tablecomment){
+    public static void generateFromTable(String tablename, String tablecomment){
         boolean hasDate = false;
         boolean hasBigDecimal = false;
         boolean hasColumnAnnotation = false;
@@ -124,26 +125,33 @@ public class CodeGenHelper {
          * 构造Beetl模板变量
          */
         String classname = DBHelper.buildClassnameFromTablename(tablename);
-        Template template = groupTemplate.getTemplate("model.btl");
-        template.binding("PACKAGE_MODEL", PACKAGE_MODEL);
-        template.binding("CLASS_NAME", classname);
-        template.binding("TABLE_NAME", tablename);
-        template.binding("fields", fields.toString());
-        template.binding("methods", methods.toString());
-        template.binding("comments", comments.toString());
-        template.binding("serialVersionUID", JadyerUtil.buildSerialVersionUID());
+        Template templateRepo = groupTemplate.getTemplate("repository.btl");
+        templateRepo.binding("PACKAGE_REPOSITORY", PACKAGE_REPOSITORY);
+        templateRepo.binding("PACKAGE_MODEL", PACKAGE_MODEL);
+        templateRepo.binding("CLASS_NAME", classname);
+        templateRepo.binding("comments", comments.toString());
+        Template templateModel = groupTemplate.getTemplate("model.btl");
+        templateModel.binding("PACKAGE_MODEL", PACKAGE_MODEL);
+        templateModel.binding("CLASS_NAME", classname);
+        templateModel.binding("TABLE_NAME", tablename);
+        templateModel.binding("fields", fields.toString());
+        templateModel.binding("methods", methods.toString());
+        templateModel.binding("comments", comments.toString());
+        templateModel.binding("serialVersionUID", JadyerUtil.buildSerialVersionUID());
         if(hasColumnAnnotation){
-            template.binding("importColumnAnnotation", importColumnAnnotation);
+            templateModel.binding("importColumnAnnotation", importColumnAnnotation);
         }
         if(hasDate && hasBigDecimal){
-            template.binding("importBigDecimalDate", importBigDecimalAndDate);
+            templateModel.binding("importBigDecimalDate", importBigDecimalAndDate);
         }else if(hasBigDecimal){
-            template.binding("importBigDecimalDate", importBigDecimal);
+            templateModel.binding("importBigDecimalDate", importBigDecimal);
         }else if(hasDate){
-            template.binding("importBigDecimalDate", importDate);
+            templateModel.binding("importBigDecimalDate", importDate);
         }
         try {
-            template.renderTo(new FileWriter(new File(outdir + classname + ".java")));
+            String outBaseDir = FileSystemView.getFileSystemView().getHomeDirectory().getPath() + System.getProperty("file.separator");
+            templateModel.renderTo(FileUtils.openOutputStream(new File(outBaseDir + "model" + System.getProperty("file.separator") + classname + ".java")));
+            templateRepo.renderTo(FileUtils.openOutputStream(new File(outBaseDir + "repository" + System.getProperty("file.separator") + classname + "Repository.java")));
         } catch (IOException e) {
             System.err.println("生成代码时发生异常，堆栈轨迹如下：");
             e.printStackTrace();

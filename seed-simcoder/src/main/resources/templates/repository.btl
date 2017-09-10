@@ -3,5 +3,8 @@ package ${PACKAGE_REPOSITORY};
 import com.jadyer.seed.comm.jpa.BaseRepository;
 import ${PACKAGE_MODEL}.${CLASS_NAME};
 
+/**
+ * ${comments}
+ */
 public interface ${CLASS_NAME}Repository extends BaseRepository<${CLASS_NAME}, Long> {
 }
