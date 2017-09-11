@@ -39,19 +39,39 @@ public class CodeGenHelper {
     }
 
     /**
-     * 生成整个数据库的
+     * 判断给定的表名是否存在于包含列表
      */
-    public static void generateFromDatabase(String databaseName){
+    private static boolean isInclude(String tablename, String... includeTablename){
+        if(null==includeTablename || includeTablename.length==0){
+            return true;
+        }
+        for(String obj : includeTablename){
+            if(obj.equals(tablename)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * 生成整个数据库的
+     * @param databaseName     数据库名
+     * @param includeTablename 包含列表，有此值时则以此值为准，即此时只为数据库中的这些表生成代码
+     */
+    public static void generate(String databaseName, String... includeTablename){
         List<Table> tableList = DBHelper.getTableList(databaseName);
         for(Table table : tableList){
-            generateFromTable(table.getName(), table.getComment());
+            if(isInclude(table.getName(), includeTablename)){
+                generateFromTable(table.getName(), table.getComment());
+            }
         }
     }
 
     /**
      * 生成某张表的
      */
-    public static void generateFromTable(String tablename, String tablecomment){
+    private static void generateFromTable(String tablename, String tablecomment){
         boolean hasDate = false;
         boolean hasBigDecimal = false;
         boolean hasColumnAnnotation = false;
