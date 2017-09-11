@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by 玄玉<http://jadyer.cn/> on 2017/9/8 23:22.
  */
-public class CodeGenHelper {
+public class GenerateHelper {
     private static final String PACKAGE_MODEL = "com.jadyer.seed.mpp.web.model";
     private static final String PACKAGE_REPOSITORY = "com.jadyer.seed.mpp.web.repository";
     private static final String importColumnAnnotation = "\nimport javax.persistence.Column;";
@@ -67,6 +67,7 @@ public class CodeGenHelper {
             }
         }
     }
+
 
     /**
      * 生成某张表的
