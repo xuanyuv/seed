@@ -22,7 +22,9 @@ import java.util.List;
  */
 public class GenerateHelper {
     private static final String PACKAGE_MODEL = "com.jadyer.seed.mpp.web.model";
+    private static final String PACKAGE_SERVICE = "com.jadyer.seed.mpp.web.service";
     private static final String PACKAGE_REPOSITORY = "com.jadyer.seed.mpp.web.repository";
+    private static final String PACKAGE_CONTROLLER = "com.jadyer.seed.mpp.web.controller";
     private static final String importColumnAnnotation = "\nimport javax.persistence.Column;";
     private static final String importDate = "import java.util.Date;\n";
     private static final String importBigDecimal = "import java.math.BigDecimal;\n";
@@ -146,11 +148,27 @@ public class GenerateHelper {
          * 构造Beetl模板变量
          */
         String classname = DBHelper.buildClassnameFromTablename(tablename);
-        Template templateRepo = groupTemplate.getTemplate("repository.btl");
-        templateRepo.binding("PACKAGE_REPOSITORY", PACKAGE_REPOSITORY);
-        templateRepo.binding("PACKAGE_MODEL", PACKAGE_MODEL);
-        templateRepo.binding("CLASS_NAME", classname);
-        templateRepo.binding("comments", comments.toString());
+        Template templateRepository = groupTemplate.getTemplate("repository.btl");
+        templateRepository.binding("PACKAGE_REPOSITORY", PACKAGE_REPOSITORY);
+        templateRepository.binding("PACKAGE_MODEL", PACKAGE_MODEL);
+        templateRepository.binding("CLASS_NAME", classname);
+        templateRepository.binding("comments", comments.toString());
+        Template templateService = groupTemplate.getTemplate("service.btl");
+        templateService.binding("PACKAGE_REPOSITORY", PACKAGE_REPOSITORY);
+        templateService.binding("PACKAGE_SERVICE", PACKAGE_SERVICE);
+        templateService.binding("PACKAGE_MODEL", PACKAGE_MODEL);
+        templateService.binding("CLASS_NAME", classname);
+        templateService.binding("CLASS_NAME_uncapitalize", StringUtils.uncapitalize(classname));
+        templateService.binding("comments", comments.toString());
+        Template templateController = groupTemplate.getTemplate("controller.btl");
+        templateController.binding("PACKAGE_CONTROLLER", PACKAGE_CONTROLLER);
+        templateController.binding("PACKAGE_SERVICE", PACKAGE_SERVICE);
+        templateController.binding("PACKAGE_MODEL", PACKAGE_MODEL);
+        templateController.binding("CLASS_NAME", classname);
+        templateController.binding("CLASS_NAME_uncapitalize", StringUtils.uncapitalize(classname));
+        templateController.binding("TABLE_NAME_nounderline", (tablename.startsWith("t_") ? tablename.substring(2) : tablename).replaceAll("_", ""));
+        templateController.binding("TABLE_NAME_convertpoint", (tablename.startsWith("t_") ? tablename.substring(2) : tablename).replaceAll("_", "."));
+        templateController.binding("comments", comments.toString());
         Template templateModel = groupTemplate.getTemplate("model.btl");
         templateModel.binding("PACKAGE_MODEL", PACKAGE_MODEL);
         templateModel.binding("CLASS_NAME", classname);
@@ -172,7 +190,9 @@ public class GenerateHelper {
         try {
             String outBaseDir = FileSystemView.getFileSystemView().getHomeDirectory().getPath() + System.getProperty("file.separator");
             templateModel.renderTo(FileUtils.openOutputStream(new File(outBaseDir + "model" + System.getProperty("file.separator") + classname + ".java")));
-            templateRepo.renderTo(FileUtils.openOutputStream(new File(outBaseDir + "repository" + System.getProperty("file.separator") + classname + "Repository.java")));
+            templateService.renderTo(FileUtils.openOutputStream(new File(outBaseDir + "service" + System.getProperty("file.separator") + classname + "Service.java")));
+            templateController.renderTo(FileUtils.openOutputStream(new File(outBaseDir + "controller" + System.getProperty("file.separator") + classname + "Controller.java")));
+            templateRepository.renderTo(FileUtils.openOutputStream(new File(outBaseDir + "repository" + System.getProperty("file.separator") + classname + "Repository.java")));
         } catch (IOException e) {
             System.err.println("生成代码时发生异常，堆栈轨迹如下：");
             e.printStackTrace();

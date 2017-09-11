@@ -1,0 +1,56 @@
+package ${PACKAGE_CONTROLLER};
+
+import com.jadyer.seed.comm.constant.CommonResult;
+import ${PACKAGE_MODEL}.${CLASS_NAME};
+import ${PACKAGE_SERVICE}.${CLASS_NAME}Service;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+/**
+ * ${comments}
+ */
+@Controller
+@RequestMapping("/${TABLE_NAME_nounderline}")
+public class ${CLASS_NAME}Controller {
+    @Resource
+    private ${CLASS_NAME}Service ${CLASS_NAME_uncapitalize}Service;
+
+    /**
+     * 分页查询
+     * @param pageNo 页码，起始值为0，未传此值则默认取0
+     */
+    @GetMapping("/list")
+    public String list(String pageNo, HttpServletRequest request){
+        request.setAttribute("page", ${CLASS_NAME_uncapitalize}Service.list(pageNo));
+        return "${TABLE_NAME_convertpoint}.list";
+    }
+
+
+    @ResponseBody
+    @GetMapping("/get/{id}")
+    public CommonResult get(@PathVariable long id){
+        return new CommonResult(${CLASS_NAME_uncapitalize}Service.get(id));
+    }
+
+
+    @ResponseBody
+    @PostMapping("delete/{id}")
+    public CommonResult delete(@PathVariable long id){
+        ${CLASS_NAME_uncapitalize}Service.delete(id);
+        return new CommonResult();
+    }
+
+
+    @ResponseBody
+    @PostMapping("/upsert")
+    public CommonResult upsert(${CLASS_NAME} ${CLASS_NAME_uncapitalize}){
+        return new CommonResult(${CLASS_NAME_uncapitalize}Service.upsert(${CLASS_NAME_uncapitalize}));
+    }
+}

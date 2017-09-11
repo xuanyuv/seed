@@ -1,0 +1,54 @@
+package ${PACKAGE_SERVICE};
+
+import ${PACKAGE_MODEL}.${CLASS_NAME};
+import ${PACKAGE_REPOSITORY}.${CLASS_NAME}Repository;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+
+/**
+ * ${comments}
+ */
+@Service
+@Transactional(rollbackFor=Exception.class)
+public class ${CLASS_NAME}Service {
+    @Resource
+    private ${CLASS_NAME}Repository ${CLASS_NAME_uncapitalize}Repository;
+
+    /**
+     * 分页查询
+     * @param pageNo 页码，起始值为0，未传此值则默认取0
+     */
+    @Transactional(readOnly=true, propagation=Propagation.NOT_SUPPORTED)
+    public Page<${CLASS_NAME}> list(String pageNo){
+        Sort sort = new Sort(Sort.Direction.DESC, "id");
+        Pageable pageable = new PageRequest(StringUtils.isBlank(pageNo)?0:Integer.parseInt(pageNo), 10, sort);
+        //Condition<${CLASS_NAME}> spec = Condition.and();
+        //spec.eq("id", 2);
+        //return ${CLASS_NAME_uncapitalize}Repository.findAll(spec, pageable);
+        return ${CLASS_NAME_uncapitalize}Repository.findAll(pageable);
+    }
+
+
+    @Transactional(readOnly=true, propagation=Propagation.NOT_SUPPORTED)
+    public ${CLASS_NAME} get(long id){
+        return ${CLASS_NAME_uncapitalize}Repository.findOne(id);
+    }
+
+
+    public void delete(long id){
+        ${CLASS_NAME_uncapitalize}Repository.delete(id);
+    }
+
+
+    public ${CLASS_NAME} upsert(${CLASS_NAME} ${CLASS_NAME_uncapitalize}){
+        return ${CLASS_NAME_uncapitalize}Repository.saveAndFlush(${CLASS_NAME_uncapitalize});
+    }
+}
