@@ -15,7 +15,9 @@ import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by 玄玉<http://jadyer.cn/> on 2017/9/8 23:22.
@@ -148,34 +150,25 @@ public class GenerateHelper {
          * 构造Beetl模板变量
          */
         String classname = DBHelper.buildClassnameFromTablename(tablename);
+        Map<String, Object> sharedVars = new HashMap<>();
+        sharedVars.put("PACKAGE_REPOSITORY", PACKAGE_REPOSITORY);
+        sharedVars.put("PACKAGE_CONTROLLER", PACKAGE_CONTROLLER);
+        sharedVars.put("PACKAGE_SERVICE", PACKAGE_SERVICE);
+        sharedVars.put("PACKAGE_MODEL", PACKAGE_MODEL);
+        sharedVars.put("CLASS_NAME", classname);
+        sharedVars.put("comments", comments.toString());
+        groupTemplate.setSharedVars(sharedVars);
         Template templateRepository = groupTemplate.getTemplate("repository.btl");
-        templateRepository.binding("PACKAGE_REPOSITORY", PACKAGE_REPOSITORY);
-        templateRepository.binding("PACKAGE_MODEL", PACKAGE_MODEL);
-        templateRepository.binding("CLASS_NAME", classname);
-        templateRepository.binding("comments", comments.toString());
         Template templateService = groupTemplate.getTemplate("service.btl");
-        templateService.binding("PACKAGE_REPOSITORY", PACKAGE_REPOSITORY);
-        templateService.binding("PACKAGE_SERVICE", PACKAGE_SERVICE);
-        templateService.binding("PACKAGE_MODEL", PACKAGE_MODEL);
-        templateService.binding("CLASS_NAME", classname);
         templateService.binding("CLASS_NAME_uncapitalize", StringUtils.uncapitalize(classname));
-        templateService.binding("comments", comments.toString());
         Template templateController = groupTemplate.getTemplate("controller.btl");
-        templateController.binding("PACKAGE_CONTROLLER", PACKAGE_CONTROLLER);
-        templateController.binding("PACKAGE_SERVICE", PACKAGE_SERVICE);
-        templateController.binding("PACKAGE_MODEL", PACKAGE_MODEL);
-        templateController.binding("CLASS_NAME", classname);
         templateController.binding("CLASS_NAME_uncapitalize", StringUtils.uncapitalize(classname));
         templateController.binding("TABLE_NAME_nounderline", (tablename.startsWith("t_") ? tablename.substring(2) : tablename).replaceAll("_", ""));
         templateController.binding("TABLE_NAME_convertpoint", (tablename.startsWith("t_") ? tablename.substring(2) : tablename).replaceAll("_", "."));
-        templateController.binding("comments", comments.toString());
         Template templateModel = groupTemplate.getTemplate("model.btl");
-        templateModel.binding("PACKAGE_MODEL", PACKAGE_MODEL);
-        templateModel.binding("CLASS_NAME", classname);
         templateModel.binding("TABLE_NAME", tablename);
         templateModel.binding("fields", fields.toString());
         templateModel.binding("methods", methods.toString());
-        templateModel.binding("comments", comments.toString());
         templateModel.binding("serialVersionUID", JadyerUtil.buildSerialVersionUID());
         if(hasColumnAnnotation){
             templateModel.binding("importColumnAnnotation", importColumnAnnotation);
