@@ -11,6 +11,32 @@ import java.util.Map;
 /**
  * Redis+Lua結合TokenBucket算法實現的RateLimiter
  * <ul>
+ *     <li>可以考虑做成注解</li>
+ *     <li>public @interface RateLimiter {}</li>
+ *     <li>@RateLimiter(limit=2, timeout=5000) @GetMapping("/test") public void get(int id){}</li>
+ *     <li>
+ *         @Configuration
+ *         class WebMvcConfigurer extends WebMvcConfigurerAdapter{
+ *             @Autowired private JedisPool jedisPool;
+ *             public void addInterceptors(InterceptorRegistry registry) {
+ *                 registry.addInterceptor(new HandlerInterceptorAdapter() {
+ *                     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+ *                         HandlerMethod handlerMethod = (HandlerMethod) handler;
+ *                         Method method = handlerMethod.getMethod();
+ *                         RateLimiter rateLimiter = method.getAnnotation(RateLimiter.class);
+ *                         if(null != rateLimiter){
+ *                             int limit = rateLimiter.limit();
+ *                             int timeout = rateLimiter.timeout();
+ *                             return false;
+ *                             return true;
+ *                         }
+ *                     }
+ *                 }).addPathPatterns("/*");
+ *             }
+ *         }
+ *     </li>
+ * </ul>
+ * <ul>
  *     <li>參考了以下網站</li>
  *     <li>http://jinnianshilongnian.iteye.com/blog/2305117</li>
  *     <li>https://zhuanlan.zhihu.com/p/20872901</li>
