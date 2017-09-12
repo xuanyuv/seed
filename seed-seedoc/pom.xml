@@ -7,7 +7,7 @@
         <artifactId>seed</artifactId>
         <version>1.1</version>
     </parent>
-    <artifactId>seed-sdoc</artifactId>
+    <artifactId>seed-seedoc</artifactId>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -27,7 +27,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.jadyer.seed.sdoc.boot.SdocRun</mainClass>
+                    <mainClass>com.jadyer.seed.seedoc.boot.SeedocRun</mainClass>
                 </configuration>
                 <executions>
                     <execution>

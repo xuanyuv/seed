@@ -1,4 +1,4 @@
-package com.jadyer.seed.sdoc;
+package com.jadyer.seed.seedoc;
 
 import com.jadyer.seed.comm.util.LogUtil;
 import org.apache.commons.io.FilenameUtils;
@@ -13,7 +13,7 @@ import java.util.Date;
  * Created by 玄玉<http://jadyer.cn/> on 2017/3/10 5:35.
  */
 @Component
-class SdocHelper {
+class SeedocHelper {
     @Value("${app.upload}")
     private String appUpload;
 

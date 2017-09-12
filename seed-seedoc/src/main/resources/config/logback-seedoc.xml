@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" ?>  
+<?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
-    <property name="PROJECT_NAME" value="seed-sdoc"/>
+    <property name="PROJECT_NAME" value="seed-seedoc"/>
     <property name="LOG_HOME" value="${LOG_PATH}"/>
     <contextName>${PROJECT_NAME}</contextName>
 

@@ -1,4 +1,4 @@
-package com.jadyer.seed.sdoc.boot;
+package com.jadyer.seed.seedoc.boot;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
 import com.alibaba.fastjson.serializer.SerializerFeature;
@@ -24,10 +24,10 @@ import java.util.List;
 //@EntityScan(basePackages="${scan.base.packages}")
 //@EnableJpaRepositories(basePackages="${scan.base.packages}")
 @SpringBootApplication(scanBasePackages="${scan.base.packages}", exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class, DruidDataSourceAutoConfigure.class})
-public class SdocRun extends SpringBootServletInitializer {
+public class SeedocRun extends SpringBootServletInitializer {
     //启动方式：http://jadyer.cn/2016/07/29/idea-springboot-jsp/
     public static void main(String[] args) {
-        new SpringApplicationBuilder().sources(SdocRun.class).profiles("local").run(args);
+        new SpringApplicationBuilder().sources(SeedocRun.class).profiles("local").run(args);
     }
 
     @Override

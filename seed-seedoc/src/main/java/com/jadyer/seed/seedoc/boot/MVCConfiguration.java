@@ -1,4 +1,4 @@
-package com.jadyer.seed.sdoc.boot;
+package com.jadyer.seed.seedoc.boot;
 
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
