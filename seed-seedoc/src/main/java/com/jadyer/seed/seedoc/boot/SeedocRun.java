@@ -1,22 +1,18 @@
 package com.jadyer.seed.seedoc.boot;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.alibaba.fastjson.support.config.FastJsonConfig;
-import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.jadyer.seed.comm.constant.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.SimpleCommandLinePropertySource;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.servlet.Filter;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by 玄玉<http://jadyer.cn/> on 2017/3/10 5:27.
@@ -24,41 +20,34 @@ import java.util.List;
 //@EntityScan(basePackages="${scan.base.packages}")
 //@EnableJpaRepositories(basePackages="${scan.base.packages}")
 @SpringBootApplication(scanBasePackages="${scan.base.packages}", exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class, DruidDataSourceAutoConfigure.class})
-public class SeedocRun extends SpringBootServletInitializer {
-    //启动方式：http://jadyer.cn/2016/07/29/idea-springboot-jsp/
-    public static void main(String[] args) {
-        new SpringApplicationBuilder().sources(SeedocRun.class).profiles("local").run(args);
-    }
-
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(getClass());
-    }
+public class SeedocRun{
+    private static final Logger log = LoggerFactory.getLogger(SeedocRun.class);
 
     @Bean
     public Filter characterEncodingFilter(){
         return new CharacterEncodingFilter("UTF-8", true);
     }
 
-    @Bean
-    public HttpMessageConverters fastjsonConverter(){
-        List<SerializerFeature> serializerFeatureList = new ArrayList<>();
-        serializerFeatureList.add(SerializerFeature.PrettyFormat);
-        serializerFeatureList.add(SerializerFeature.QuoteFieldNames);
-        serializerFeatureList.add(SerializerFeature.WriteMapNullValue);
-        serializerFeatureList.add(SerializerFeature.WriteNullListAsEmpty);
-        serializerFeatureList.add(SerializerFeature.WriteNullNumberAsZero);
-        serializerFeatureList.add(SerializerFeature.WriteNullStringAsEmpty);
-        serializerFeatureList.add(SerializerFeature.WriteNullBooleanAsFalse);
-        serializerFeatureList.add(SerializerFeature.WriteDateUseDateFormat);
-        SerializerFeature[] serializerFeatures = new SerializerFeature[serializerFeatureList.size()];
-        serializerFeatureList.toArray(serializerFeatures);
-        FastJsonConfig fastJsonConfig = new FastJsonConfig();
-        fastJsonConfig.setCharset(StandardCharsets.UTF_8);
-        fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
-        fastJsonConfig.setSerializerFeatures(serializerFeatures);
-        FastJsonHttpMessageConverter fastjson = new FastJsonHttpMessageConverter();
-        fastjson.setFastJsonConfig(fastJsonConfig);
-        return new HttpMessageConverters(fastjson);
+    private static String getProfile(SimpleCommandLinePropertySource source){
+        if(source.containsProperty(Constants.BOOT_ACTIVE_NAME)){
+            log.info("读取到spring变量：{}={}", Constants.BOOT_ACTIVE_NAME, source.getProperty(Constants.BOOT_ACTIVE_NAME));
+            return source.getProperty(Constants.BOOT_ACTIVE_NAME);
+        }
+        if(System.getProperties().containsKey(Constants.BOOT_ACTIVE_NAME)){
+            log.info("读取到java变量：{}={}", Constants.BOOT_ACTIVE_NAME, System.getProperty(Constants.BOOT_ACTIVE_NAME));
+            return System.getProperty(Constants.BOOT_ACTIVE_NAME);
+        }
+        if(System.getenv().containsKey(Constants.BOOT_ACTIVE_NAME)){
+            log.info("读取到系统变量：{}={}", Constants.BOOT_ACTIVE_NAME, System.getenv(Constants.BOOT_ACTIVE_NAME));
+            return System.getenv(Constants.BOOT_ACTIVE_NAME);
+        }
+        log.warn("未读取到{}，默认取环境：{}", Constants.BOOT_ACTIVE_NAME, Constants.BOOT_ACTIVE_DEFAULT_VALUE);
+        //logback-boot.xml中根据环境变量配置日志是否输出到控制台时，使用此配置
+        System.setProperty(Constants.BOOT_ACTIVE_NAME, Constants.BOOT_ACTIVE_DEFAULT_VALUE);
+        return Constants.BOOT_ACTIVE_DEFAULT_VALUE;
+    }
+
+    public static void main(String[] args) {
+        new SpringApplicationBuilder().sources(SeedocRun.class).profiles(getProfile(new SimpleCommandLinePropertySource(args))).run(args);
     }
 }
