@@ -59,11 +59,7 @@ import javax.servlet.Filter;
  * IntelliJ IDEA 中通过本类启动应用的方式，有三种
  * 1、http://jadyer.cn/2016/07/29/idea-springboot-jsp/
  * 2、直接运行com.jadyer.seed.test.BootStartup.java
- * 3、直接运行该类
- *    不过由于这里配置了characterEncodingFilter，它用到了javax.servlet.Filter
- *    所以要先到parent-pom里面，把tomcat-embed-jasper的provided属性去掉
- *    或者把这里配置的characterEncodingFilter放到其它@configuration里面
- * 说明：后两种的不同在于使用的启动类不同，一个是BootStrap，一个是BootRun自身
+ * 3、直接运行该类（不过会由于该pom配置了spring-boot-starter-tomcat导致tomcat冲突，报告java.lang.ClassNotFoundException: javax.servlet.Filter）
  * -------------------------------------------------------------------------------------------------------
  */
 @SpringBootApplication(scanBasePackages="${scan.base.packages}", exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class, DruidDataSourceAutoConfigure.class})

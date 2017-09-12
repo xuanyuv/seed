@@ -1,22 +1,16 @@
 scan:
   base:
-    packages: com.jadyer.seed
+    packages: com.jadyer.seed.sdoc
 
 
 logging:
-  path: /home/seed/log/scs
-  config: classpath:config/logback-scs.xml
-
-
-multipart:
-  enabled: true
-  maxFileSize: 10Mb
-  maxRequestSize: 10Mb
+  path: /home/seed/log/sdoc
+  config: classpath:config/logback-sdoc.xml
 
 
 spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/scs?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://127.0.0.1:3306/sdoc?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull
     username: root
     password: xuanyu
     druid:
@@ -65,11 +59,6 @@ auth:
     - /favicon.ico
     - /building.jsp
 
-
-app:
-  upload: /app/upload
-
-
 ---
 spring:
   profiles: local
@@ -78,18 +67,6 @@ server:
 
 ---
 spring:
-  profiles: dev
-server:
-  port: 8088
-
----
-spring:
-  profiles: test
-server:
-  port: 8089
-
----
-spring:
   profiles: prod
 server:
-  port: 8090
+  port: 8000

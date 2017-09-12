@@ -27,7 +27,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.jadyer.seed.sdoc.boot.SdocBootStrap</mainClass>
+                    <mainClass>com.jadyer.seed.sdoc.boot.SdocRun</mainClass>
                 </configuration>
                 <executions>
                     <execution>

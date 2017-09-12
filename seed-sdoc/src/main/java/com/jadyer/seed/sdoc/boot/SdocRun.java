@@ -24,10 +24,10 @@ import java.util.List;
 //@EntityScan(basePackages="${scan.base.packages}")
 //@EnableJpaRepositories(basePackages="${scan.base.packages}")
 @SpringBootApplication(scanBasePackages="${scan.base.packages}", exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class, DruidDataSourceAutoConfigure.class})
-public class SdocBootStrap extends SpringBootServletInitializer {
+public class SdocRun extends SpringBootServletInitializer {
     //启动方式：http://jadyer.cn/2016/07/29/idea-springboot-jsp/
     public static void main(String[] args) {
-        new SpringApplicationBuilder().sources(SdocBootStrap.class).profiles("local").run(args);
+        new SpringApplicationBuilder().sources(SdocRun.class).profiles("local").run(args);
     }
 
     @Override
