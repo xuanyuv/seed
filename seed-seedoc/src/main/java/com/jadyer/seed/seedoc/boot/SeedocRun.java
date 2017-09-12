@@ -42,8 +42,6 @@ public class SeedocRun{
             return System.getenv(Constants.BOOT_ACTIVE_NAME);
         }
         log.warn("未读取到{}，默认取环境：{}", Constants.BOOT_ACTIVE_NAME, Constants.BOOT_ACTIVE_DEFAULT_VALUE);
-        //logback-boot.xml中根据环境变量配置日志是否输出到控制台时，使用此配置
-        System.setProperty(Constants.BOOT_ACTIVE_NAME, Constants.BOOT_ACTIVE_DEFAULT_VALUE);
         return Constants.BOOT_ACTIVE_DEFAULT_VALUE;
     }
 
