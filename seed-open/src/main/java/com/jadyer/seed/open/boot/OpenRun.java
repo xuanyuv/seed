@@ -1,13 +1,16 @@
 package com.jadyer.seed.open.boot;
 
+import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
 import com.jadyer.seed.comm.constant.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 
-@SpringBootApplication(scanBasePackages="${scan.base.packages}")
+@SpringBootApplication(scanBasePackages="${scan.base.packages}", exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class, DruidDataSourceAutoConfigure.class})
 public class OpenRun {
     private static final Logger log = LoggerFactory.getLogger(OpenRun.class);
 
