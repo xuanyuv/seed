@@ -27,7 +27,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.jadyer.seed.open.boot.OpenBootRun</mainClass>
+                    <mainClass>com.jadyer.seed.open.boot.OpenRun</mainClass>
                 </configuration>
                 <executions>
                     <execution>

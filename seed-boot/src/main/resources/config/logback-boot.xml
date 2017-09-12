@@ -65,6 +65,10 @@
     </logger>
 
     <root level="DEBUG">
-        <appender-ref ref="CONSOLE"/>
+        <if condition='property("spring.profiles.active").contains("local")'>
+            <then>
+                <appender-ref ref="CONSOLE"/>
+            </then>
+        </if>
     </root>
 </configuration>

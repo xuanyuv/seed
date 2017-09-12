@@ -62,6 +62,7 @@ import javax.servlet.Filter;
  * 3、直接运行该类
  *    不过由于这里配置了characterEncodingFilter，它用到了javax.servlet.Filter
  *    所以要先到parent-pom里面，把tomcat-embed-jasper的provided属性去掉
+ *    或者把这里配置的characterEncodingFilter放到其它@configuration里面
  * 说明：后两种的不同在于使用的启动类不同，一个是BootStrap，一个是BootRun自身
  * -------------------------------------------------------------------------------------------------------
  */
@@ -88,6 +89,8 @@ public class BootRun {
             return System.getenv(Constants.BOOT_ACTIVE_NAME);
         }
         log.warn("未读取到{}，默认取环境：{}", Constants.BOOT_ACTIVE_NAME, Constants.BOOT_ACTIVE_DEFAULT_VALUE);
+        //logback-boot.xml中根据环境变量配置日志是否输出到控制台时，使用此配置
+        System.setProperty(Constants.BOOT_ACTIVE_NAME, Constants.BOOT_ACTIVE_DEFAULT_VALUE);
         return Constants.BOOT_ACTIVE_DEFAULT_VALUE;
     }
 

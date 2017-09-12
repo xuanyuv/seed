@@ -5,20 +5,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
-import org.springframework.web.filter.CharacterEncodingFilter;
-
-import javax.servlet.Filter;
 
 @SpringBootApplication(scanBasePackages="${scan.base.packages}")
-public class OpenBootRun {
-    private static final Logger log = LoggerFactory.getLogger(OpenBootRun.class);
-
-    @Bean
-    public Filter characterEncodingFilter(){
-        return new CharacterEncodingFilter("UTF-8", true);
-    }
+public class OpenRun {
+    private static final Logger log = LoggerFactory.getLogger(OpenRun.class);
 
     private static String getProfile(SimpleCommandLinePropertySource source){
         if(source.containsProperty(Constants.BOOT_ACTIVE_NAME)){
@@ -38,6 +29,6 @@ public class OpenBootRun {
     }
 
     public static void main(String[] args) {
-        new SpringApplicationBuilder().sources(OpenBootRun.class).profiles(getProfile(new SimpleCommandLinePropertySource(args))).run(args);
+        new SpringApplicationBuilder().sources(OpenRun.class).profiles(getProfile(new SimpleCommandLinePropertySource(args))).run(args);
     }
 }

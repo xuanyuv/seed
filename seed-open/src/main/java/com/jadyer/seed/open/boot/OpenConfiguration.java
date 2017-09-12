@@ -1,10 +1,11 @@
-package com.jadyer.seed.open;
+package com.jadyer.seed.open.boot;
 
 import com.jadyer.seed.comm.constant.Constants;
 import com.jadyer.seed.open.filter.OpenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.servlet.Filter;
 import java.util.ArrayList;
@@ -17,6 +18,12 @@ import java.util.Map;
  */
 @Configuration
 public class OpenConfiguration {
+    @Bean
+    public Filter characterEncodingFilter(){
+        return new CharacterEncodingFilter("UTF-8", true);
+    }
+
+
     //@Resource
     //private JedisCluster jedisCluster;
     //
