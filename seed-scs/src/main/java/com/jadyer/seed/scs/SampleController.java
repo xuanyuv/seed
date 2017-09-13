@@ -9,9 +9,9 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -161,7 +161,7 @@ public class SampleController {
      *     可以url传参，比如http://127.0.0.1/sample/view?url=user/userInfo&id=3，则参数id=3会被放到request中
      * </p>
      */
-    @RequestMapping(value="/view", method= RequestMethod.GET)
+    @GetMapping("/view")
     String view(String url, HttpServletRequest request){
         Map<String, String[]> paramMap = request.getParameterMap();
         for(Map.Entry<String,String[]> entry : paramMap.entrySet()){
