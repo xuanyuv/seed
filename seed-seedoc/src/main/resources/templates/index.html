@@ -91,11 +91,12 @@ function login(){
     }
     flag = false;
     o.attr("disabled", true).text("登录中...").css({"background":"#28b779", "cursor":"auto"});
-    $.post("${ctxPath}/mpp/user/login",
+    $.post("${ctxPath}/login",
         {username:username, password:MD5(password), captcha:captcha},
         function(data){
+            alert(data);
             if(0 == data.code){
-                window.location.href = "${ctxPath}/fans/list";
+                window.location.href = "${ctxPath}/view?url=/demo/list";
             }else{
                 o.attr("disabled", false).text("登录").css({"background":"#5bb75b", "cursor":"auto"});
                 $.promptBox(data.msg, "#ffb848");
@@ -109,7 +110,7 @@ function login(){
  * 重载验证码
  */
 function reloadCaptcha(){
-    document.getElementById("captchaImg").src = "captcha.jsp?time=" +  Math.random();
+    document.getElementById("captchaImg").src = "${ctxPath}/captcha?time=" +  Math.random();
 }
 </script>
 </head>
@@ -123,7 +124,7 @@ function reloadCaptcha(){
             <i></i>
             <p>
                 <input id="captcha" name="captcha" class="te" placeholder="captcha" maxlength="4" style="width:300px; vertical-align:middle;"/>
-                <img style="cursor:pointer; vertical-align:middle; height:38px;" id="captchaImg" src="captcha.jsp" onClick="this.src='captcha.jsp?time'+Math.random();">
+                <img style="cursor:pointer; vertical-align:middle; height:38px;" id="captchaImg" src="${ctxPath}/captcha" onClick="reloadCaptcha();">
             </p>
         </li>
     </ul>

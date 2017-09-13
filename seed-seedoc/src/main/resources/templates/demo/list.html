@@ -5,9 +5,12 @@
     <title>Title</title>
 </head>
 <body>
-hello, <a target="_blank" href="${ctxPath}/get">${session.username}</a>, ${date(), 'yyyy-MM-dd HH:mm:ss'}
+hello, <a target="_blank" href="${ctxPath}/get">${session.user}</a>, ${date(), 'yyyy-MM-dd HH:mm:ss'}
 <br>
 <br>
-hello, <a target="_blank" href="info/get.html">${session.username}</a>, ${date(), 'yyyy-MM-dd HH:mm:ss'}
+hello, <a target="_blank" href="info/get.html">${session.user}</a>, ${date(), 'yyyy-MM-dd HH:mm:ss'}
+<br>
+<br>
+<a href="${ctxPath}/logout">我要登出</a>
 </body>
 </html>
