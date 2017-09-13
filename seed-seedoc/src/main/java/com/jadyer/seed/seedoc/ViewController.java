@@ -11,6 +11,11 @@ import java.util.Map;
  */
 @Controller
 public class ViewController {
+    @GetMapping("/")
+    public String index(){
+        return "/index";
+    }
+
     /**
      * 直接访问页面资源
      * <p>
