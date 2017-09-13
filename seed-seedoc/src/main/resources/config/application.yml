@@ -1,6 +1,6 @@
 scan:
   base:
-    packages: com.jadyer.seed.seedoc
+    packages: com.jadyer.seed
 
 
 logging:

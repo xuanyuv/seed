@@ -19,9 +19,16 @@ public class SeedocController {
         return "/list.html";
     }
 
+
+    @GetMapping("/list99")
+    public String list99(HttpSession session){
+        session.setAttribute("username", "玄玉99 ");
+        return "/list";
+    }
+
     @GetMapping("/get")
     public String get(HttpServletRequest request){
         request.setAttribute("uname", "玄玉归来");
-        return "/info/get.html";
+        return "/info/get";
     }
 }
