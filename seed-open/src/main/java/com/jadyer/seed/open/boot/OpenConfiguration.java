@@ -28,7 +28,7 @@ public class OpenConfiguration {
     //private JedisCluster jedisCluster;
     //
     //@Bean
-    //@Order(5)
+    //@Order(3)
     //public Filter redisFilter(){
     //    List<String> filterMethodList = new ArrayList<>();
     //    filterMethodList.add(Constants.OPEN_METHOD_boot_loan_submit);
@@ -65,6 +65,6 @@ public class OpenConfiguration {
         apiGrantMap.put("770", list770);
         apiGrantMap.put("870", list870);
         apiGrantMap.put("970", list970);
-        return new OpenFilter("/router/rest", apiGrantMap, appsecretMap);
+        return new OpenFilter("/open/router/rest", apiGrantMap, appsecretMap);
     }
 }

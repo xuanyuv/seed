@@ -79,19 +79,22 @@ public class OpenFilter extends OncePerRequestFilter {
         String respDataStr;
         String reqIp = IPUtil.getClientIP(request);
         long startTime = System.currentTimeMillis();
-        //将请求入参解析到ReqData
-        String method = request.getParameter("method");
-        if(StringUtils.isNotBlank(method) && (method.endsWith("file.upload")||method.endsWith("h5"))){
-            reqDataStr = JadyerUtil.buildStringFromMap(request.getParameterMap());
-            LogUtil.getLogger().debug("收到客户端IP=[{}]的请求报文为-->{}", reqIp, reqDataStr);
-            reqData = BeanUtil.requestToBean(request, ReqData.class);
-        }else{
-            reqDataStr = IOUtils.toString(request.getInputStream(), Constants.OPEN_CHARSET_UTF8);
-            LogUtil.getLogger().debug("收到客户端IP=[{}]的请求报文为-->[{}]", reqIp, reqDataStr);
-            reqData = JSON.parseObject(reqDataStr, ReqData.class);
-            method = reqData.getMethod();
-        }
         try{
+            //将请求入参解析到ReqData
+            String method = request.getParameter("method");
+            if(StringUtils.isNotBlank(method) && StringUtils.endsWithAny(method, "h5", "file.upload")){
+                reqDataStr = JadyerUtil.buildStringFromMap(request.getParameterMap());
+                LogUtil.getLogger().debug("收到客户端IP=[{}]的请求报文为-->{}", reqIp, reqDataStr);
+                reqData = BeanUtil.requestToBean(request, ReqData.class);
+            }else{
+                reqDataStr = IOUtils.toString(request.getInputStream(), Constants.OPEN_CHARSET_UTF8);
+                LogUtil.getLogger().debug("收到客户端IP=[{}]的请求报文为-->[{}]", reqIp, reqDataStr);
+                if(StringUtils.isBlank(reqDataStr)){
+                    throw new SeedException(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "请求无数据");
+                }
+                reqData = JSON.parseObject(reqDataStr, ReqData.class);
+                method = reqData.getMethod();
+            }
             //验证请求方法名非空
             if(StringUtils.isBlank(reqData.getMethod())){
                 throw new SeedException(CodeEnum.OPEN_UNKNOWN_METHOD.getCode(), String.format("%s-->[%s]", CodeEnum.OPEN_UNKNOWN_METHOD.getMsg(), reqData.getMethod()));
@@ -105,7 +108,7 @@ public class OpenFilter extends OncePerRequestFilter {
                 throw new SeedException(CodeEnum.OPEN_UNKNOWN_APPID);
             }
             //获取协议版本
-            if(!Constants.OPEN_VERSION_21.equals(reqData.getVersion()) && !Constants.OPEN_VERSION_22.equals(reqData.getVersion())){
+            if(!StringUtils.equalsAny(reqData.getVersion(), Constants.OPEN_VERSION_21, Constants.OPEN_VERSION_22)){
                 throw new SeedException(CodeEnum.OPEN_UNKNOWN_VERSION);
             }
             //验证接口是否已授权
@@ -118,7 +121,7 @@ public class OpenFilter extends OncePerRequestFilter {
             //解密并处理（返回诸如html或txt内容时，就不用先得到字符串再转成字节数组输出，这会影响性能，尤其对账文件下载）
             RequestParameterWrapper requestWrapper = new RequestParameterWrapper(request);
             requestWrapper.addAllParameters(this.decrypt(reqData, appsecret));
-            if(method.endsWith("h5") || method.endsWith("agree") || method.endsWith("download")){
+            if(StringUtils.endsWithAny(method, "h5", "agree", "download")){
                 filterChain.doFilter(requestWrapper, response);
                 respDataStr = method + "...";
                 LogUtil.getLogger().info("返回客户端IP=[{}]的应答明文为-->[{}]，Duration[{}]ms", reqIp, respDataStr, (System.currentTimeMillis()-startTime));
@@ -130,11 +133,11 @@ public class OpenFilter extends OncePerRequestFilter {
                 RespData respData = JSON.parseObject(respDataStr, RespData.class);
                 if(CodeEnum.SUCCESS.getCode() == Integer.parseInt(respData.getCode())){
                     if(Constants.OPEN_VERSION_21.equals(reqData.getVersion())){
-                        respData.setData(CodecUtil.buildAESEncrypt(respData.getData(), appsecret));
+                        respData.setData(StringUtils.isBlank(respData.getData()) ? "" : CodecUtil.buildAESEncrypt(respData.getData(), appsecret));
                     }else{
                         Map<String, String> dataMap = JSON.parseObject(appsecret, new TypeReference<Map<String, String>>(){});
-                        respData.setSign(CodecUtil.buildRSASignByPrivateKey(respData.getData(), dataMap.get("openPrivateKey")));
-                        respData.setData(CodecUtil.buildRSAEncryptByPublicKey(respData.getData(), dataMap.get("publicKey")));
+                        respData.setSign(StringUtils.isBlank(respData.getData()) ? "" : CodecUtil.buildRSASignByPrivateKey(respData.getData(), dataMap.get("openPrivateKey")));
+                        respData.setData(StringUtils.isBlank(respData.getData()) ? "" : CodecUtil.buildRSAEncryptByPublicKey(respData.getData(), dataMap.get("publicKey")));
                     }
                 }
                 String respDataJson = JSON.toJSONString(respData);

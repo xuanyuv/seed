@@ -1,4 +1,4 @@
-package com.jadyer.seed.seedoc.boot;
+package com.jadyer.seed.open.boot;
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
@@ -16,7 +16,7 @@ public class FastjsonConfiguration {
     @Bean
     public HttpMessageConverters fastjsonConverter(){
         List<SerializerFeature> serializerFeatureList = new ArrayList<>();
-        serializerFeatureList.add(SerializerFeature.PrettyFormat);
+        //serializerFeatureList.add(SerializerFeature.PrettyFormat);
         serializerFeatureList.add(SerializerFeature.QuoteFieldNames);
         serializerFeatureList.add(SerializerFeature.WriteMapNullValue);
         serializerFeatureList.add(SerializerFeature.WriteNullListAsEmpty);
@@ -32,6 +32,8 @@ public class FastjsonConfiguration {
         fastJsonConfig.setSerializerFeatures(serializerFeatures);
         FastJsonHttpMessageConverter fastjson = new FastJsonHttpMessageConverter();
         fastjson.setFastJsonConfig(fastJsonConfig);
+        ////指定转换器是否可将clazz类型的对象写到响应流中
+        //fastjson.canWrite();
         return new HttpMessageConverters(fastjson);
     }
 }

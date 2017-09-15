@@ -20,12 +20,11 @@
 * ├── seed-mpp
 * │   └── seed-comm
 * ├── seed-open
-* │   └── seed-comm
+* │   └── seed-seedoc
+* │       └── seed-comm
 * ├── seed-qss
 * │   └── seed-comm
 * ├── seed-scs
-* │   └── seed-comm
-* ├── seed-seedoc
 * │   └── seed-comm
 * ├── seed-server
 * │   └── seed-comm

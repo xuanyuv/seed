@@ -46,7 +46,7 @@ public class RedisFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return !filterMethodList.isEmpty() && !filterMethodList.contains(request.getParameter("method"));
+        return !request.getServletPath().startsWith("/open") || (!filterMethodList.isEmpty() && !filterMethodList.contains(request.getParameter("method")));
     }
 
 

@@ -2,9 +2,63 @@ scan:
   base:
     packages: com.jadyer.seed
 
+
 logging:
   path: /home/seed/log/open
   config: classpath:logback-open.xml
+
+
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/seedoc?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: xuanyu
+    druid:
+      filters: wall,mergeStat
+      initialSize: 5
+      minIdle: 5
+      maxActive: 100
+      maxWait: 60000
+      validationQuery: SELECT 1
+      minEvictableIdleTimeMillis: 300000
+      timeBetweenEvictionRunsMillis: 60000
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      WebStatFilter:
+        enabled: true
+        profileEnable: true
+        urlPattern: /*
+      StatViewServlet:
+        enabled: true
+        urlPattern: /druid/*
+        loginUsername: druid
+        loginPassword: http://jadyer.cn/
+  jpa:
+    showSql: false
+    database: MYSQL
+    generateDdl: false
+    databasePlatform: org.hibernate.dialect.MySQL5InnoDBDialect
+    properties:
+      hibernate:
+        format_sql: true
+
+
+seedoc:
+  auth:
+    unurl: /login.jsp
+    anons:
+      - /
+      - /js/**
+      - /css/**
+      - /img/**
+      - /health
+      - /druid/**
+      - /sample/login/**
+      - /login
+      - /login.jsp
+      - /captcha.jsp
+      - /favicon.ico
+      - /building.jsp
 
 ---
 spring:
