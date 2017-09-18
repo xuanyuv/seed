@@ -350,6 +350,7 @@ public class OpenFilter extends OncePerRequestFilter {
             outputWrapper = new OutputStreamWrapper(output);
             writer = new ResponsePrintWriter(output);
         }
+        @Override
         public void finalize() throws Throwable {
             super.finalize();
             output.close();

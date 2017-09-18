@@ -96,6 +96,7 @@ public class RedisFilter extends OncePerRequestFilter {
             outputWrapper = new OutputStreamWrapper(output);
             writer = new ResponsePrintWriter(output);
         }
+        @Override
         public void finalize() throws Throwable {
             super.finalize();
             output.close();
@@ -116,6 +117,7 @@ public class RedisFilter extends OncePerRequestFilter {
         public void close() throws IOException {
             writer.close();
         }
+        @Override
         public PrintWriter getWriter() throws IOException {
             return writer;
         }
