@@ -1,4 +1,4 @@
-package com.jadyer.seed.open.filter;
+package com.jadyer.seed.open.boot;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -59,7 +59,7 @@ public class OpenFilter extends OncePerRequestFilter {
      * @param _apiGrantMap  为各个appid初始化API授权情况
      * @param _appsecretMap 为各个appid初始化appsecret
      */
-    public OpenFilter(String _filterURL, Map<String, List<String>> _apiGrantMap, Map<String, String> _appsecretMap){
+    OpenFilter(String _filterURL, Map<String, List<String>> _apiGrantMap, Map<String, String> _appsecretMap){
         this.filterURL = _filterURL;
         this.apiGrantMap = _apiGrantMap;
         this.appsecretMap = _appsecretMap;

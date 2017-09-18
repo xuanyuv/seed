@@ -1,4 +1,4 @@
-package com.jadyer.seed.open.filter;
+package com.jadyer.seed.open.boot;
 
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.Constants;
@@ -38,7 +38,7 @@ public class RedisFilter extends OncePerRequestFilter {
      * @param jedisCluster      redis集群对象
      * @param _filterMethodList 指定该Filter拦截的开放平台方法名，null表示拦截所有
      */
-    public RedisFilter(JedisCluster jedisCluster, List<String> _filterMethodList){
+    RedisFilter(JedisCluster jedisCluster, List<String> _filterMethodList){
         this.jedisCluster = jedisCluster;
         this.filterMethodList.addAll(_filterMethodList);
     }

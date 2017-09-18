@@ -1,7 +1,6 @@
 package com.jadyer.seed.open.boot;
 
 import com.jadyer.seed.comm.constant.Constants;
-import com.jadyer.seed.open.filter.OpenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
