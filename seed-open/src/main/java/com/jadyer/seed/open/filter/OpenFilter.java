@@ -142,26 +142,14 @@ public class OpenFilter extends OncePerRequestFilter {
                 }
                 String respDataJson = JSON.toJSONString(respData);
                 LogUtil.getLogger().debug("返回客户端IP=[{}]的应答密文为-->[{}]，Duration[{}]ms", reqIp, respDataJson, (System.currentTimeMillis()-startTime));
-                //ServletOutputStream out = response.getOutputStream();
-                //out.write(respDataJson.getBytes(Constants.OPEN_CHARSET_UTF8));
-                //out.flush();
-                //IOUtils.closeQuietly(out);
                 response.getOutputStream().write(respDataJson.getBytes(Constants.OPEN_CHARSET_UTF8));
             }
         }catch(SeedException e){
             respDataStr = JSON.toJSONString(new CommonResult(e.getCode(), e.getMessage()), true);
             LogUtil.getLogger().info("返回客户端IP=[{}]的应答明文为-->[{}]，Duration[{}]ms", reqIp, respDataStr, (System.currentTimeMillis()-startTime));
             response.setHeader("Content-Type", "application/json;charset=" + Constants.OPEN_CHARSET_UTF8);
-            //ServletOutputStream out = response.getOutputStream();
-            //out.write(respDataStr.getBytes(Constants.OPEN_CHARSET_UTF8));
-            //out.flush();
-            //IOUtils.closeQuietly(out);
             response.getOutputStream().write(respDataStr.getBytes(Constants.OPEN_CHARSET_UTF8));
         }
-        //}finally{
-        //    out.flush();
-        //    IOUtils.closeQuietly(out);
-        //}
     }
 
 
