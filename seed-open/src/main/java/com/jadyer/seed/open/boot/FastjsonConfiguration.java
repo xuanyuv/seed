@@ -43,12 +43,12 @@ public class FastjsonConfiguration {
     //    fastjson.setFastJsonConfig(fastJsonConfig);
     //    return new HttpMessageConverters(fastjson);
     //}
-
-
+    //TODO 明天测试1.2.38
     @Bean
     public HttpMessageConverters fastjsonConverter(){
         FastJsonHttpMessageConverter fastjson = new FastJsonHttpMessageConverter();
         fastjson.setFeatures(SerializerFeature.PrettyFormat);
+        fastjson.setFeatures(SerializerFeature.QuoteFieldNames);
         fastjson.setFeatures(SerializerFeature.WriteMapNullValue);
         fastjson.setFeatures(SerializerFeature.WriteNullListAsEmpty);
         fastjson.setFeatures(SerializerFeature.WriteNullNumberAsZero);
@@ -62,35 +62,28 @@ public class FastjsonConfiguration {
     static class FastJsonHttpMessageConverter extends AbstractHttpMessageConverter<Object> {
         final static Charset UTF8     = Charset.forName("UTF-8");
         private Charset             charset  = UTF8;
-        private List<SerializerFeature> features = new ArrayList<SerializerFeature>();
-
+        private List<SerializerFeature> features = new ArrayList<>();
         FastJsonHttpMessageConverter(){
             super(new MediaType("application", "json", UTF8), new MediaType("application", "*+json", UTF8));
         }
-
         @Override
         protected boolean supports(Class<?> clazz) {
             return true;
         }
-
         public Charset getCharset() {
             return charset;
         }
-
         public void setCharset(Charset charset) {
             this.charset = charset;
         }
-
         SerializerFeature[] getFeatures() {
             return this.features.toArray(new SerializerFeature[this.features.size()]);
         }
-
         void setFeatures(SerializerFeature features) {
             this.features.add(features);
         }
-
         @Override
-        protected Object readInternal(Class<? extends Object> clazz, HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
+        protected Object readInternal(Class<?> clazz, HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             InputStream in = inputMessage.getBody();
             byte[] buf = new byte[1024];
@@ -106,7 +99,6 @@ public class FastjsonConfiguration {
             byte[] bytes = baos.toByteArray();
             return JSON.parseObject(bytes, 0, bytes.length, charset.newDecoder(), clazz);
         }
-
         @Override
         protected void writeInternal(Object obj, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
             OutputStream out = outputMessage.getBody();
