@@ -272,8 +272,8 @@ public class OpenFilter extends OncePerRequestFilter {
     /**
      * 可手工设置HttpServletRequest入参的Wrapper
      * ---------------------------------------------------------------------------------------
-     * 由于HttpServletRequest.getParameterMap()得到的Map是immutable的,不可更改的
-     * 而且HttpServletRequest.setAttribute()方法也是不能修改请求参数的,故扩展此类
+     * 由于HttpServletRequest.getParameterMap()得到的Map是immutable的，不可更改的
+     * 而且HttpServletRequest.setAttribute()方法也是不能修改请求参数的，故扩展此类
      * ---------------------------------------------------------------------------------------
      * RequestParameterWrapper requestWrapper = new RequestParameterWrapper(request);
      * requestWrapper.addAllParameters(Map<String, Object> allParams);
