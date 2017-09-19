@@ -3,6 +3,7 @@ package com.jadyer.seed.open.boot;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.Constants;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import redis.clients.jedis.JedisCluster;
 
@@ -31,14 +32,17 @@ public class RedisFilter extends OncePerRequestFilter {
     private static final String REDIS_DATA_KEY = "data-key";         //请求应答内容的RedisKey
     private static final String REDIS_DATA_CONTENT = "data-content"; //请求应答内容
     private static final String RESP_CONTENT_TYPE = "application/json; charset=UTF-8";
+    private String filterURL;
     private JedisCluster jedisCluster;
     private List<String> filterMethodList = new ArrayList<>();
 
     /**
+     * @param _filterURL        指定该Filter只拦截哪种请求URL，空表示都不拦截
+     * @param _filterMethodList 指定该Filter只拦截的方法列表，空表示都不拦截
      * @param jedisCluster      redis集群对象
-     * @param _filterMethodList 指定该Filter拦截的开放平台方法名，null表示拦截所有
      */
-    RedisFilter(JedisCluster jedisCluster, List<String> _filterMethodList){
+    RedisFilter(String _filterURL, List<String> _filterMethodList, JedisCluster jedisCluster){
+        this.filterURL = _filterURL;
         this.jedisCluster = jedisCluster;
         this.filterMethodList.addAll(_filterMethodList);
     }
@@ -46,7 +50,7 @@ public class RedisFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return !request.getServletPath().startsWith("/open") || (!filterMethodList.isEmpty() && !filterMethodList.contains(request.getParameter("method")));
+        return StringUtils.isNotBlank(filterURL) || !request.getServletPath().startsWith(filterURL) || filterMethodList.isEmpty() || !filterMethodList.contains(request.getParameter("method"));
     }
 
 

@@ -32,7 +32,7 @@ public class OpenConfiguration {
     //    List<String> filterMethodList = new ArrayList<>();
     //    filterMethodList.add(Constants.OPEN_METHOD_boot_loan_submit);
     //    filterMethodList.add(Constants.OPEN_METHOD_boot_loan_agree);
-    //    return new RedisFilter(jedisCluster, filterMethodList);
+    //    return new RedisFilter("/open/router/rest", filterMethodList, jedisCluster);
     //}
 
 

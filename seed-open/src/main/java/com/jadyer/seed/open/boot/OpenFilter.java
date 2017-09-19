@@ -55,7 +55,7 @@ public class OpenFilter extends OncePerRequestFilter {
     private Map<String, List<String>> apiGrantMap = new HashMap<>();
 
     /**
-     * @param _filterURL    指定该Filter只拦截哪种请求URL,null表示拦截所有
+     * @param _filterURL    指定该Filter只拦截哪种请求URL，空表示都不拦截
      * @param _apiGrantMap  为各个appid初始化API授权情况
      * @param _appsecretMap 为各个appid初始化appsecret
      */
@@ -68,7 +68,7 @@ public class OpenFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return StringUtils.isNotBlank(filterURL) && !request.getServletPath().startsWith(filterURL);
+        return StringUtils.isBlank(filterURL) || !request.getServletPath().startsWith(filterURL);
     }
 
 
