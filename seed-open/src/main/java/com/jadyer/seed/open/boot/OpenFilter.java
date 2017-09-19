@@ -162,7 +162,10 @@ public class OpenFilter extends OncePerRequestFilter {
         byte[] respDataBeytes = respDataStr.getBytes(Constants.OPEN_CHARSET_UTF8);
         response.setHeader("Content-Type", "application/json; charset=" + Constants.OPEN_CHARSET_UTF8);
         response.setHeader("Content-Length", respDataBeytes.length+"");
-        response.getOutputStream().write(respDataBeytes);
+        ServletOutputStream out = response.getOutputStream();
+        out.write(respDataBeytes);
+        out.flush();
+        IOUtils.closeQuietly(out);
     }
 
 
