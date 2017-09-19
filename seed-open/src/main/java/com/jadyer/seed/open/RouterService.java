@@ -198,8 +198,6 @@ class RouterService {
         Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
         String method = reqMap.get("method");
         System.out.println("当前访问的接口名称-->[" + method + "]");
-        //由于启用了JSP，这时会跳转到/WEB-INF/jsp/user/info.jsp
-        //return "user/info";
-        return InternalResourceViewResolver.REDIRECT_URL_PREFIX + "/apidoc/index.jsp";
+        return InternalResourceViewResolver.REDIRECT_URL_PREFIX + "/seedoc";
     }
 }
