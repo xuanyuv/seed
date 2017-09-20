@@ -64,6 +64,6 @@ public class OpenConfiguration {
         apiGrantMap.put("770", list770);
         apiGrantMap.put("870", list870);
         apiGrantMap.put("970", list970);
-        return new OpenFilter("/open/router/rest", apiGrantMap, appsecretMap);
+        return new OpenFilter("/open/router/annotation/rest", apiGrantMap, appsecretMap);
     }
 }

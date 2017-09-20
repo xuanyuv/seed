@@ -14,4 +14,7 @@ import java.lang.annotation.Target;
 @Documented
 public @interface OpenMethod {
     String value() default "";
+
+    /** 等效于value属性 */
+    String methodName() default "";
 }

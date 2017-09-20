@@ -16,5 +16,7 @@ import java.lang.annotation.Target;
 @Documented
 @Component
 public @interface OpenService {
+    //appid属性暂未使用，故注释
+    //String appid() default "";
     String value() default "";
 }

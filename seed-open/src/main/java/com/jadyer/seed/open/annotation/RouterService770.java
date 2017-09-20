@@ -18,25 +18,22 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-//@OpenService("123")
-class RouterService {
+@OpenService
+class RouterService770 {
     /**
      * 文件上传接口
      */
-    @OpenMethod
+    @OpenMethod(Constants.OPEN_METHOD_boot_file_upload)
     CommonResult fileupload(ReqData reqData, HttpServletRequest request) {
         Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
         String partnerApplyNo = reqMap.get("partnerApplyNo");
@@ -81,7 +78,7 @@ class RouterService {
     /**
      * 申请单提交接口
      */
-    @OpenMethod
+    @OpenMethod(Constants.OPEN_METHOD_boot_loan_submit)
     CommonResult loanSubmit(ReqData reqData) {
         Map<String, String> validatorMap;
         LoanSubmit loanSubmit = JSON.parseObject(reqData.getData(), LoanSubmit.class);
@@ -103,7 +100,7 @@ class RouterService {
     /**
      * 申请单查询接口
      */
-    @OpenMethod
+    @OpenMethod(Constants.OPEN_METHOD_boot_loan_get)
     CommonResult loanGet(ReqData reqData) {
         Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
         String applyNo = reqMap.get("applyNo");
@@ -125,81 +122,5 @@ class RouterService {
         resultMap.put("userName", "玄玉");
         resultMap.put("userPhone", "13600000000");
         return new CommonResult(resultMap);
-    }
-
-
-    /**
-     * 申请单协议接口
-     */
-    @OpenMethod
-    Object loanAgree(ReqData reqData, HttpServletResponse response) {
-        Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
-        String type = reqMap.get("type");
-        String applyNo = reqMap.get("applyNo");
-        if(StringUtils.isBlank(applyNo) || StringUtils.isBlank(type)){
-            return new CommonResult(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "applyNo or type is blank");
-        }
-        if(!"1".equals(type) && !"2".equals(type) && !"3".equals(type)){
-            return new CommonResult(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "type shoule be 1 or 2 or 3");
-        }
-        response.setCharacterEncoding(Constants.OPEN_CHARSET_UTF8);
-        response.setContentType("text/plain; charset=" + Constants.OPEN_CHARSET_UTF8);
-        response.setHeader("Cache-Control", "no-cache");
-        response.setHeader("Pragma", "no-cache");
-        response.setDateHeader("Expires", 0);
-        PrintWriter out;
-        try {
-            out = response.getWriter();
-        } catch (IOException e) {
-            throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "返回字符串时出错-->"+e.getMessage(), e);
-        }
-        out.write("<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><title>个人循环信用额度贷款合同</title></head><body><b style=\"line-height:1.5;\">这是个人循环信用额度贷款合同的正文</b></body></html>");
-        out.flush();
-        out.close();
-        return null;
-    }
-
-
-    /**
-     * 申请单报表下载
-     */
-    @OpenMethod
-    Object loanReportDownload(ReqData reqData, HttpServletResponse response) {
-        Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
-        String reportType = reqMap.get("reportType");
-        String reportSignType = reqMap.get("reportSignType");
-        if(!"1".equals(reportType)){
-            return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "暂时只能下载昨天放款成功的报表文件");
-        }
-        if(!"0".equals(reportSignType) && !Constants.OPEN_SIGN_TYPE_md5.equals(reportSignType) && !Constants.OPEN_SIGN_TYPE_hmac.equals(reportSignType)){
-            return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "未知的报表文件内容签名类型");
-        }
-        response.setCharacterEncoding(Constants.OPEN_CHARSET_UTF8);
-        response.setContentType("text/plain; charset=" + Constants.OPEN_CHARSET_UTF8);
-        response.setHeader("Cache-Control", "no-cache");
-        response.setHeader("Pragma", "no-cache");
-        response.setDateHeader("Expires", 0);
-        PrintWriter out;
-        try {
-            out = response.getWriter();
-        } catch (IOException e) {
-            throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "返回字符串时出错-->"+e.getMessage(), e);
-        }
-        out.write("20151210111055`玄玉`2321262015121011113636`800000`12`A`20151209232425`600000`12`A`20151210102030");
-        out.flush();
-        out.close();
-        return null;
-    }
-
-
-    /**
-     * 开放平台接口文档
-     */
-    @OpenMethod
-    String apidocH5(ReqData reqData) {
-        Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
-        String method = reqMap.get("method");
-        System.out.println("当前访问的接口名称-->[" + method + "]");
-        return InternalResourceViewResolver.REDIRECT_URL_PREFIX + "/seedoc";
     }
 }

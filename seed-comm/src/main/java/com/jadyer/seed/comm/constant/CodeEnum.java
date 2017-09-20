@@ -25,7 +25,8 @@ public enum CodeEnum {
     OPEN_FORM_ILLEGAL    (2008, "表单验证未通过"),
     OPEN_UNGRANT_API     (2009, "未授权的接口"),
     OPEN_UNGRANT_DATA    (2010, "未授权的数据访问"),
-    OPEN_PROCESSING      (2011, "请求处理中");
+    OPEN_APPID_NO_IMPL   (2011, "合作方业务无实现"),
+    OPEN_PROCESSING      (2012, "请求处理中");
 
     private final int code;
     private final String msg;
