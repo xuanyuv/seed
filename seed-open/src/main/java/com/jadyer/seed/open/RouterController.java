@@ -53,7 +53,7 @@ public class RouterController {
 
 
     @RequestMapping(value="/rest/h5", method={RequestMethod.GET, RequestMethod.POST})
-    public Object resth5(ReqData reqData){
+    public String resth5(ReqData reqData){
         if(Constants.OPEN_METHOD_boot_apidoc_h5.equals(reqData.getMethod())){
             return routerService.apidocH5(reqData);
         }

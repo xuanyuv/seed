@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -198,6 +197,6 @@ class RouterService {
         Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
         String method = reqMap.get("method");
         System.out.println("当前访问的接口名称-->[" + method + "]");
-        return InternalResourceViewResolver.REDIRECT_URL_PREFIX + "/seedoc";
+        return "/apidoc";
     }
 }
