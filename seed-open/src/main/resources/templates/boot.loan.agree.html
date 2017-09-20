@@ -1,7 +1,6 @@
-<%@ page pageEncoding="UTF-8"%>
-<jsp:include page="/apidoc/header.jsp"/>
+<% include("/comm/header.html"){} %>
 <h1>申请单协议.boot.loan.agree</h1>
-<ol type="1">
+<ol>
     <li>
         <h2>请求报文</h2>
         <table width="1260" border="0" cellspacing="1" bgcolor="#000000">
@@ -30,4 +29,4 @@
         返回贷款协议及合同试算等信息的HTML5字符串，供合作方嵌入显示给未签约申请单的贷款用户查看，若发生无此申请单等异常情况则返回公共应答报文。
     </li>
 </ol>
-<jsp:include page="/apidoc/footer.jsp"/>
+<% include("/comm/footer.html"){} %>

@@ -1,7 +1,6 @@
-<%@ page pageEncoding="UTF-8"%>
-<jsp:include page="/apidoc/header.jsp"/>
+<% include("/comm/header.html"){} %>
 <h1>通信协议</h1>
-<ol type="1">
+<ol>
     <li>
         普通HTTP接口采用Content-Type: application/json; charset=UTF-8<br/>
         H5跳转页接口采用Content-Type: application/x-www-form-urlencoded; charset=UTF-8<br/>
@@ -188,4 +187,4 @@
         </table>
     </li>
 </ol>
-<jsp:include page="/apidoc/footer.jsp"/>
+<% include("/comm/footer.html"){} %>

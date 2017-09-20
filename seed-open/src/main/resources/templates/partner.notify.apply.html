@@ -1,7 +1,6 @@
-<%@ page pageEncoding="UTF-8"%>
-<jsp:include page="/apidoc/header.jsp"/>
+<% include("/comm/header.html"){} %>
 <h1>合作侧审批通知</h1>
-<ol type="1">
+<ol>
     <li>
         <h2>请求报文</h2>
         <table width="1260" border="0" cellspacing="1" bgcolor="#000000">
@@ -62,4 +61,4 @@
         应答字符串”SUCCESS”（大写的）表示已收到通知。
     </li>
 </ol>
-<jsp:include page="/apidoc/footer.jsp"/>
+<% include("/comm/footer.html"){} %>

@@ -1,7 +1,6 @@
-<%@ page pageEncoding="UTF-8"%>
-<jsp:include page="/apidoc/header.jsp"/>
+<% include("/comm/header.html"){} %>
 <h1>申请单报表下载.boot.loan.report.download</h1>
-<ol type="1">
+<ol>
     <li>
         <h2>请求报文</h2>
         报表规则：T+1，最晚每天07:00返回前一天数据，即07:00前可能查不到结果（尽管可能性不大）取决于系统跑批<br/>
@@ -50,4 +49,4 @@
         </ul>
     </li>
 </ol>
-<jsp:include page="/apidoc/footer.jsp"/>
+<% include("/comm/footer.html"){} %>
