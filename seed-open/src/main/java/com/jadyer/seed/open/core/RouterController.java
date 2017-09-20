@@ -1,5 +1,6 @@
-package com.jadyer.seed.open.annotation;
+package com.jadyer.seed.open.core;
 
+import com.jadyer.seed.open.core.annotation.OpenAnnotationProcessor;
 import com.jadyer.seed.open.model.ReqData;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,14 +13,23 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/open/router/annotation")
-public class RouterAnnotationController {
+@RequestMapping("/open/router")
+public class RouterController {
+    /**
+     * 访问Open开放文档
+     */
     @GetMapping("/apidoc")
     String apidoc(){
         return "/apidoc";
     }
 
 
+    /**
+     * 直接访问页面资源
+     * <p>
+     *     可以url传参，比如http://127.0.0.1/view?url=/info/get&id=3，则参数id=3会被放到request中
+     * </p>
+     */
     @GetMapping("/view")
     String view(String url, HttpServletRequest request){
         Map<String, String[]> paramMap = request.getParameterMap();

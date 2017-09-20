@@ -8,6 +8,8 @@ import com.jadyer.seed.comm.constant.Constants;
 import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.ValidatorUtil;
+import com.jadyer.seed.open.core.annotation.OpenMethod;
+import com.jadyer.seed.open.core.annotation.OpenService;
 import com.jadyer.seed.open.model.LoanSubmit;
 import com.jadyer.seed.open.model.LoanSubmit1101;
 import com.jadyer.seed.open.model.ReqData;
@@ -15,7 +17,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -31,14 +32,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by 玄玉<http://jadyer.cn/> on 2016/5/10 17:59.
- */
-@Service
-class RouterService {
+@OpenService
+class RouterService870 {
     /**
      * 文件上传接口
      */
+    @OpenMethod(Constants.OPEN_METHOD_boot_file_upload)
     CommonResult fileupload(ReqData reqData, HttpServletRequest request) {
         Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
         String partnerApplyNo = reqMap.get("partnerApplyNo");
@@ -83,6 +82,7 @@ class RouterService {
     /**
      * 申请单提交接口
      */
+    @OpenMethod(Constants.OPEN_METHOD_boot_loan_submit)
     CommonResult loanSubmit(ReqData reqData) {
         Map<String, String> validatorMap;
         LoanSubmit loanSubmit = JSON.parseObject(reqData.getData(), LoanSubmit.class);
@@ -104,6 +104,7 @@ class RouterService {
     /**
      * 申请单查询接口
      */
+    @OpenMethod(Constants.OPEN_METHOD_boot_loan_get)
     CommonResult loanGet(ReqData reqData) {
         Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
         String applyNo = reqMap.get("applyNo");
@@ -131,6 +132,7 @@ class RouterService {
     /**
      * 申请单协议接口
      */
+    @OpenMethod(Constants.OPEN_METHOD_boot_loan_agree)
     Object loanAgree(ReqData reqData, HttpServletResponse response) {
         Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
         String type = reqMap.get("type");
@@ -160,39 +162,9 @@ class RouterService {
 
 
     /**
-     * 申请单报表下载
-     */
-    Object loanReportDownload(ReqData reqData, HttpServletResponse response) {
-        Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
-        String reportType = reqMap.get("reportType");
-        String reportSignType = reqMap.get("reportSignType");
-        if(!"1".equals(reportType)){
-            return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "暂时只能下载昨天放款成功的报表文件");
-        }
-        if(!"0".equals(reportSignType) && !Constants.OPEN_SIGN_TYPE_md5.equals(reportSignType) && !Constants.OPEN_SIGN_TYPE_hmac.equals(reportSignType)){
-            return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "未知的报表文件内容签名类型");
-        }
-        response.setCharacterEncoding(Constants.OPEN_CHARSET_UTF8);
-        response.setContentType("text/plain; charset=" + Constants.OPEN_CHARSET_UTF8);
-        response.setHeader("Cache-Control", "no-cache");
-        response.setHeader("Pragma", "no-cache");
-        response.setDateHeader("Expires", 0);
-        PrintWriter out;
-        try {
-            out = response.getWriter();
-        } catch (IOException e) {
-            throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "返回字符串时出错-->"+e.getMessage(), e);
-        }
-        out.write("20151210111055`玄玉`2321262015121011113636`800000`12`A`20151209232425`600000`12`A`20151210102030");
-        out.flush();
-        out.close();
-        return null;
-    }
-
-
-    /**
      * 开放平台接口文档
      */
+    @OpenMethod(Constants.OPEN_METHOD_boot_apidoc_h5)
     String apidocH5(ReqData reqData) {
         Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
         String method = reqMap.get("method");

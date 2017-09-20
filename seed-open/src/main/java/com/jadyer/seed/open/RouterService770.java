@@ -1,4 +1,4 @@
-package com.jadyer.seed.open.annotation;
+package com.jadyer.seed.open;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -8,30 +8,27 @@ import com.jadyer.seed.comm.constant.Constants;
 import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.ValidatorUtil;
+import com.jadyer.seed.open.core.annotation.OpenMethod;
+import com.jadyer.seed.open.core.annotation.OpenService;
 import com.jadyer.seed.open.model.LoanSubmit;
 import com.jadyer.seed.open.model.LoanSubmit1101;
 import com.jadyer.seed.open.model.ReqData;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @OpenService
-class RouterService870 {
+class RouterService770 extends RouterService100 {
     /**
      * 文件上传接口
      */
@@ -102,71 +99,11 @@ class RouterService870 {
     /**
      * 申请单查询接口
      */
-    @OpenMethod(Constants.OPEN_METHOD_boot_loan_get)
+    @Override
     CommonResult loanGet(ReqData reqData) {
-        Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
-        String applyNo = reqMap.get("applyNo");
-        String partnerApplyNo = reqMap.get("partnerApplyNo");
-        if(StringUtils.isBlank(applyNo) && StringUtils.isBlank(partnerApplyNo)){
-            return new CommonResult(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "applyNo and partnerApplyNo is blank");
-        }
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("partnerApplyNo", RandomStringUtils.randomNumeric(32));
-        resultMap.put("applyNo", RandomStringUtils.randomNumeric(32));
-        resultMap.put("applyStatus", "A");
-        resultMap.put("applyTime", DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-        resultMap.put("approveTime", "");
-        resultMap.put("approveRemark", "");
-        resultMap.put("loanTerm", 12);
         resultMap.put("loanMoney", 1000000);
         resultMap.put("creditMoney", 800000);
-        resultMap.put("creditTerm", 12);
-        resultMap.put("userName", "玄玉");
-        resultMap.put("userPhone", "13600000000");
         return new CommonResult(resultMap);
-    }
-
-
-    /**
-     * 申请单协议接口
-     */
-    @OpenMethod(Constants.OPEN_METHOD_boot_loan_agree)
-    Object loanAgree(ReqData reqData, HttpServletResponse response) {
-        Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
-        String type = reqMap.get("type");
-        String applyNo = reqMap.get("applyNo");
-        if(StringUtils.isBlank(applyNo) || StringUtils.isBlank(type)){
-            return new CommonResult(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "applyNo or type is blank");
-        }
-        if(!"1".equals(type) && !"2".equals(type) && !"3".equals(type)){
-            return new CommonResult(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "type shoule be 1 or 2 or 3");
-        }
-        response.setCharacterEncoding(Constants.OPEN_CHARSET_UTF8);
-        response.setContentType("text/plain; charset=" + Constants.OPEN_CHARSET_UTF8);
-        response.setHeader("Cache-Control", "no-cache");
-        response.setHeader("Pragma", "no-cache");
-        response.setDateHeader("Expires", 0);
-        PrintWriter out;
-        try {
-            out = response.getWriter();
-        } catch (IOException e) {
-            throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "返回字符串时出错-->"+e.getMessage(), e);
-        }
-        out.write("<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><title>个人循环信用额度贷款合同</title></head><body><b style=\"line-height:1.5;\">这是个人循环信用额度贷款合同的正文</b></body></html>");
-        out.flush();
-        out.close();
-        return null;
-    }
-
-
-    /**
-     * 开放平台接口文档
-     */
-    @OpenMethod(Constants.OPEN_METHOD_boot_apidoc_h5)
-    String apidocH5(ReqData reqData) {
-        Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
-        String method = reqMap.get("method");
-        System.out.println("当前访问的接口名称-->[" + method + "]");
-        return "/apidoc";
     }
 }

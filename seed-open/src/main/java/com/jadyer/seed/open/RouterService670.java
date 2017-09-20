@@ -1,4 +1,4 @@
-package com.jadyer.seed.open.annotation;
+package com.jadyer.seed.open;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -8,6 +8,8 @@ import com.jadyer.seed.comm.constant.Constants;
 import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.ValidatorUtil;
+import com.jadyer.seed.open.core.annotation.OpenMethod;
+import com.jadyer.seed.open.core.annotation.OpenService;
 import com.jadyer.seed.open.model.LoanSubmit;
 import com.jadyer.seed.open.model.LoanSubmit1101;
 import com.jadyer.seed.open.model.ReqData;

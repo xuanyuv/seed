@@ -1,4 +1,4 @@
-package com.jadyer.seed.open.annotation;
+package com.jadyer.seed.open.core.annotation;
 
 import org.springframework.stereotype.Component;
 

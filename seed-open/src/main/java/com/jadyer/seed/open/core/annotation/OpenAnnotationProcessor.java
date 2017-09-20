@@ -1,4 +1,4 @@
-package com.jadyer.seed.open.annotation;
+package com.jadyer.seed.open.core.annotation;
 
 import com.jadyer.seed.comm.base.SpringContextHolder;
 import com.jadyer.seed.comm.constant.CodeEnum;
@@ -21,7 +21,19 @@ import java.util.concurrent.ConcurrentHashMap;
 public enum OpenAnnotationProcessor {
     INSTANCE;
 
+    private String appidParent = "100";
     private ConcurrentHashMap<String, Method> methodMap = new ConcurrentHashMap<>();
+
+    OpenAnnotationProcessor(){
+        Class<?> serviceClazz = this.getBean(appidParent).getClass();
+        for(Method obj : serviceClazz.getDeclaredMethods()){
+            OpenMethod openMethod = obj.getAnnotation(OpenMethod.class);
+            if(null != openMethod){
+                //缓存所有业务实现类的根类中的方法
+                methodMap.put(appidParent + "-" + (StringUtils.isNotBlank(openMethod.value())?openMethod.value():openMethod.methodName()), obj);
+            }
+        }
+    }
 
     public Object process(ReqData reqData, HttpServletRequest request, HttpServletResponse response){
         Method method = this.getMethod(reqData.getAppid(), reqData.getMethod());
@@ -78,13 +90,17 @@ public enum OpenAnnotationProcessor {
             }
             //缓存起来
             methodMap.put(appid + "-" + methodName, obj);
-            //记录入参中的接口方法所对应的Method，以便于缓存所有Method之后返回
+            //记录入参中的接口方法所对应的Method，以便于缓存所有Method之后，将之返回
             if(StringUtils.equalsAny(methodName, openMethod.value(), openMethod.methodName())){
                 method = obj;
             }
         }
         if(null == method){
-            throw new SeedException(CodeEnum.OPEN_UNGRANT_API);
+            //本类中未定义，那就到父类去找一下，找不到再抛异常
+            method = methodMap.get(appidParent + "-" + methodName);
+            if(null == method){
+                throw new SeedException(CodeEnum.OPEN_UNGRANT_API);
+            }
         }
         return method;
     }
