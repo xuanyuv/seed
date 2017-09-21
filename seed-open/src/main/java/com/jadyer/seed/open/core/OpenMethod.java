@@ -1,4 +1,4 @@
-package com.jadyer.seed.open.core.annotation;
+package com.jadyer.seed.open.core;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

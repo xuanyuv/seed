@@ -1,9 +1,9 @@
 package com.jadyer.seed.open;
 
-import com.jadyer.seed.open.core.annotation.OpenService;
+import org.springframework.stereotype.Service;
 
-@OpenService
-class RouterService970 extends RouterService100 {
+@Service
+public class RouterService970 extends RouterService100 {
     ///**
     // * ------------------------------------------------------------------------------------
     // * 本来appid=970的业务接口中有一个是boot.loan.get，但其实现细节，在整个平台都是公共的
@@ -15,7 +15,7 @@ class RouterService970 extends RouterService100 {
     // * ------------------------------------------------------------------------------------
     // */
     //@Override
-    //CommonResult loanGet(ReqData reqData) {
+    //public CommonResult loanGet(ReqData reqData) {
     //    Map<String, Object> resultMap = new HashMap<>();
     //    resultMap.put("userName", "玄玉");
     //    resultMap.put("userPhone", "13600000000");

@@ -1,4 +1,4 @@
-package com.jadyer.seed.open.core.annotation;
+package com.jadyer.seed.open.core;
 
 import com.jadyer.seed.comm.base.SpringContextHolder;
 import com.jadyer.seed.comm.constant.CodeEnum;
@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Open注解处理器
  * Created by 玄玉<http://jadyer.cn/> on 2017/9/19 19:20.
  */
-public enum OpenAnnotationProcessor {
+enum OpenAnnotationProcessor {
     INSTANCE;
 
     private String appidParent = "100";
@@ -35,7 +35,7 @@ public enum OpenAnnotationProcessor {
         }
     }
 
-    public Object process(ReqData reqData, HttpServletRequest request, HttpServletResponse response){
+    Object process(ReqData reqData, HttpServletRequest request, HttpServletResponse response){
         Method method = this.getMethod(reqData.getAppid(), reqData.getMethod());
         //获取该方法的参数列表
         Class<?>[] parameterTypes = method.getParameterTypes();

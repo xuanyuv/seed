@@ -1,6 +1,5 @@
 package com.jadyer.seed.open.core;
 
-import com.jadyer.seed.open.core.annotation.OpenAnnotationProcessor;
 import com.jadyer.seed.open.model.ReqData;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
