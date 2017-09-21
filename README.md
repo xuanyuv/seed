@@ -15,21 +15,20 @@
 * [x] seed-simcoder：简版的代码生成器
 * [x] seed-simulator：Swing实现的模拟器
 * .
-* └── seed
-*     ├── seed-boot
-*     │   └── seed-comm
-*     ├── seed-mpp
-*     │   └── seed-comm
-*     ├── seed-open
-*     │   └── seed-seedoc
-*     │       └── seed-comm
-*     ├── seed-qss
-*     │   └── seed-comm
-*     ├── seed-scs
-*     │   └── seed-comm
-*     ├── seed-server
-*     │   └── seed-comm
-*     ├── seed-simcoder
-*     │   └── seed-comm
-*     └── seed-simulator
-*         └── seed-comm
+* ├── seed-boot
+* │   └── seed-comm
+* ├── seed-mpp
+* │   └── seed-comm
+* ├── seed-open
+* │   └── seed-seedoc
+* │       └── seed-comm
+* ├── seed-qss
+* │   └── seed-comm
+* ├── seed-scs
+* │   └── seed-comm
+* ├── seed-server
+* │   └── seed-comm
+* ├── seed-simcoder
+* │   └── seed-comm
+* └── seed-simulator
+*     └── seed-comm
