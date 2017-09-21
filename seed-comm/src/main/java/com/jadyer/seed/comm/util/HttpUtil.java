@@ -4,7 +4,6 @@ import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.exception.SeedException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
@@ -594,7 +593,7 @@ public final class HttpUtil {
                     }
                 }
                 if(StringUtils.isBlank(filename)){
-                    filename = RandomStringUtils.randomNumeric(16);
+                    filename = JadyerUtil.randomNumeric(16);
                 }
                 File _file = new File(System.getProperty("java.io.tmpdir") + "/" + filename);
                 FileUtils.copyInputStreamToFile(entity.getContent(), _file);

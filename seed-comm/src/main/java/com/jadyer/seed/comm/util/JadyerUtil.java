@@ -47,6 +47,7 @@ package com.jadyer.seed.comm.util;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.RandomStringGenerator;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -77,7 +78,8 @@ import java.util.Random;
 
 /**
  * 玄玉的开发工具类
- * @version v3.16
+ * @version v3.17
+ * @version v3.17-->增加randomNumeric()和randomAlphabetic()方法来生成随机字符串，以替代已不推荐使用的RandomStringUtils
  * @history v3.16-->增加leftPadUseZero()字符串左补零的方法
  * @history v3.15-->增加getFullContextPath()用于获取应用的完整根地址并移除两个XML方法至{@link XmlUtil}
  * @history v3.14-->移动requestToBean()和beanCopyProperties()至BeanUtil.java，并移除若干重复造轮子的方法
@@ -117,6 +119,32 @@ public final class JadyerUtil {
     private static BigInteger maxSequenceNo = new BigInteger("999999999");
 
     private JadyerUtil(){}
+
+    /**
+     * 生成指定长度的，由纯数字组成的，随机字符串
+     * <p>
+     *     注意：返回的字符串的首字符，不会是零
+     * </p>
+     */
+    public static String randomNumeric(final int count) {
+        //RandomStringUtils这个类不推荐使用了，用RandomStringGenerator来代替
+        //return RandomStringUtils.randomNumeric(count);
+        RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('0', '9').build();
+        String str = generator.generate(count);
+        while(str.startsWith("0")){
+            str = generator.generate(count);
+        }
+        return str;
+    }
+
+
+    /**
+     * 生成指定长度的，由纯小写字母组成的，随机字符串
+     */
+    public static String randomAlphabetic(final int count) {
+        return new RandomStringGenerator.Builder().withinRange('a', 'z').build().generate(count);
+    }
+
 
     /**
      * 获取序列号

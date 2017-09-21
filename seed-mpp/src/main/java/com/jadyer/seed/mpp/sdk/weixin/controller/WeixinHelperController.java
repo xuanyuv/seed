@@ -12,7 +12,6 @@ import com.jadyer.seed.mpp.sdk.weixin.model.WeixinOAuthAccessToken;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -91,7 +90,7 @@ public class WeixinHelperController {
     @RequestMapping(value="/jssdk/sign")
     public Map<String, String> jssdkSign(String appid, String url) throws UnsupportedEncodingException{
         url = URLDecoder.decode(url, "UTF-8");
-        String noncestr = RandomStringUtils.randomNumeric(16);
+        String noncestr = JadyerUtil.randomNumeric(16);
         String timestamp = Long.toString(System.currentTimeMillis() / 1000);
         StringBuilder sb = new StringBuilder();
         sb.append("jsapi_ticket=").append(WeixinTokenHolder.getWeixinJSApiTicket(appid)).append("&")

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.jadyer.seed.comm.util.BeanUtil;
 import com.jadyer.seed.comm.util.CodecUtil;
 import com.jadyer.seed.comm.util.HttpUtil;
+import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.XmlUtil;
 import com.jadyer.seed.mpp.sdk.weixin.constant.WeixinCodeEnum;
@@ -34,7 +35,6 @@ import com.jadyer.seed.mpp.sdk.weixin.model.redpack.WeixinRedpackSendRespData;
 import com.jadyer.seed.mpp.sdk.weixin.model.template.WeixinTemplate;
 import com.jadyer.seed.mpp.sdk.weixin.model.template.WeixinTemplateMsg;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -415,7 +415,7 @@ public final class WeixinHelper {
         WeixinPayUnifiedorderRespData respData = new WeixinPayUnifiedorderRespData();
         respData.setAppId(reqData.getAppid());
         respData.setTimeStamp(Long.toString(System.currentTimeMillis()/1000));
-        respData.setNonceStr(RandomStringUtils.randomNumeric(16));
+        respData.setNonceStr(JadyerUtil.randomNumeric(16));
         respData.setPackage_("prepay_id=" + respXmlMap.get("prepay_id"));
         respData.setSignType("MD5");
         //处理特殊字段package_

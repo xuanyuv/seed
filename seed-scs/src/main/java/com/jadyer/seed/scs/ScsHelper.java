@@ -1,8 +1,8 @@
 package com.jadyer.seed.scs;
 
+import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -26,7 +26,7 @@ class ScsHelper {
      */
     String buildUploadFilePath(String originalFilename, boolean isWangEditor){
         String fileExtension = FilenameUtils.getExtension(originalFilename);
-        String fileName = DateFormatUtils.format(new Date(), "yyyyMMddHHmmssSSS") + RandomStringUtils.randomNumeric(6);
+        String fileName = DateFormatUtils.format(new Date(), "yyyyMMddHHmmssSSS") + JadyerUtil.randomNumeric(6);
         String filePath = this.getFilePath(isWangEditor) + fileName + (isWangEditor?"w":"") + "." + fileExtension;
         LogUtil.getLogger().info("originalFilename=[{}]，filePath=[{}]", originalFilename, filePath);
         return filePath;

@@ -6,11 +6,11 @@ import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
 import com.jadyer.seed.comm.constant.Constants;
 import com.jadyer.seed.comm.exception.SeedException;
+import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.open.core.OpenMethod;
 import com.jadyer.seed.open.model.ReqData;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.stereotype.Service;
@@ -97,8 +97,8 @@ public class RouterService100 {
             return new CommonResult(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "applyNo and partnerApplyNo is blank");
         }
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("partnerApplyNo", RandomStringUtils.randomNumeric(32));
-        resultMap.put("applyNo", RandomStringUtils.randomNumeric(32));
+        resultMap.put("partnerApplyNo", JadyerUtil.randomNumeric(32));
+        resultMap.put("applyNo", JadyerUtil.randomNumeric(32));
         resultMap.put("applyStatus", "A");
         resultMap.put("applyTime", DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
         resultMap.put("approveTime", "");
