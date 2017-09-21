@@ -1,6 +1,10 @@
 package com.jadyer.seed.comm.util;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.net.whois.WhoisClient;
+
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
@@ -12,16 +16,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 获取IP的工具类
- * ----------------------------------------------------------------------
- * @version v1.1
+ * 网络工具类
+ * ------------------------------------------------------------------------------------------------------
+ * @version v2.0
+ * @history v2.0-->IPUtil升级为NetUtil，并增加whois()方法用于查询域名注册信息
  * @history v1.1-->增加获取服务端IP的方法
  * @history v1.0-->增加获取客户端IP的方法
- * ----------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2015/4/14 20:55.
+ * ------------------------------------------------------------------------------------------------------
+ * Created by 玄玉<http://jadyer.cn/> on 2017/9/21 16:34.
  */
-public final class IPUtil {
-    private IPUtil(){}
+public final class NetUtil {
+    private NetUtil(){}
     private static final Map<String, String> SUBNET_MASK_MAP = new HashMap<>();
     static{
         SUBNET_MASK_MAP.put("8", "255.0.0.0");
@@ -155,5 +160,42 @@ public final class IPUtil {
             serverIP = "服务器IP地址获取失败";
         }
         return serverIP;
+    }
+
+
+    /**
+     * 查询域名注册信息
+     * @param domain 域名，可传入[oschina.net][www.oschina.net][http://www.oschina.net][https://www.oschina.net]
+     */
+    public static String whois(String domain){
+        String reginfo;
+        domain = domain.toLowerCase();
+        domain = domain.replace("https://", "");
+        domain = domain.replace("http://", "");
+        if(StringUtils.startsWithIgnoreCase(domain, "www.")){
+            domain = domain.substring(4);
+        }
+        WhoisClient whois = new WhoisClient();
+        try{
+            if(StringUtils.endsWithAny(domain, ".com", ".net", ".edu")){
+                //连接whois查询服务器（默认whois.internic.net端口43）
+                whois.connect(WhoisClient.DEFAULT_HOST);
+                reginfo = whois.query(domain);
+            }else{
+                //使用国家域名whois服务器
+                whois.connect("whois.cnnic.cn");
+                reginfo = whois.query(domain);
+            }
+            return reginfo;
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }finally{
+            try {
+                //关闭连接
+                whois.disconnect();
+            } catch (IOException e) {
+                LogUtil.getLogger().error("whois连接关闭时发生异常，堆栈轨迹如下", e);
+            }
+        }
     }
 }

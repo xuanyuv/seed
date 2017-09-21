@@ -3,9 +3,9 @@ package com.jadyer.seed.comm.base;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.jadyer.seed.comm.annotation.SeedLog;
-import com.jadyer.seed.comm.util.IPUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
+import com.jadyer.seed.comm.util.NetUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -65,7 +65,7 @@ public class LogAspect {
             return joinPoint.proceed();
         }
         HttpServletRequest request = attributes.getRequest();
-        LogUtil.getLogger().info("{}()-->{}被调用，客户端IP={}，入参为[{}]", methodInfo, request.getRequestURI(), IPUtil.getClientIP(request), JadyerUtil.buildStringFromMap(request.getParameterMap()));
+        LogUtil.getLogger().info("{}()-->{}被调用，客户端IP={}，入参为[{}]", methodInfo, request.getRequestURI(), NetUtil.getClientIP(request), JadyerUtil.buildStringFromMap(request.getParameterMap()));
         /*
          * 使用自定义注解
          */
@@ -73,7 +73,7 @@ public class LogAspect {
         if(method.isAnnotationPresent(SeedLog.class)){
             SeedLog seedLog = method.getAnnotation(SeedLog.class);
             String logData = "动作：" + seedLog.action().getCode() + "（" + seedLog.action().getMsg() +"）" + "，描述：" + seedLog.value();
-            LogUtil.getLogger().info("{}()-->{}被调用，客户端IP={}，Log注解为[{}]", methodInfo, request.getRequestURI(), IPUtil.getClientIP(request), logData);
+            LogUtil.getLogger().info("{}()-->{}被调用，客户端IP={}，Log注解为[{}]", methodInfo, request.getRequestURI(), NetUtil.getClientIP(request), logData);
         }
         /*
          * 表单验证

@@ -8,9 +8,9 @@ import com.jadyer.seed.comm.constant.Constants;
 import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.comm.util.BeanUtil;
 import com.jadyer.seed.comm.util.CodecUtil;
-import com.jadyer.seed.comm.util.IPUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
+import com.jadyer.seed.comm.util.NetUtil;
 import com.jadyer.seed.open.model.ReqData;
 import com.jadyer.seed.open.model.RespData;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -77,7 +77,7 @@ public class OpenFilter extends OncePerRequestFilter {
         ReqData reqData;
         String reqDataStr;
         String respDataStr;
-        String reqIp = IPUtil.getClientIP(request);
+        String reqIp = NetUtil.getClientIP(request);
         long startTime = System.currentTimeMillis();
         try{
             //将请求入参解析到ReqData

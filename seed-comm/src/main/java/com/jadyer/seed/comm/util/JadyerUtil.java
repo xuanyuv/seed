@@ -79,7 +79,7 @@ import java.util.Random;
 /**
  * 玄玉的开发工具类
  * @version v3.17
- * @version v3.17-->增加randomNumeric()和randomAlphabetic()方法来生成随机字符串，以替代已不推荐使用的RandomStringUtils
+ * @history v3.17-->增加randomNumeric()和randomAlphabetic()方法来生成随机字符串，以替代已不推荐使用的RandomStringUtils
  * @history v3.16-->增加leftPadUseZero()字符串左补零的方法
  * @history v3.15-->增加getFullContextPath()用于获取应用的完整根地址并移除两个XML方法至{@link XmlUtil}
  * @history v3.14-->移动requestToBean()和beanCopyProperties()至BeanUtil.java，并移除若干重复造轮子的方法
