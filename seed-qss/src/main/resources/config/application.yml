@@ -1,3 +1,9 @@
+server:
+  port: 80
+  sessionTimeout: 3000
+  tomcat:
+    uriEncoding: UTF-8
+
 scan:
   base:
     packages: com.jadyer.seed
@@ -40,12 +46,9 @@ spring:
       hibernate:
         format_sql: true
 
-
 ---
 spring:
   profiles: local
-server:
-  port: 80
 
 ---
 spring:

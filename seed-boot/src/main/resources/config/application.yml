@@ -61,8 +61,6 @@ jasypt:
 
 
 spring:
-  thymeleaf:
-    cache: false      # 禁用Thymeleaf页面缓存
   h2:
     console:
       path: /myh2
@@ -124,19 +122,20 @@ redis:
 
 # 允许匿名访问的资源列表
 auth:
-  unauthorizedUrl: /login.jsp
-  anonymousList:
+  unauthUrl: /index
+  anonyList:
     - /
     - /js/**
     - /css/**
     - /img/**
+    - /druid/**
+    - /portal/**
     - /info
     - /health
-    - /druid/**
-    - /login/**
-    - /prop
-    - /login.jsp
+    - /login
+    - /captcha
     - /favicon.ico
+    - /prop
 
 
 ---

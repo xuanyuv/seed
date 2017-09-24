@@ -23,6 +23,6 @@ public class FansController{
     public String listViaPage(String pageNo, HttpServletRequest request){
         final long uid = ((MppUserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId();
         request.setAttribute("page", fansService.listViaPage(uid, pageNo));
-        return "fans.list";
+        return "/admin/fans.list";
     }
 }

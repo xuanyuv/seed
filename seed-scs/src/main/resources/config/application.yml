@@ -1,18 +1,21 @@
+server:
+  port: 80
+  sessionTimeout: 3000
+  tomcat:
+    uriEncoding: UTF-8
+
 scan:
   base:
     packages: com.jadyer.seed
-
 
 logging:
   path: /home/seed/log/scs
   config: classpath:config/logback-scs.xml
 
-
 multipart:
   enabled: true
   maxFileSize: 10Mb
   maxRequestSize: 10Mb
-
 
 spring:
   datasource:
@@ -48,33 +51,31 @@ spring:
       hibernate:
         format_sql: true
 
-
 auth:
-  unauthorizedUrl: /login.jsp
-  anonymousList:
+  unauthUrl: /login
+  anonyList:
     - /
     - /js/**
     - /css/**
     - /img/**
-    - /health
     - /druid/**
-    - /sample/login/**
+    - /portal/**
+    - /health
+    - /404
+    - /500
+    - /img
     - /login
-    - /login.jsp
-    - /captcha.jsp
+    - /captcha
+    - /tologin
+    - /building
     - /favicon.ico
-    - /building.jsp
-
 
 app:
   upload: /app/upload
 
-
 ---
 spring:
   profiles: local
-server:
-  port: 80
 
 ---
 spring:

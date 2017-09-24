@@ -13,8 +13,6 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.MapPropertySource;
@@ -69,7 +67,6 @@ public class JasyptConfiguration implements EnvironmentAware {
      * </p>
      */
     @Bean
-    @Order(Ordered.LOWEST_PRECEDENCE)
     public BeanFactoryPostProcessor propertySourcesPostProcessor(){
         PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
         SimpleStringPBEConfig config = new SimpleStringPBEConfig();

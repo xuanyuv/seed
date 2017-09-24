@@ -131,7 +131,7 @@ public class QssService {
         if(!CronExpression.isValidExpression(task.getCron())){
             throw new IllegalArgumentException("CronExpression不正确");
         }
-        return scheduleTaskRepository.save(task);
+        return scheduleTaskRepository.saveAndFlush(task);
     }
 
 

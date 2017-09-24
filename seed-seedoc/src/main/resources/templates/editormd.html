@@ -2,11 +2,12 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Editor.md示例</title>
-<link rel="stylesheet" href="${ctxPath}/js/editormd/css/editormd.min.css"/>
-<script src="${ctxPath}/js/jquery-1.11.3.min.js"></script>
-<script src="${ctxPath}/js/editormd/editormd.js"></script>
+    <meta charset="UTF-8">
+    <title>Editor.md示例</title>
+    <link rel="stylesheet" href="${ctxPath}/js/editormd/css/editormd.min.css"/>
+    <script src="${ctxPath}/js/jquery-1.11.3.min.js"></script>
+    <script src="${ctxPath}/js/editormd/editormd.js"></script>
+</head>
 <style>
 code {color: #d14;}
 thead tr th {background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);}
@@ -56,12 +57,11 @@ $(function(){
     });
 });
 </script>
-</head>
 <body>
-<button id="append-btn">追加markdown内容</button>
-<div id="editormd">
-    <!-- Tip: Editor.md can auto append <textarea> tag -->
-    <textarea style="display:none;">### Hello Editor.md !</textarea>
-</div>
+    <button id="append-btn">追加markdown内容</button>
+    <div id="editormd">
+        <!-- Tip: Editor.md can auto append <textarea> tag -->
+        <textarea style="display:none;">### Hello Editor.md !</textarea>
+    </div>
 </body>
 </html>

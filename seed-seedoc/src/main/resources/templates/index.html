@@ -1,14 +1,15 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>SeeDoc</title>
-<link rel="icon" href="${ctxPath}/img/logo.ico" type="image/x-icon">
-<link rel="stylesheet" href="${ctxPath}/css/basic.css"/>
-<script src="${ctxPath}/js/jquery-1.11.3.min.js"></script>
-<script src="${ctxPath}/js/pubs.js"></script>
-<script src="${ctxPath}/js/common.js"></script>
-<script src="${ctxPath}/js/webtoolkit.md5.js"></script>
+    <meta charset="UTF-8">
+    <title>SeeDoc</title>
+    <link rel="icon" type="image/x-icon" href="${ctxPath}/img/logo.ico">
+    <link rel="stylesheet" href="${ctxPath}/css/basic.css"/>
+    <script src="${ctxPath}/js/jquery-1.11.3.min.js"></script>
+    <script src="${ctxPath}/js/pubs.js"></script>
+    <script src="${ctxPath}/js/common.js"></script>
+    <script src="${ctxPath}/js/webtoolkit.md5.js"></script>
+</head>
 <style>
 .box_login { width:600px; height:330px; margin:0 auto;}
 .box_login .u    { padding:25px 0; border-top:1px solid #3f4954; text-align:center;}
@@ -105,33 +106,25 @@ function login(){
         }
     );
 }
-
-/**
- * 重载验证码
- */
-function reloadCaptcha(){
-    document.getElementById("captchaImg").src = "${ctxPath}/seedoc/captcha?time=" +  Math.random();
-}
 </script>
-</head>
 <body onkeydown="if(13==event.keyCode)login();">
-<div class="box_login">
-    <div class="u"><img src="${ctxPath}/img/logo.png"/></div>
-    <ul class="m">
-        <li class="l1"><i></i><p><input id="username" class="te" placeholder="Username" maxlength="16"/></p></li>
-        <li class="l2"><i></i><p><input id="password" type="password" class="te" placeholder="Password" maxlength="16"/></p></li>
-        <li class="l2">
-            <i></i>
-            <p>
-                <input id="captcha" name="captcha" class="te" placeholder="captcha" maxlength="4" style="width:300px; vertical-align:middle;"/>
-                <img style="cursor:pointer; vertical-align:middle; height:38px;" id="captchaImg" src="${ctxPath}/seedoc/captcha" onClick="reloadCaptcha();">
-            </p>
-        </li>
-    </ul>
-    <div class="d">
-        <p class="p2"><button id="loginSubmit" onclick="login();" class="btn trans" type="button">登&nbsp;&nbsp;录</button></p>
-        <div class="clear"></div>
+    <div class="box_login">
+        <div class="u"><img src="${ctxPath}/img/logo.png"/></div>
+        <ul class="m">
+            <li class="l1"><i></i><p><input id="username" class="te" placeholder="Username" maxlength="16"/></p></li>
+            <li class="l2"><i></i><p><input id="password" type="password" class="te" placeholder="Password" maxlength="16"/></p></li>
+            <li class="l2">
+                <i></i>
+                <p>
+                    <input id="captcha" name="captcha" class="te" placeholder="captcha" maxlength="4" style="width:300px; vertical-align:middle;"/>
+                    <img style="cursor:pointer; vertical-align:middle; height:38px;" src="${ctxPath}/seedoc/captcha" onClick="this.src='${ctxPath}/seedoc/captcha?time='+Math.random();">
+                </p>
+            </li>
+        </ul>
+        <div class="d">
+            <p class="p2"><button id="loginSubmit" onclick="login();" class="btn trans" type="button">登&nbsp;&nbsp;录</button></p>
+            <div class="clear"></div>
+        </div>
     </div>
-</div>
 </body>
 </html>

@@ -44,16 +44,9 @@ public class SeedocController {
     }
 
 
-    @GetMapping
+    @GetMapping({"", "/"})
     String index(){
         return "/index";
-    }
-
-
-    @GetMapping("/logout")
-    String logout(HttpSession session){
-        session.removeAttribute(Constants.WEB_SESSION_USER);
-        return InternalResourceViewResolver.REDIRECT_URL_PREFIX;
     }
 
 
@@ -69,6 +62,13 @@ public class SeedocController {
         //}
         session.setAttribute(Constants.WEB_SESSION_USER, "玄玉登录成功");
         return new CommonResult();
+    }
+
+
+    @GetMapping("/logout")
+    String logout(HttpSession session){
+        session.removeAttribute(Constants.WEB_SESSION_USER);
+        return InternalResourceViewResolver.REDIRECT_URL_PREFIX;
     }
 
 

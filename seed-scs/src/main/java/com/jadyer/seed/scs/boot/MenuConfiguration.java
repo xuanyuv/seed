@@ -45,7 +45,7 @@ public class MenuConfiguration {
             if(request.getServletPath().startsWith("/user")){
                 request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_sys");
             }
-            if(request.getServletPath().startsWith("/sample/view")){
+            if(request.getServletPath().startsWith("/view")){
                 String url = request.getParameter("url");
                 if(url.startsWith("stand")){
                     request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_module");

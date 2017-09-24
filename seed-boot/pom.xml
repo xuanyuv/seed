@@ -8,7 +8,6 @@
         <version>1.1</version>
     </parent>
     <artifactId>seed-boot</artifactId>
-    <packaging>war</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -20,29 +19,8 @@
             <artifactId>seed-comm</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-        <!--
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-        -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-jasper</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-        </dependency>
     </dependencies>
 
-    <!-- http://jadyer.cn/2016/07/29/idea-springboot-jsp/ -->
     <build>
         <plugins>
             <plugin>
@@ -51,6 +29,13 @@
                 <configuration>
                     <mainClass>com.jadyer.seed.boot.BootRun</mainClass>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

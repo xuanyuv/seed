@@ -38,7 +38,7 @@ public class MenuConfiguration {
             }
             if(request.getServletPath().startsWith("/view")){
                 String url = request.getParameter("url");
-                if(url.startsWith("mpp")){
+                if(url.startsWith("/admin/mpp")){
                     request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_mpp");
                 }
             }

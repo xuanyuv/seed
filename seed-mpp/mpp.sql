@@ -123,6 +123,6 @@ update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMES
 
 
 INSERT INTO t_mpp_reply_info(uid, category, type) VALUES(2, 0, 4);
-INSERT INTO t_mpp_user_info(id, pid, username, password, uuid, mptype, bind_status) VALUES(1, 0, 'admin', '6ceb1183ea22e54c76a5bc1ab78590e0', REPLACE(UUID(),'-',''), 0, 0);
-INSERT INTO t_mpp_user_info(id, pid, username, password, uuid, mptype, bind_status) VALUES(2, 1, 'wx', '7f3b2e2ebdfc3108b89c9179b7c49f3e', REPLACE(UUID(),'-',''), 1, 0);
-INSERT INTO t_mpp_user_info(id, pid, username, password, uuid, mptype, bind_status) VALUES(3, 1, 'qq', '0bcbe32327f4326ef272322b788109cb', REPLACE(UUID(),'-',''), 2, 0);
+INSERT INTO t_mpp_user_info(id, pid, username, password, uuid, mptype, bind_status) VALUES(1, 0, 'admin', '244ca7eaa4d894f0ff1bb2e29d757f16', REPLACE(UUID(),'-',''), 0, 0);
+INSERT INTO t_mpp_user_info(id, pid, username, password, uuid, mptype, bind_status) VALUES(2, 1, 'wx', 'eda216c502d55171ec6f64c4c954c261', REPLACE(UUID(),'-',''), 1, 0);
+INSERT INTO t_mpp_user_info(id, pid, username, password, uuid, mptype, bind_status) VALUES(3, 1, 'qq', '381147fb3da748e06b1e3286e9d2666b', REPLACE(UUID(),'-',''), 2, 0);

@@ -12,10 +12,10 @@ import com.jadyer.seed.mpp.sdk.weixin.helper.WeixinTokenHolder;
 import com.jadyer.seed.mpp.sdk.weixin.model.WeixinErrorInfo;
 import com.jadyer.seed.mpp.web.model.MppReplyInfo;
 import com.jadyer.seed.mpp.web.model.MppUserInfo;
-import com.jadyer.seed.mpp.web.service.async.AppidAsync;
 import com.jadyer.seed.mpp.web.service.MppMenuService;
 import com.jadyer.seed.mpp.web.service.MppReplyService;
 import com.jadyer.seed.mpp.web.service.MppUserService;
+import com.jadyer.seed.mpp.web.service.async.AppidAsync;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -78,34 +77,6 @@ public class MppController {
 
 
     /**
-     * 登录
-     */
-    @ResponseBody
-    @PostMapping("/user/login")
-    public CommonResult login(String username, String password, String captcha, HttpSession session){
-        if(!StringUtils.equals(captcha, (String)session.getAttribute("rand"))){
-            return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "无效的验证码");
-        }
-        MppUserInfo mppUserInfo = mppUserService.findByUsernameAndPassword(username, password);
-        if(null == mppUserInfo){
-            return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "无效的用户名或密码");
-        }
-        session.setAttribute(Constants.WEB_SESSION_USER, mppUserInfo);
-        return new CommonResult();
-    }
-
-
-    /**
-     * 登出
-     */
-    @GetMapping("/user/logout")
-    public String logout(HttpSession session){
-        session.removeAttribute(Constants.WEB_SESSION_USER);
-        return InternalResourceViewResolver.REDIRECT_URL_PREFIX + "/login.jsp";
-    }
-
-
-    /**
      * 平台用户信息
      */
     @GetMapping("/user/info")
@@ -125,7 +96,7 @@ public class MppController {
         }
         request.setAttribute("token", DigestUtils.md5Hex(mppUserInfo.getUuid() + "http://jadyer.cn/"));
         request.setAttribute("mpurl", sb.toString());
-        return "mpp/user.info";
+        return "/admin/mpp/user.info";
     }
 
 
@@ -220,7 +191,7 @@ public class MppController {
     public String getCommon(HttpServletRequest request){
         long uid = ((MppUserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId();
         request.setAttribute("replyInfo", mppReplyService.getByUidAndCategory(uid, 0));
-        return "mpp/reply.common";
+        return "/admin/mpp/reply.common";
     }
 
 
@@ -231,7 +202,7 @@ public class MppController {
     public String getFollow(HttpServletRequest request){
         long uid = ((MppUserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId();
         request.setAttribute("replyInfo", mppReplyService.getByUidAndCategory(uid, 1));
-        return "mpp/reply.follow";
+        return "/admin/mpp/reply.follow";
     }
 
 
@@ -254,7 +225,7 @@ public class MppController {
     public String listViaPage(String pageNo, HttpServletRequest request){
         final long uid = ((MppUserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId();
         request.setAttribute("page", mppReplyService.listViaPage(uid, pageNo));
-        return "mpp/reply.keyword.list";
+        return "/admin/mpp/reply.keyword.list";
     }
 
 

@@ -6,7 +6,6 @@ import com.jadyer.seed.comm.annotation.ActionEnum;
 import com.jadyer.seed.comm.annotation.SeedLog;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
-import com.jadyer.seed.comm.constant.Constants;
 import com.jadyer.seed.comm.util.HttpUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
@@ -15,29 +14,21 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
-import springfox.documentation.annotations.ApiIgnore;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
  * Created by 玄玉<http://jadyer.cn/> on 2016/5/7 17:43.
  */
-@ApiIgnore
-@Controller
-//@RestController//它就相当于@Controller和@ResponseBody注解
+@RestController
 public class DemoController {
     //若配置文件中未找到该属性，则为其赋默认值为冒号后面的字符串
     @Value("${user.blog:http://jadyer.cn/}")
@@ -61,19 +52,9 @@ public class DemoController {
     @Resource
     private BootProperties bootProperties;
 
-    ///**
-    // * 配置Thymeleaf默认的访问首页
-    // */
-    //@RequestMapping("/")
-    //String index(){
-    //    return "login";
-    //}
-
-
     /**
      * 读取配置文件中的属性
      */
-    @ResponseBody
     @GetMapping("/prop")
     @SeedLog(action=ActionEnum.LIST, value="读取配置文件中的属性")
     public Map<String, Object> prop(){
@@ -99,7 +80,6 @@ public class DemoController {
      * @param name  日志端点，可传logback-boot.xml里面配置的<logger name=""/>、或者com.jadyer、或者com.jadyer.seed
      * @param level 修改后的日志级别，可传info、inFO、debug、error、ErrOR等等
      */
-    @ResponseBody
     @GetMapping("/loglevel/{name}/{level}")
     public CommonResult loglevel(@PathVariable String name, @PathVariable String level){
         LogUtil.getLogger().info("这是info级别的日志");
@@ -119,7 +99,6 @@ public class DemoController {
     }
 
 
-    @ResponseBody
     @GetMapping("/mail")
     public CommonResult mail(){
         //发送一封简单的邮件
@@ -146,56 +125,5 @@ public class DemoController {
             return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "邮件发送失败，堆栈轨迹如下："+ JadyerUtil.extractStackTrace(e));
         }
         return new CommonResult();
-    }
-
-
-    /**
-     * Thymeleaf页面点击登录按钮
-     */
-    @ResponseBody
-    @GetMapping("/login/{username}/{password}")
-    public CommonResult login(@PathVariable String username, @PathVariable String password, HttpSession session){
-        if("jadyer".equals(username) && "xuanyu".equals(password)){
-            Map<String, String> fans01 = new HashMap<>();
-            fans01.put("headimgurl", "http://wx.qlogo.cn/mmopen/Sa1DhFzJREXnSqZKc2Y2AficBdiaaiauFNBbiakfO7fJkf8Cp3oLgJQhbgkwmlN3co2aJr9iabEKJq5jsZYup3gibaVCHD5W13XRmR/0");
-            fans01.put("nickname", "玄玉");
-            fans01.put("country", "中国");
-            fans01.put("city", "哈尔滨");
-            fans01.put("sex", "1");
-            fans01.put("subscribe", "1");
-            Map<String, String> fans02 = new HashMap<>();
-            fans02.put("headimgurl", "http://a.hiphotos.baidu.com/baike/c0=baike80,5,5,80,26/sign=58560b52ea24b899ca31716a0f6f76f0/9a504fc2d562853595b3f37393ef76c6a7ef6314.jpg");
-            fans02.put("nickname", "嬴渠梁");
-            fans02.put("country", "秦国");
-            fans02.put("city", "栎阳");
-            fans02.put("sex", "0");
-            fans02.put("subscribe", "0");
-            List<Map<String, String>> fansList = new ArrayList<>();
-            fansList.add(fans01);
-            fansList.add(fans02);
-            session.setAttribute("fansList", fansList);
-            session.setAttribute("currentMenu", "menu_sys");
-            session.setAttribute(Constants.WEB_SESSION_USER, "JadyerIsLogging");
-            return new CommonResult();
-        }
-        return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "用户名或密码不正确");
-    }
-
-
-    /**
-     * 直接访问页面资源
-     * <p>
-     *     可以url传参，比如http://127.0.0.1/view?url=user/userInfo&id=3，则参数id=3会被放到request中
-     * </p>
-     */
-    @GetMapping("/view")
-    String view(String url, HttpServletRequest request){
-        Map<String, String[]> paramMap = request.getParameterMap();
-        for(Map.Entry<String,String[]> entry : paramMap.entrySet()){
-            if(!"url".equals(entry.getKey())){
-                request.setAttribute(entry.getKey(), entry.getValue()[0]);
-            }
-        }
-        return url;
     }
 }

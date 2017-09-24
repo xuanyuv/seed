@@ -21,25 +21,24 @@ import java.util.List;
 @Configuration
 @ConfigurationProperties(prefix="auth")
 public class AuthConfiguration {
-    private String unauthorizedUrl;
-    private List<String> anonymousList = new ArrayList<>();
+    private String unauthUrl;
+    private List<String> anonyList= new ArrayList<>();
 
-    public String getUnauthorizedUrl() {
-        return unauthorizedUrl;
+    public String getUnauthUrl() {
+        return unauthUrl;
     }
 
-    public void setUnauthorizedUrl(String unauthorizedUrl) {
-        this.unauthorizedUrl = unauthorizedUrl;
+    public void setUnauthUrl(String unauthUrl) {
+        this.unauthUrl = unauthUrl;
     }
 
-    public List<String> getAnonymousList() {
-        return anonymousList;
+    public List<String> getAnonyList() {
+        return anonyList;
     }
-
 
     @Bean
-    public Filter authenticationFilter(){
-        return new AuthFilter(this.unauthorizedUrl, this.anonymousList);
+    public Filter authFilter(){
+        return new AuthFilter(this.unauthUrl, this.anonyList);
     }
 
 
@@ -48,18 +47,18 @@ public class AuthConfiguration {
      * Created by 玄玉<http://jadyer.cn/> on 2014/11/3 10:39.
      */
     private static class AuthFilter extends OncePerRequestFilter {
-        private String unauthorizedUrl;
-        private List<String> anonymousList = new ArrayList<>();
+        private String unauthUrl;
+        private List<String> anonyList = new ArrayList<>();
 
-        AuthFilter(String unauthorizedUrl, List<String> anonymousList){
-            this.unauthorizedUrl = unauthorizedUrl;
-            this.anonymousList = anonymousList;
+        AuthFilter(String _unauthUrl, List<String> _anonyList){
+            this.unauthUrl = _unauthUrl;
+            this.anonyList = _anonyList;
         }
 
         @Override
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
             boolean disallowAnonymousVisit = true;
-            for(String anonymousResource : anonymousList){
+            for(String anonymousResource : this.anonyList){
                 if(anonymousResource.equals(request.getServletPath())){
                     disallowAnonymousVisit = false;
                     break;
@@ -69,11 +68,8 @@ public class AuthConfiguration {
                     break;
                 }
             }
-            if(request.getServletPath().contains("/portal/")){
-                disallowAnonymousVisit = false;
-            }
             if(disallowAnonymousVisit && null==request.getSession().getAttribute(Constants.WEB_SESSION_USER)){
-                response.sendRedirect(request.getContextPath() + this.unauthorizedUrl);
+                response.sendRedirect(request.getContextPath() + this.unauthUrl);
             }else{
                 filterChain.doFilter(request, response);
             }

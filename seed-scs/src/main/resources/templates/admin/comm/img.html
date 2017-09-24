@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>半步多博客</title>
+    <script type="text/javascript" src="${ctxPath}/js/jquery-1.11.3.min.js"></script>
+</head>
+<script>
+$(function(){
+    //$('#img').attr('src', '${ctxPath}/scs/file/get?path=${parameter.path}');
+    $('#img').attr('src', '${ctxPath}/scs/file/get?path=${path}');
+});
+</script>
+<body>
+    <!--
+    图片放大浏览功能，用法如下
+    <a href="${ctxPath}/img?path=图片地址" target="_blank">
+        <img src="${ctxPath}/scs/file/get?path=图片地址" height="200px" width="300px">
+    </a>
+    -->
+    <img id="img" width="1500" height="800">
+</body>
+</html>

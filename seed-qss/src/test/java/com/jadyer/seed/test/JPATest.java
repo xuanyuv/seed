@@ -1,7 +1,7 @@
 package com.jadyer.seed.test;
 
 import com.jadyer.seed.comm.jpa.Condition;
-import com.jadyer.seed.qss.boot.QssBootStrap;
+import com.jadyer.seed.qss.boot.QssRun;
 import com.jadyer.seed.qss.model.ScheduleTask;
 import com.jadyer.seed.qss.repository.ScheduleTaskRepository;
 import org.junit.Assert;
@@ -20,7 +20,7 @@ import java.util.concurrent.TimeoutException;
  */
 @RunWith(SpringRunner.class)
 @Profile("local")
-@SpringBootTest(classes=QssBootStrap.class)
+@SpringBootTest(classes=QssRun.class)
 public class JPATest {
     @Resource
     private ScheduleTaskRepository scheduleTaskRepository;

@@ -1,12 +1,16 @@
+server:
+  port: 80
+  sessionTimeout: 3000
+  tomcat:
+    uriEncoding: UTF-8
+
 scan:
   base:
     packages: com.jadyer.seed
 
-
 logging:
   path: /home/seed/log/open
   config: classpath:logback-open.xml
-
 
 spring:
   datasource:
@@ -42,11 +46,12 @@ spring:
       hibernate:
         format_sql: true
 
-
+# 具体值待定
+# 具体值待定
 seedoc:
   auth:
-    unurl: /login.jsp
-    anons:
+    unauthUrl: /login.jsp
+    anonyList:
       - /
       - /js/**
       - /css/**
@@ -63,8 +68,6 @@ seedoc:
 ---
 spring:
   profiles: local
-server:
-  port: 80
 
 ---
 spring:
