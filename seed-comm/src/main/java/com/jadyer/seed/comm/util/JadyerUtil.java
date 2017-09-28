@@ -65,6 +65,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -78,7 +79,8 @@ import java.util.Random;
 
 /**
  * 玄玉的开发工具类
- * @version v3.17
+ * @version v3.18
+ * @history v3.18-->增加escapeXSS()用来XSS过滤的方法
  * @history v3.17-->增加randomNumeric()和randomAlphabetic()方法来生成随机字符串，以替代已不推荐使用的RandomStringUtils
  * @history v3.16-->增加leftPadUseZero()字符串左补零的方法
  * @history v3.15-->增加getFullContextPath()用于获取应用的完整根地址并移除两个XML方法至{@link XmlUtil}
@@ -503,6 +505,38 @@ public final class JadyerUtil {
             System.arraycopy(srcArray, 0, destArray, size-srcArray.length, srcArray.length);
         }
         return String.valueOf(destArray);
+    }
+
+
+    /**
+     * XSS过滤
+     */
+    public static String escapeXSS(String input) {
+        if(StringUtils.isEmpty(input)){
+            return "";
+        }
+        try {
+            input = URLDecoder.decode(input, HttpUtil.DEFAULT_CHARSET);
+        } catch (UnsupportedEncodingException e) {
+            //ingore
+        }
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i<input.length(); i++){
+            char c = input.charAt(i);
+            switch(c){
+                case '>' : sb.append('＞'); break;
+                case '<' : sb.append('＜'); break;
+                case '\'': sb.append('‘'); break;
+                case '\"': sb.append('“'); break;
+                case '&' : sb.append('＆'); break;
+                case '\\': sb.append('＼'); break;
+                case '#' : sb.append('＃'); break;
+                case '(' : sb.append('（'); break;
+                case ')' : sb.append('）'); break;
+                default: sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 
 

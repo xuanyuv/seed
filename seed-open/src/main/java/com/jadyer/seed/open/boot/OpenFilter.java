@@ -292,35 +292,48 @@ public class OpenFilter extends OncePerRequestFilter {
      * 而且HttpServletRequest.setAttribute()方法也是不能修改请求参数的，故扩展此类
      * ---------------------------------------------------------------------------------------
      * RequestParameterWrapper requestWrapper = new RequestParameterWrapper(request);
-     * requestWrapper.addAllParameters(Map<String, Object> allParams);
+     * Map<String, Object> allParams = new HashMap<>();
+     * allParams.put("appid", "101");
+     * allParams.put("data", "{\"name\":\"玄玉<http://jadyer.cn/>\"}");
+     * requestWrapper.addAllParameters(allParams);
      * filterChain.doFilter(requestWrapper, response);
      * ---------------------------------------------------------------------------------------
      */
     private class RequestParameterWrapper extends HttpServletRequestWrapper {
         private Map<String, String[]> paramMap = new HashMap<>();
+        private Map<String, String> headerMap = new HashMap<>();
         RequestParameterWrapper(HttpServletRequest request) {
             super(request);
             this.paramMap.putAll(request.getParameterMap());
+            Enumeration<String> headerNames = request.getHeaderNames();
+            while(headerNames.hasMoreElements()){
+                String headerName = headerNames.nextElement();
+                headerMap.put(headerName, request.getHeader(headerName));
+            }
         }
         @Override
         public String getParameter(String name) {
             String[] values = this.paramMap.get(name);
             if(null==values || values.length==0){
-                return null;
+                return "";
             }
             return values[0];
         }
         @Override
-        public Map<String, String[]> getParameterMap() {
-            return this.paramMap;
+        public String[] getParameterValues(String name) {
+            String[] values = this.paramMap.get(name);
+            if(null==values || values.length==0){
+                return new String[0];
+            }
+            return values;
         }
         @Override
         public Enumeration<String> getParameterNames() {
             return new Vector<>(this.paramMap.keySet()).elements();
         }
         @Override
-        public String[] getParameterValues(String name) {
-            return this.paramMap.get(name);
+        public Map<String, String[]> getParameterMap() {
+            return this.paramMap;
         }
         void addParameter(String name, Object value){
             if(null != value){
@@ -336,6 +349,38 @@ public class OpenFilter extends OncePerRequestFilter {
         void addAllParameters(Map<String, Object> allParams){
             for(Map.Entry<String,Object> entry : allParams.entrySet()){
                 this.addParameter(entry.getKey(), entry.getValue());
+            }
+        }
+        @Override
+        public String getHeader(String name) {
+            String value = this.headerMap.get(name);
+            if(null == value){
+                return "";
+            }
+            return value;
+        }
+        @Override
+        public Enumeration<String> getHeaders(String name) {
+            String value = this.headerMap.get(name);
+            if(StringUtils.isEmpty(value)){
+                return new Vector<String>().elements();
+            }
+            Vector<String> values = new Vector<>();
+            values.add(this.getHeader(name));
+            return values.elements();
+        }
+        @Override
+        public Enumeration<String> getHeaderNames() {
+            return new Vector<>(this.headerMap.keySet()).elements();
+        }
+        void addHeader(String name, String value){
+            if(StringUtils.isNotBlank(value)){
+                this.headerMap.put(name, value);
+            }
+        }
+        void addAllHeaders(Map<String, String> allHeaders){
+            for(Map.Entry<String,String> entry : allHeaders.entrySet()){
+                this.addHeader(entry.getKey(), entry.getValue());
             }
         }
     }

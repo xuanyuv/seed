@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,7 +58,8 @@ public class DemoController {
      */
     @GetMapping("/prop")
     @SeedLog(action=ActionEnum.LIST, value="读取配置文件中的属性")
-    public Map<String, Object> prop(){
+    public Map<String, Object> prop(HttpServletRequest request){
+        System.out.println("data = [" + request.getParameter("data") + "]");
         Map<String, Object> map = new HashMap<>();
         map.put("weight", this.weight);
         map.put("height", this.height);
