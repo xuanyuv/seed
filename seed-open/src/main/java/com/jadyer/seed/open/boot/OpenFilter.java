@@ -296,6 +296,10 @@ public class OpenFilter extends OncePerRequestFilter {
      * allParams.put("appid", "101");
      * allParams.put("data", "{\"name\":\"玄玉<http://jadyer.cn/>\"}");
      * requestWrapper.addAllParameters(allParams);
+     * Map<String, String> allHeaders = new HashMap<>();
+     * allHeaders.put("From-SYS", "seed-test");
+     * allHeaders.put("From-Appid", "101");
+     * requestWrapper.addAllHeaders(allHeaders);
      * filterChain.doFilter(requestWrapper, response);
      * ---------------------------------------------------------------------------------------
      */
