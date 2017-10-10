@@ -64,7 +64,6 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
-import java.math.BigInteger;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.NumberFormat;
@@ -79,7 +78,8 @@ import java.util.Random;
 
 /**
  * 玄玉的开发工具类
- * @version v3.18
+ * @version v3.19
+ * @history v3.19-->移除buildSequenceNo()，可使用IDUtil.java代替
  * @history v3.18-->增加escapeXSS()用来XSS过滤的方法
  * @history v3.17-->增加randomNumeric()和randomAlphabetic()方法来生成随机字符串，以替代已不推荐使用的RandomStringUtils
  * @history v3.16-->增加leftPadUseZero()字符串左补零的方法
@@ -117,9 +117,6 @@ import java.util.Random;
  * Created by 玄玉<http://jadyer.cn/> on 2012/12/22 19:00.
  */
 public final class JadyerUtil {
-    private static BigInteger sequenceNo = new BigInteger("0");
-    private static BigInteger maxSequenceNo = new BigInteger("999999999");
-
     private JadyerUtil(){}
 
     /**
@@ -145,20 +142,6 @@ public final class JadyerUtil {
      */
     public static String randomAlphabetic(final int count) {
         return new RandomStringGenerator.Builder().withinRange('a', 'z').build().generate(count);
-    }
-
-
-    /**
-     * 获取序列号
-     * @see 实现类似于OracleSequence的效果
-     */
-    public synchronized static String buildSequenceNo(){
-        if(sequenceNo.subtract(maxSequenceNo).signum() >= 0){
-            sequenceNo = new BigInteger("0");
-            return sequenceNo.toString();
-        }
-        sequenceNo = sequenceNo.add(BigInteger.ONE);
-        return sequenceNo.toString();
     }
 
 

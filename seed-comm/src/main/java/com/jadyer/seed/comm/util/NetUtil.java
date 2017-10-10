@@ -108,7 +108,7 @@ public final class NetUtil {
      */
     @Deprecated
     public static String getServerIP_(){
-        String serverIP = "";
+        StringBuilder serverIP = new StringBuilder();
         try{
             Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
             while(nets.hasMoreElements()){
@@ -117,15 +117,15 @@ public final class NetUtil {
                 while(addresses.hasMoreElements()){
                     InetAddress IP = addresses.nextElement();
                     if(null!=IP && IP instanceof Inet4Address && !IP.getHostAddress().equals("127.0.0.1")){
-                        serverIP += IP.toString();
+                        serverIP.append(IP.toString());
                     }
                 }
             }
         }catch(SocketException e){
             LogUtil.getLogger().error("服务器IP地址获取失败，堆栈轨迹如下", e);
-            serverIP = "服务器IP地址获取失败";
+            serverIP = new StringBuilder("服务器IP地址获取失败");
         }
-        return serverIP;
+        return serverIP.toString();
     }
 
 
@@ -147,9 +147,9 @@ public final class NetUtil {
                     List<InterfaceAddress> addressList = net.getInterfaceAddresses();
                     for(InterfaceAddress obj : addressList){
                         InetAddress IP = obj.getAddress();
-                        if(null!=IP && IP instanceof Inet4Address && !IP.getHostAddress().equals("127.0.0.1")){
-                            LogUtil.getLogger().debug("IP=[{}]的子网掩码为=[{}]", IP.getHostAddress(), SUBNET_MASK_MAP.get(String.valueOf(obj.getNetworkPrefixLength())));
+                        if(null!=IP && IP instanceof Inet4Address && !"127.0.0.1".equals(IP.getHostAddress())){
                             serverIP = IP.getHostAddress();
+                            LogUtil.getLogger().debug("IP=[{}]的子网掩码为=[{}]", serverIP, SUBNET_MASK_MAP.get(String.valueOf(obj.getNetworkPrefixLength())));
                             break tag;
                         }
                     }
