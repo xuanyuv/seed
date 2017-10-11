@@ -18,15 +18,11 @@ public class QuartzDemo {
     void justDoIt(){
         System.out.println("quartz-demo-" + System.currentTimeMillis());
         List<String> dataList = Arrays.asList("1", "2", "3", "4", "5", "6");
-        String idx = "1";
-        int len = dataList.size();
-        LogUtil.getLogger().info("定时任务：xxxx-->查到记录[{}]条", len);
-        for(String obj : dataList){
-            idx = JadyerUtil.leftPadUseZero(idx, String.valueOf(len).length());
-            LogUtil.getLogger().info("定时任务：xxxx-->開始处理[{}-{}]条，id={}", len, idx, obj);
-            LogUtil.getLogger().info("读到数据：{}", obj);
-            LogUtil.getLogger().info("定时任务：xxxx-->处理完毕[{}-{}]条", len, idx);
-            idx = String.valueOf(Integer.parseInt(idx) + 1);
+        for(int i=0, len=dataList.size(); i<len; i++){
+            String idx = JadyerUtil.leftPadUseZero(i+"", (len+"").length());
+            LogUtil.getLogger().info("定时任务：xxxx-->[{}-{}]-->開始处理，id={}", len, idx, dataList.get(i));
+            LogUtil.getLogger().info("读到数据：{}", dataList.get(i));
+            LogUtil.getLogger().info("定时任务：xxxx-->[{}-{}]-->处理完毕", len, idx);
         }
     }
 }
