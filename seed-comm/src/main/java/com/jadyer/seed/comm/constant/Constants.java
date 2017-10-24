@@ -14,6 +14,7 @@ public interface Constants {
      */
     String WEB_SESSION_USER = "user";
     String WEB_CURRENT_MENU = "currentMenu";
+    String WEB_CURRENT_SUB_MENU = "currentSubMenu";
 
     /**
      * 微信或QQ公众平台绑定时发送的文本指令

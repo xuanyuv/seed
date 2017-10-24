@@ -1,33 +1,19 @@
 package com.jadyer.seed.test;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
-
-import java.text.ParseException;
-import java.util.Date;
 
 /**
  * Created by 玄玉<http://jadyer.cn/> on 2017/3/14 16:57.
  */
 public class CommTest {
     @Test
-    public void evnPropTest() throws ParseException {
-        Date edate = DateUtils.parseDate("201708241600", "yyyyMMddHHmm");
-        if(new Date().compareTo(edate)>=0 && new Date().compareTo(DateUtils.addMinutes(edate, 3))<=0){
-            System.out.println("成功--");
-        }else{
-            System.out.println("失敗--");
-        }
-        if((new Date().compareTo(edate)>=0) && (new Date().compareTo(DateUtils.addMinutes(edate, 3))<=0)){
-            System.out.println("成功");
-        }else{
-            System.out.println("失敗");
-        }
+    public void common(){
+        System.out.println("This is the common test");
     }
 
 
     /**
-     * return和try{}finally{}的先后执行测试
+     * return和try{}finally}的先后执行测试
      * 目前控制台输出：11执行了---22执行了---aa11...22
      */
     @Test

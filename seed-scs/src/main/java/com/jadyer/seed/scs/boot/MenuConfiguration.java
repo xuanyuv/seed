@@ -1,6 +1,7 @@
 package com.jadyer.seed.scs.boot;
 
 import com.jadyer.seed.comm.constant.Constants;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -23,45 +24,19 @@ public class MenuConfiguration {
     }
 
     /**
-     * 后台管理页面菜单高亮焦点处理
+     * 后台管理页面菜单高亮焦点设置
      * Created by 玄玉<http://jadyer.cn/> on 2017/3/11 11:32.
      */
     private static class MenuFilter extends OncePerRequestFilter {
         @Override
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-            request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_reply");
-            if(request.getServletPath().startsWith("/stand")){
-                request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_module");
-            }
-            if(request.getServletPath().startsWith("/staff")){
-                request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_module");
-            }
-            if(request.getServletPath().startsWith("/lucky")){
-                request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_module");
-            }
-            if(request.getServletPath().startsWith("/fans")){
-                request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_fans");
-            }
-            if(request.getServletPath().startsWith("/user")){
-                request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_sys");
-            }
-            if(request.getServletPath().startsWith("/view")){
-                String url = request.getParameter("url");
-                if(url.startsWith("stand")){
-                    request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_module");
-                }
-                if(url.startsWith("staff")){
-                    request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_module");
-                }
-                if(url.startsWith("lucky")){
-                    request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_module");
-                }
-                if(url.startsWith("fans")){
-                    request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_fans");
-                }
-                if(url.startsWith("user")){
-                    request.getSession().setAttribute(Constants.WEB_CURRENT_MENU, "menu_sys");
-                }
+            String currentSubMenu = request.getParameter(Constants.WEB_CURRENT_SUB_MENU);
+            if(StringUtils.isNotBlank(currentSubMenu)){
+                request.setAttribute(Constants.WEB_CURRENT_MENU, currentSubMenu.substring(0, currentSubMenu.length()-3));
+                request.setAttribute(Constants.WEB_CURRENT_SUB_MENU, currentSubMenu);
+            }else{
+                request.setAttribute(Constants.WEB_CURRENT_MENU, "menu_sys");
+                request.setAttribute(Constants.WEB_CURRENT_SUB_MENU, "menu_sys_01");
             }
             filterChain.doFilter(request, response);
         }

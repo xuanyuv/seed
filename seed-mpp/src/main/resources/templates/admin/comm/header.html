@@ -10,29 +10,56 @@
     <script src="${ctxPath}/js/pubs.js"></script>
     <script src="${ctxPath}/js/common.js"></script>
 </head>
+<script>
+$(function(){
+    $('ul.c_menu').on('click', 'div a', function(e){
+        //屏蔽原href动作（即阻止事件默认行为）
+        e.preventDefault();
+        //href的值以javascript打头时认为是js脚本
+        var href = $(this).attr('href');
+        if(href.indexOf('javascript') == 0){
+            eval(href);
+        }else{
+            window.location.href = href + (href.indexOf('?')!=-1?'&':'?') + 'currentSubMenu=' + $(this).attr('id');
+        }
+    });
+    //迭代一级菜单并置为焦点
+    $("ul.c_menu > li").each(function(){
+        if('${currentMenu}' == $(this).attr('id')){
+            $(this).addClass('on');
+        }
+    });
+    //迭代二级菜单并置为焦点
+    $("ul.c_menu a").each(function(){
+        if('${currentSubMenu}' == $(this).attr('id')){
+            $(this).addClass('on');
+        }
+    });
+});
+</script>
 <body>
     <div class="c_main_l">
         <div class="c_logo"><img height="35" src="${ctxPath}/img/logo.png"/></div>
         <ul class="c_menu">
-            ${session.currentMenu=='menu_sys' ? '<li class="on">' : '<li>'}
+            <li id="menu_sys">
                 <a href="#"><span>业务管理</span><i></i></a>
                 <div>
-                    <a href="javascript:alert('暂未开放');"><span>一站到底</span></a>
-                    <a href="javascript:alert('暂未开放');"><span>员工之家</span></a>
-                    <a href="javascript:alert('暂未开放');"><span>幸运刮奖</span></a>
+                    <a id="menu_sys_01" href="javascript:alert('暂未开放');"><span>一站到底</span></a>
+                    <a id="menu_sys_02" href="javascript:alert('暂未开放');"><span>员工之家</span></a>
+                    <a id="menu_sys_03" href="javascript:alert('暂未开放');"><span>幸运刮奖</span></a>
                 </div>
             </li>
-            ${session.currentMenu=='menu_fans' ? '<li class="on">' : '<li>'}
-                <a href="${ctxPath}/fans/list"><span>粉丝管理</span><i></i></a>
+            <li id="menu_fans">
+                <a id="menu_fans_01" href="${ctxPath}/fans/list"><span>粉丝管理</span><i></i></a>
             </li>
-            ${session.currentMenu=='menu_mpp' ? '<li class="on">' : '<li>'}
+            <li id="menu_mpp">
                 <a href="#"><span>微信设置</span><i></i></a>
                 <div>
-                    <a href="${ctxPath}/view?url=/admin/mpp/mpmenu"><span>公众号菜单</span></a>
-                    <a href="${ctxPath}/mpp/user/info"><span>公众号资料</span></a>
-                    <a href="${ctxPath}/mpp/reply/common/get"><span>通用的回复</span></a>
-                    <a href="${ctxPath}/mpp/reply/follow/get"><span>关注后回复</span></a>
-                    <a href="${ctxPath}/mpp/reply/keyword/list"><span>关键字回复</span></a>
+                    <a id="menu_mpp_01" href="${ctxPath}/view?url=/admin/mpp/mpmenu"><span>公众号菜单</span></a>
+                    <a id="menu_mpp_02" href="${ctxPath}/mpp/user/info"><span>公众号资料</span></a>
+                    <a id="menu_mpp_03" href="${ctxPath}/mpp/reply/common/get"><span>通用的回复</span></a>
+                    <a id="menu_mpp_04" href="${ctxPath}/mpp/reply/follow/get"><span>关注后回复</span></a>
+                    <a id="menu_mpp_05" href="${ctxPath}/mpp/reply/keyword/list"><span>关键字回复</span></a>
                 </div>
             </li>
         </ul>
