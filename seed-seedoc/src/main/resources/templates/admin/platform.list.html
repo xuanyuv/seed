@@ -1,0 +1,60 @@
+<% include("/admin/comm/header.html"){} %>
+
+<style>
+.list_photo li { float:left; display:block; width:222px; margin:20px 15px 0 0; padding:5px; background:#fff; overflow:hidden; box-shadow:0 0 5px rgba(0,0,0,.3);}
+.list_photo li div { position:relative; width:222px; height:170px; overflow:hidden; text-align:center;}
+.list_photo li div img  { height:170px;}
+.list_photo li:hover div img { transform:scale(1.05,1.05);}
+.list_photo li div span { position:absolute; right:10px; bottom:5px; display:inline-block; color:#fff; font-family:Arial; font-size:18px; text-shadow:1px 1px 0 rgba(0,0,0,.5);}
+.list_photo li p { height:25px; line-height:25px;}
+</style>
+<script>
+function del(id){
+    if(confirm("确定删除此平台信息么？\r\n其下的所有接口也会一并删除！！")){
+        $.post("${ctxPath}/platform/delete/"+id, function(data){
+            if(0 == data.code){
+                location.reload();
+            }else{
+                $.promptBox(data.msg, "#ffb848");
+            }
+        });
+    }
+}
+</script>
+
+<div class="c_nav">
+    <div class="ti">平台列表</div>
+    <div class="sch">
+        <select class="sct"><option>全部</option><option>全部</option><option>全部</option></select>
+        <input class="inpte fm2"/>
+        <button class="btn fm2" onclick="javascript:alert('暂未开放');">平台搜索</button>
+    </div>
+</div>
+<!--Content-->
+<div class="c_content">
+    <div class="pt_10">
+        <a class="btn btn_b" href="${ctxPath}/view?url=/admin/platform&o=add">添加</a>
+    </div>
+    <div class="box_photo">
+        <ul class="list_photo">
+            <%for(platform in page.content){%>
+            <li>
+                <div>
+                    <a href="${ctxPath}/view?url=/admin/platform&id=${platform.id}">
+                        <img class="trans" src="${ctxPath}/seedoc/file/get?path=${platform.img}"/>
+                    </a>
+                </div>
+                <p class="pt_5 hdot">${platform.name}</p>
+                <p class="txt_r">
+                    <a class="c09f mr_10" href="${ctxPath}/view?url=/admin/platform&o=update&id=${platform.id}">编辑</a>
+                    <a class="c09f mr_10" href="javascript:del(${platform.id});">删除</a>
+                </p>
+            </li>
+            <%}%>
+        </ul>
+    </div>
+    <div class="clear"></div>
+</div>
+<!--/Content-->
+
+<% include("/admin/comm/footer.html"){} %>

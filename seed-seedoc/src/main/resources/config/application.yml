@@ -55,6 +55,9 @@ spring:
       hibernate:
         format_sql: true
 
+app:
+  upload: /app/upload
+
 ---
 spring:
   profiles: local

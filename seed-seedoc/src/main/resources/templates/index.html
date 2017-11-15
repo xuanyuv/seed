@@ -35,8 +35,8 @@
 <script>
 $(function(){
     //已登录状态下自动跳转默认首页
-    if(${isNotEmpty(user)}){
-        window.location.href = "${ctxPath}/fans/list";
+    if(${isNotEmpty(session.user)}){
+        window.location.href = "${ctxPath}/platform/list";
     }
     $("#username").focus();
     $.setBox("div.box_login");
@@ -95,9 +95,8 @@ function login(){
     $.post("${ctxPath}/login",
         {username:username, password:MD5(password), captcha:captcha},
         function(data){
-            alert(data);
             if(0 == data.code){
-                window.location.href = "${ctxPath}/view?url=/demo/list";
+                window.location.href = "${ctxPath}/platform/list";
             }else{
                 o.attr("disabled", false).text("登录").css({"background":"#5bb75b", "cursor":"auto"});
                 $.promptBox(data.msg, "#ffb848");

@@ -10,8 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +28,9 @@ import java.util.Random;
  */
 @Controller
 public class ViewController {
+    @Resource
+    private SeedocHelper seedocHelper;
+
     @GetMapping({"", "/"})
     String index(){
         return "/index";
@@ -43,22 +46,8 @@ public class ViewController {
         if(!StringUtils.equals(captcha, (String)session.getAttribute("rand"))){
             return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "无效的验证码");
         }
-        //MppUserInfo mppUserInfo = mppUserService.findByUsernameAndPassword(username, password);
-        //if(null == mppUserInfo){
-        //    return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "无效的用户名或密码");
-        //}
         session.setAttribute(Constants.WEB_SESSION_USER, "玄玉登录成功");
         return new CommonResult();
-    }
-
-
-    /**
-     * 登出
-     */
-    @GetMapping("/logout")
-    String logout(HttpSession session){
-        session.removeAttribute(Constants.WEB_SESSION_USER);
-        return InternalResourceViewResolver.REDIRECT_URL_PREFIX;
     }
 
 

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -82,13 +81,6 @@ public class ViewController {
         session.setAttribute("mpurl", "http://jadyer.cn/");
         session.setAttribute("token", "13248558648888942");
         return new CommonResult();
-    }
-
-
-    @GetMapping("/logout")
-    String logout(HttpSession session){
-        session.removeAttribute(Constants.WEB_SESSION_USER);
-        return InternalResourceViewResolver.REDIRECT_URL_PREFIX;
     }
 
 
