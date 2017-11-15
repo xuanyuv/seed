@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>com.jadyer.seed</groupId>
-            <artifactId>seed-seedoc</artifactId>
+            <artifactId>seed-comm</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
     </dependencies>

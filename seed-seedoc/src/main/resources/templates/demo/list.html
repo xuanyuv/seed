@@ -1,16 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-hello, <a target="_blank" href="${ctxPath}/seedoc/get">${session.user}</a>, ${date(), 'yyyy-MM-dd HH:mm:ss'}
-<br>
-<br>
-hello, <a target="_blank" href="info/get.html">${session.user}</a>, ${date(), 'yyyy-MM-dd HH:mm:ss'}
+hello, <a target="_blank" href="${ctxPath}/seedoc/get">${session.username}</a>, ${date(), 'yyyy-MM-dd HH:mm:ss'}
 <br>
 <br>
 <a href="${ctxPath}/seedoc/logout">我要登出</a>
-</body>
-</html>

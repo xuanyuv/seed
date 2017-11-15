@@ -1,4 +1,4 @@
-package com.jadyer.seed.seedoc;
+package com.jadyer.seed.open.boot;
 
 import org.beetl.core.resource.ClasspathResourceLoader;
 import org.beetl.ext.spring.BeetlGroupUtilConfiguration;

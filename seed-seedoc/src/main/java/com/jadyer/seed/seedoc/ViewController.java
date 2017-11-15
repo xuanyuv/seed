@@ -1,11 +1,9 @@
-package com.jadyer.seed.mpp.web;
+package com.jadyer.seed.seedoc;
 
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
 import com.jadyer.seed.comm.constant.Constants;
 import com.jadyer.seed.comm.util.LogUtil;
-import com.jadyer.seed.mpp.web.model.MppUserInfo;
-import com.jadyer.seed.mpp.web.service.MppUserService;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -27,16 +24,13 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * Created by 玄玉<http://jadyer.cn/> on 2017/9/24 15:40.
+ * Created by 玄玉<http://jadyer.cn/> on 2017/11/15 13:03.
  */
 @Controller
 public class ViewController {
-    @Resource
-    private MppUserService mppUserService;
-
     @GetMapping({"", "/"})
     String index(){
-        return "/login";
+        return "/index";
     }
 
 
@@ -49,12 +43,11 @@ public class ViewController {
         if(!StringUtils.equals(captcha, (String)session.getAttribute("rand"))){
             return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "无效的验证码");
         }
-        MppUserInfo mppUserInfo = mppUserService.findByUsernameAndPassword(username, password);
-        if(null == mppUserInfo){
-            return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "无效的用户名或密码");
-        }
-        session.setAttribute(Constants.WEB_SESSION_USER, mppUserInfo);
-        session.setAttribute(Constants.WEB_CURRENT_MENU, "menu_mpp");
+        //MppUserInfo mppUserInfo = mppUserService.findByUsernameAndPassword(username, password);
+        //if(null == mppUserInfo){
+        //    return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "无效的用户名或密码");
+        //}
+        session.setAttribute(Constants.WEB_SESSION_USER, "玄玉登录成功");
         return new CommonResult();
     }
 

@@ -92,12 +92,12 @@ function login(){
     }
     flag = false;
     o.attr("disabled", true).text("登录中...").css({"background":"#28b779", "cursor":"auto"});
-    $.post("${ctxPath}/seedoc/login",
+    $.post("${ctxPath}/login",
         {username:username, password:MD5(password), captcha:captcha},
         function(data){
             alert(data);
             if(0 == data.code){
-                window.location.href = "${ctxPath}/seedoc/view?url=/demo/list";
+                window.location.href = "${ctxPath}/view?url=/demo/list";
             }else{
                 o.attr("disabled", false).text("登录").css({"background":"#5bb75b", "cursor":"auto"});
                 $.promptBox(data.msg, "#ffb848");
@@ -117,7 +117,7 @@ function login(){
                 <i></i>
                 <p>
                     <input id="captcha" name="captcha" class="te" placeholder="captcha" maxlength="4" style="width:300px; vertical-align:middle;"/>
-                    <img style="cursor:pointer; vertical-align:middle; height:38px;" src="${ctxPath}/seedoc/captcha" onClick="this.src='${ctxPath}/seedoc/captcha?time='+Math.random();">
+                    <img style="cursor:pointer; vertical-align:middle; height:38px;" src="${ctxPath}/captcha" onClick="this.src='${ctxPath}/captcha?time='+Math.random();">
                 </p>
             </li>
         </ul>
