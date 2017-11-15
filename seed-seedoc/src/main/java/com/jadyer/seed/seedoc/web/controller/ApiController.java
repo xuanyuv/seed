@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * API
- * Generated from seed-simcoder by 玄玉<http://jadyer.cn/> on 2017/11/15 15:45.
+ * Generated from seed-simcoder by 玄玉<http://jadyer.cn/> on 2017/11/15 17:42.
  */
 @Controller
 @RequestMapping("/api")
@@ -53,5 +53,12 @@ public class ApiController {
     @PostMapping("/upsert")
     public CommonResult upsert(Api api){
         return new CommonResult(apiService.upsert(api));
+    }
+
+
+    @GetMapping("/see/{id}")
+    public String see(@PathVariable long id, HttpServletRequest request){
+        request.setAttribute("id", id);
+        return "/api.see";
     }
 }

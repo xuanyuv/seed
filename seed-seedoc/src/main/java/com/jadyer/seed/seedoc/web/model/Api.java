@@ -10,21 +10,25 @@ import javax.persistence.Table;
 
 /**
  * API
- * Generated from seed-simcoder by 玄玉<http://jadyer.cn/> on 2017/11/15 15:45.
+ * Generated from seed-simcoder by 玄玉<http://jadyer.cn/> on 2017/11/15 17:42.
  */
 @Entity
 @DynamicInsert
 @DynamicUpdate
 @Table(name="t_api")
 public class Api extends BaseEntity<Long> {
-    private static final long serialVersionUID = 7592670602653385762L;
+    private static final long serialVersionUID = 1773208952866545630L;
     /** 平台ID，对应t_platform#id */
     @Column(name="platform_id")
     private long platformId;
     /** API名称 */
     private String name;
-    /** API内容 */
-    private String content;
+    /** API的Markdown文本 */
+    @Column(name="md_text")
+    private String mdText;
+    /** API的HTML文本 */
+    @Column(name="html_text")
+    private String htmlText;
 
     public long getPlatformId() {
         return platformId;
@@ -42,11 +46,19 @@ public class Api extends BaseEntity<Long> {
         this.name = name;
     }
 
-    public String getContent() {
-        return content;
+    public String getMdText() {
+        return mdText;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setMdText(String mdText) {
+        this.mdText = mdText;
+    }
+
+    public String getHtmlText() {
+        return htmlText;
+    }
+
+    public void setHtmlText(String htmlText) {
+        this.htmlText = htmlText;
     }
 }

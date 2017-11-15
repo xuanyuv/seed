@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SeeDoc</title>
+    <link rel="stylesheet" href="${ctxPath}/js/editormd/css/editormd.preview.min.css"/>
+    <script src="${ctxPath}/js/jquery-1.11.3.min.js"></script>
+    <script src="${ctxPath}/js/editormd/lib/marked.min.js"></script>
+    <script src="${ctxPath}/js/editormd/lib/prettify.min.js"></script>
+    <script src="${ctxPath}/js/editormd/lib/raphael.min.js"></script>
+    <script src="${ctxPath}/js/editormd/lib/underscore.min.js"></script>
+    <script src="${ctxPath}/js/editormd/lib/sequence-diagram.min.js"></script>
+    <script src="${ctxPath}/js/editormd/lib/flowchart.min.js"></script>
+    <script src="${ctxPath}/js/editormd/lib/jquery.flowchart.min.js"></script>
+    <script src="${ctxPath}/js/editormd/editormd.min.js"></script>
+    <script src="${ctxPath}/js/common.js"></script>
+</head>
+<style>
+code {color: #d14;}
+thead tr th {background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);}
+.editormd-html-preview {width: 60%; margin: 0 auto;}
+</style>
+<script>
+$(function(){
+    $.get("${ctxPath}/api/get/${id}",
+        function(data){
+            if(0 == data.code){
+                if(isEmpty(data.data)){
+                    $('#mdText').val('# 无此接口');
+                    $('#append-btn').attr('disabled', true);
+                }else{
+                    $("#mdText").val('# ' + data.data.name + '\r\n\r\n' + data.data.mdText);
+                }
+                editormd.markdownToHTML("editormd", {
+                    htmlDecode      : "style,script,iframe",  // you can filter tags decode
+                    emoji           : true,
+                    taskList        : true,
+                    tex             : true,  // 默认不解析
+                    flowChart       : true,  // 默认不解析
+                    sequenceDiagram : true,  // 默认不解析
+                });
+            }else{
+                $.promptBox(data.msg, "#ffb848");
+            }
+        }
+    );
+    $("#append-btn").click(function(){
+        location.href = "${ctxPath}/view?url=/admin/api&id=${id}";
+    });
+});
+</script>
+<body>
+    <button id="append-btn">编辑接口文档</button>
+    <div id="editormd">
+        <textarea id="mdText" style="display:none;"></textarea>
+    </div>
+</body>
+</html>

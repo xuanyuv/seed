@@ -26,7 +26,7 @@ $(function(){
                         $("#get_updateTime").html(data.data.updateTime);
                     }
                 }else{
-                    $.promptBox("系统繁忙或关键字 [id=${parameter.id}] 的信息不存在", "#ffb848");
+                    $.promptBox(data.msg, "#ffb848");
                 }
             }
         );
@@ -78,7 +78,7 @@ function submit(){
                 if(0 == data.code){
                     location.href = "${ctxPath}/platform/list";
                 }else{
-                    $.promptBox("系统繁忙或重复的关键字", "#ffb848");
+                    $.promptBox(data.msg, "#ffb848");
                 }
             }
         );
