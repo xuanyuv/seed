@@ -100,3 +100,66 @@ $(function(){
     </div>
 </body>
 </html>
+<!--
+**简要描述：**
+
+- jssdk签名
+
+**请求URL：**
+
+- `http://xx.com/wx/jssdk/sign`
+
+**请求方式：**
+
+- GET/POST
+
+**入参：**
+
+|参数名|必选|类型|说明|
+|:----    |:---|:----- |------------------------------------  |
+|url |是  |string |js取值为`window.location.href.split("#")[0]`即可 |
+
+**调用示例**
+
+```js
+$(function(){
+    $.post("${pageContext.request.contextPath}/wx/jssdk/sign",
+        {url:window.location.href.split("#")[0]},
+        function(data){
+            wx.config({
+                debug: false,
+                appId: data.data.appid,
+                timestamp: data.data.timestamp,
+                nonceStr: data.data.noncestr,
+                signature: data.data.signature,
+                jsApiList: ["chooseImage", "uploadImage", "downloadImage", "scanQRCode"]
+            });
+        }
+    );
+});
+```
+
+**出参**
+
+|参数名|必选|类型|说明|
+|:----    |:---|:----- |------------------------------------  |
+|signature |是  |string |签名 |
+|appid |是  |string |appid |
+|noncestr |是  |string |签名时使用的随机字符串 |
+|timestamp |是  |string |签名时使用的时间戳 |
+
+**出参示例**
+
+```json
+{
+    "code":0,
+    "data":{
+        "signature":"55b6ca6d53851d6b9097608338ee5442ae73d9a4",
+        "appid":"kklfimifdldkui2k",
+        "noncestr":"3595803422977292",
+        "timestamp":"1500345211"
+    },
+    "msg":"成功"
+}
+```
+-->
