@@ -12,25 +12,25 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 
 /**
- * SpringBoot啟動類
+ * SpringBoot启动类
  * ---------------------------------------------------------------------------------------------------------------
  * 1.@SpringBootApplication
  *   等效於@Configuration和@EnableAutoConfiguration和@ComponentScan三個注解放在一起
  *   Configuration注解------------注解表示该文件作为Spring配置文件存在
  *   EnableAutoConfiguration注解--用于启动SpringBoot内置的自动配置
- *   ComponentScan注解------------扫描Bean,默认路径为该类所在package及子package,也可手工指定package
+ *   ComponentScan注解------------扫描Bean，默认路径为该类所在package及子package，也可手工指定package
  * 2.SpringBoot加载配置文件的优先级
  *   默認配置文件為application.properties or application.yml
  *   classpath:/config/application.yml优先级高于classpath:application.yml
  * 3.SpringProfile环境文件
- *   若应用中包含多个profile,可以为每个profile定义各自的属性文件,按照"application-{profile}.yml"来命名
- *   有个细节,只要存在application.yml,则无论application-{profile}.yml存在与否,application.yml都会被读取
- *   若application-{profile}.yml与application.yml存在同名属性,SpringBoot会以application-{profile}.yml为准
- *   总结:实际完全可以把所有环境配置都写在一个application.yml,通过"---"和"spring.profiles"区分各环境配置区域即可
+ *   若应用中包含多个profile，可以为每个profile定义各自的属性文件，按照“application-{profile}.yml”来命名
+ *   有个细节：只要存在application.yml，则无论application-{profile}.yml存在与否，application.yml都会被读取
+ *   若application-{profile}.yml与application.yml存在同名属性，SpringBoot会以application-{profile}.yml为准
+ *   总结：实际完全可以把所有环境配置都写在一个application.yml，通过“---”和“spring.profiles”区分各环境配置区域即可
  * 4.SpringProfile的优先级
- *   若服务启动参数包含spring.profiles.active,那么Spring会自动读取并根据参数值加载application-{profile}.yml
- *   同时根据测试得知,-Dspring.profiles.active=dev的优先级要高于SpringApplicationBuilder.profiles("prod")
- *   另外，@Profile(value="test")的示例使用詳見com.jadyer.seed.boot.H2Configuration.java
+ *   若服务启动参数包含spring.profiles.active，那么Spring会自动读取并根据参数值加载application-{profile}.yml
+ *   同时根据测试得知：-Dspring.profiles.active=dev的优先级要高于SpringApplicationBuilder.profiles("prod")
+ *   另外：@Profile(value="test")的示例使用詳見com.jadyer.seed.boot.H2Configuration.java
  * ---------------------------------------------------------------------------------------------------------------
  * spring-boot-starter-actuator
  * 1.autoconfig---显示SpringBoot自动配置的信息
@@ -46,18 +46,19 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
  *   loggers------显示日志级别（SpringBoot-1.5.x才开始提供的新功能）
  *   shutdown-----关闭应用
  * 2.http://127.0.0.1/health可以查看应用的健康状态，实现HealthIndicator接口后还可以自定义Health服务
- * 3.http://127.0.0.1/info会将应用中任何以"info."开头的配置参数暴露出去，详见application.properties写法
+ * 3.http://127.0.0.1/info会将应用中任何以“info.”开头的配置参数暴露出去，详见application.properties写法
  * 4.http://127.0.0.1/shutdown属于敏感操作，故此功能默认是关闭的（其它的actuator都不是敏感操作，所以默认都是开启的）
  *   通过配置endpoints.shutdown.enabled=true即可启用
- *   另外，http://127.0.0.1/shutdown支持POST，但不支持GET请求
+ *   另外：http://127.0.0.1/shutdown支持POST，但不支持GET（curl -X POST host:port/shutdown）
  *   它在收到请求，关闭应用时，本例中的SpringContextHolder.clearHolder()方法会被调用
- *   并返回该字符串给调用方（包括小括号）：{"message":"Shutting down, bye..."}
+ *   并返回该字符串给调用方（含小括号）：{"message":"Shutting down, bye..."}
  *   需要注意的是：该功能需要配置management.security.enabled=false来关闭安全认证校验
+ *   其实更好的做法是将应用设置成Unix/Linux的系统服务，这样就能以“service app stop”命令来操作，详见https://www.cnblogs.com/lobo/p/5657684.html
  * 5.http://127.0.0.1/loggers/日志端点/新的日志级别
  *   可以动态修改日志级别，示例代码见{@link com.jadyer.seed.controller.DemoController#loglevel(String, String)}
  *   并且，GET请求“http://127.0.0.1/loggers/日志端点”还可以查看其当前的日志级别
  *   需要注意的是：该功能需要配置management.security.enabled=false来关闭安全认证校验
- * 并且：除了“/health”和”/info”以外，其它actuator监控都需要配置management.security.enabled=false
+ * 注意：除了“/health”和”/info”以外，其它actuator监控都需要配置management.security.enabled=false
  * 另外：可以通过spring-boot-admin实现应用监控，相关示例见https://my.oschina.net/u/1266221/blog/805596
  * ---------------------------------------------------------------------------------------------------------------
  * 条件注解
