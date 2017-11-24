@@ -56,10 +56,6 @@ public class BatchConfiguration {
     }
 
 
-    /**
-     * 【待测】
-     */
-    //@JobScope
     @Bean
     public Step importPeopleStep(){
         return stepBuilderFactory.get("importPeopleStep")
@@ -71,11 +67,6 @@ public class BatchConfiguration {
     }
 
 
-    /**
-     * 【待测】StepScope主要用于SpringBatch，它本质上是一个laze scope（告诉Spring在首次访问时才创建Bean）
-     * 【待测】http://blog.csdn.net/bingduanlbd/article/details/50988766
-     */
-    //@StepScope
     @Bean
     public FlatFileItemReader<Person> reader(){
         FlatFileItemReader<Person> txtItemReader = new FlatFileItemReader<>();

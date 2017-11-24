@@ -153,14 +153,5 @@ public class BootRun {
                 .listeners(new ApplicationFailedEventListener())
                 .profiles(getProfile(new SimpleCommandLinePropertySource(args)))
                 .run(args);
-        //System.exit(SpringApplication.exit(
-        //        new SpringApplicationBuilder().sources(BootRun.class)
-        //                .listeners(new ApplicationStartedEventListener())
-        //                .listeners(new ApplicationEnvironmentPreparedEventListener())
-        //                .listeners(new ApplicationPreparedEventListener())
-        //                .listeners(new ApplicationFailedEventListener())
-        //                .profiles(getProfile(new SimpleCommandLinePropertySource(args)))
-        //                .run(args)
-        //));
     }
 }
