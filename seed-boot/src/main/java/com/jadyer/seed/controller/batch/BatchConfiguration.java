@@ -115,13 +115,7 @@ public class BatchConfiguration {
         jdbcBatchItemWriter.afterPropertiesSet();
         //写到文件
         FlatFileItemWriter<Person> flatFileItemWriter = new FlatFileItemWriter<>();
-        flatFileItemWriter.setAppendAllowed(true);
         flatFileItemWriter.setEncoding("UTF-8");
-        /*
-         *【待测】实际发现它是追加的，这里需要调试一下
-         */
-        //flatFileItemWriter.setShouldDeleteIfExists(true);
-        //flatFileItemWriter.setAppendAllowed(false);
         flatFileItemWriter.setResource(new FileSystemResource("/app/data/seed-result.txt"));
         //创建对象属性聚合字符串（它会根据设置的分隔符以及对象属性对应的字符名称来聚合）
         flatFileItemWriter.setLineAggregator(new DelimitedLineAggregator<Person>() {{
