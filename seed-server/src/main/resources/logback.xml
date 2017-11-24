@@ -2,12 +2,13 @@
 <configuration>
     <property name="PROJECT_NAME" value="seed-server"/>
     <property name="LOG_HOME" value="/home/seed/log/server"/>
+    <property name="LOG_PATTERN" value="[%d{yyMMddHHmmss}][%t][%C{0}.%M]%m%n"/>
     <contextName>${PROJECT_NAME}</contextName>
 
     <appender name="WEB_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}/web.log</file>
         <encoder>
-            <pattern>[%d{yyMMddHHmmss}][%t][%C{0}.%M]%m%n</pattern>
+            <pattern>${LOG_PATTERN}</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_HOME}/archive/web.log.%d{yyyyMMdd}</fileNamePattern>
@@ -16,7 +17,7 @@
     <appender name="WAP_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}/wap.log</file>
         <encoder>
-            <pattern>[%d{yyMMddHHmmss}][%t][%C{0}.%M]%m%n</pattern>
+            <pattern>${LOG_PATTERN}</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_HOME}/archive/wap.log.%d{yyyyMMdd}</fileNamePattern>
@@ -25,7 +26,7 @@
     <appender name="DEFAULT_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}/${PROJECT_NAME}.log</file>
         <encoder>
-            <pattern>[%d{yyMMddHHmmss}][%t][%C{0}.%M]%m%n</pattern>
+            <pattern>${LOG_PATTERN}</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_HOME}/archive/${PROJECT_NAME}.log.%d{yyyyMMdd}</fileNamePattern>
@@ -33,7 +34,7 @@
     </appender>
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>[%d{yyMMddHHmmss}][%t][%C{0}.%M]%m%n</pattern>
+            <pattern>${LOG_PATTERN}</pattern>
         </encoder>
     </appender>
 

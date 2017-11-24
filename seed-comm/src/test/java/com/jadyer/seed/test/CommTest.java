@@ -13,7 +13,7 @@ public class CommTest {
 
 
     /**
-     * return和try{}finally}的先后执行测试
+     * return和try{}finally{}的先后执行测试
      * 目前控制台输出：11执行了---22执行了---aa11...22
      */
     @Test

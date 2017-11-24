@@ -30,6 +30,9 @@
     <!-- 但要是换成yml文件，测试发现怎么配置都会生成LOG_PATH_IS_UNDEFINED目录 -->
     <property name="LOG_HOME" value="${LOG_PATH}"/>
 
+    <!-- 日志输出格式 -->
+    <property name="LOG_PATTERN" value="[%d{yyMMddHHmmss}][%t][%C{0}.%M]%m%n"/>
+
     <!-- 每个logger都关联到logger上下文,默认上下文名称为"default" -->
     <!-- 可以使用<contextName>设置成其他名字，用于区分不同应用程序的记录 -->
     <!-- 一旦设置，不能修改 -->
@@ -39,7 +42,7 @@
     <appender name="APP_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}/${PROJECT_NAME}.log</file>
         <encoder>
-            <pattern>[%d{yyMMddHHmmss}][%t][%C{0}.%M]%m%n</pattern>
+            <pattern>${LOG_PATTERN}</pattern>
         </encoder>
         <!-- rollingPolicy用于设置当发生滚动时，决定RollingFileAppender的行为，涉及文件移动和重命名 -->
         <!-- TimeBasedRollingPolicy是最常用的滚动策略，它根据时间来制定滚动策略，既负责滚动也负责出发滚动 -->
@@ -50,7 +53,7 @@
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>[%d{yyMMddHHmmss}][%t][%C{0}.%M]%m%n</pattern>
+            <pattern>${LOG_PATTERN}</pattern>
         </encoder>
     </appender>
 

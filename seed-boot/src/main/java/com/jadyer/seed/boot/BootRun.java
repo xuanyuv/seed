@@ -1,6 +1,5 @@
 package com.jadyer.seed.boot;
 
-import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
 import com.jadyer.seed.boot.event.ApplicationEnvironmentPreparedEventListener;
 import com.jadyer.seed.boot.event.ApplicationFailedEventListener;
 import com.jadyer.seed.boot.event.ApplicationPreparedEventListener;
@@ -9,8 +8,6 @@ import com.jadyer.seed.comm.constant.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 
@@ -118,7 +115,7 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
  * ---------------------------------------------------------------------------------------------------------------
  * Created by 玄玉<http://jadyer.cn/> on 2015/11/29 15:35.
  */
-@SpringBootApplication(scanBasePackages="${scan.base.packages}", exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class, DruidDataSourceAutoConfigure.class})
+@SpringBootApplication(scanBasePackages="${scan.base.packages}")
 public class BootRun {
     //@Bean
     //public Filter characterEncodingFilter(){
@@ -156,5 +153,14 @@ public class BootRun {
                 .listeners(new ApplicationFailedEventListener())
                 .profiles(getProfile(new SimpleCommandLinePropertySource(args)))
                 .run(args);
+        //System.exit(SpringApplication.exit(
+        //        new SpringApplicationBuilder().sources(BootRun.class)
+        //                .listeners(new ApplicationStartedEventListener())
+        //                .listeners(new ApplicationEnvironmentPreparedEventListener())
+        //                .listeners(new ApplicationPreparedEventListener())
+        //                .listeners(new ApplicationFailedEventListener())
+        //                .profiles(getProfile(new SimpleCommandLinePropertySource(args)))
+        //                .run(args)
+        //));
     }
 }

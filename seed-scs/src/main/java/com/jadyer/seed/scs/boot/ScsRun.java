@@ -15,7 +15,7 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
  */
 //@EntityScan(basePackages="${scan.base.packages}")
 //@EnableJpaRepositories(basePackages="${scan.base.packages}")
-@SpringBootApplication(scanBasePackages="${scan.base.packages}", exclude={DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class, DruidDataSourceAutoConfigure.class})
+@SpringBootApplication(scanBasePackages="${scan.base.packages}", exclude={DataSourceAutoConfiguration.class, DruidDataSourceAutoConfigure.class, HibernateJpaAutoConfiguration.class})
 public class ScsRun {
     private static final Logger log = LoggerFactory.getLogger(ScsRun.class);
 
