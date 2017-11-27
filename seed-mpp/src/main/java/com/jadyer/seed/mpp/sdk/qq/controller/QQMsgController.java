@@ -1,8 +1,8 @@
 package com.jadyer.seed.mpp.sdk.qq.controller;
 
 import com.jadyer.seed.comm.constant.Constants;
-import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
+import com.jadyer.seed.comm.util.RequestUtil;
 import com.jadyer.seed.mpp.sdk.qq.msg.QQInMsgParser;
 import com.jadyer.seed.mpp.sdk.qq.msg.QQOutMsgXmlBuilder;
 import com.jadyer.seed.mpp.sdk.qq.msg.in.QQInImageMsg;
@@ -34,8 +34,8 @@ public abstract class QQMsgController {
     public void index(@PathVariable String uuid, HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setCharacterEncoding(Constants.MPP_CHARSET_UTF8);
         PrintWriter out = response.getWriter();
-        String reqBodyMsg = JadyerUtil.extractHttpServletRequestBodyMessage(request);
-        LogUtil.getLogger().info("收到QQ服务器消息如下\n{}", JadyerUtil.extractHttpServletRequestHeaderMessage(request)+"\n"+reqBodyMsg);
+        String reqBodyMsg = RequestUtil.extractHttpServletRequestBodyMessage(request);
+        LogUtil.getLogger().info("收到QQ服务器消息如下\n{}", RequestUtil.extractHttpServletRequestHeaderMessage(request)+"\n"+reqBodyMsg);
         //GET过来的请求表示更新开发者服务器URL
         if("GET".equalsIgnoreCase(request.getMethod())){
             //验签

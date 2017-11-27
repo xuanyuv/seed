@@ -1,8 +1,8 @@
 package com.jadyer.seed.mpp.sdk.weixin.controller;
 
 import com.jadyer.seed.comm.constant.Constants;
-import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
+import com.jadyer.seed.comm.util.RequestUtil;
 import com.jadyer.seed.mpp.sdk.weixin.msg.WeixinInMsgParser;
 import com.jadyer.seed.mpp.sdk.weixin.msg.WeixinOutMsgXmlBuilder;
 import com.jadyer.seed.mpp.sdk.weixin.msg.in.WeixinInImageMsg;
@@ -38,8 +38,8 @@ public abstract class WeixinMsgController {
     public void index(@PathVariable String uuid, HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setCharacterEncoding(Constants.MPP_CHARSET_UTF8);
         PrintWriter out = response.getWriter();
-        String reqBodyMsg = JadyerUtil.extractHttpServletRequestBodyMessage(request);
-        LogUtil.getLogger().info("收到微信服务器消息如下\n{}", JadyerUtil.extractHttpServletRequestHeaderMessage(request)+"\n"+reqBodyMsg);
+        String reqBodyMsg = RequestUtil.extractHttpServletRequestBodyMessage(request);
+        LogUtil.getLogger().info("收到微信服务器消息如下\n{}", RequestUtil.extractHttpServletRequestHeaderMessage(request)+"\n"+reqBodyMsg);
         //验签
         if(!this.verifySignature(DigestUtils.md5Hex(uuid+"http://jadyer.cn/"), request)){
             out.write("verify signature failed");

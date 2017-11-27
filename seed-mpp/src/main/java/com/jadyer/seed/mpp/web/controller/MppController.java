@@ -3,7 +3,7 @@ package com.jadyer.seed.mpp.web.controller;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
 import com.jadyer.seed.comm.constant.Constants;
-import com.jadyer.seed.comm.util.JadyerUtil;
+import com.jadyer.seed.comm.util.RequestUtil;
 import com.jadyer.seed.mpp.sdk.qq.helper.QQHelper;
 import com.jadyer.seed.mpp.sdk.qq.helper.QQTokenHolder;
 import com.jadyer.seed.mpp.sdk.qq.model.QQErrorInfo;
@@ -87,7 +87,7 @@ public class MppController {
         //再更新HttpSession
         request.getSession().setAttribute(Constants.WEB_SESSION_USER, mppUserInfo);
         //拼造开发者服务器的URL和Token
-        StringBuilder sb = new StringBuilder(JadyerUtil.getFullContextPath(request));
+        StringBuilder sb = new StringBuilder(RequestUtil.getFullContextPath(request));
         if(1 == mppUserInfo.getMptype()){
             sb.append("/weixin/").append(mppUserInfo.getUuid());
         }

@@ -3,7 +3,6 @@ package com.jadyer.seed.comm.util;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.exception.SeedException;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
@@ -725,8 +724,6 @@ public final class HttpUtil {
             e.printStackTrace();
             return respMap;
         }finally{
-            //IOUtils.closeQuietly(in);
-            //IOUtils.closeQuietly(out);
             if(null != out){
                 try{
                     out.close();
@@ -1193,11 +1190,8 @@ public final class HttpUtil {
     private static HttpClient addTLSSupport(HttpClient httpClient, String filepath, String password) throws Exception {
         //KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
-        FileInputStream fis = new FileInputStream(new File(filepath));
-        try {
+        try(FileInputStream fis = new FileInputStream(new File(filepath))){
             keyStore.load(fis, password.toCharArray());
-        } finally {
-            IOUtils.closeQuietly(fis);
         }
         // Trust own CA and all self-signed certs
         SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore, password.toCharArray()).build();

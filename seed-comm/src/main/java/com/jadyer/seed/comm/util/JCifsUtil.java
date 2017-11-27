@@ -6,7 +6,6 @@ import jcifs.smb.SmbFileInputStream;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.MalformedURLException;
 
 /**
@@ -32,23 +31,19 @@ public final class JCifsUtil {
      * @return 拷贝结果，true--成功，false--失败
      */
     private static boolean copyRemoteFile(SmbFile smbFile, String localDirectory) {
-        SmbFileInputStream in = null;
-        FileOutputStream out = null;
-        try {
-            File[] localFiles = new File(localDirectory).listFiles();
-            if(null == localFiles){
-                //目录不存在的话，就创建目录
-                //new File("D:/aa/bb.et").mkdirs()会在aa文件夹下创建一个名为bb.et的文件夹
-                new File(localDirectory).mkdirs();
-            }else if(localFiles.length > 0){
-                for(File file : localFiles){
-                    //清空本地目录下的所有文件
-                    //new File("D:/aa/bb.et").delete()会删除bb.et文件，但aa文件夹还存在
-                    file.delete();
-                }
+        File[] localFiles = new File(localDirectory).listFiles();
+        if(null == localFiles){
+            //目录不存在的话，就创建目录
+            //new File("D:/aa/bb.et").mkdirs()会在aa文件夹下创建一个名为bb.et的文件夹
+            new File(localDirectory).mkdirs();
+        }else if(localFiles.length > 0){
+            for(File file : localFiles){
+                //清空本地目录下的所有文件
+                //new File("D:/aa/bb.et").delete()会删除bb.et文件，但aa文件夹还存在
+                file.delete();
             }
-            in = new SmbFileInputStream(smbFile);
-            out = new FileOutputStream(localDirectory + smbFile.getName());
+        }
+        try(SmbFileInputStream in=new SmbFileInputStream(smbFile); FileOutputStream out=new FileOutputStream(localDirectory+smbFile.getName())){
             byte[] buffer = new byte[1024];
             int len;
             while((len=in.read(buffer)) > -1){
@@ -56,25 +51,8 @@ public final class JCifsUtil {
             }
             out.flush();
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtil.getLogger().info("拷贝远程文件到本地目录时发生异常，堆栈轨迹如下", e);
             return false;
-        } finally {
-            //IOUtils.closeQuietly(in);
-            //IOUtils.closeQuietly(out);
-            if(null != out){
-                try {
-                    out.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(null != in){
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
         return true;
     }

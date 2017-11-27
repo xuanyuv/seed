@@ -10,7 +10,7 @@ import com.jadyer.seed.comm.util.BeanUtil;
 import com.jadyer.seed.comm.util.CodecUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
-import com.jadyer.seed.comm.util.NetUtil;
+import com.jadyer.seed.comm.util.RequestUtil;
 import com.jadyer.seed.open.model.ReqData;
 import com.jadyer.seed.open.model.RespData;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -77,7 +77,7 @@ public class OpenFilter extends OncePerRequestFilter {
         ReqData reqData;
         String reqDataStr;
         String respDataStr;
-        String reqIp = NetUtil.getClientIP(request);
+        String reqIp = RequestUtil.getClientIP(request);
         long startTime = System.currentTimeMillis();
         try{
             //将请求入参解析到ReqData
@@ -162,10 +162,10 @@ public class OpenFilter extends OncePerRequestFilter {
         byte[] respDataBeytes = respDataStr.getBytes(Constants.OPEN_CHARSET_UTF8);
         response.setHeader("Content-Type", "application/json; charset=" + Constants.OPEN_CHARSET_UTF8);
         response.setHeader("Content-Length", respDataBeytes.length+"");
-        ServletOutputStream out = response.getOutputStream();
-        out.write(respDataBeytes);
-        out.flush();
-        IOUtils.closeQuietly(out);
+        try(ServletOutputStream out = response.getOutputStream()){
+            out.write(respDataBeytes);
+            out.flush();
+        }
     }
 
 

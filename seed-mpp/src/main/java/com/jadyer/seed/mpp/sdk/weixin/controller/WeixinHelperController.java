@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.jadyer.seed.comm.util.HttpUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
+import com.jadyer.seed.comm.util.RequestUtil;
 import com.jadyer.seed.comm.util.XmlUtil;
 import com.jadyer.seed.mpp.sdk.weixin.constant.WeixinConstants;
 import com.jadyer.seed.mpp.sdk.weixin.helper.WeixinHelper;
@@ -206,7 +207,7 @@ public class WeixinHelperController {
      */
     @RequestMapping("/pay/notify")
     void payNotify(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String reqData = JadyerUtil.extractHttpServletRequestBodyMessage(request);
+        String reqData = RequestUtil.extractHttpServletRequestBodyMessage(request);
         LogUtil.getLogger().info("微信支付--公众号支付--支付结果通知-->收到报文-->[{}]", reqData);
         Map<String, String> dataMap = XmlUtil.xmlToMap(reqData);
         //验证交易是否成功、验签

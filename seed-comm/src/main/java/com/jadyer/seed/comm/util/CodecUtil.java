@@ -2,7 +2,6 @@ package com.jadyer.seed.comm.util;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
@@ -176,8 +175,8 @@ public final class CodecUtil {
 
     /**
      * 初始化RSA算法密钥对
-     * @param keysize RSA1024已经不安全了,建议2048
-     * @return 经过Base64编码后的公私钥Map,键名分别为publicKey和privateKey
+     * @param keysize RSA1024已经不安全了，建议2048
+     * @return 经过Base64编码后的公私钥Map，键名分别为publicKey和privateKey
      */
     public static Map<String, String> initRSAKey(int keysize){
         if(keysize != ALGORITHM_RSA_PRIVATE_KEY_LENGTH){
@@ -210,7 +209,7 @@ public final class CodecUtil {
     /**
      * RSA算法分段加解密数据
      * @param cipher 初始化了加解密工作模式后的javax.crypto.Cipher对象
-     * @param opmode 加解密模式,值为javax.crypto.Cipher.ENCRYPT_MODE/DECRYPT_MODE
+     * @param opmode 加解密模式，值为javax.crypto.Cipher.ENCRYPT_MODE/DECRYPT_MODE
      * @param data   待分段加解密的数据的字节数组
      * @return 加密或解密后得到的数据的字节数组
      */
@@ -221,11 +220,10 @@ public final class CodecUtil {
         }else{
             maxBlock = ALGORITHM_RSA_PRIVATE_KEY_LENGTH / 8 - 11;
         }
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        int offSet = 0;
-        byte[] buff;
-        int i = 0;
-        try{
+        try(ByteArrayOutputStream out = new ByteArrayOutputStream()){
+            int offSet = 0;
+            byte[] buff;
+            int i = 0;
             while(datas.length > offSet){
                 if(datas.length-offSet > maxBlock){
                     buff = cipher.doFinal(datas, offSet, maxBlock);
@@ -236,12 +234,10 @@ public final class CodecUtil {
                 i++;
                 offSet = i * maxBlock;
             }
+            return out.toByteArray();
         }catch(Exception e){
             throw new RuntimeException("加解密阀值为["+maxBlock+"]的数据时发生异常", e);
         }
-        byte[] resultDatas = out.toByteArray();
-        IOUtils.closeQuietly(out);
-        return resultDatas;
     }
 
 

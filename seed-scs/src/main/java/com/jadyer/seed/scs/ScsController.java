@@ -2,7 +2,7 @@ package com.jadyer.seed.scs;
 
 import com.jadyer.seed.comm.constant.CommonResult;
 import com.jadyer.seed.comm.constant.Constants;
-import com.jadyer.seed.comm.util.JadyerUtil;
+import com.jadyer.seed.comm.util.RequestUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
@@ -57,7 +57,7 @@ public class ScsController {
             filename = "qrcode.jpg";
             //这里不能使用URI来创建File，因为URI认的是这个协议：file:///D:/qrcode.jpg
             //filedata = new File(URI.create(JadyerUtil.getFullContextPath(request) + "/img/qrcode.jpg"));
-            is = new URL(JadyerUtil.getFullContextPath(request) + "/img/qrcode.jpg").openStream();
+            is = new URL(RequestUtil.getFullContextPath(request) + "/img/qrcode.jpg").openStream();
         }else{
             filename = FilenameUtils.getName(path);
             is = FileUtils.openInputStream(new File(scsHelper.getFilePath(FilenameUtils.getBaseName(path).endsWith("w"))+path));

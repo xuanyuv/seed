@@ -44,13 +44,11 @@
 
 package com.jadyer.seed.comm.util;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -62,7 +60,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
-import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
@@ -71,15 +68,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 /**
  * 玄玉的开发工具类
- * @version v3.19
- * @history v3.19-->移除buildSequenceNo()，可使用IDUtil.java代替
+ * @version v3.20
+ * @history v3.20-->移动若干网络请求的相关方法至RequestUtil.java
+ * @history v3.19-->移除buildSequenceNo()，可用IDUtil.java代替
  * @history v3.18-->增加escapeXSS()用来XSS过滤的方法
  * @history v3.17-->增加randomNumeric()和randomAlphabetic()方法来生成随机字符串，以替代已不推荐使用的RandomStringUtils
  * @history v3.16-->增加leftPadUseZero()字符串左补零的方法
@@ -361,19 +358,6 @@ public final class JadyerUtil {
 
 
     /**
-     * 判断是否为Ajax请求
-     */
-    public static boolean isAjaxRequest(HttpServletRequest request){
-        String requestType = request.getHeader("X-Requested-With");
-        if(null!=requestType && "XMLHttpRequest".equals(requestType)){
-            return true;
-        }
-        requestType = request.getHeader("x-requested-with");
-        return null!=requestType && "XMLHttpRequest".equals(requestType);
-    }
-
-
-    /**
      * 判断一个整数是否为奇数
      * @see 1.本方法中0/-0/-2/2都不是奇数,-1/1/-3/3都是奇数
      * @see 2.算术运算和逻辑运行要比乘除运算更高效,计算的结果也会更快
@@ -632,56 +616,6 @@ public final class JadyerUtil {
 
 
     /**
-     * 提取收到的HttpServletRequest请求报文头消息
-     * <p>
-     *     该方法默认使用了UTF-8解析请求消息
-     *     解析过程中发生异常时会抛出RuntimeException
-     * </p>
-     */
-    public static String extractHttpServletRequestHeaderMessage(HttpServletRequest request){
-        StringBuilder sb = new StringBuilder();
-        sb.append(request.getMethod()).append(" ").append(request.getRequestURI()).append(null==request.getQueryString()?"":"?"+request.getQueryString()).append(" ").append(request.getProtocol()).append("\n");
-        String headerName;
-        for(Enumeration<String> obj = request.getHeaderNames(); obj.hasMoreElements();){
-            headerName = obj.nextElement();
-            sb.append(headerName).append(": ").append(request.getHeader(headerName)).append("\n");
-        }
-        return sb.toString();
-    }
-
-
-    /**
-     * 提取收到的HttpServletRequest请求报文体消息
-     * <p>
-     *     该方法默认使用了UTF-8解析请求消息
-     *     解析过程中发生异常时会抛出RuntimeException
-     * </p>
-     */
-    public static String extractHttpServletRequestBodyMessage(HttpServletRequest request){
-        try{
-            request.setCharacterEncoding("UTF-8");
-        }catch(UnsupportedEncodingException e1){
-            //ignore
-        }
-        StringBuilder sb = new StringBuilder();
-        BufferedReader br = null;
-        try{
-            br = request.getReader();
-            for(String line; (line=br.readLine())!=null;){
-                sb.append(line).append("\n");
-            }
-        }catch(IOException e){
-            throw new RuntimeException(e);
-        }finally {
-            if(null != br){
-                IOUtils.closeQuietly(br);
-            }
-        }
-        return sb.toString();
-    }
-
-
-    /**
      * 统计代码行数
      * -------------------------------------------------------------------------------------------------------------
      * 1)目前仅支持*.java;*.xml;*.properties;*.jsp;*.htm;*.html六种文件格式
@@ -875,46 +809,5 @@ public final class JadyerUtil {
         resultMap.put("code", (resultMap.get("code")==null ? 0 : resultMap.get("code")) + countsCode);
         resultMap.put("comment", (resultMap.get("comment")==null ? 0 : resultMap.get("comment")) + countsComment);
         resultMap.put("blank", (resultMap.get("blank")==null ? 0 : resultMap.get("blank")) + countsBlank);
-    }
-
-
-    /**
-     * 获取应用运行进程的PID
-     */
-    public static String getPID(){
-        String jvmName = ManagementFactory.getRuntimeMXBean().getName();
-        return jvmName.split("@")[0];
-    }
-
-
-    /**
-     * 获取当前方法的名字
-     */
-    public static String getCurrentMethodName(){
-        return Thread.currentThread().getStackTrace()[1].getMethodName();
-    }
-
-
-    /**
-     * 获取应用的完整根地址
-     * @return http://jadyer.cn/mpp（尾部不含斜线）
-     */
-    public static String getFullContextPath(HttpServletRequest request){
-        StringBuilder sb = new StringBuilder();
-        sb.append(request.getScheme()).append("://").append(request.getServerName());
-        if(80!=request.getServerPort() && 443!=request.getServerPort()){
-            sb.append(":").append(request.getServerPort());
-        }
-        sb.append(request.getContextPath());
-        return sb.toString();
-    }
-
-
-    /**
-     * 获取项目的本地路径
-     * @return D:/Develop/Code/idea/seed（尾部不含斜线）
-     */
-    public static String getProjectPath(){
-        return System.getProperty("user.dir").replace("\\", "/");
     }
 }
