@@ -20,9 +20,6 @@ import java.util.concurrent.TimeUnit;
  */
 //@Component
 public class RedisDistributedLockV3 {
-    private static final String SET_IF_NOT_EXIST = "NX";
-    private static final String SET_WITH_EXPIRE_TIME = "PX";
-
     @Resource
     private JedisCluster jedisCluster;
 
@@ -69,8 +66,8 @@ public class RedisDistributedLockV3 {
             throw new IllegalArgumentException("Argument waitTimeMillis must >= 0.");
         }
         while(waitTimeMillis >= 0){
-            //第三个参数表示setnx=SET if Not eXists，第四个参数表示设置锁的过期时间（时间数为第五个参数）
-            if("OK".equals(jedisCluster.set(key, requestId, SET_IF_NOT_EXIST, SET_WITH_EXPIRE_TIME, holdTimeMillis))){
+            //第三个参数表示setnx=SET if Not eXists，第四个参数表示锁的过期时间（值为第五个参数）
+            if("OK".equals(jedisCluster.set(key, requestId, "NX", "PX", holdTimeMillis))){
                 return true;
             }
             //获取锁失败的话，提供尝试机制，合计尝试的时间取决于传入的合计等待时间
