@@ -33,8 +33,9 @@
         <google.zxing.version>2.2</google.zxing.version>
         <google.guice.version>4.1.0</google.guice.version>
         <google.guava.version>23.0</google.guava.version>
-        <alibaba.druid.version>1.1.5</alibaba.druid.version>
-        <alibaba.fastjson.version>1.2.40</alibaba.fastjson.version>
+        <alibaba.druid.version>1.1.6</alibaba.druid.version>
+        <alibaba.fastjson.version>1.2.43</alibaba.fastjson.version>
+        <dangdang.elastic-job.version>2.1.5</dangdang.elastic-job.version>
         <beetl.version>2.7.23</beetl.version>
         <jsch.version>0.1.54</jsch.version>
         <jedis.version>2.9.0</jedis.version>
@@ -216,6 +217,11 @@
         </dependency>
 
         <!-- Other -->
+        <dependency>
+            <groupId>com.dangdang</groupId>
+            <artifactId>elastic-job-lite-core</artifactId>
+            <version>${dangdang.elastic-job.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.ibeetl</groupId>
             <artifactId>beetl</artifactId>
