@@ -158,7 +158,7 @@ public enum IDUtil {
             //毫秒内序列溢出
             if(sequence == 0){
                 //阻塞到下一个毫秒，获得新的时间戳
-                timestamp = tilNextMillis(lastTimestamp);
+                timestamp = waitUntilNextMillis(lastTimestamp);
             }
         }else{
             //时间戳改变，毫秒内序列重置
@@ -179,7 +179,7 @@ public enum IDUtil {
      * @param lastTimestamp 上次生成ID的时间截
      * @return 当前时间戳
      */
-    private long tilNextMillis(long lastTimestamp){
+    private long waitUntilNextMillis(long lastTimestamp){
         long timestamp = this.timeGen();
         while(timestamp <= lastTimestamp){
             timestamp = this.timeGen();
