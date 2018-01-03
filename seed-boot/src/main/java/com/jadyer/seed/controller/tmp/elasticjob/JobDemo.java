@@ -36,7 +36,7 @@ public class JobDemo {
 
 
     private static CoordinatorRegistryCenter createRegistryCenter(){
-        CoordinatorRegistryCenter regCenter = new ZookeeperRegistryCenter(new ZookeeperConfiguration("zk_host:2181", "elastic-job-demo"));
+        CoordinatorRegistryCenter regCenter = new ZookeeperRegistryCenter(new ZookeeperConfiguration("127.0.0.1:2181", "elastic-job-demo"));
         regCenter.init();
         return regCenter;
     }

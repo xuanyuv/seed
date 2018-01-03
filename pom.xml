@@ -20,6 +20,11 @@
     </modules>
 
     <properties>
+        <!--
+        若显式使用的是23.0版本的Guava，那么启动elastic-job的demo时会报告下面的异常
+        java.lang.NoSuchMethodError: com.google.common.util.concurrent.MoreExecutors.sameThreadExecutor()Lcom/google/common/util/concurrent/ListeningExecutorService;
+        这是由于elastic-job使用的是18.0版本的Guava
+        -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <commons-io.version>2.6</commons-io.version>
         <commons-net.version>3.6</commons-net.version>
@@ -32,7 +37,7 @@
         <apache.httpclient.version>4.5.3</apache.httpclient.version>
         <google.zxing.version>2.2</google.zxing.version>
         <google.guice.version>4.1.0</google.guice.version>
-        <google.guava.version>23.0</google.guava.version>
+        <google.guava.version>18.0</google.guava.version>
         <alibaba.druid.version>1.1.6</alibaba.druid.version>
         <alibaba.fastjson.version>1.2.43</alibaba.fastjson.version>
         <dangdang.elastic-job.version>2.1.5</dangdang.elastic-job.version>
