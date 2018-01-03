@@ -20,11 +20,6 @@
     </modules>
 
     <properties>
-        <!--
-        若显式使用的是23.0版本的Guava，那么启动elastic-job的demo时会报告下面的异常
-        java.lang.NoSuchMethodError: com.google.common.util.concurrent.MoreExecutors.sameThreadExecutor()Lcom/google/common/util/concurrent/ListeningExecutorService;
-        这是由于elastic-job使用的是18.0版本的Guava
-        -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <commons-io.version>2.6</commons-io.version>
         <commons-net.version>3.6</commons-net.version>
@@ -41,7 +36,12 @@
         <alibaba.druid.version>1.1.6</alibaba.druid.version>
         <alibaba.fastjson.version>1.2.43</alibaba.fastjson.version>
         <dangdang.elastic-job.version>2.1.5</dangdang.elastic-job.version>
-        <dangdang.shardingjdbc.version>2.0.1</dangdang.shardingjdbc.version>
+        <!--<dangdang.shardingjdbc.version>2.0.1</dangdang.shardingjdbc.version>-->
+        <!--
+        若显式使用的是23.0版本的Guava，那么启动elastic-job的demo时会报告下面的异常
+        java.lang.NoSuchMethodError: com.google.common.util.concurrent.MoreExecutors.sameThreadExecutor()Lcom/google/common/util/concurrent/ListeningExecutorService;
+        这是由于elastic-job使用的是18.0版本的Guava
+        -->
         <beetl.version>2.7.23</beetl.version>
         <jsch.version>0.1.54</jsch.version>
         <jedis.version>2.9.0</jedis.version>
@@ -228,11 +228,13 @@
             <artifactId>elastic-job-lite-core</artifactId>
             <version>${dangdang.elastic-job.version}</version>
         </dependency>
+        <!--
         <dependency>
             <groupId>io.shardingjdbc</groupId>
             <artifactId>sharding-jdbc-core-spring-boot-starter</artifactId>
             <version>${dangdang.shardingjdbc.version}</version>
         </dependency>
+        -->
         <dependency>
             <groupId>com.ibeetl</groupId>
             <artifactId>beetl</artifactId>

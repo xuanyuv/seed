@@ -1,4 +1,4 @@
-package com.jadyer.seed.controller.tmp.elasticjob;
+package com.jadyer.seed.controller.elasticjob;
 
 import com.dangdang.ddframe.job.api.ShardingContext;
 import com.dangdang.ddframe.job.api.simple.SimpleJob;
@@ -15,12 +15,11 @@ import com.jadyer.seed.comm.util.LogUtil;
 public class MySimpleJob implements SimpleJob {
     @Override
     public void execute(ShardingContext shardingContext) {
-        LogUtil.getLogger().info("分片总数：[{}]", shardingContext.getShardingTotalCount());
-        LogUtil.getLogger().info("运行在本作业服务器的分片序列号：[{}]", shardingContext.getShardingItem());
+        LogUtil.getLogger().info("分片总数：[{}]，运行在本作业服务器的分片序列号：[{}]", shardingContext.getShardingTotalCount(), shardingContext.getShardingItem());
         switch(shardingContext.getShardingItem()){
-            case 0 : System.out.println("000"); break;
-            case 1 : System.out.println("111"); break;
-            case 2 : System.out.println("222"); break;
+            case 0 : LogUtil.getLogger().info("--------------000"); break;
+            case 1 : LogUtil.getLogger().info("==============111"); break;
+            case 2 : LogUtil.getLogger().info("~~~~~~~~~~~~~~222"); break;
         }
     }
 }

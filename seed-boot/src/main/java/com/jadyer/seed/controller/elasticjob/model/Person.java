@@ -1,4 +1,4 @@
-package com.jadyer.seed.controller.tmp.elasticjob.model;
+package com.jadyer.seed.controller.elasticjob.model;
 
 import javax.validation.constraints.Size;
 
