@@ -8,19 +8,18 @@ import com.dangdang.ddframe.job.lite.config.LiteJobConfiguration;
 import com.dangdang.ddframe.job.reg.base.CoordinatorRegistryCenter;
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperConfiguration;
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperRegistryCenter;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
 /**
  * Created by 玄玉<http://jadyer.cn/> on 2017/12/11 16:39.
  */
-@Component
+//@Component
 public class JobDemo {
     @PostConstruct
     public void ElasticJobStart(){
         //new JobScheduler(createRegistryCenter(), createJobConfiguration(1)).init();
-        new JobScheduler(createRegistryCenter(), createJobConfiguration(2), new MyListener()).init();
+        new JobScheduler(createRegistryCenter(), createJobConfiguration(1), new MyListener()).init();
     }
 
 
@@ -38,7 +37,7 @@ public class JobDemo {
     private static LiteJobConfiguration createJobConfiguration(int type) {
         if(1 == type){
             //定义作业核心配置
-            JobCoreConfiguration simpleCoreConfig = JobCoreConfiguration.newBuilder("MySimpleJob", "0/10 * * * * ?", 6).build();
+            JobCoreConfiguration simpleCoreConfig = JobCoreConfiguration.newBuilder("MySimpleJob", "0 0 * * * ?", 6).build();
             //定义SIMPLE类型配置
             SimpleJobConfiguration simpleJobConfig = new SimpleJobConfiguration(simpleCoreConfig, MySimpleJob.class.getCanonicalName());
             //定义Lite作业根配置

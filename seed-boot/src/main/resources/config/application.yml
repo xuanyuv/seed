@@ -119,6 +119,14 @@ redis:
     - 192.168.2.210:7005
 
 
+xxljob:
+  adminAddresses: http://127.0.0.1:8080/xxl-job-admin
+  executorAppname: seed-boot
+  executorPort: 8088
+  executorLogPath: /home/seed/log/boot/xxl-job
+  executorLogRetentionDays: -1
+
+
 # 允许匿名访问的资源列表
 auth:
   unauthUrl: /index
