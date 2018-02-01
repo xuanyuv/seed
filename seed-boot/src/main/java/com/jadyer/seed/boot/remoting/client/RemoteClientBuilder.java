@@ -22,6 +22,7 @@ import org.springframework.util.ClassUtils;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 用于创建SpringHttpInvoker服务的客户端实例的帮助类
@@ -57,14 +58,21 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 @Order(Ordered.LOWEST_PRECEDENCE - 2)
 public class RemoteClientBuilder implements EnvironmentAware {
+    /** 连接池的最大连接数 */
     @Value("${remote.maxTotalConnect:0}")
-    private int maxTotalConnect; //连接池的最大连接数默认为0
+    private int maxTotalConnect;
+    /** 单个主机的最大连接数 */
     @Value("${remote.maxConnectPerRoute:200}")
-    private int maxConnectPerRoute; //单个主机的最大连接数
+    private int maxConnectPerRoute;
+    /** 连接超时默认2s */
     @Value("${remote.connectTimeout:2000}")
-    private int connectTimeout; //连接超时默认2s
+    private int connectTimeout;
+    /** 读取超时默认30s */
     @Value("${remote.readTimeout:30000}")
-    private int readTimeout; //读取超时默认30s
+    private int readTimeout;
+    /** 连接池剔除空闲连接的间隔时间默认10s */
+    @Value("${remote.maxIdleTime:10000}")
+    private int maxIdleTime;
     private Environment environment;
     private HttpInvokerRequestExecutor httpInvokerRequestExecutor;
     private final Map<String, Object> clientMap = new ConcurrentHashMap<>();
@@ -96,7 +104,10 @@ public class RemoteClientBuilder implements EnvironmentAware {
         PoolingHttpClientConnectionManager poolingManager = new PoolingHttpClientConnectionManager(registry);
         poolingManager.setMaxTotal(this.maxTotalConnect);
         poolingManager.setDefaultMaxPerRoute(this.maxConnectPerRoute);
-        HttpClient httpClient = HttpClientBuilder.create().setConnectionManager(poolingManager).build();
+        HttpClient httpClient = HttpClientBuilder.create()
+                .setConnectionManager(poolingManager)
+                .evictExpiredConnections().evictIdleConnections(this.maxIdleTime, TimeUnit.MILLISECONDS)
+                .build();
         //HttpClient httpClient = HttpClientBuilder.create().setMaxConnTotal(this.maxTotalConnect).setMaxConnPerRoute(this.maxConnectPerRoute).build();
         HttpComponentsHttpInvokerRequestExecutor executor = new HttpComponentsHttpInvokerRequestExecutor();
         executor.setHttpClient(httpClient);

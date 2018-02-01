@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * RestTemplate配置
@@ -89,14 +90,21 @@ import java.util.List;
 //@Configuration
 @ConditionalOnClass({RestTemplate.class, HttpClient.class})
 public class RestTemplateConfiguration {
+    /** 连接池的最大连接数 */
     @Value("${remote.maxTotalConnect:0}")
-    private int maxTotalConnect; //连接池的最大连接数默认为0
+    private int maxTotalConnect;
+    /** 单个主机的最大连接数 */
     @Value("${remote.maxConnectPerRoute:200}")
-    private int maxConnectPerRoute; //单个主机的最大连接数
+    private int maxConnectPerRoute;
+    /** 连接超时默认2s */
     @Value("${remote.connectTimeout:2000}")
-    private int connectTimeout; //连接超时默认2s
+    private int connectTimeout;
+    /** 读取超时默认30s */
     @Value("${remote.readTimeout:30000}")
-    private int readTimeout; //读取超时默认30s
+    private int readTimeout;
+    /** 连接池剔除空闲连接的间隔时间默认10s */
+    @Value("${remote.maxIdleTime:10000}")
+    private int maxIdleTime;
 
     private ClientHttpRequestFactory createFactory(){
         if(this.maxTotalConnect <= 0){
@@ -105,7 +113,11 @@ public class RestTemplateConfiguration {
             factory.setReadTimeout(this.readTimeout);
             return factory;
         }
-        HttpClient httpClient = HttpClientBuilder.create().setMaxConnTotal(this.maxTotalConnect).setMaxConnPerRoute(this.maxConnectPerRoute).build();
+        HttpClient httpClient = HttpClientBuilder.create()
+                .setMaxConnTotal(this.maxTotalConnect)
+                .setMaxConnPerRoute(this.maxConnectPerRoute)
+                .evictExpiredConnections().evictIdleConnections(this.maxIdleTime, TimeUnit.MILLISECONDS)
+                .build();
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory(httpClient);
         factory.setConnectTimeout(this.connectTimeout);
         factory.setReadTimeout(this.readTimeout);
