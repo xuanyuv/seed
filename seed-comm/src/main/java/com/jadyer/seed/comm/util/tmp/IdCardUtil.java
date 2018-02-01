@@ -619,28 +619,3 @@ public class IdCardUtil {
         return (iDate >= 1) && (iDate <= datePerMonth);
     }
 }
-
-
-class IdcardInfo {
-    private String gender;
-    private String birthday;
-    private String hometown;
-    public String getGender() {
-        return gender;
-    }
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-    public String getBirthday() {
-        return birthday;
-    }
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-    public String getHometown() {
-        return hometown;
-    }
-    public void setHometown(String hometown) {
-        this.hometown = hometown;
-    }
-}

@@ -66,9 +66,6 @@ public final class FtpUtil {
 
     /**
      * 连接并登录FTP服务器
-     * <p>
-     *     可以在该方法中配置一些连接FTP的属性
-     * </p>
      * @param hostname FTP地址
      * @param username FTP登录用户
      * @param password FTP登录密码
@@ -88,7 +85,7 @@ public final class FtpUtil {
         ftpClient.setDataTimeout(0==dataTimeout ? DEFAULT_DATA_TIMEOUT : dataTimeout);
         //防止读取文件名乱码
         ftpClient.setControlEncoding(DEFAULT_CHARSET);
-        //如果FTP传输速度特别慢,设置一下该参数就会大大提高传输速度(它默认的好像是1024)
+        //如果FTP传输速度特别慢，设置一下该参数就会大大提高传输速度（它默认的好像是1024）
         //ftpClient.setBufferSize(102400);
         //输出FTP交互过程中使用到的命令到控制台
         ftpClient.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
@@ -218,8 +215,8 @@ public final class FtpUtil {
     /**
      * 上传文件
      * <p>
-     *     该方法与{@link #uploadAndLogout(String, String, String, String, InputStream)}的区别是
-     *     上传完文件后没有登出服务器及释放连接，但会关闭输入流
+     *     该方法与{@link #uploadAndLogout(String, String, String, String, InputStream)}的区别是：
+     *     上传完文件后没有登出服务器及释放连接，但会关闭输入流；
      *     之所以提供该方法是用于同时上传多个文件的情况下，使之能够共用一个FTP连接
      * </p>
      * @param hostname  目标主机地址
