@@ -60,7 +60,7 @@ public class NetBankResultNotifyYEEPAYAction implements GenericAction {
         nbrn.setBankDate(param.get("rp_PayDate").length()>=8 ? param.get("rp_PayDate").substring(0,8) : param.get("rp_PayDate"));
         nbrn.setBankSerialNo(param.get("r2_TrxId"));
         nbrn.setNotifyType("2");
-        nbrn.setTradeAmount(MoneyUtil.yuanToFen(param.get("r3_Amt")));
+        nbrn.setTradeAmount(MoneyUtil.yuanToFen(param.get("r3_Amt")).toString());
         String messageToBusiPlatform = MessageBuilder.buildNetBankResultNotifyMessage(nbrn);
         LogUtil.getLogger().info("易宝网银结果通知-->发往支付处理的报文[" + messageToBusiPlatform + "]");
         //String respData = MinaUtil.sendTCPMessage(messageToBusiPlatform);

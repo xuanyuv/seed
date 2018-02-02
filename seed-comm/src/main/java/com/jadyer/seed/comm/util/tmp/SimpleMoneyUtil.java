@@ -1,15 +1,13 @@
-package com.jadyer.seed.comm.util.tmp.money;
+package com.jadyer.seed.comm.util.tmp;
 
 import java.math.BigDecimal;
 
 public class SimpleMoneyUtil {
 
     /** 大写数字 */
-    private static final String[] NUMBERS = { "零", "壹", "贰", "叁", "肆", "伍",
-            "陆", "柒", "捌", "玖" };
+    private static final String[] NUMBERS = { "零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖" };
     /** 整数部分的单位 */
-    private static final String[] IUNIT = { "元", "拾", "佰", "仟", "万", "拾", "佰",
-            "仟", "亿", "拾", "佰", "仟", "万", "拾", "佰", "仟" };
+    private static final String[] IUNIT = { "元", "拾", "佰", "仟", "万", "拾", "佰", "仟", "亿", "拾", "佰", "仟", "万", "拾", "佰", "仟" };
     /** 小数部分的单位 */
     private static final String[] DUNIT = { "角", "分", "厘" };
 
@@ -48,6 +46,7 @@ public class SimpleMoneyUtil {
         }
         // overflow超出处理能力，直接返回
         if (integerStr.length() > IUNIT.length) {
+            //最多支持9999仟个亿，比如：9999567890123456.7899就是：玖仟玖佰玖拾玖万伍仟陆佰柒拾捌亿玖仟零壹拾贰万叁仟肆佰伍拾陆元柒角捌分玖厘
             System.out.println(moneyStr + ":超出处理能力");
             return moneyStr;
         }
@@ -65,7 +64,7 @@ public class SimpleMoneyUtil {
     private static int[] toArray(String number) {
         int[] array = new int[number.length()];
         for (int i = 0; i < number.length(); i++) {
-            array[i] = Integer.parseInt(number.substring(i, i + 1));
+            array[i] = number.charAt(i) - '0';
         }
         return array;
     }
@@ -93,8 +92,7 @@ public class SimpleMoneyUtil {
                 if ((length - i) > 1 && integers[i + 1] != 0)
                     key += NUMBERS[0];
             }
-            chineseInteger.append(integers[i] == 0 ? key
-                    : (NUMBERS[integers[i]] + IUNIT[length - i - 1]));
+            chineseInteger.append(integers[i] == 0 ? key : (NUMBERS[integers[i]] + IUNIT[length - i - 1]));
         }
         return chineseInteger.toString();
     }
@@ -148,5 +146,8 @@ public class SimpleMoneyUtil {
         System.out.println(number + " " + SimpleMoneyUtil.toChinese(number));
         number = "0.00";
         System.out.println(number + " " + SimpleMoneyUtil.toChinese(number));
+        number = "9999567890123456.7899";
+        System.out.println(number + " " + SimpleMoneyUtil.toChinese(number));
+
     }
 }
