@@ -1,4 +1,4 @@
-package com.jadyer.seed.comm.util.tmp.poi;
+package com.jadyer.seed.comm.util.tmp;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -18,7 +18,7 @@ import java.text.DecimalFormat;
  * 这里要用到poi-3.9-20121203.jar和poi-ooxml-3.9-20121203.jar
  * Created by 玄玉<http://jadyer.cn/> on 2013/07/09 19:54.
  */
-public class JadyerPOIDemo {
+public class POIDemo {
     public static void writeExcel() throws IOException {
         //创建一个Excel(or new XSSFWorkbook())
         Workbook wb = new HSSFWorkbook();
