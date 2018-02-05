@@ -19,7 +19,7 @@ import java.util.Map;
  * </p>
  * @version 2014年12月19日 上午11:08:53
  */
-public class IdCardUtil {
+public class IDCardUtil {
 
     /** 中国公民身份证号码最小长度。 */
     public static final int CHINA_ID_MIN_LENGTH = 15;
