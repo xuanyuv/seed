@@ -10,12 +10,20 @@ import java.text.DecimalFormat;
  * -------------------------------------------------------------------------------
  * 目前只处理人民币（CNY）
  * -------------------------------------------------------------------------------
- * @version v1.1
+ * @version v1.2
+ * @history v1.2-->增加金额转中文的方法
  * @history v1.1-->重写金额元转分和分转元方法，并增加两个方法：金额格式化和区间判断
  * @history v1.0-->初建
- * Created by 玄玉<https://jadyer.github.io/> on 2017/5/19 11:45.
+ * Created by 玄玉<http://jadyer.cn/> on 2017/5/19 11:45.
  */
 public class MoneyUtil {
+    /** 转中文：大写数字 */
+    private static final String[] NUMBERS = {"零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖"};
+    /** 转中文：整数部分的单位 */
+    private static final String[] INT_UNIT = {"元", "拾", "佰", "仟", "万", "拾", "佰", "仟", "亿", "拾", "佰", "仟", "万", "拾", "佰", "仟"};
+    /** 转中文：小数部分的单位 */
+    private static final String[] DECIMAL_UNIT = {"角", "分", "厘"};
+
     private MoneyUtil(){}
 
     ///**
@@ -177,5 +185,107 @@ public class MoneyUtil {
             return new BigDecimal(0);
         }
         return new BigDecimal(amount).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+    }
+
+
+    /**
+     * 金额转中文
+     */
+    public static String toChinese(String amount){
+        if(StringUtils.isBlank(amount)){
+            return "";
+        }
+        //去掉半角逗号“,”
+        if(amount.contains(",")){
+            amount = amount.replaceAll(",", "");
+        }
+        /*
+         * 分离整数部分和小数部分
+         */
+        //整数部分数字
+        String intNumberStr;
+        //小数部分数字
+        String decimalNumberStr;
+        if(amount.contains(".")){
+            intNumberStr = amount.substring(0, amount.indexOf("."));
+            decimalNumberStr = amount.substring(amount.indexOf(".") + 1);
+        } else {
+            intNumberStr = amount;
+            decimalNumberStr = "";
+        }
+        //整数部分需去掉首0，小数部分的0不用管（超出部分会被舍去，该方法只会计算到角、分、厘三位）
+        if(!intNumberStr.equals("")){
+            intNumberStr = Long.toString(Long.parseLong(intNumberStr));
+            if(intNumberStr.equals("0")){
+                intNumberStr = "";
+            }
+        }
+        //整数部分超出处理能力则直接返回
+        //最多支持9999仟万个亿，比如：9999567890123456.7899就是：玖仟玖佰玖拾玖万伍仟陆佰柒拾捌亿玖仟零壹拾贰万叁仟肆佰伍拾陆元柒角捌分玖厘
+        if(intNumberStr.length() > INT_UNIT.length){
+            LogUtil.getLogger().info("超出处理能力[{}]", amount);
+            return amount;
+        }
+        /*
+         * 判断第5位数字的单位“万”是否应加
+         */
+        boolean isMust5 = false;
+        int intNumberStrLen = intNumberStr.length();
+        if(intNumberStrLen > 4){
+            String subIntNumberStr;
+            if(intNumberStrLen > 8){
+                //取得从低位数，第5到第8位的字串
+                subIntNumberStr = intNumberStr.substring(intNumberStrLen-8, intNumberStrLen-4);
+            }else{
+                subIntNumberStr = intNumberStr.substring(0, intNumberStrLen-4);
+            }
+            isMust5 = Integer.parseInt(subIntNumberStr) > 0;
+        }
+        /*
+         * 计算整数部分的中文
+         */
+        StringBuilder intNumberChinese = new StringBuilder();
+        //整数部分的整形数组
+        int[] intArray = JadyerUtil.intToIntArray(intNumberStr);
+        for(int i=0; i<intArray.length; i++){
+            //0出现在关键位置：1234（万）5678（亿）9012（万）3456（元）
+            //特殊情况：10（拾元、壹拾元、壹拾万元、拾万元）
+            String key = "";
+            if(intArray[i] == 0){
+                if((intArray.length - i) == 13) {                 //万（亿）（必填）
+                    key = INT_UNIT[4];
+                }else if((intArray.length - i) == 9) {            //亿（必填）
+                    key = INT_UNIT[8];
+                }else if((intArray.length - i) == 5 && isMust5) { //万（不必填）
+                    key = INT_UNIT[4];
+                }else if((intArray.length - i) == 1) {            //元（必填）
+                    key = INT_UNIT[0];
+                }
+                //0遇非0时补零，不包含最后一位
+                if((intArray.length - i) > 1 && intArray[i + 1] != 0){
+                    key += NUMBERS[0];
+                }
+            }
+            intNumberChinese.append(intArray[i] == 0 ? key : (NUMBERS[intArray[i]] + INT_UNIT[intArray.length - i - 1]));
+        }
+        /*
+         * 计算小数部分的中文
+         */
+        StringBuilder decimalNumberChinese = new StringBuilder();
+        //小数部分的整形数组
+        int[] decimalArray = JadyerUtil.intToIntArray(decimalNumberStr);
+        for(int i=0; i<decimalArray.length; i++){
+            //超出小数部分的单位的个数，则直接舍去
+            //假设DECIMAL_UNIT={"角", "分", "厘", "毫", "丝"}，则说明该方法只计算到角、分、厘、毫、丝五位
+            //假设描述黄金价格：1.234567，我们会说它是壹元贰角叁分肆厘伍毫陆丝
+            if(i == DECIMAL_UNIT.length){
+                break;
+            }
+            decimalNumberChinese.append(decimalArray[i]==0 ? "" : (NUMBERS[decimalArray[i]] + DECIMAL_UNIT[i]));
+        }
+        /*
+         * 返回结果
+         */
+        return intNumberChinese.toString() + decimalNumberChinese.toString();
     }
 }

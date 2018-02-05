@@ -6,11 +6,9 @@ import com.jadyer.seed.comm.util.FtpUtil;
 import com.jadyer.seed.comm.util.HttpUtil;
 import com.jadyer.seed.comm.util.ImageUtil;
 import com.jadyer.seed.comm.util.JsoupHelper;
+import com.jadyer.seed.comm.util.MoneyUtil;
 import com.jadyer.seed.comm.util.PasswordUtil;
 import com.jadyer.seed.comm.util.ValidatorUtil;
-import com.jadyer.seed.comm.util.tmp.poi.ExcelProperty;
-import com.jadyer.seed.comm.util.tmp.poi.ExcelUtil;
-import com.jadyer.seed.comm.util.tmp.poi.annotation.ExcelHeader;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -253,53 +250,9 @@ public class UtilTest {
     }
 
 
-    /**
-     * 生成Excel测试
-     */
     @Test
-    public void excelUtilTest() throws IllegalArgumentException, IllegalAccessException, IOException{
-        List<Object> applyList = new ArrayList<>();
-        Apply apply = new Apply();
-        apply.setPersonName("神灯");
-        apply.setPersonIdent("420111196808195876");
-        apply.setPersonMobile("13466331500");
-        Apply apply22 = new Apply();
-        apply22.setPersonName("神灯22");
-        apply22.setPersonIdent("420111196808195877");
-        apply22.setPersonMobile("13466331501");
-        applyList.add(apply);
-        applyList.add(apply22);
-        ExcelProperty ep = new ExcelProperty();
-        ep.setDefaultSheetName("预审通过未面签数据");
-        ep.setCreatNew(true);
-        ep.setIgnorHeader(false);
-        new ExcelUtil("C:\\Users\\Jadyer\\Desktop\\test.xls", ep).saveListToExcel(null, applyList);
-    }
-    private class Apply{
-        @ExcelHeader(column=1,title="姓名")
-        private String personName;
-        @ExcelHeader(column=2,title="身份证号")
-        private String personIdent;
-        @ExcelHeader(column=3,title="手机号")
-        private String personMobile;
-        public String getPersonName() {
-            return personName;
-        }
-        void setPersonName(String personName) {
-            this.personName = personName;
-        }
-        public String getPersonIdent() {
-            return personIdent;
-        }
-        void setPersonIdent(String personIdent) {
-            this.personIdent = personIdent;
-        }
-        public String getPersonMobile() {
-            return personMobile;
-        }
-        void setPersonMobile(String personMobile) {
-            this.personMobile = personMobile;
-        }
+    public void moneyUtilTest(){
+        Assert.assertEquals("玖仟玖佰玖拾玖万伍仟陆佰柒拾捌亿玖仟零壹拾贰万叁仟肆佰伍拾陆元柒角捌分玖厘", MoneyUtil.toChinese("9999567890123456.7899"));
     }
 
 

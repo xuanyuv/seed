@@ -358,6 +358,18 @@ public final class JadyerUtil {
 
 
     /**
+     * 字符串类型的数字转为整形数组
+     */
+    public static int[] intToIntArray(String number){
+        int[] intArray = new int[number.length()];
+        for(int i=0; i<number.length(); i++){
+            intArray[i] = number.charAt(i) - '0';
+        }
+        return intArray;
+    }
+
+
+    /**
      * 判断一个整数是否为奇数
      * @see 1.本方法中0/-0/-2/2都不是奇数,-1/1/-3/3都是奇数
      * @see 2.算术运算和逻辑运行要比乘除运算更高效,计算的结果也会更快
