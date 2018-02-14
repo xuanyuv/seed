@@ -26,6 +26,11 @@ public class ViewController {
         return "/index";
     }
 
+    @GetMapping("/viewlog")
+    String viewlog(){
+        return "/viewlog";
+    }
+
 
     @ResponseBody
     @PostMapping("/login")

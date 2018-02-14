@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>实时输出日志</title>
+    <script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js"></script>
+    <script src="https://cdn.bootcss.com/sockjs-client/1.1.4/sockjs.min.js"></script>
+</head>
+<body>
+<label>WebSocket状态：</label>
+<button id="btn_openSocket" onclick="openSocket()">连接</button>
+<button id="btn_closeSocket" onclick="closeSocket()" disabled>断开</button>
+<br/>
+<br/>
+<div id="log-container" style="height:450px; overflow-y:scroll; background:#333; color:#aaa; padding:10px; display:none;"><div></div></div>
+</body>
+<script>
+    var stompClient = null;
+    function openSocket(){
+        if(null == stompClient){
+            //连接stomp服务端
+            stompClient = Stomp.over(new SockJS("${ctxPath}/seed-boot-websocket?token=jadyer"));
+            stompClient.connect({token:"jadyer"}, function(frame){
+                //订阅"/topic/pullLogMsg"的消息，展示日志信息
+                stompClient.subscribe("/topic/pullLogMsg", function(event){
+                    var content = JSON.parse(event.body);
+                    $("#log-container div").append(content.timestamp + " " + content.level + " --- [" + content.threadName + "] " + content.className + "   :" + content.body).append("<br/>");
+                    $("#log-container").scrollTop($("#log-container div").height() - $("#log-container").height());
+                },{
+                    token:"jadyertoken"
+                });
+                $("#log-container").show();
+                $("#btn_openSocket").attr("disabled", true);
+                $("#btn_closeSocket").attr("disabled", false);
+            });
+        }
+    }
+    function closeSocket(){
+        if(null != stompClient){
+            stompClient.disconnect();
+            stompClient = null;
+        }
+        $("#log-container").hide();
+        $("#btn_openSocket").attr("disabled", false);
+        $("#btn_closeSocket").attr("disabled", true);
+    }
+</script>
+</html>

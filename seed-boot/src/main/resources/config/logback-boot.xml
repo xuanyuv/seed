@@ -55,6 +55,7 @@
         <encoder>
             <pattern>${LOG_PATTERN}</pattern>
         </encoder>
+        <filter class="com.jadyer.seed.controller.temp.websocket.LogFilter"/>
     </appender>
 
     <logger name="org.jboss" level="WARN"/>
