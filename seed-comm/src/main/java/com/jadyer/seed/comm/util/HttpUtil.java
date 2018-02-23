@@ -65,6 +65,7 @@ import java.util.Map;
  * -----------------------------------------------------------------------------------------------------------
  * 本工具类中的部分方法用到了HttpComponents-Client-4.2.1
  * -----------------------------------------------------------------------------------------------------------
+ * 关于OKHttp可参考：https://www.toutiao.com/i6509319713200275976
  * 关于HttpComponents-4.3提供的FluentAPI及集合SpringRestTemplate详见以下网址介绍
  * https://github.com/springside/springside4/wiki/HttpClient
  * http://liuxing.info/2015/05/21/RestTemplate实践/
