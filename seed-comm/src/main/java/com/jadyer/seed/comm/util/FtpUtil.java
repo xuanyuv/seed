@@ -35,8 +35,8 @@ import java.util.List;
 /**
  * FTP工具类
  * -----------------------------------------------------------------------------------------------------------
- * 1.登出时要注意ftpClient.disconnect()的时机,ftpClient.logout()也会抛异常
- *   所要注意避免FTPClient对象退出异常,连接没有释放,最后积少成多直至阻塞FTP服务器的连接,进而引发连接异常
+ * 1.登出时要注意ftpClient.disconnect()的时机，ftpClient.logout()也会抛异常
+ *   所要注意避免FTPClient对象退出异常，连接没有释放，最后积少成多直至阻塞FTP服务器的连接，进而引发连接异常
  * 2.FTP response 421 received.  Server closed connection.
  *   这个错误的原因就是FTP服务器端连接数满了
  * 3.Connection closed without indication.
