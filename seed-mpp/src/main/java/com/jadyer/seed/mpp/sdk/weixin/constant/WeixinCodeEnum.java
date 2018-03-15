@@ -136,29 +136,29 @@ public enum WeixinCodeEnum {
     WEIXIN_9001036 (9001036, "查询起始值begin不合法");
 
     private final int code;
-    private final String message;
+    private final String msg;
 
-    WeixinCodeEnum(int _code, String _message){
-        this.code = _code;
-        this.message = _message;
+    WeixinCodeEnum(int code, String msg){
+        this.code = code;
+        this.msg = msg;
     }
 
     public int getCode() {
         return code;
     }
 
-    public String getMessage() {
-        return message;
+    public String getMsg() {
+        return msg;
     }
 
     /**
      * 通过枚举code获取对应的message
      * @return 取不到时返回null
      */
-    public static String getMessageByCode(int code){
-        for(WeixinCodeEnum _enum : values()){
-            if(_enum.getCode() == code){
-                return _enum.getMessage();
+    public static String getMsgByCode(int code){
+        for(WeixinCodeEnum weixinCodeEnum : values()){
+            if(weixinCodeEnum.getCode() == code){
+                return weixinCodeEnum.getMsg();
             }
         }
         return null;

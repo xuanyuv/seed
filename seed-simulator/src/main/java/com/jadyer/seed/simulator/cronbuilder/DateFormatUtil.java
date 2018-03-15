@@ -11,17 +11,18 @@ import java.util.Map;
  * 使用ThreadLocal以空间换时间解决SimpleDateFormat线程安全问题
  */
 public class DateFormatUtil {
-    private static final ThreadLocal<Map<String, DateFormat>> _threadLocal = new ThreadLocal<Map<String, DateFormat>>(){
+    private static final ThreadLocal<Map<String, DateFormat>> threadLocal = new ThreadLocal<Map<String, DateFormat>>(){
+        @Override
         protected Map<String, DateFormat> initialValue(){
             return new HashMap<>();
         }
     };
 
     private static DateFormat getDateFormat(String pattern){
-        DateFormat dateFormat = _threadLocal.get().get(pattern);
+        DateFormat dateFormat = threadLocal.get().get(pattern);
         if(null == dateFormat){
             dateFormat = new SimpleDateFormat(pattern);
-            _threadLocal.get().put(pattern, dateFormat);
+            threadLocal.get().put(pattern, dateFormat);
         }
         return dateFormat;
     }

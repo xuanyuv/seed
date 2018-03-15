@@ -50,9 +50,9 @@ public class AuthConfiguration {
         private String unauthUrl;
         private List<String> anonyList = new ArrayList<>();
 
-        AuthFilter(String _unauthUrl, List<String> _anonyList){
-            this.unauthUrl = _unauthUrl;
-            this.anonyList = _anonyList;
+        AuthFilter(String unauthUrl, List<String> anonyList){
+            this.unauthUrl = unauthUrl;
+            this.anonyList = anonyList;
         }
 
         @Override

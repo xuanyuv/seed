@@ -115,7 +115,7 @@ public class NoCardPaymentTester extends JPanel implements ActionListener {
         cbSelectEnv.addItemListener(new ItemListener(){
             @Override
             public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()==ItemEvent.SELECTED && e.getItem().equals("生产环境")){
+                if(e.getStateChange()==ItemEvent.SELECTED && "生产环境".equals(e.getItem())){
                     JOptionPane.showMessageDialog(null, "想动生产环境？没门 ！！", "风险告警", JOptionPane.INFORMATION_MESSAGE);
                     cbSelectEnv.setSelectedIndex(1);
                 }

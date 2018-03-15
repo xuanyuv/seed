@@ -116,29 +116,29 @@ public enum QQCodeEnum {
     QQ_70011   (70011, "错误的按钮命令");
 
     private final int code;
-    private final String message;
+    private final String msg;
 
-    QQCodeEnum(int _code, String _message){
-        this.code = _code;
-        this.message = _message;
+    QQCodeEnum(int code, String msg){
+        this.code = code;
+        this.msg = msg;
     }
 
     public int getCode() {
         return code;
     }
 
-    public String getMessage() {
-        return message;
+    public String getMsg() {
+        return msg;
     }
 
     /**
      * 通过枚举code获取对应的message
      * @return 取不到时返回null
      */
-    public static String getMessageByCode(int code){
-        for(QQCodeEnum _enum : values()){
-            if(_enum.getCode() == code){
-                return _enum.getMessage();
+    public static String getMsgByCode(int code){
+        for(QQCodeEnum qqCodeEnum : values()){
+            if(qqCodeEnum.getCode() == code){
+                return qqCodeEnum.getMsg();
             }
         }
         return null;

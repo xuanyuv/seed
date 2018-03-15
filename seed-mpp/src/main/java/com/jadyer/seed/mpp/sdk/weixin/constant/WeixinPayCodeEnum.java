@@ -48,29 +48,29 @@ public enum WeixinPayCodeEnum {
     WEIXIN_PAY_DOWNLOADBILL_UnCompressGZip_Error  ("CompressGZip Error",    "账单解压失败，请稍后重试");
 
     private final String code;
-    private final String message;
+    private final String msg;
 
-    WeixinPayCodeEnum(String _code, String _message){
-        this.code = _code;
-        this.message = _message;
+    WeixinPayCodeEnum(String code, String msg){
+        this.code = code;
+        this.msg = msg;
     }
 
     public String getCode() {
         return code;
     }
 
-    public String getMessage() {
-        return message;
+    public String getMsg() {
+        return msg;
     }
 
     /**
      * 通过枚举code获取对应的message
      * @return 取不到时返回null
      */
-    public static String getMessageByCode(String code){
-        for(WeixinPayCodeEnum _enum : values()){
-            if(_enum.getCode().equals(code)){
-                return _enum.getMessage();
+    public static String getMsgByCode(String code){
+        for(WeixinPayCodeEnum weixinPayCodeEnum : values()){
+            if(weixinPayCodeEnum.getCode().equals(code)){
+                return weixinPayCodeEnum.getMsg();
             }
         }
         return null;

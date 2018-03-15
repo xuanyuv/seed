@@ -39,7 +39,7 @@ public final class QQHelper {
         if("0".equals(map.get("errcode")) && StringUtils.isNotBlank(map.get("access_token"))){
             return map.get("access_token");
         }
-        String errmsg = QQCodeEnum.getMessageByCode(Integer.parseInt((map.get("errcode"))));
+        String errmsg = QQCodeEnum.getMsgByCode(Integer.parseInt((map.get("errcode"))));
         if(StringUtils.isBlank(errmsg)){
             errmsg = map.get("errmsg");
         }
@@ -61,7 +61,7 @@ public final class QQHelper {
         if("0".equals(map.get("errcode"))){
             return map.get("ticket");
         }
-        String errmsg = QQCodeEnum.getMessageByCode(Integer.parseInt((map.get("errcode"))));
+        String errmsg = QQCodeEnum.getMsgByCode(Integer.parseInt((map.get("errcode"))));
         if(StringUtils.isBlank(errmsg)){
             errmsg = map.get("errmsg");
         }
@@ -86,7 +86,7 @@ public final class QQHelper {
         LogUtil.getLogger().info("获取QQ网页access_token,QQ应答报文为-->{}", respData);
         QQOAuthAccessToken qqOauthAccessToken = JSON.parseObject(respData, QQOAuthAccessToken.class);
         if(qqOauthAccessToken.getErrcode() != 0){
-            String errmsg = QQCodeEnum.getMessageByCode(qqOauthAccessToken.getErrcode());
+            String errmsg = QQCodeEnum.getMsgByCode(qqOauthAccessToken.getErrcode());
             if(StringUtils.isNotBlank(errmsg)){
                 qqOauthAccessToken.setErrmsg(errmsg);
             }
@@ -135,7 +135,7 @@ public final class QQHelper {
         LogUtil.getLogger().info("自定义菜单创建-->QQ应答JSON为{}", respData);
         QQErrorInfo errinfo = JSON.parseObject(respData, QQErrorInfo.class);
         if(errinfo.getErrcode() != 0){
-            String errmsg = QQCodeEnum.getMessageByCode(errinfo.getErrcode());
+            String errmsg = QQCodeEnum.getMsgByCode(errinfo.getErrcode());
             if(StringUtils.isNotBlank(errmsg)){
                 errinfo.setErrmsg(errmsg);
             }
@@ -158,7 +158,7 @@ public final class QQHelper {
         LogUtil.getLogger().info("自定义菜单创建-->QQ应答JSON为{}", respData);
         QQErrorInfo errinfo = JSON.parseObject(respData, QQErrorInfo.class);
         if(errinfo.getErrcode() != 0){
-            String errmsg = QQCodeEnum.getMessageByCode(errinfo.getErrcode());
+            String errmsg = QQCodeEnum.getMsgByCode(errinfo.getErrcode());
             if(StringUtils.isNotBlank(errmsg)){
                 errinfo.setErrmsg(errmsg);
             }
@@ -201,7 +201,7 @@ public final class QQHelper {
         LogUtil.getLogger().info("单发主动推消息-->QQ应答JSON为{}", respData);
         QQErrorInfo errinfo = JSON.parseObject(respData, QQErrorInfo.class);
         if(errinfo.getErrcode() != 0){
-            String errmsg = QQCodeEnum.getMessageByCode(errinfo.getErrcode());
+            String errmsg = QQCodeEnum.getMsgByCode(errinfo.getErrcode());
             if(StringUtils.isNotBlank(errmsg)){
                 errinfo.setErrmsg(errmsg);
             }
@@ -223,7 +223,7 @@ public final class QQHelper {
         LogUtil.getLogger().info("单发主动推消息-->QQ应答JSON为{}", respData);
         QQErrorInfo errinfo = JSON.parseObject(respData, QQErrorInfo.class);
         if(errinfo.getErrcode() != 0){
-            String errmsg = QQCodeEnum.getMessageByCode(errinfo.getErrcode());
+            String errmsg = QQCodeEnum.getMsgByCode(errinfo.getErrcode());
             if(StringUtils.isNotBlank(errmsg)){
                 errinfo.setErrmsg(errmsg);
             }
@@ -262,7 +262,7 @@ public final class QQHelper {
         Map<String, String> resultMap = HTTPUtil.postWithDownload(reqURL, null);
         if("no".equals(resultMap.get("isSuccess"))){
             Map<String, String> errmap = JSON.parseObject(resultMap.get("failReason"), new TypeReference<Map<String, String>>(){});
-            String errmsg = QQCodeEnum.getMessageByCode(Integer.parseInt((errmap.get("errcode"))));
+            String errmsg = QQCodeEnum.getMsgByCode(Integer.parseInt((errmap.get("errcode"))));
             if(StringUtils.isBlank(errmsg)){
                 errmsg = errmap.get("errmsg");
             }

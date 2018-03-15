@@ -59,10 +59,10 @@ public class OpenFilter extends OncePerRequestFilter {
      * @param _apiGrantMap  为各个appid初始化API授权情况
      * @param _appsecretMap 为各个appid初始化appsecret
      */
-    OpenFilter(String _filterURL, Map<String, List<String>> _apiGrantMap, Map<String, String> _appsecretMap){
-        this.filterURL = _filterURL;
-        this.apiGrantMap = _apiGrantMap;
-        this.appsecretMap = _appsecretMap;
+    OpenFilter(String filterURL, Map<String, List<String>> apiGrantMap, Map<String, String> appsecretMap){
+        this.filterURL = filterURL;
+        this.apiGrantMap = apiGrantMap;
+        this.appsecretMap = appsecretMap;
     }
 
 
@@ -220,7 +220,7 @@ public class OpenFilter extends OncePerRequestFilter {
         Collections.sort(keys);
         for(String key : keys){
             String[] value = paramMap.get(key);
-            if(key.equalsIgnoreCase("sign")){
+            if("sign".equalsIgnoreCase(key)){
                 continue;
             }
             sb.append(key).append(value[0]);
@@ -270,7 +270,7 @@ public class OpenFilter extends OncePerRequestFilter {
         reqData.setData(dataPlain);
         Map<String, Object> allParams = new HashMap<>();
         for(Field field : reqData.getClass().getDeclaredFields()){
-            if(!field.getName().equals("serialVersionUID")){
+            if(!"serialVersionUID".equals(field.getName())){
                 String methodName = "get" + StringUtils.capitalize(field.getName());
                 Object fieldValue;
                 try {

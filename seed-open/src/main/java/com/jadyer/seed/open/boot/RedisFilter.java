@@ -41,10 +41,10 @@ public class RedisFilter extends OncePerRequestFilter {
      * @param _filterMethodList 指定该Filter只拦截的方法列表，空表示都不拦截
      * @param jedisCluster      redis集群对象
      */
-    RedisFilter(String _filterURL, List<String> _filterMethodList, JedisCluster jedisCluster){
-        this.filterURL = _filterURL;
+    RedisFilter(String filterURL, List<String> filterMethodList, JedisCluster jedisCluster){
+        this.filterURL = filterURL;
         this.jedisCluster = jedisCluster;
-        this.filterMethodList.addAll(_filterMethodList);
+        this.filterMethodList.addAll(filterMethodList);
     }
 
 

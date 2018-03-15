@@ -163,10 +163,10 @@ public final class MessageBuilder {
     public static String buildOrderResultNotifyResponseMessage(String respCode){
         String respDesc = null;
         String messageBody = null;
-        if(respCode.equals("99999999")){
+        if("99999999".equals(respCode)){
             respDesc = "订单结果通知:商户系统已成功接收到通知,无需再次通知";
             messageBody = "0`";
-        }else if(respCode.equals("00000000")){
+        }else if("00000000".equals(respCode)){
             respDesc = "订单结果通知:商户系统未成功接收到通知,需要继续通知";
             messageBody = "1`";
         }

@@ -31,29 +31,29 @@ public enum WeixinRedpackCodeEnum {
     WEIXIN_REDPACK_DAY_OVER_LIMITED    ("DAY_OVER_LIMITED",    "企业红包的按天日发放受限");
 
     private final String code;
-    private final String message;
+    private final String msg;
 
-    WeixinRedpackCodeEnum(String _code, String _message){
-        this.code = _code;
-        this.message = _message;
+    WeixinRedpackCodeEnum(String code, String msg){
+        this.code = code;
+        this.msg = msg;
     }
 
     public String getCode() {
         return code;
     }
 
-    public String getMessage() {
-        return message;
+    public String getMsg() {
+        return msg;
     }
 
     /**
      * 通过枚举code获取对应的message
      * @return 取不到时返回null
      */
-    public static String getMessageByCode(String code){
-        for(WeixinRedpackCodeEnum _enum : values()){
-            if(_enum.getCode().equals(code)){
-                return _enum.getMessage();
+    public static String getMsgByCode(String code){
+        for(WeixinRedpackCodeEnum weixinRedpackCodeEnum : values()){
+            if(weixinRedpackCodeEnum.getCode().equals(code)){
+                return weixinRedpackCodeEnum.getMsg();
             }
         }
         return null;

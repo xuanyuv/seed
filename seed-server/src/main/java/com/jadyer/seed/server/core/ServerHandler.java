@@ -30,9 +30,9 @@ public class ServerHandler extends IoHandlerAdapter {
     public void messageReceived(IoSession session, Object message) {
         String respData;
         Token token = (Token)message;
-        if(token.getBusiCode().equals("10005")){
+        if("10005".equals(token.getBusiCode())){
             LogUtil.getWapLogger();
-        }else if(token.getBusiCode().startsWith("/notify_")){
+        }else if("/notify_".startsWith(token.getBusiCode())){
             LogUtil.getWebLogger();
         }
         byte[] msgbytes;
@@ -50,9 +50,9 @@ public class ServerHandler extends IoHandlerAdapter {
         sb.append("\r\n【报文内容】").append(token.getFullMessage());
         sb.append("\r\n------------------------------------------------------------------------------------------");
         LogUtil.getLogger().info(sb.toString());
-        if(token.getBusiCode().equals("/")){
+        if("/".equals(token.getBusiCode())){
             respData = MessageBuilder.buildHTTPResponseMessage(MessageBuilder.getServerStatus());
-        }else if(token.getBusiCode().equals("/favicon.ico")){
+        }else if("/favicon.ico".equals(token.getBusiCode())){
             respData = MessageBuilder.buildHTTPResponseMessage("<link rel=\"icon\" href=\"https://raw.githubusercontent.com/jadyer/seed/master/seed-scs/src/main/webapp/favicon.ico\" type=\"image/x-icon\"/>\n<link rel=\"shortcut icon\" href=\"https://raw.githubusercontent.com/jadyer/seed/master/seed-scs/src/main/webapp/favicon.ico\" type=\"image/x-icon\"/>");
         }else if(this.busiProcessMap.keySet().contains(token.getBusiCode())){
             respData = this.busiProcessMap.get(token.getBusiCode()).execute(token.getBusiMessage());

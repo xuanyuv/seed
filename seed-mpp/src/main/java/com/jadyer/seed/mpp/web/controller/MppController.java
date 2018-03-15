@@ -105,16 +105,16 @@ public class MppController {
      */
     @ResponseBody
     @PostMapping("/user/bind")
-    public CommonResult bind(MppUserInfo _mppUserInfo, HttpSession session){
+    public CommonResult bind(MppUserInfo user, HttpSession session){
         MppUserInfo mppUserInfo = (MppUserInfo)session.getAttribute(Constants.WEB_SESSION_USER);
         mppUserInfo.setBindStatus(0);
-        mppUserInfo.setAppid(_mppUserInfo.getAppid());
-        mppUserInfo.setAppsecret(_mppUserInfo.getAppsecret());
-        mppUserInfo.setMpid(_mppUserInfo.getMpid());
-        mppUserInfo.setMpno(_mppUserInfo.getMpno());
-        mppUserInfo.setMpname(_mppUserInfo.getMpname());
-        mppUserInfo.setMchid(_mppUserInfo.getMchid());
-        mppUserInfo.setMchkey(_mppUserInfo.getMchkey());
+        mppUserInfo.setAppid(user.getAppid());
+        mppUserInfo.setAppsecret(user.getAppsecret());
+        mppUserInfo.setMpid(user.getMpid());
+        mppUserInfo.setMpno(user.getMpno());
+        mppUserInfo.setMpname(user.getMpname());
+        mppUserInfo.setMchid(user.getMchid());
+        mppUserInfo.setMchkey(user.getMchkey());
         session.setAttribute(Constants.WEB_SESSION_USER, mppUserService.upsert(mppUserInfo));
         //更换绑定的公众号，也要同步更新微信或QQ公众平台的appid、appsecret、mchid
         if(1 == mppUserInfo.getMptype()){

@@ -68,7 +68,7 @@ public final class WeixinHelper {
         if(respData.contains("access_token")){
             return map.get("access_token");
         }
-        String errmsg = WeixinCodeEnum.getMessageByCode(Integer.parseInt((map.get("errcode"))));
+        String errmsg = WeixinCodeEnum.getMsgByCode(Integer.parseInt((map.get("errcode"))));
         if(StringUtils.isBlank(errmsg)){
             errmsg = map.get("errmsg");
         }
@@ -92,7 +92,7 @@ public final class WeixinHelper {
         if("0".equals(map.get("errcode"))){
             return map.get("ticket");
         }
-        String errmsg = WeixinCodeEnum.getMessageByCode(Integer.parseInt((map.get("errcode"))));
+        String errmsg = WeixinCodeEnum.getMsgByCode(Integer.parseInt((map.get("errcode"))));
         if(StringUtils.isBlank(errmsg)){
             errmsg = map.get("errmsg");
         }
@@ -115,7 +115,7 @@ public final class WeixinHelper {
         LogUtil.getLogger().info("获取微信网页access_token，微信应答报文为-->{}", respData);
         WeixinOAuthAccessToken weixinOauthAccessToken = JSON.parseObject(respData, WeixinOAuthAccessToken.class);
         if(weixinOauthAccessToken.getErrcode() != 0){
-            String errmsg = WeixinCodeEnum.getMessageByCode(weixinOauthAccessToken.getErrcode());
+            String errmsg = WeixinCodeEnum.getMsgByCode(weixinOauthAccessToken.getErrcode());
             if(StringUtils.isNotBlank(errmsg)){
                 weixinOauthAccessToken.setErrmsg(errmsg);
             }
@@ -160,7 +160,7 @@ public final class WeixinHelper {
         LogUtil.getLogger().info("自定义菜单创建-->微信应答JSON为{}", respData);
         WeixinErrorInfo errinfo = JSON.parseObject(respData, WeixinErrorInfo.class);
         if(errinfo.getErrcode() != 0){
-            String errmsg = WeixinCodeEnum.getMessageByCode(errinfo.getErrcode());
+            String errmsg = WeixinCodeEnum.getMsgByCode(errinfo.getErrcode());
             if(StringUtils.isNotBlank(errmsg)){
                 errinfo.setErrmsg(errmsg);
             }
@@ -181,7 +181,7 @@ public final class WeixinHelper {
         LogUtil.getLogger().info("自定义菜单创建-->微信应答JSON为{}", respData);
         WeixinErrorInfo errinfo = JSON.parseObject(respData, WeixinErrorInfo.class);
         if(errinfo.getErrcode() != 0){
-            String errmsg = WeixinCodeEnum.getMessageByCode(errinfo.getErrcode());
+            String errmsg = WeixinCodeEnum.getMsgByCode(errinfo.getErrcode());
             if(StringUtils.isNotBlank(errmsg)){
                 errinfo.setErrmsg(errmsg);
             }
@@ -223,7 +223,7 @@ public final class WeixinHelper {
         LogUtil.getLogger().info("客服接口主动推消息-->微信应答JSON为{}", respData);
         WeixinErrorInfo errinfo = JSON.parseObject(respData, WeixinErrorInfo.class);
         if(errinfo.getErrcode() != 0){
-            String errmsg = WeixinCodeEnum.getMessageByCode(errinfo.getErrcode());
+            String errmsg = WeixinCodeEnum.getMsgByCode(errinfo.getErrcode());
             if(StringUtils.isNotBlank(errmsg)){
                 errinfo.setErrmsg(errmsg);
             }
@@ -243,7 +243,7 @@ public final class WeixinHelper {
         LogUtil.getLogger().info("单发主动推模板消息-->微信应答JSON为{}", respData);
         WeixinErrorInfo errinfo = JSON.parseObject(respData, WeixinErrorInfo.class);
         if(errinfo.getErrcode() != 0){
-            String errmsg = WeixinCodeEnum.getMessageByCode(errinfo.getErrcode());
+            String errmsg = WeixinCodeEnum.getMsgByCode(errinfo.getErrcode());
             if(StringUtils.isNotBlank(errmsg)){
                 errinfo.setErrmsg(errmsg);
             }
@@ -279,7 +279,7 @@ public final class WeixinHelper {
         Map<String, String> resultMap = HTTPUtil.postWithDownload(reqURL, null);
         if("no".equals(resultMap.get("isSuccess"))){
             Map<String, String> errmap = JSON.parseObject(resultMap.get("failReason"), new TypeReference<Map<String, String>>(){});
-            String errmsg = WeixinCodeEnum.getMessageByCode(Integer.parseInt((errmap.get("errcode"))));
+            String errmsg = WeixinCodeEnum.getMsgByCode(Integer.parseInt((errmap.get("errcode"))));
             if(StringUtils.isBlank(errmsg)){
                 errmsg = errmap.get("errmsg");
             }
@@ -320,7 +320,7 @@ public final class WeixinHelper {
         }else{
             WeixinErrorInfo errinfo = JSON.parseObject(respData, WeixinErrorInfo.class);
             if(errinfo.getErrcode() != 0){
-                String errmsg = WeixinCodeEnum.getMessageByCode(errinfo.getErrcode());
+                String errmsg = WeixinCodeEnum.getMsgByCode(errinfo.getErrcode());
                 if(StringUtils.isBlank(errmsg)){
                     errmsg = errinfo.getErrmsg();
                 }
@@ -344,7 +344,7 @@ public final class WeixinHelper {
         if(!StringUtils.equals("SUCCESS", dataMap.get("result_code"))){
             String err_code = dataMap.get("err_code");
             String err_code_des = dataMap.get("err_code_des");
-            throw new RuntimeException(StringUtils.isNotBlank(err_code_des) ? err_code_des : WeixinPayCodeEnum.getMessageByCode(err_code));
+            throw new RuntimeException(StringUtils.isNotBlank(err_code_des) ? err_code_des : WeixinPayCodeEnum.getMsgByCode(err_code));
         }
     }
 

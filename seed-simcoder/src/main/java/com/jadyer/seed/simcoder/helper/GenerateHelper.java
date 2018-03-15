@@ -105,10 +105,10 @@ public class GenerateHelper {
              * private int bindStatus;
              */
             String javaType = DBHelper.buildJavatypeFromDbtype(columnList.get(i).getType());
-            if(javaType.equals("Date")){
+            if("Date".equals(javaType)){
                 hasDate = true;
             }
-            if(javaType.equals("BigDecimal")){
+            if("BigDecimal".equals(javaType)){
                 hasBigDecimal = true;
             }
             fields.append("    private ").append(javaType).append(" ").append(fieldname).append(";").append("\n");
