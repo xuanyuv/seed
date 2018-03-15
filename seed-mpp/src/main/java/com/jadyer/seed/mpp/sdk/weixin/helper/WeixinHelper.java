@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.jadyer.seed.comm.util.BeanUtil;
 import com.jadyer.seed.comm.util.CodecUtil;
-import com.jadyer.seed.comm.util.HttpUtil;
+import com.jadyer.seed.comm.util.HTTPUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.XmlUtil;
@@ -62,7 +62,7 @@ public final class WeixinHelper {
      */
     static String getWeixinAccessToken(String appid, String appsecret) throws IllegalAccessException {
         String reqURL = WeixinConstants.URL_WEIXIN_GET_ACCESSTOKEN.replace(WeixinConstants.URL_PLACEHOLDER_APPID, appid).replace(WeixinConstants.URL_PLACEHOLDER_APPSECRET, appsecret);
-        String respData = HttpUtil.post(reqURL, null, null);
+        String respData = HTTPUtil.post(reqURL, null, null);
         LogUtil.getLogger().info("获取微信access_token,微信应答报文为-->{}", respData);
         Map<String, String> map = JSON.parseObject(respData, new TypeReference<Map<String, String>>(){});
         if(respData.contains("access_token")){
@@ -86,7 +86,7 @@ public final class WeixinHelper {
      */
     static String getWeixinJSApiTicket(String accesstoken) throws IllegalAccessException {
         String reqURL = WeixinConstants.URL_WEIXIN_GET_JSAPI_TICKET.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
-        String respData = HttpUtil.post(reqURL, null, null);
+        String respData = HTTPUtil.post(reqURL, null, null);
         LogUtil.getLogger().info("获取微信jsapi_ticket,微信应答报文为-->{}", respData);
         Map<String, String> map = JSON.parseObject(respData, new TypeReference<Map<String, String>>(){});
         if("0".equals(map.get("errcode"))){
@@ -111,7 +111,7 @@ public final class WeixinHelper {
         String reqURL = WeixinConstants.URL_WEIXIN_OAUTH2_GET_ACCESSTOKEN.replace(WeixinConstants.URL_PLACEHOLDER_APPID, appid)
                                                                       .replace(WeixinConstants.URL_PLACEHOLDER_APPSECRET, appsecret)
                                                                       .replace(WeixinConstants.URL_PLACEHOLDER_CODE, code);
-        String respData = HttpUtil.post(reqURL, null, null);
+        String respData = HTTPUtil.post(reqURL, null, null);
         LogUtil.getLogger().info("获取微信网页access_token，微信应答报文为-->{}", respData);
         WeixinOAuthAccessToken weixinOauthAccessToken = JSON.parseObject(respData, WeixinOAuthAccessToken.class);
         if(weixinOauthAccessToken.getErrcode() != 0){
@@ -136,7 +136,7 @@ public final class WeixinHelper {
             return WeixinConstants.URL_WEIXIN_OAUTH2_GET_CODE.replace(WeixinConstants.URL_PLACEHOLDER_APPID, appid)
                                                           .replace(WeixinConstants.URL_PLACEHOLDER_SCOPE, scope)
                                                           .replace(WeixinConstants.URL_PLACEHOLDER_STATE, state)
-                                                          .replace(WeixinConstants.URL_PLACEHOLDER_REDIRECT_URI, URLEncoder.encode(redirectURI, HttpUtil.DEFAULT_CHARSET));
+                                                          .replace(WeixinConstants.URL_PLACEHOLDER_REDIRECT_URI, URLEncoder.encode(redirectURI, HTTPUtil.DEFAULT_CHARSET));
         } catch (UnsupportedEncodingException e) {
             return null;
         }
@@ -156,7 +156,7 @@ public final class WeixinHelper {
         String reqURL = WeixinConstants.URL_WEIXIN_GET_CREATE_MENU.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
         String reqData = JSON.toJSONString(menu);
         LogUtil.getLogger().info("自定义菜单创建-->待发送的JSON为{}", reqData);
-        String respData = HttpUtil.post(reqURL, reqData, null);
+        String respData = HTTPUtil.post(reqURL, reqData, null);
         LogUtil.getLogger().info("自定义菜单创建-->微信应答JSON为{}", respData);
         WeixinErrorInfo errinfo = JSON.parseObject(respData, WeixinErrorInfo.class);
         if(errinfo.getErrcode() != 0){
@@ -177,7 +177,7 @@ public final class WeixinHelper {
     public static WeixinErrorInfo createWeixinMenu(String accesstoken, String menuJson){
         String reqURL = WeixinConstants.URL_WEIXIN_GET_CREATE_MENU.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
         LogUtil.getLogger().info("自定义菜单创建-->待发送的JSON为{}", menuJson);
-        String respData = HttpUtil.post(reqURL, menuJson, null);
+        String respData = HTTPUtil.post(reqURL, menuJson, null);
         LogUtil.getLogger().info("自定义菜单创建-->微信应答JSON为{}", respData);
         WeixinErrorInfo errinfo = JSON.parseObject(respData, WeixinErrorInfo.class);
         if(errinfo.getErrcode() != 0){
@@ -204,7 +204,7 @@ public final class WeixinHelper {
      */
     public static WeixinFansInfo getWeixinFansInfo(String accesstoken, String openid){
         String reqURL = WeixinConstants.URL_WEIXIN_GET_FANSINFO.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken).replace(WeixinConstants.URL_PLACEHOLDER_OPENID, openid);
-        String respData = HttpUtil.post(reqURL, null, null);
+        String respData = HTTPUtil.post(reqURL, null, null);
         return JSON.parseObject(respData, WeixinFansInfo.class);
     }
 
@@ -219,7 +219,7 @@ public final class WeixinHelper {
         String reqURL = WeixinConstants.URL_WEIXIN_CUSTOM_PUSH_MESSAGE.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
         String reqData = JSON.toJSONString(customMsg);
         LogUtil.getLogger().info("客服接口主动推消息-->待发送的JSON为{}", reqData);
-        String respData = HttpUtil.post(reqURL, reqData, null);
+        String respData = HTTPUtil.post(reqURL, reqData, null);
         LogUtil.getLogger().info("客服接口主动推消息-->微信应答JSON为{}", respData);
         WeixinErrorInfo errinfo = JSON.parseObject(respData, WeixinErrorInfo.class);
         if(errinfo.getErrcode() != 0){
@@ -239,7 +239,7 @@ public final class WeixinHelper {
         String reqURL = WeixinConstants.URL_WEIXIN_TEMPLATE_PUSH_MESSAGE.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
         String reqData = JSON.toJSONString(templateMsg);
         LogUtil.getLogger().info("单发主动推模板消息-->发送的JSON为{}", reqData);
-        String respData = HttpUtil.post(reqURL, reqData, "application/json; charset="+HttpUtil.DEFAULT_CHARSET);
+        String respData = HTTPUtil.post(reqURL, reqData, "application/json; charset="+ HTTPUtil.DEFAULT_CHARSET);
         LogUtil.getLogger().info("单发主动推模板消息-->微信应答JSON为{}", respData);
         WeixinErrorInfo errinfo = JSON.parseObject(respData, WeixinErrorInfo.class);
         if(errinfo.getErrcode() != 0){
@@ -257,7 +257,7 @@ public final class WeixinHelper {
      */
     public static List<WeixinTemplate> getWeixinTemplateList(String accesstoken){
         String reqURL = WeixinConstants.URL_WEIXIN_TEMPLATE_GETALL.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
-        String respData = HttpUtil.post(reqURL, null, null);
+        String respData = HTTPUtil.post(reqURL, null, null);
         LogUtil.getLogger().info("获取微信模板消息列表，微信应答报文为-->{}", respData);
         Map<String, String> map = JSON.parseObject(respData, new TypeReference<Map<String, String>>(){});
         String templateListStr = map.get("template_list");
@@ -276,7 +276,7 @@ public final class WeixinHelper {
      */
     public static String downloadWeixinTempMediaFile(String accesstoken, String mediaId){
         String reqURL = WeixinConstants.URL_WEIXIN_GET_TEMP_MEDIA_FILE.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken).replace(WeixinConstants.URL_PLACEHOLDER_MEDIAID, mediaId);
-        Map<String, String> resultMap = HttpUtil.postWithDownload(reqURL, null);
+        Map<String, String> resultMap = HTTPUtil.postWithDownload(reqURL, null);
         if("no".equals(resultMap.get("isSuccess"))){
             Map<String, String> errmap = JSON.parseObject(resultMap.get("failReason"), new TypeReference<Map<String, String>>(){});
             String errmsg = WeixinCodeEnum.getMessageByCode(Integer.parseInt((errmap.get("errcode"))));
@@ -313,7 +313,7 @@ public final class WeixinHelper {
             throw new IllegalArgumentException("无法识别的二维码类型-->[" + type + "]");
         }
         LogUtil.getLogger().info("创建二维码ticket-->待发送的JSON为{}", reqData);
-        String respData = HttpUtil.post(reqURL, reqData, null);
+        String respData = HTTPUtil.post(reqURL, reqData, null);
         LogUtil.getLogger().info("创建二维码ticket-->微信应答JSON为{}", respData);
         if(respData.contains("ticket")){
             return JSON.parseObject(respData, new TypeReference<Map<String, String>>(){}).get("ticket");
@@ -406,7 +406,7 @@ public final class WeixinHelper {
         }
         reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())).toUpperCase());
         //发送请求
-        String respXml = HttpUtil.post(WeixinConstants.URL_WEIXIN_PAY_UNIFIEDORDER, XmlUtil.mapToXml(reqDataMap), null);
+        String respXml = HTTPUtil.post(WeixinConstants.URL_WEIXIN_PAY_UNIFIEDORDER, XmlUtil.mapToXml(reqDataMap), null);
         //解析返回的xml字符串（交易是否成功、验签）
         Map<String, String> respXmlMap = XmlUtil.xmlToMap(respXml);
         payVerifyIfSuccess(respXmlMap);
@@ -439,7 +439,7 @@ public final class WeixinHelper {
         Map<String, String> reqDataMap = BeanUtil.beanToMap(reqData);
         reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())).toUpperCase());
         //发送请求
-        String respXml = HttpUtil.post(WeixinConstants.URL_WEIXIN_PAY_ORDERQUERY, XmlUtil.mapToXml(reqDataMap), null);
+        String respXml = HTTPUtil.post(WeixinConstants.URL_WEIXIN_PAY_ORDERQUERY, XmlUtil.mapToXml(reqDataMap), null);
         //解析返回的xml字符串（交易是否成功、验签）
         Map<String, String> respXmlMap = XmlUtil.xmlToMap(respXml);
         payVerifyIfSuccess(respXmlMap);
@@ -472,7 +472,7 @@ public final class WeixinHelper {
         Map<String, String> reqDataMap = BeanUtil.beanToMap(reqData);
         reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())).toUpperCase());
         //发送请求
-        String respXml = HttpUtil.post(WeixinConstants.URL_WEIXIN_PAY_CLOSEORDER, XmlUtil.mapToXml(reqDataMap), null);
+        String respXml = HTTPUtil.post(WeixinConstants.URL_WEIXIN_PAY_CLOSEORDER, XmlUtil.mapToXml(reqDataMap), null);
         //解析返回的xml字符串（交易是否成功、验签）
         Map<String, String> respXmlMap = XmlUtil.xmlToMap(respXml);
         payVerifyIfSuccess(respXmlMap);
@@ -495,7 +495,7 @@ public final class WeixinHelper {
         Map<String, String> reqDataMap = BeanUtil.beanToMap(reqData);
         reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())).toUpperCase());
         //发送请求
-        String respXml = HttpUtil.postWithP12(WeixinConstants.URL_WEIXIN_PAY_REFUND, XmlUtil.mapToXml(reqDataMap), null, filepath, WeixinTokenHolder.getWeixinMchid(reqData.getAppid()));
+        String respXml = HTTPUtil.postWithP12(WeixinConstants.URL_WEIXIN_PAY_REFUND, XmlUtil.mapToXml(reqDataMap), null, filepath, WeixinTokenHolder.getWeixinMchid(reqData.getAppid()));
         //解析返回的xml字符串（交易是否成功、验签）
         Map<String, String> respXmlMap = XmlUtil.xmlToMap(respXml);
         payVerifyIfSuccess(respXmlMap);
@@ -528,7 +528,7 @@ public final class WeixinHelper {
         Map<String, String> reqDataMap = BeanUtil.beanToMap(reqData);
         reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())).toUpperCase());
         //发送请求
-        String respXml = HttpUtil.post(WeixinConstants.URL_WEIXIN_PAY_REFUNDQUERY, XmlUtil.mapToXml(reqDataMap), null);
+        String respXml = HTTPUtil.post(WeixinConstants.URL_WEIXIN_PAY_REFUNDQUERY, XmlUtil.mapToXml(reqDataMap), null);
         //解析返回的xml字符串（交易是否成功、验签）
         Map<String, String> respXmlMap = XmlUtil.xmlToMap(respXml);
         payVerifyIfSuccess(respXmlMap);
@@ -580,7 +580,7 @@ public final class WeixinHelper {
         Map<String, String> reqDataMap = BeanUtil.beanToMap(reqData);
         reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", reqData.getSign_type(), WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())).toUpperCase());
         //发送请求
-        String respXml = HttpUtil.post(WeixinConstants.URL_WEIXIN_PAY_DOWNLOADBILL, XmlUtil.mapToXml(reqDataMap), null);
+        String respXml = HTTPUtil.post(WeixinConstants.URL_WEIXIN_PAY_DOWNLOADBILL, XmlUtil.mapToXml(reqDataMap), null);
         throw new RuntimeException("微信支付--公众号支付--下载对账单--接口实现待补充......");
     }
 
@@ -597,7 +597,7 @@ public final class WeixinHelper {
         Map<String, String> reqDataMap = BeanUtil.beanToMap(reqData);
         reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", "MD5", WeixinTokenHolder.getWeixinMchkey(reqData.getWxappid())).toUpperCase());
         //发送请求
-        String respXml = HttpUtil.postWithP12(WeixinConstants.URL_WEIXIN_REDPACK_SEND, XmlUtil.mapToXml(reqDataMap), null, filepath, WeixinTokenHolder.getWeixinMchid(reqData.getWxappid()));
+        String respXml = HTTPUtil.postWithP12(WeixinConstants.URL_WEIXIN_REDPACK_SEND, XmlUtil.mapToXml(reqDataMap), null, filepath, WeixinTokenHolder.getWeixinMchid(reqData.getWxappid()));
         //解析返回的xml字符串（交易是否成功、验签）
         Map<String, String> respXmlMap = XmlUtil.xmlToMap(respXml);
         payVerifyIfSuccess(respXmlMap);
@@ -621,7 +621,7 @@ public final class WeixinHelper {
         Map<String, String> reqDataMap = BeanUtil.beanToMap(reqData);
         reqDataMap.put("sign", CodecUtil.buildHexSign(reqDataMap, "UTF-8", "MD5", WeixinTokenHolder.getWeixinMchkey(reqData.getAppid())).toUpperCase());
         //发送请求
-        String respXml = HttpUtil.postWithP12(WeixinConstants.URL_WEIXIN_REDPACK_GETHBINFO, XmlUtil.mapToXml(reqDataMap), null, filepath, WeixinTokenHolder.getWeixinMchid(reqData.getAppid()));
+        String respXml = HTTPUtil.postWithP12(WeixinConstants.URL_WEIXIN_REDPACK_GETHBINFO, XmlUtil.mapToXml(reqDataMap), null, filepath, WeixinTokenHolder.getWeixinMchid(reqData.getAppid()));
         //解析返回的xml字符串（交易是否成功、验签）
         Map<String, String> respXmlMap = XmlUtil.xmlToMap(respXml);
         payVerifyIfSuccess(respXmlMap);

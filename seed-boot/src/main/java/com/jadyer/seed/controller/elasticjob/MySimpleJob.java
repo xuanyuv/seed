@@ -20,6 +20,7 @@ public class MySimpleJob implements SimpleJob {
             case 0 : LogUtil.getLogger().info("--------------000"); break;
             case 1 : LogUtil.getLogger().info("==============111"); break;
             case 2 : LogUtil.getLogger().info("~~~~~~~~~~~~~~222"); break;
+            default: LogUtil.getLogger().info("~~~~~~~~~~~~~~333");
         }
     }
 }

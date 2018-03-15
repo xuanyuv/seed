@@ -1,7 +1,7 @@
 package com.jadyer.seed.mpp.sdk.weixin.controller;
 
 import com.google.common.collect.Maps;
-import com.jadyer.seed.comm.util.HttpUtil;
+import com.jadyer.seed.comm.util.HTTPUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.RequestUtil;
@@ -67,8 +67,8 @@ public class WeixinHelperController {
                 response.sendRedirect(fullURI);
             }
         }
-        response.setCharacterEncoding(HttpUtil.DEFAULT_CHARSET);
-        response.setContentType("text/plain; charset=" + HttpUtil.DEFAULT_CHARSET);
+        response.setCharacterEncoding(HTTPUtil.DEFAULT_CHARSET);
+        response.setContentType("text/plain; charset=" + HTTPUtil.DEFAULT_CHARSET);
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
@@ -164,8 +164,8 @@ public class WeixinHelperController {
         }
         String ticket = WeixinHelper.createQrcodeTicket(WeixinTokenHolder.getWeixinAccessToken(appid), type, Integer.parseInt(expireSeconds), Long.parseLong(sceneId), sceneStr);
         String qrcodeURL = WeixinConstants.URL_WEIXIN_GET_QRCODE.replace(WeixinConstants.URL_PLACEHOLDER_QRCODE_TICKET, ticket);
-        response.setCharacterEncoding(HttpUtil.DEFAULT_CHARSET);
-        response.setContentType("text/plain; charset=" + HttpUtil.DEFAULT_CHARSET);
+        response.setCharacterEncoding(HTTPUtil.DEFAULT_CHARSET);
+        response.setContentType("text/plain; charset=" + HTTPUtil.DEFAULT_CHARSET);
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
@@ -222,8 +222,8 @@ public class WeixinHelperController {
         String transaction_id = dataMap.get("transaction_id");
         String time_end = dataMap.get("time_end");
         //应答成功结果
-        response.setCharacterEncoding(HttpUtil.DEFAULT_CHARSET);
-        response.setContentType("text/plain; charset=" + HttpUtil.DEFAULT_CHARSET);
+        response.setCharacterEncoding(HTTPUtil.DEFAULT_CHARSET);
+        response.setContentType("text/plain; charset=" + HTTPUtil.DEFAULT_CHARSET);
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);

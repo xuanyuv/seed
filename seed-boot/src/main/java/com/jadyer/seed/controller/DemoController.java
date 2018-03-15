@@ -6,7 +6,7 @@ import com.jadyer.seed.comm.annotation.ActionEnum;
 import com.jadyer.seed.comm.annotation.SeedLog;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
-import com.jadyer.seed.comm.util.HttpUtil;
+import com.jadyer.seed.comm.util.HTTPUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -93,7 +93,7 @@ public class DemoController {
                 put("configuredLevel", level);
             }
         });
-        HttpUtil.post("http://127.0.0.1/boot/loggers/"+name, reqData, "application/json; charset=UTF-8");
+        HTTPUtil.post("http://127.0.0.1/boot/loggers/"+name, reqData, "application/json; charset=UTF-8");
         LogUtil.getLogger().info("这是info级别的日志");
         LogUtil.getLogger().debug("这是debug级别的日志");
         LogUtil.getLogger().error("这是error级别的日志");

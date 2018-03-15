@@ -1,4 +1,4 @@
-package com.jadyer.seed.controller.batch.Processor;
+package com.jadyer.seed.controller.batch.processor;
 
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.ValidatorUtil;

@@ -1,6 +1,6 @@
 package com.jadyer.seed.qss.helper;
 
-import com.jadyer.seed.comm.util.HttpUtil;
+import com.jadyer.seed.comm.util.HTTPUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.qss.model.ScheduleTask;
 
@@ -51,7 +51,7 @@ class JobHelper {
      */
     static void invokMethod(ScheduleTask task){
         LogUtil.getLogger().info("start-->定时任务{}=[{}]", task.getName(), task.getUrl());
-        String respData = HttpUtil.post(task.getUrl(), null);
+        String respData = HTTPUtil.post(task.getUrl(), null);
         LogUtil.getLogger().info("stopp-->定时任务{}=[{}]，return=[{}]", task.getName(), task.getUrl(), respData);
     }
 }

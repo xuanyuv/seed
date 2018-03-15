@@ -6,6 +6,11 @@ import org.slf4j.LoggerFactory;
 /**
  * 日志工具类
  * -----------------------------------------------------------------------------------------------------------
+ * 【遗留问题（来自Alibaba Java Coding Guidelines的提示）】
+ * 没有回收自定义的ThreadLocal变量
+ * 尤其在线程池场景下，线程经常会被复用，如果不清理自定义的ThreadLocal变量
+ * 可能会影响后续业务逻辑和造成内存泄露等问题。尽量在代理中使用try-finally块进行回收
+ * -----------------------------------------------------------------------------------------------------------
  * Log4j2.x比Logback好----http://donlianli.iteye.com/blog/1921735
  * Log4j2架构分析与实战----http://my.oschina.net/xianggao/blog/523020
  * SpringSide使用Logback--https://github.com/springside/springside4/wiki/Log

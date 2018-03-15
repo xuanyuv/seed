@@ -1,6 +1,6 @@
 package com.jadyer.seed.simulator.payment.action;
 
-import com.jadyer.seed.comm.util.HttpUtil;
+import com.jadyer.seed.comm.util.HTTPUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
 
 import javax.swing.*;
@@ -136,7 +136,7 @@ public class TCPMessageTester extends JPanel implements ActionListener {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    Map<String, String> respMap = HttpUtil.tcp(tfHostIP.getText(), Integer.parseInt(tfHostPort.getText()), tpReqMsg.getText());
+                    Map<String, String> respMap = HTTPUtil.tcp(tfHostIP.getText(), Integer.parseInt(tfHostPort.getText()), tpReqMsg.getText());
                     StringBuilder sb = new StringBuilder();
                     sb.append("【通信双方】：java socket, client, /127.0.0.1:").append(respMap.get("localBindPort")).append(" => /").append(tfHostIP.getText()).append(":").append(tfHostPort.getText()).append("\r\n");
                     sb.append("【收发标识】：Receive\r\n");

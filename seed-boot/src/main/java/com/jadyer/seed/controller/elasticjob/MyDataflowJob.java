@@ -28,6 +28,7 @@ public class MyDataflowJob implements DataflowJob<Person> {
             case 0 : personList = new ArrayList<>(); LogUtil.getLogger().info("//////////////000"); break; //get data from database by sharding item 0
             case 1 : personList = new ArrayList<>(); LogUtil.getLogger().info(">>>>>>>>>>>>>>111"); break; //get data from database by sharding item 1
             case 2 : personList = new ArrayList<>(); LogUtil.getLogger().info("<<<<<<<<<<<<<<222"); break; //get data from database by sharding item 2
+            default: personList = new ArrayList<>(); LogUtil.getLogger().info("--------------333");
         }
         LogUtil.getLogger().info("数据获取完毕，准备返回");
         //流式处理数据只有fetchData方法的返回值为null或集合长度为空时，作业才停止抓取，否则作业将一直运行下去

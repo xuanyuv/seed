@@ -1,6 +1,6 @@
 package com.jadyer.seed.mpp.sdk.weixin.helper;
 
-import com.jadyer.seed.comm.util.HttpUtil;
+import com.jadyer.seed.comm.util.HTTPUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.RequestUtil;
 import com.jadyer.seed.mpp.sdk.weixin.constant.WeixinConstants;
@@ -43,8 +43,8 @@ public class WeixinFilter implements Filter {
                 throw new RuntimeException("请不要通过Ajax获取粉丝信息");
             }
             if(!RequestUtil.isWechatBrowser(request)){
-                response.setCharacterEncoding(HttpUtil.DEFAULT_CHARSET);
-                response.setContentType("text/plain; charset=" + HttpUtil.DEFAULT_CHARSET);
+                response.setCharacterEncoding(HTTPUtil.DEFAULT_CHARSET);
+                response.setContentType("text/plain; charset=" + HTTPUtil.DEFAULT_CHARSET);
                 response.setHeader("Cache-Control", "no-cache");
                 response.setHeader("Pragma", "no-cache");
                 response.setDateHeader("Expires", 0);

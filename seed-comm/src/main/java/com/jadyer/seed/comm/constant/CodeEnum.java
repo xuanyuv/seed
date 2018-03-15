@@ -31,9 +31,9 @@ public enum CodeEnum {
     private final int code;
     private final String msg;
 
-    CodeEnum(int _code, String _msg){
-        this.code = _code;
-        this.msg = _msg;
+    CodeEnum(int code, String msg){
+        this.code = code;
+        this.msg = msg;
     }
 
     public int getCode() {
@@ -49,9 +49,9 @@ public enum CodeEnum {
      * @return 取不到时返回null
      */
     public static String getMsgByCode(int code){
-        for(CodeEnum _enum : values()){
-            if(_enum.getCode() == code){
-                return _enum.getMsg();
+        for(CodeEnum codeEnum : values()){
+            if(codeEnum.getCode() == code){
+                return codeEnum.getMsg();
             }
         }
         return null;
@@ -62,9 +62,9 @@ public enum CodeEnum {
      * @return 取不到时返回null
      */
     public static CodeEnum getByCode(int code){
-        for(CodeEnum _enum : values()){
-            if(_enum.getCode() == code){
-                return _enum;
+        for(CodeEnum codeEnum : values()){
+            if(codeEnum.getCode() == code){
+                return codeEnum;
             }
         }
         return null;
@@ -86,8 +86,8 @@ public enum CodeEnum {
      */
     public List<Integer> getAllEnumCode(){
         List<Integer> list = new ArrayList<>();
-        for(CodeEnum _enum : values()){
-            list.add(_enum.getCode());
+        for(CodeEnum codeEnum : values()){
+            list.add(codeEnum.getCode());
         }
         return list;
     }

@@ -24,7 +24,7 @@ class CookieSerializer {
 
     String getCookie(HttpServletRequest request, String name){
         Assert.notNull(request, "HttpServletRequest must not be null");
-        Cookie cookies[] = request.getCookies();
+        Cookie[] cookies = request.getCookies();
         if(null != cookies){
             for(Cookie cookie : cookies){
                 if(cookie.getName().equals(name)){

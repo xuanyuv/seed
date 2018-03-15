@@ -22,6 +22,7 @@ public enum ConfigUtil {
     INSTANCE;
 
     private Properties config;
+    private static Pattern PATTERN_CONFIG = Pattern.compile("\\$\\{\\w+(\\.\\w+)*}");
 
     ConfigUtil(){
         config = new Properties();
@@ -52,7 +53,7 @@ public enum ConfigUtil {
      */
     public String getPropertyBySysKey(String key){
         String value = config.getProperty(key);
-        if(null!=value && Pattern.compile("\\$\\{\\w+(\\.\\w+)*}").matcher(value).find()){
+        if(null!=value && PATTERN_CONFIG.matcher(value).find()){
             String sysKey = value.substring(value.indexOf("${")+2, value.indexOf("}"));
             value = value.replace("${"+sysKey+"}", System.getProperty(sysKey));
         }

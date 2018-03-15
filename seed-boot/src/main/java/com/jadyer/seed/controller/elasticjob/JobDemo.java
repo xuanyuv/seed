@@ -17,7 +17,7 @@ import javax.annotation.PostConstruct;
 //@Component
 public class JobDemo {
     @PostConstruct
-    public void ElasticJobStart(){
+    public void elasticJobStart(){
         //new JobScheduler(createRegistryCenter(), createJobConfiguration(1)).init();
         new JobScheduler(createRegistryCenter(), createJobConfiguration(1), new MyListener()).init();
     }

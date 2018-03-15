@@ -2,7 +2,7 @@ package com.jadyer.seed.mpp.sdk.qq.helper;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.jadyer.seed.comm.util.HttpUtil;
+import com.jadyer.seed.comm.util.HTTPUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.mpp.sdk.qq.constant.QQCodeEnum;
 import com.jadyer.seed.mpp.sdk.qq.constant.QQConstants;
@@ -33,7 +33,7 @@ public final class QQHelper {
      */
     static String getQQAccessToken(String appid, String appsecret) throws IllegalAccessException {
         String reqURL = QQConstants.URL_QQ_GET_ACCESSTOKEN.replace(QQConstants.URL_PLACEHOLDER_APPID, appid).replace(QQConstants.URL_PLACEHOLDER_APPSECRET, appsecret);
-        String respData = HttpUtil.post(reqURL, null, null);
+        String respData = HTTPUtil.post(reqURL, null, null);
         LogUtil.getLogger().info("获取QQaccess_token,QQ应答报文为-->{}", respData);
         Map<String, String> map = JSON.parseObject(respData, new TypeReference<Map<String, String>>(){});
         if("0".equals(map.get("errcode")) && StringUtils.isNotBlank(map.get("access_token"))){
@@ -55,7 +55,7 @@ public final class QQHelper {
      */
     static String getQQJSApiTicket(String accesstoken) throws IllegalAccessException {
         String reqURL = QQConstants.URL_QQ_GET_JSAPI_TICKET.replace(QQConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
-        String respData = HttpUtil.post(reqURL, null, null);
+        String respData = HTTPUtil.post(reqURL, null, null);
         LogUtil.getLogger().info("获取QQjsapi_ticket,QQ应答报文为-->{}", respData);
         Map<String, String> map = JSON.parseObject(respData, new TypeReference<Map<String, String>>(){});
         if("0".equals(map.get("errcode"))){
@@ -82,7 +82,7 @@ public final class QQHelper {
         String reqURL = QQConstants.URL_QQ_OAUTH2_GET_ACCESSTOKEN.replace(QQConstants.URL_PLACEHOLDER_APPID, appid)
                                                                       .replace(QQConstants.URL_PLACEHOLDER_APPSECRET, appsecret)
                                                                       .replace(QQConstants.URL_PLACEHOLDER_CODE, code);
-        String respData = HttpUtil.post(reqURL, null, null);
+        String respData = HTTPUtil.post(reqURL, null, null);
         LogUtil.getLogger().info("获取QQ网页access_token,QQ应答报文为-->{}", respData);
         QQOAuthAccessToken qqOauthAccessToken = JSON.parseObject(respData, QQOAuthAccessToken.class);
         if(qqOauthAccessToken.getErrcode() != 0){
@@ -109,7 +109,7 @@ public final class QQHelper {
             return QQConstants.URL_QQ_OAUTH2_GET_CODE.replace(QQConstants.URL_PLACEHOLDER_APPID, appid)
                                                           .replace(QQConstants.URL_PLACEHOLDER_SCOPE, scope)
                                                           .replace(QQConstants.URL_PLACEHOLDER_STATE, state)
-                                                          .replace(QQConstants.URL_PLACEHOLDER_REDIRECT_URI, URLEncoder.encode(redirectURI, HttpUtil.DEFAULT_CHARSET));
+                                                          .replace(QQConstants.URL_PLACEHOLDER_REDIRECT_URI, URLEncoder.encode(redirectURI, HTTPUtil.DEFAULT_CHARSET));
         } catch (UnsupportedEncodingException e) {
             return null;
         }
@@ -131,7 +131,7 @@ public final class QQHelper {
         String reqURL = QQConstants.URL_QQ_GET_CREATE_MENU.replace(QQConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
         String reqData = JSON.toJSONString(menu);
         LogUtil.getLogger().info("自定义菜单创建-->发送的JSON为{}", reqData);
-        String respData = HttpUtil.post(reqURL, reqData, "application/json; charset="+HttpUtil.DEFAULT_CHARSET);
+        String respData = HTTPUtil.post(reqURL, reqData, "application/json; charset="+ HTTPUtil.DEFAULT_CHARSET);
         LogUtil.getLogger().info("自定义菜单创建-->QQ应答JSON为{}", respData);
         QQErrorInfo errinfo = JSON.parseObject(respData, QQErrorInfo.class);
         if(errinfo.getErrcode() != 0){
@@ -154,7 +154,7 @@ public final class QQHelper {
     public static QQErrorInfo createQQMenu(String accesstoken, String menuJson){
         String reqURL = QQConstants.URL_QQ_GET_CREATE_MENU.replace(QQConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
         LogUtil.getLogger().info("自定义菜单创建-->发送的JSON为{}", menuJson);
-        String respData = HttpUtil.post(reqURL, menuJson, "application/json; charset="+HttpUtil.DEFAULT_CHARSET);
+        String respData = HTTPUtil.post(reqURL, menuJson, "application/json; charset="+ HTTPUtil.DEFAULT_CHARSET);
         LogUtil.getLogger().info("自定义菜单创建-->QQ应答JSON为{}", respData);
         QQErrorInfo errinfo = JSON.parseObject(respData, QQErrorInfo.class);
         if(errinfo.getErrcode() != 0){
@@ -183,7 +183,7 @@ public final class QQHelper {
      */
     public static QQFansInfo getQQFansInfo(String accesstoken, String openid){
         String reqURL = QQConstants.URL_QQ_GET_FANSINFO.replace(QQConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken).replace(QQConstants.URL_PLACEHOLDER_OPENID, openid);
-        String respData = HttpUtil.post(reqURL, null, null);
+        String respData = HTTPUtil.post(reqURL, null, null);
         return JSON.parseObject(respData, QQFansInfo.class);
     }
 
@@ -197,7 +197,7 @@ public final class QQHelper {
         String reqURL = QQConstants.URL_QQ_CUSTOM_PUSH_MESSAGE.replace(QQConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
         String reqData = JSON.toJSONString(customMsg);
         LogUtil.getLogger().info("单发主动推消息-->发送的JSON为{}", reqData);
-        String respData = HttpUtil.post(reqURL, reqData, "application/json; charset="+HttpUtil.DEFAULT_CHARSET);
+        String respData = HTTPUtil.post(reqURL, reqData, "application/json; charset="+ HTTPUtil.DEFAULT_CHARSET);
         LogUtil.getLogger().info("单发主动推消息-->QQ应答JSON为{}", respData);
         QQErrorInfo errinfo = JSON.parseObject(respData, QQErrorInfo.class);
         if(errinfo.getErrcode() != 0){
@@ -219,7 +219,7 @@ public final class QQHelper {
         String reqURL = QQConstants.URL_QQ_TEMPLATE_PUSH_MESSAGE.replace(QQConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
         String reqData = JSON.toJSONString(templateMsg);
         LogUtil.getLogger().info("单发主动推消息-->发送的JSON为{}", reqData);
-        String respData = HttpUtil.post(reqURL, reqData, "application/json; charset="+HttpUtil.DEFAULT_CHARSET);
+        String respData = HTTPUtil.post(reqURL, reqData, "application/json; charset="+ HTTPUtil.DEFAULT_CHARSET);
         LogUtil.getLogger().info("单发主动推消息-->QQ应答JSON为{}", respData);
         QQErrorInfo errinfo = JSON.parseObject(respData, QQErrorInfo.class);
         if(errinfo.getErrcode() != 0){
@@ -259,7 +259,7 @@ public final class QQHelper {
      */
     public static String downloadQQTempMediaFile(String accesstoken, String mediaId){
         String reqURL = QQConstants.URL_QQ_GET_TEMP_MEDIA_FILE.replace(QQConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken).replace(QQConstants.URL_PLACEHOLDER_MEDIAID, mediaId);
-        Map<String, String> resultMap = HttpUtil.postWithDownload(reqURL, null);
+        Map<String, String> resultMap = HTTPUtil.postWithDownload(reqURL, null);
         if("no".equals(resultMap.get("isSuccess"))){
             Map<String, String> errmap = JSON.parseObject(resultMap.get("failReason"), new TypeReference<Map<String, String>>(){});
             String errmsg = QQCodeEnum.getMessageByCode(Integer.parseInt((errmap.get("errcode"))));

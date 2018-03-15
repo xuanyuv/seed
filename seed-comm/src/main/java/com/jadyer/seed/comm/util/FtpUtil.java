@@ -54,7 +54,7 @@ import java.util.List;
  * -----------------------------------------------------------------------------------------------------------
  * Created by 玄玉<http://jadyer.cn/> on 2015/06/22 11:22.
  */
-public final class FtpUtil {
+public final class FTPUtil {
     private static final String DEFAULT_CHARSET = "UTF-8";
     private static final int DEFAULT_DEFAULT_TIMEOUT = 0;
     private static final int DEFAULT_CONNECT_TIMEOUT = 1000;
@@ -62,7 +62,7 @@ public final class FtpUtil {
     private static final int DEFAULT_SFTP_TIMEOUT = 0;
     private static ThreadLocal<FTPClient> ftpClientMap = new ThreadLocal<>();
     private static ThreadLocal<ChannelSftp> channelSftpMap = new ThreadLocal<>();
-    private FtpUtil(){}
+    private FTPUtil(){}
 
     /**
      * 连接并登录FTP服务器
@@ -822,9 +822,11 @@ class FTPProcess implements CopyStreamListener {
      */
     @Override
     public void bytesTransferred(long totalBytesTransferred, int bytesTransferred, long streamSize){
-        long end_time = System.currentTimeMillis();
-        long time = (end_time - startTime) / 1000; //耗时
-        long speed;                                //速度
+        long endTime = System.currentTimeMillis();
+        //耗时
+        long time = (endTime - startTime) / 1000;
+        //速度
+        long speed;
         if(0 == time){
             speed = 0;
         }else{
@@ -869,9 +871,11 @@ class SFTPProcess implements SftpProgressMonitor {
     @Override
     public boolean count(long count){
         totalBytesTransferred += count;
-        long end_time = System.currentTimeMillis();
-        long time = (end_time - startTime) / 1000; //耗时
-        long speed;                                //速度
+        long endTime = System.currentTimeMillis();
+        //耗时
+        long time = (endTime - startTime) / 1000;
+        //速度
+        long speed;
         if(0 == time){
             speed = 0;
         }else{

@@ -1,6 +1,6 @@
 package com.jadyer.seed.test;
 
-import com.jadyer.seed.comm.util.HttpUtil;
+import com.jadyer.seed.comm.util.HTTPUtil;
 import com.jadyer.seed.comm.util.MinaUtil;
 import org.junit.Test;
 
@@ -29,7 +29,7 @@ public class ServerTest {
     @Test
     public void HTTPGetRequestTest(){
         String reqURL = "http://127.0.0.1:8000/notify_boc?username=admin&password=123456";
-        String respData = HttpUtil.get(reqURL);
+        String respData = HTTPUtil.get(reqURL);
         System.out.println("收到服务端反馈[" + respData + "]");
     }
 
@@ -41,7 +41,7 @@ public class ServerTest {
     public void HTTPPostRequestTest(){
         String reqURL = "http://127.0.0.1:8000/notify_boc";
         String sendData = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-        String respData = HttpUtil.post(reqURL, sendData, null);
+        String respData = HTTPUtil.post(reqURL, sendData, null);
         System.out.println("收到服务端反馈[" + respData + "]");
     }
 }

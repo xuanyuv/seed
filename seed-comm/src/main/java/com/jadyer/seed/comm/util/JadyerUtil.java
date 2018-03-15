@@ -170,15 +170,15 @@ public final class JadyerUtil {
         for(Map.Entry<String, ?> entry : map.entrySet()){
             sb.append("\n").append(entry.getKey()).append("=");
             //打印方式随值类型不同而不同
-            Object _value = entry.getValue();
-            if(_value instanceof String){
-                sb.append(_value);
+            Object value = entry.getValue();
+            if(value instanceof String){
+                sb.append(value);
             }
-            if(_value instanceof String[]){
-                sb.append(Arrays.toString((String[])_value));
+            if(value instanceof String[]){
+                sb.append(Arrays.toString((String[])value));
             }
-            if(_value instanceof byte[]){
-                sb.append(new String((byte[])_value));
+            if(value instanceof byte[]){
+                sb.append(new String((byte[])value));
             }
         }
         return sb.append("\n]").toString();
@@ -495,7 +495,7 @@ public final class JadyerUtil {
             return "";
         }
         try {
-            input = URLDecoder.decode(input, HttpUtil.DEFAULT_CHARSET);
+            input = URLDecoder.decode(input, HTTPUtil.DEFAULT_CHARSET);
         } catch (UnsupportedEncodingException e) {
             //ingore
         }
@@ -757,14 +757,14 @@ public final class JadyerUtil {
                 //特殊处理<style type="text/css"><!--css code//--></style>
                 //以及<script type="text/javascript"><!--js code//--></script>
                 //并使用[!isReadInComments]过滤调多行注释中含有的css和js标记的情况
-                if(!isReadInComments && (codeFileSuffix.equals("jsp") || codeFileSuffix.equals("htm") || codeFileSuffix.equals("html"))){
+                if(!isReadInComments && StringUtils.equalsAny(codeFileSuffix, "jsp", "htm", "html")){
                     //css和js标记的起始标签分别有不止一种的写法,故startsWith
                     if(content.startsWith("<style") || content.startsWith("<script")){
                         //这里之所以取下标为0的元素,是因为上面在初始化多行的注释标记时,均将页面中的<!---->注释标记放置在第0个元素
                         multiCommentPrefix[0] = "http://jadyer.cn/";
                         multiCommentSuffix[0] = "http://jadyer.cn/";
                     }
-                    if(content.equals("</style>") || content.equals("</script>")){
+                    if(StringUtils.equalsAny(content, "</style>", "</script>")){
                         multiCommentPrefix[0] = "<!--";
                         multiCommentSuffix[0] = "-->";
                     }

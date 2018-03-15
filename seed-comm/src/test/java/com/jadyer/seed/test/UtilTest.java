@@ -2,8 +2,8 @@ package com.jadyer.seed.test;
 
 import com.jadyer.seed.comm.util.CodecUtil;
 import com.jadyer.seed.comm.util.DateUtil;
-import com.jadyer.seed.comm.util.FtpUtil;
-import com.jadyer.seed.comm.util.HttpUtil;
+import com.jadyer.seed.comm.util.FTPUtil;
+import com.jadyer.seed.comm.util.HTTPUtil;
 import com.jadyer.seed.comm.util.ImageUtil;
 import com.jadyer.seed.comm.util.JsoupHelper;
 import com.jadyer.seed.comm.util.MoneyUtil;
@@ -127,7 +127,7 @@ public class UtilTest {
         String fileBodyName = "fileData";
         Map<String, String> params = new HashMap<>();
         params.put("serialNo", UUID.randomUUID().toString().replaceAll("-", ""));
-        String respData = HttpUtil.postWithUpload(reqURL, filename, is, fileBodyName, params);
+        String respData = HTTPUtil.postWithUpload(reqURL, filename, is, fileBodyName, params);
         System.out.println("文件上传完毕,收到应答报文" + respData);
     }
 
@@ -140,7 +140,7 @@ public class UtilTest {
         String reqURL = "http://127.0.0.1:8080/engine/file/download";
         Map<String, String> params = new HashMap<>();
         params.put("sysCode", "33");
-        Map<String, String> resultMap = HttpUtil.postWithDownload(reqURL, params);
+        Map<String, String> resultMap = HTTPUtil.postWithDownload(reqURL, params);
         if("yes".equals(resultMap.get("isSuccess"))){
             System.out.println("文件下载成功,保存路径为" + resultMap.get("fullPath"));
         }else{
@@ -153,14 +153,14 @@ public class UtilTest {
      * FTP文件读取测试
      */
     @Test
-    public void ftpUtilForReadFileDataTest(){
+    public void FTPUtilForReadFileDataTest(){
         //String bizDate = "20191008";
         String bizDate = "20170115";
         String username = "yangguang01";
         String password = "yangguang01@#$";
         String host = "ftp.msxf.test";
         String filename = "/vc_cash/yyyyMMdd/CashTransList_005103.data";
-        List<String> withdrawDataList = FtpUtil.readFileData(bizDate, filename, host, username, password);
+        List<String> withdrawDataList = FTPUtil.readFileData(bizDate, filename, host, username, password);
         for(String obj : withdrawDataList){
             System.out.println("读取到-->[" + obj + "]");
         }
@@ -171,17 +171,17 @@ public class UtilTest {
      * FTP上传测试
      */
     @Test
-    public void ftpUtilForUploadTest() throws IOException {
+    public void FTPUtilForUploadTest() throws IOException {
         //InputStream is = FileUtils.openInputStream(new File("E:\\Wallpaper\\三大名迹.jpg"));
         //String remoteURL = "/mytest/02/03/" + DateFormatUtils.format(new Date(), "yyyyMMddHHmmss") + ".jpg";
-        //Assert.assertTrue(FtpUtil.upload("192.168.2.60", "ftpupload", "HUvueMGWg92y8SSN", remoteURL, is));
+        //Assert.assertTrue(FTPUtil.upload("192.168.2.60", "ftpupload", "HUvueMGWg92y8SSN", remoteURL, is));
         //is = FileUtils.openInputStream(new File("E:\\Wallpaper\\Wentworth.Miller.jpg"));
         //remoteURL = "/mytest/02/03/" + DateFormatUtils.format(new Date(), "yyyyMMddHHmmss_2") + ".jpg";
-        //Assert.assertTrue(FtpUtil.upload("192.168.2.60", "ftpupload", "HUvueMGWg92y8SSN", remoteURL, is));
-        //FtpUtil.logout();
+        //Assert.assertTrue(FTPUtil.upload("192.168.2.60", "ftpupload", "HUvueMGWg92y8SSN", remoteURL, is));
+        //FTPUtil.logout();
         InputStream is = FileUtils.openInputStream(new File("F:\\Tool\\Enterprise_Architect_8.0.858.zip"));
         String remoteURL = "/mytest/02/03/" + DateFormatUtils.format(new Date(), "yyyyMMddHHmmss") + ".jpg";
-        Assert.assertTrue(FtpUtil.uploadAndLogout("192.168.2.60", "ftpupload", "HUvueMGWg92y8SSN", remoteURL, is));
+        Assert.assertTrue(FTPUtil.uploadAndLogout("192.168.2.60", "ftpupload", "HUvueMGWg92y8SSN", remoteURL, is));
     }
 
 
@@ -189,13 +189,13 @@ public class UtilTest {
      * FTP下载测试
      */
     @Test
-    public void ftpUtilForDownloadTest() throws IOException {
+    public void FTPUtilForDownloadTest() throws IOException {
         String host = "ftp.msxf.test";
         String username = "yangguang01";
         String password = "yangguang01@#$";
         String remoteURL = "/vc_cash/20170115/CashTransList_005103.data";
         String localURL = "D:\\home\\bb.txt";
-        FtpUtil.downloadAndLogout(host, username, password, remoteURL, localURL);
+        FTPUtil.downloadAndLogout(host, username, password, remoteURL, localURL);
     }
 
 
@@ -203,9 +203,9 @@ public class UtilTest {
      * FTP删除测试
      */
     @Test
-    public void ftpUtilForDeleteFileTest(){
+    public void FTPUtilForDeleteFileTest(){
         String remoteURL = "/mytest/02/03/20151006151054_test.jpg";
-        Assert.assertTrue("文件不存在", FtpUtil.deleteFileAndLogout("192.168.2.60", "ftpupload", "HUvueMGWg92y8SSN", remoteURL));
+        Assert.assertTrue("文件不存在", FTPUtil.deleteFileAndLogout("192.168.2.60", "ftpupload", "HUvueMGWg92y8SSN", remoteURL));
     }
 
 
@@ -213,10 +213,10 @@ public class UtilTest {
      * SFTP上传测试
      */
     @Test
-    public void ftpUtilForUploadViaSFTPTest() throws IOException{
+    public void FTPUtilForUploadViaSFTPTest() throws IOException{
         InputStream is = FileUtils.openInputStream(new File("F:\\Tool\\Wireshark-win32-1.4.9中文版.exe"));
         String remoteURL = "/upload/test/sf/" + DateFormatUtils.format(new Date(), "yyyyMMddHHmmss") + ".exe";
-        Assert.assertTrue(FtpUtil.uploadAndLogoutViaSFTP("192.168.2.41", 22, "yizhifu", "YMQwcUZh2LvhmR87d7tjmqoRbj6ST1", remoteURL, is));
+        Assert.assertTrue(FTPUtil.uploadAndLogoutViaSFTP("192.168.2.41", 22, "yizhifu", "YMQwcUZh2LvhmR87d7tjmqoRbj6ST1", remoteURL, is));
     }
 
 
@@ -224,10 +224,10 @@ public class UtilTest {
      * SFTP下载测试
      */
     @Test
-    public void ftpUtilForDownloadViaSFTPTest() throws IOException {
+    public void FTPUtilForDownloadViaSFTPTest() throws IOException {
         String remoteURL = "/upload/test/sf/20151022151736.exe";
         String localURL = "C:\\Users\\Jadyer.JADYER-PC.000\\Desktop\\aa.exe";
-        FtpUtil.downloadAndLogoutViaSFTP("192.168.2.41", 22, "yizhifu", "YMQwcUZh2LvhmR87d7tjmqoRbj6ST1", remoteURL, localURL);
+        FTPUtil.downloadAndLogoutViaSFTP("192.168.2.41", 22, "yizhifu", "YMQwcUZh2LvhmR87d7tjmqoRbj6ST1", remoteURL, localURL);
     }
 
 
@@ -235,9 +235,9 @@ public class UtilTest {
      * SFTP删除测试
      */
     @Test
-    public void ftpUtilForDeleteFileViaSFTPTest(){
+    public void FTPUtilForDeleteFileViaSFTPTest(){
         String remoteURL = "/upload/test/sf/20151022151451.exe";
-        Assert.assertTrue("文件不存在", FtpUtil.deleteFileAndLogoutViaSFTP("192.168.2.41", 22, "yizhifu", "YMQwcUZh2LvhmR87d7tjmqoRbj6ST1", remoteURL));
+        Assert.assertTrue("文件不存在", FTPUtil.deleteFileAndLogoutViaSFTP("192.168.2.41", 22, "yizhifu", "YMQwcUZh2LvhmR87d7tjmqoRbj6ST1", remoteURL));
     }
 
 

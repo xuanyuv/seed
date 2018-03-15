@@ -214,9 +214,9 @@ public class MoneyUtil {
             decimalNumberStr = "";
         }
         //整数部分需去掉首0，小数部分的0不用管（超出部分会被舍去，该方法只会计算到角、分、厘三位）
-        if(!intNumberStr.equals("")){
+        if(!"".equals(intNumberStr)){
             intNumberStr = Long.toString(Long.parseLong(intNumberStr));
-            if(intNumberStr.equals("0")){
+            if("0".equals(intNumberStr)){
                 intNumberStr = "";
             }
         }

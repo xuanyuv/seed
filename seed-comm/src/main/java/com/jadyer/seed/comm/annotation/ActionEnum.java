@@ -16,9 +16,9 @@ public enum ActionEnum {
     private final int code;
     private final String msg;
 
-    ActionEnum(int _code, String _msg){
-        this.code = _code;
-        this.msg = _msg;
+    ActionEnum(int code, String msg){
+        this.code = code;
+        this.msg = msg;
     }
 
     public int getCode() {

@@ -175,13 +175,13 @@ import java.util.Map;
  * Created by 玄玉<http://jadyer.cn/> on 2012/2/1 15:02.
  */
 @SuppressWarnings("deprecation")
-public final class HttpUtil {
+public final class HTTPUtil {
     public static final String DEFAULT_CHARSET = "UTF-8";           //设置默认通信报文编码为UTF-8
     public static final String CHARSET_ISO_8859_1 = "ISO-8859-1";   //设置默认通信报文编码为UTF-8
     private static final int DEFAULT_CONNECTION_TIMEOUT = 1000 * 2; //设置默认连接超时为2s
     private static final int DEFAULT_SO_TIMEOUT = 1000 * 60;        //设置默认读取超时为60s
 
-    private HttpUtil(){}
+    private HTTPUtil(){}
 
 
     /**
@@ -595,9 +595,9 @@ public final class HttpUtil {
                 if(StringUtils.isBlank(filename)){
                     filename = JadyerUtil.randomNumeric(16);
                 }
-                File _file = new File(System.getProperty("java.io.tmpdir") + "/" + filename);
-                FileUtils.copyInputStreamToFile(entity.getContent(), _file);
-                resultMap.put("fullPath", _file.getCanonicalPath());
+                File localFile = new File(System.getProperty("java.io.tmpdir") + "/" + filename);
+                FileUtils.copyInputStreamToFile(entity.getContent(), localFile);
+                resultMap.put("fullPath", localFile.getCanonicalPath());
                 resultMap.put("isSuccess", "yes");
             }
             LogUtil.getLogger().info("请求{}得到应答<<--{}", reqURL, JadyerUtil.buildStringFromMap(resultMap));

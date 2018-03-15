@@ -102,14 +102,14 @@ public final class CodecUtil {
     public static final String ALGORITHM_AES = "AES";
     public static final String ALGORITHM_AES_PKCS7 = "AES";
     public static final String ALGORITHM_DES = "DES";
-    public static final String ALGORITHM_DESede = "DESede";
+    public static final String ALGORITHM_DES_EDE = "DESede";
     //加解密算法/工作模式/填充方式,Java6.0支持PKCS5Padding填充方式,BouncyCastle支持PKCS7Padding填充方式
     //工作模式有ECB--电子密码本模式,CBC--加密分组链接模式,CFB--加密反馈模式,OFB--输出反馈模式,CTR--计数器模式
     //其中ECB过于简单而不安全,已被弃用,相对的CBC模式是最安全的,http://www.moye.me/2015/06/14/cryptography_rsa/
     private static final String ALGORITHM_CIPHER_AES = "AES/ECB/PKCS5Padding";
     private static final String ALGORITHM_CIPHER_AES_PKCS7 = "AES/CBC/PKCS7Padding";
     private static final String ALGORITHM_CIPHER_DES = "DES/ECB/PKCS5Padding";
-    private static final String ALGORITHM_CIPHER_DESede = "DESede/ECB/PKCS5Padding";
+    private static final String ALGORITHM_CIPHER_DES_EDE = "DESede/ECB/PKCS5Padding";
 
     private CodecUtil(){}
 
@@ -158,7 +158,7 @@ public final class CodecUtil {
             kg.init(128);
         }else if(ALGORITHM_DES.equals(algorithm)){
             kg.init(56);
-        }else if(ALGORITHM_DESede.equals(algorithm)){
+        }else if(ALGORITHM_DES_EDE.equals(algorithm)){
             kg.init(168);
         }else{
             throw new IllegalArgumentException("Not supported algorithm-->[" + algorithm + "]");
@@ -506,8 +506,8 @@ public final class CodecUtil {
     public static String buildDESedeEncrypt(String data, String key){
         try{
             DESedeKeySpec dks = new DESedeKeySpec(Base64.decodeBase64(key));
-            SecretKey secretKey = SecretKeyFactory.getInstance(ALGORITHM_DESede).generateSecret(dks);
-            Cipher cipher = Cipher.getInstance(ALGORITHM_CIPHER_DESede);
+            SecretKey secretKey = SecretKeyFactory.getInstance(ALGORITHM_DES_EDE).generateSecret(dks);
+            Cipher cipher = Cipher.getInstance(ALGORITHM_CIPHER_DES_EDE);
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
             return Base64.encodeBase64URLSafeString(cipher.doFinal(data.getBytes(CHARSET)));
         }catch(Exception e){
@@ -525,8 +525,8 @@ public final class CodecUtil {
     public static String buildDESedeDecrypt(String data, String key){
         try {
             DESedeKeySpec dks = new DESedeKeySpec(Base64.decodeBase64(key));
-            SecretKey secretKey = SecretKeyFactory.getInstance(ALGORITHM_DESede).generateSecret(dks);
-            Cipher cipher = Cipher.getInstance(ALGORITHM_CIPHER_DESede);
+            SecretKey secretKey = SecretKeyFactory.getInstance(ALGORITHM_DES_EDE).generateSecret(dks);
+            Cipher cipher = Cipher.getInstance(ALGORITHM_CIPHER_DES_EDE);
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
             return new String(cipher.doFinal(Base64.decodeBase64(data)), CHARSET);
         }catch(Exception e){
@@ -550,9 +550,9 @@ public final class CodecUtil {
         StringBuilder sb = new StringBuilder();
         List<String> keys = new ArrayList<>(param.keySet());
         Collections.sort(keys);
-        for (String obj : keys) {
+        for(String obj : keys){
             String value = param.get(obj);
-            if (obj.equalsIgnoreCase("cert") || obj.equalsIgnoreCase("hmac") || obj.equalsIgnoreCase("sign") || obj.equalsIgnoreCase("signMsg") || StringUtils.isEmpty(value)) {
+            if(StringUtils.equalsAnyIgnoreCase(obj, "cert", "hmac", "sign", "signMsg") || StringUtils.isEmpty(value)){
                 continue;
             }
             sb.append(obj).append("=").append(value).append("&");
@@ -614,7 +614,7 @@ public final class CodecUtil {
         Collections.sort(keys);
         for (String key : keys) {
             String value = param.get(key);
-            if (key.equalsIgnoreCase("cert") || key.equalsIgnoreCase("hmac") || key.equalsIgnoreCase("sign") || key.equalsIgnoreCase("signMsg") || StringUtils.isEmpty(value)) {
+            if(StringUtils.equalsAnyIgnoreCase(key, "cert", "hmac", "sign", "signMsg") || StringUtils.isEmpty(value)){
                 continue;
             }
             sb.append(key).append("=").append(value).append("|");
@@ -650,11 +650,11 @@ public final class CodecUtil {
             throw new IllegalArgumentException("签名字符串[" + data + "]时发生异常：No Such Algorithm-->[" + algorithm + "]");
         }
         char[] respData = new char[algorithmData.length << 1];
-        char[] DIGITS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+        char[] digits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
         //two characters form the hex value
         for(int i=0,j=0; i<algorithmData.length; i++){
-            respData[j++] = DIGITS[(0xF0 & algorithmData[i]) >>> 4];
-            respData[j++] = DIGITS[0x0F & algorithmData[i]];
+            respData[j++] = digits[(0xF0 & algorithmData[i]) >>> 4];
+            respData[j++] = digits[0x0F & algorithmData[i]];
         }
         String sign = new String(respData);
         LogUtil.getLogger().info("生成的签名值为-->[{}]", sign);

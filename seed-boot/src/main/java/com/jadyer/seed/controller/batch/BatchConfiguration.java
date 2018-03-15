@@ -1,7 +1,7 @@
 package com.jadyer.seed.controller.batch;
 
-import com.jadyer.seed.controller.batch.Processor.JobExecutionListener;
-import com.jadyer.seed.controller.batch.Processor.PersonItemProcessor;
+import com.jadyer.seed.controller.batch.processor.JobExecutionListener;
+import com.jadyer.seed.controller.batch.processor.PersonItemProcessor;
 import com.jadyer.seed.controller.batch.model.Person;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
