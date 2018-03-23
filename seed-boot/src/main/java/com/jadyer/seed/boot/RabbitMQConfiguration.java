@@ -1,84 +1,68 @@
 package com.jadyer.seed.boot;
 
+import com.alibaba.fastjson.JSON;
+import com.jadyer.seed.comm.util.LogUtil;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * RabbitMQ之TopicExchange发送和接收的演示
  * ----------------------------------------------------------------------------------------------------
- * 下面是几个SpringBoot整合RabbitMQ的例子，个人觉得要么太单一，要么太复杂
- * https://segmentfault.com/a/1190000004401870
- * http://blog.didispace.com/spring-boot-rabbitmq/
- * http://www.ityouknow.com/springboot/2016/11/30/springboot(八)-RabbitMQ详解.html
- * ----------------------------------------------------------------------------------------------------
- * 关于本类中定义的两个Bean的说明（RabbitTemplate、SimpleRabbitListenerContainerFactory）
+ * 解决方法：No method found for class [B
  * https://jira.spring.io/browse/AMQP-573
  * http://www.cnblogs.com/lazio10000/p/5559999.html
- * ----------------------------------------------------------------------------------------------------
- * 自定义日志切面的时候（比如本工程中的com.jadyer.seed.comm.base.LogAspect.java）
- * 如果切面中用到了ServletRequestAttributes，则还需判断其是否为null
- * 因为RabbitMq的消息队列在发送消息给订阅者时，日志切了拦截到的ServletRequestAttributes==null
+ * 解决方法：ServletRequestAttributes==null
+ * 自定义日志切面时，比如com.jadyer.seed.comm.base.LogAspect.java，若用到了ServletRequestAttributes
+ * 则需判断是否为null，因为RabbitMq在发送消息给订阅者时，日志切面所拦截到的ServletRequestAttributes==null
  * ----------------------------------------------------------------------------------------------------
  * 测试时，先在RabbitMQ管理界面做如下准备工作
- * 1.Admin菜单下，新建Users：xuanyu
- * 2.Admin菜单下，新建Virtual Hosts：myvhost，并设置用户xuanyu可以访问myvhost
- * 3.Exchanges菜单下，新建Exchanges：apply.status，并让它在myvhost下面
- * 4.Queues菜单下，新建Queues：myapi.get.apply.status，并让它在myvhost下面
- * 5.进入myapi.get.apply.status队列，在Bind处设定消息路由规则
- *   这里是：From exchange=apply.status，Routing key=apply.status.1101.*
- * 这样一来，发送消息时就会根据routingKey通过上面设定的“apply.status.1101.*”规则把消息路由到指定的队列
- * 而接收方只需要指定从哪个队列接收即可（注：同一消息可以根据不同的Routing key被发到多个队列）
+ * 1、Admin菜单下，新建Users：xuanyu
+ * 2、Admin菜单下，新建Virtual Hosts：myvhost，并设置用户xuanyu可以访问myvhost
+ * 3、Exchanges菜单下，新建Exchanges：apply.status，且设置Type=topic，并让它在myvhost下面
+ * 4、Queues菜单下，新建Queues：myapi.get.apply.status，并让它在myvhost下面
+ * 5、进入myapi.get.apply.status队列，然后在Bindings处设定消息路由规则
+ *    From exchange=apply.status，Routing key=apply.status.1101.*
+ * 消息是先被发送到交换器（Exchange），然后交换器再根据路由键（RoutingKey）把消息投递到对应的队列（Queue）
+ * 而接收方只需要指定从队列接收消息即可（注：同一消息可以根据不同的Routingkey被投递到多个队列）
  * ----------------------------------------------------------------------------------------------------
  * 关于消息确认机制（acknowledgments）
  * 1、多个消费者监听同一个queue时，默认的rabbitmq会采用round-robin（轮流）的方式，每条消息只会发给一个消费者
  * 2、消费者处理消息后，可以通过两种方式向rabbitmq发送确认（ACK）
- *    2.1、监听quque时设置auto_ack，这样消费者收到消息时，rabbitmq便自动认为该消息已经ack，并将之从queue删除
- *    2.2、第二种就是显式的发送basic.ack消息给rabbitmq
- * 若以上两种都没有做，rabbitmq会认为该消息未被正确处理，在当前消费者退出后（或断开连接）它会再次发给其它消费者
- * ----------------------------------------------------------------------------------------------------
- * 接收端写法如下（接收从RabbitMQ订阅的消息）
- * @Component
- * class ApplyService {
- *     //spring.rabbitmq.queues=myapi.get.apply.status
- *     //containerFactory指定的是com.jadyer.seed.boot.RabbitMQConfiguration.java里面声明的Bean
- *     @RabbitListener(queues="${spring.rabbitmq.queues}", containerFactory="jadyerRabbitListenerContainerFactory")
- *     public void receive(User user){
- *         System.out.println("收到从RabbitMQ订阅过来的消息-->[" + ReflectionToStringBuilder.toString(user) + "]");
- *     }
- *
- *     @RabbitListener(queues="myapi.get.apply.status22", containerFactory="jadyerRabbitListenerContainerFactory")
- *     public void receive22(User user){
- *         System.out.println("收到从RabbitMQ订阅过来的消息22-->[" + ReflectionToStringBuilder.toString(user) + "]");
- *     }
- * }
- * ----------------------------------------------------------------------------------------------------
- * 发送端写法如下（发送一个消息到RabbitMQ）
- * @Controller
- * @RequestMapping("/apply")
- * class ApplyController {
- *     @Resource
- *     private RabbitTemplate rabbitTemplate;
- *
- *     @ResponseBody
- *     @GetMapping("/mq/send")
- *     public CommonResult send(){
- *         User user = new User(2, "玄玉", "http://jadyer.cn/");
- *         this.rabbitTemplate.convertAndSend("apply.status", "apply.status.1101.123", user);
- *         return new CommonResult();
- *     }
- * }
+ *    2.1、监听quque时设置no_ack，这样消费者收到消息时，rabbitmq便自动认为该消息已经ack，并将之从queue删除
+ *    2.2、第二种就是消费者显式的发送basic.ack消息给rabbitmq，示例见本demo
+ * 更详细介绍可参考：https://my.oschina.net/dengfuwei/blog/1595047
  * ----------------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.github.io/> on 2017/6/5 15:19.
  */
-//@Configuration
+@Configuration
 public class RabbitMQConfiguration {
     @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory){
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
         template.setMessageConverter(new Jackson2JsonMessageConverter());
+        template.setEncoding("UTF-8");
+        //消息发送失败时，返回到队列中（需要spring.rabbitmq.publisherReturns=true）
+        template.setMandatory(true);
+        //消息成功到达exchange，但没有queue与之绑定时触发的回调（即消息发送不到任何一个队列中）
+        template.setReturnCallback(new RabbitTemplate.ReturnCallback() {
+            @Override
+            public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
+                LogUtil.getLogger().error("消息发送失败，replyCode={}，replyText={}，exchange={}，routingKey={}，消息体=[{}]", replyCode, replyText, exchange, routingKey, JSON.toJSONString(message.getBody()));
+            }
+        });
+        //消息成功到达exchange后触发的ack回调（需要spring.rabbitmq.publisherConfirms=true）
+        template.setConfirmCallback((correlationData, ack, cause) -> {
+            if(ack){
+                LogUtil.getLogger().info("消息发送成功，消息ID={}", correlationData.getId());
+            }else{
+                LogUtil.getLogger().error("消息发送失败，消息ID={}，cause={}", correlationData.getId(), cause);
+            }
+        });
         return template;
     }
 
