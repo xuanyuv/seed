@@ -118,11 +118,6 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
  */
 @SpringBootApplication(scanBasePackages="${scan.base.packages}")
 public class BootRun {
-    //@Bean
-    //public Filter characterEncodingFilter(){
-    //    return new CharacterEncodingFilter("UTF-8", true);
-    //}
-
     private static final Logger log = LoggerFactory.getLogger(BootRun.class);
 
     private static String getProfile(SimpleCommandLinePropertySource source){

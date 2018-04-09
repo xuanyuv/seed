@@ -6,11 +6,6 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 @SpringBootApplication(scanBasePackages="${scan.base.packages}")
 public class BootStrap extends SpringBootServletInitializer {
-    //@Bean
-    //public Filter characterEncodingFilter(){
-    //    return new CharacterEncodingFilter("UTF-8", true);
-    //}
-
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         //这里的配置与com.jadyer.seed.boot.BootRun.java中的配置是独立的没有关系的

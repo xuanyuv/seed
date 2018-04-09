@@ -47,13 +47,6 @@ management:
     enabled: false
 
 
-# 文件上传限制
-multipart:
-  enabled: true
-  maxFileSize: 10Mb
-  maxRequestSize: 10Mb
-
-
 # 屬性加密文件
 jasypt:
   #file: file:/app/config/seed.jadyer.com/config.properties
@@ -61,10 +54,22 @@ jasypt:
 
 
 spring:
+  http:
+    # 文件上传限制（默认的enabled=true，maxFileSize=1MB，maxRequestSize=10MB）
+    multipart:
+      enabled: true
+      maxFileSize: 10MB
+      maxRequestSize: 10MB
+    # SpringWeb项目需要添加CharacterEncodingFilter，SpringBoot只需以下配置（默认的force=true，enabled=true，charset=UTF-8）
+    encoding:
+      force: true
+      enabled: true
+      charset: UTF-8
   h2:
+    # 啟用H2控制台並自定義訪問地址
     console:
       path: /myh2
-      enabled: true  # 啟用H2控制台並自定義訪問地址
+      enabled: true
   datasource:
     #url: jdbc:h2:mem:jadyer;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     url: jdbc:mysql://${db.address}/${db.name}?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull
