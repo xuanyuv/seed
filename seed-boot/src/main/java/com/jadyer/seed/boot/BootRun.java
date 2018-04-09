@@ -127,6 +127,8 @@ public class BootRun {
 
     private static String getProfile(SimpleCommandLinePropertySource source){
         if(source.containsProperty(Constants.BOOT_ACTIVE_NAME)){
+            //补充：IntelliJ IDEA运行时，如果在Run/Debug Configurations为该启动类配置Program arguments的值为"--spring.profiles.active=dev"
+            //那么这里就能读取到该配置，同时控制台会打印"读取到spring变量：spring.profiles.active=dev"
             log.info("读取到spring变量：{}={}", Constants.BOOT_ACTIVE_NAME, source.getProperty(Constants.BOOT_ACTIVE_NAME));
             return source.getProperty(Constants.BOOT_ACTIVE_NAME);
         }
