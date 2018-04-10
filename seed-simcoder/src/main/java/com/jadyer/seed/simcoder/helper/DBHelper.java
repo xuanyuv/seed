@@ -1,6 +1,7 @@
 package com.jadyer.seed.simcoder.helper;
 
 import com.jadyer.seed.comm.util.DBUtil;
+import com.jadyer.seed.simcoder.SimcoderRun;
 import com.jadyer.seed.simcoder.model.Column;
 import com.jadyer.seed.simcoder.model.Table;
 import org.apache.commons.lang3.StringUtils;
@@ -15,9 +16,9 @@ import java.util.List;
  * Created by 玄玉<http://jadyer.cn/> on 2017/9/7 17:18.
  */
 class DBHelper {
-    private static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/mpp?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull";
-    private static final String DB_USERNAME = "root";
-    private static final String DB_PASSWORD = "xuanyu";
+    private static final String DB_URL = "jdbc:mysql://" + SimcoderRun.DB_ADDRESS + "/" + SimcoderRun.DB_NAME + "?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull";
+    private static final String DB_USERNAME = SimcoderRun.DB_USERNAME;
+    private static final String DB_PASSWORD = SimcoderRun.DB_PASSWORD;
     private static final String SQL_GET_TABLE = "SELECT TABLE_NAME, TABLE_COMMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA=?;";
     private static final String SQL_GET_COLUMN = "SELECT COLUMN_NAME as name, COLUMN_COMMENT as comment, DATA_TYPE as type, ifnull(CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION) as length, if(IS_NULLABLE='yes', true, false) as nullable, if(COLUMN_KEY='pri', true, false) as isPrikey, if(EXTRA='auto_increment', true, false) as isAutoIncrement FROM information_schema.COLUMNS WHERE TABLE_NAME=? ORDER BY ORDINAL_POSITION;";
 
@@ -142,6 +143,9 @@ class DBHelper {
         if(StringUtils.equals(dbtype, "tinyint")){
             return "int";
         }
+        //if(StringUtils.equals(dbtype, "bigint")){
+        //    return "BigInteger";
+        //}
         if(StringUtils.equals(dbtype, "decimal")){
             return "BigDecimal";
         }

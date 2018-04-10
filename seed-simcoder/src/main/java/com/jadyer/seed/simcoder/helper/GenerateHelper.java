@@ -1,6 +1,7 @@
 package com.jadyer.seed.simcoder.helper;
 
 import com.jadyer.seed.comm.util.JadyerUtil;
+import com.jadyer.seed.simcoder.SimcoderRun;
 import com.jadyer.seed.simcoder.model.Column;
 import com.jadyer.seed.simcoder.model.Table;
 import org.apache.commons.io.FileUtils;
@@ -23,10 +24,10 @@ import java.util.Map;
  * Created by 玄玉<http://jadyer.cn/> on 2017/9/8 23:22.
  */
 public class GenerateHelper {
-    private static final String PACKAGE_MODEL = "com.jadyer.seed.mpp.web.model";
-    private static final String PACKAGE_SERVICE = "com.jadyer.seed.mpp.web.service";
-    private static final String PACKAGE_REPOSITORY = "com.jadyer.seed.mpp.web.repository";
-    private static final String PACKAGE_CONTROLLER = "com.jadyer.seed.mpp.web.controller";
+    private static final String PACKAGE_MODEL = SimcoderRun.PACKGET_PREFIX + ".web.model";
+    private static final String PACKAGE_SERVICE = SimcoderRun.PACKGET_PREFIX + ".web.service";
+    private static final String PACKAGE_REPOSITORY = SimcoderRun.PACKGET_PREFIX + ".web.repository";
+    private static final String PACKAGE_CONTROLLER = SimcoderRun.PACKGET_PREFIX + ".web.controller";
     private static final String importColumnAnnotation = "\nimport javax.persistence.Column;";
     private static final String importDate = "import java.util.Date;\n";
     private static final String importBigDecimal = "import java.math.BigDecimal;\n";
