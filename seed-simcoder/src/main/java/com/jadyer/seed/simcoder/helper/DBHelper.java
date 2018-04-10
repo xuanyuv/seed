@@ -143,9 +143,9 @@ class DBHelper {
         if(StringUtils.equals(dbtype, "tinyint")){
             return "int";
         }
-        //if(StringUtils.equals(dbtype, "bigint")){
-        //    return "BigInteger";
-        //}
+        if(StringUtils.equals(dbtype, "bigint")){
+            return "BigInteger";
+        }
         if(StringUtils.equals(dbtype, "decimal")){
             return "BigDecimal";
         }
