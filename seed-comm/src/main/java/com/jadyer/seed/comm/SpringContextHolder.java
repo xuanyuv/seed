@@ -1,4 +1,4 @@
-package com.jadyer.seed.comm.base;
+package com.jadyer.seed.comm;
 
 import com.jadyer.seed.comm.util.LogUtil;
 import org.apache.commons.lang3.Validate;

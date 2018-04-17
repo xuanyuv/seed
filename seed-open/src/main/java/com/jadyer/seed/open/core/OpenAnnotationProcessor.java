@@ -1,6 +1,6 @@
 package com.jadyer.seed.open.core;
 
-import com.jadyer.seed.comm.base.SpringContextHolder;
+import com.jadyer.seed.comm.SpringContextHolder;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.open.model.ReqData;

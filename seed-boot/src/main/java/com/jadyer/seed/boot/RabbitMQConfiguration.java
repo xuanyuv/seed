@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
  * https://jira.spring.io/browse/AMQP-573
  * http://www.cnblogs.com/lazio10000/p/5559999.html
  * 解决方法：ServletRequestAttributes==null
- * 自定义日志切面时，比如com.jadyer.seed.comm.base.LogAspect.java，若用到了ServletRequestAttributes
+ * 自定义日志切面时，比如com.jadyer.seed.comm.base.LogAspectOld.java，若用到了ServletRequestAttributes
  * 则需判断是否为null，因为RabbitMq在发送消息给订阅者时，日志切面所拦截到的ServletRequestAttributes==null
  * ----------------------------------------------------------------------------------------------------
  * 测试时，先在RabbitMQ管理界面做如下准备工作

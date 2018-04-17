@@ -1,4 +1,4 @@
-package com.jadyer.seed.comm.base;
+package com.jadyer.seed.comm.log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
@@ -7,11 +7,8 @@ import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.RequestUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -32,11 +29,11 @@ import java.lang.reflect.Method;
  * </ul>
  * Created by 玄玉<http://jadyer.cn/> on 2015/8/18 9:49.
  */
-@Aspect
-@Component
-public class LogAspect {
+//@Aspect
+//@Component
+public class LogAspectOld {
     //@Around("execution(public * com.jadyer.seed..*Controller.*(..)) or execution(public * com.xuanyu..*Controller.*(..))")
-    @Around("execution(public * com.jadyer.seed..*Controller.*(..))")
+    //@Around("execution(public * com.jadyer.seed..*Controller.*(..))")
     public Object log(ProceedingJoinPoint joinPoint) throws Throwable {
         Object respData;
         long startTime = System.currentTimeMillis();
