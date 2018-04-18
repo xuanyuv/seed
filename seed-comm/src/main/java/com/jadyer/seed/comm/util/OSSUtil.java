@@ -20,7 +20,8 @@ import java.util.Date;
 /**
  * 阿里云对象存储服务（OSS：Object Storage Service）工具类
  * ----------------------------------------------------------------------------------------------------------------
- * @version v1.0
+ * @version v1.1
+ * @history v1.1-->获取图片临时URL接口支持自定义x-oss-process参数
  * @history v1.0-->新建
  * ----------------------------------------------------------------------------------------------------------------
  * Created by 玄玉<http://jadyer.cn/> on 2018/4/9 16:09.
@@ -33,16 +34,17 @@ public class OSSUtil {
      * @param bucket   存储空间名称
      * @param endpoint 存储空间所属地域的访问域名
      * @param timeout  有效时长，单位：毫秒
+     * @param process  图片的x-oss-process参数值（传空则返回原图），举例：image/resize,p_50表示将图按比例缩略到原来的1/2
      * @return 返回图片的完整地址（浏览器可直接访问）
      * Comment by 玄玉<http://jadyer.cn/> on 2018/4/9 17:23.
      */
-    public static String getImageTempURL(String bucket, String endpoint, String key, String accessKeyId, String accessKeySecret, long timeout) {
+    public static String getImageTempURL(String bucket, String endpoint, String key, String accessKeyId, String accessKeySecret, long timeout, String process) {
         String imageURL = "http://jadyer.cn/";
-        GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(bucket, key, HttpMethod.GET);
-        req.setExpiration(new Date(new Date().getTime() + timeout));
-        req.setProcess("image/resize,m_fixed,w_100,h_100/rotate,90");
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
         try {
+            GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(bucket, key, HttpMethod.GET);
+            req.setExpiration(new Date(new Date().getTime() + timeout));
+            req.setProcess(StringUtils.isNotBlank(process) ? process : "image/resize,p_100");
             imageURL = ossClient.generatePresignedUrl(req).toString();
         } catch (OSSException oe) {
             //异常码描述见https://help.aliyun.com/document_detail/32023.html
