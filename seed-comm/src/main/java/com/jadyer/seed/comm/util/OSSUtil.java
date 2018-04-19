@@ -30,7 +30,9 @@ public class OSSUtil {
     private OSSUtil(){}
 
     /**
-     * 获取图片的临时地址（https://help.aliyun.com/document_detail/47505.html）
+     * 获取图片的临时地址
+     * 图片处理：https://help.aliyun.com/document_detail/47505.html
+     * 异常码描：https://help.aliyun.com/document_detail/32023.html
      * @param bucket   存储空间名称
      * @param endpoint 存储空间所属地域的访问域名
      * @param timeout  有效时长，单位：分钟
@@ -40,27 +42,25 @@ public class OSSUtil {
      */
     public static String getImgURL(String bucket, String endpoint, String key, String accessKeyId, String accessKeySecret, String process, long timeout) {
         LogUtil.getLogger().info("获取图片临时URL，请求ossKey=[{}]，process=[{}], timeout=[{}]min", key, process, timeout);
-        String imgURL = "http://jadyer.cn/";
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
         try {
             GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(bucket, key, HttpMethod.GET);
             req.setExpiration(new Date(new Date().getTime() + timeout));
             req.setProcess(StringUtils.isNotBlank(process) ? process : "image/resize,p_100");
-            imgURL = ossClient.generatePresignedUrl(req).toString();
+            String imgURL = ossClient.generatePresignedUrl(req).toString();
+            LogUtil.getLogger().info("获取图片临时URL，请求ossKey=[{}]，应答imgUrl=[{}]", key, imgURL);
+            return imgURL;
         } catch (OSSException oe) {
-            //异常码描述见https://help.aliyun.com/document_detail/32023.html
-            LogUtil.getLogger().error("服务端异常，RequestID={}，HostID={}，Code={}，Message={}", oe.getRequestId(), oe.getHostId(), oe.getErrorCode(), oe.getMessage());
+            throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "获取图片临时URL，OSS服务端异常，RequestID="+oe.getRequestId() + "，HostID="+oe.getHostId() + "，Code="+oe.getErrorCode() + "，Message="+oe.getMessage());
         } catch (ClientException ce) {
-            LogUtil.getLogger().error("客户端异常，RequestID={}，Code={}，Message={}", ce.getRequestId(), ce.getErrorCode(), ce.getMessage());
+            throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "获取图片临时URL，OSS客户端异常，RequestID="+ce.getRequestId() + "，Code="+ce.getErrorCode() + "，Message="+ce.getMessage());
         } catch (Throwable e) {
-            LogUtil.getLogger().error("获取获取图片的临时地址时发生异常，堆栈轨迹如下", e);
+            throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "获取图片临时URL，OSS未知异常：" + e.getMessage());
         } finally {
             if(null != ossClient){
                 ossClient.shutdown();
             }
         }
-        LogUtil.getLogger().info("获取图片临时URL，请求ossKey=[{}]，应答imgUrl=[{}]", key, imgURL);
-        return imgURL;
     }
 
 
