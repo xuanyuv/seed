@@ -11,6 +11,7 @@ import com.jadyer.seed.comm.exception.SeedException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,12 +41,12 @@ public class OSSUtil {
      * @return 返回图片的完整地址（浏览器可直接访问）
      * Comment by 玄玉<http://jadyer.cn/> on 2018/4/9 17:23.
      */
-    public static String getImgURL(String bucket, String endpoint, String key, String accessKeyId, String accessKeySecret, String process, long timeout) {
+    public static String getImgURL(String bucket, String endpoint, String key, String accessKeyId, String accessKeySecret, String process, int timeout) {
         LogUtil.getLogger().info("获取图片临时URL，请求ossKey=[{}]，process=[{}], timeout=[{}]min", key, process, timeout);
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
         try {
             GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(bucket, key, HttpMethod.GET);
-            req.setExpiration(new Date(new Date().getTime() + timeout));
+            req.setExpiration(DateUtils.addMinutes(new Date(), timeout));
             req.setProcess(StringUtils.isNotBlank(process) ? process : "image/resize,p_100");
             String imgURL = ossClient.generatePresignedUrl(req).toString();
             LogUtil.getLogger().info("获取图片临时URL，请求ossKey=[{}]，应答imgUrl=[{}]", key, imgURL);
