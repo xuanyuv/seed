@@ -33,19 +33,20 @@ public class OSSUtil {
      * 获取图片的临时地址（https://help.aliyun.com/document_detail/47505.html）
      * @param bucket   存储空间名称
      * @param endpoint 存储空间所属地域的访问域名
-     * @param timeout  有效时长，单位：毫秒
+     * @param timeout  有效时长，单位：分钟
      * @param process  图片的x-oss-process参数值（传空则返回原图），举例：image/resize,p_50表示将图按比例缩略到原来的1/2
      * @return 返回图片的完整地址（浏览器可直接访问）
      * Comment by 玄玉<http://jadyer.cn/> on 2018/4/9 17:23.
      */
-    public static String getImageTempURL(String bucket, String endpoint, String key, String accessKeyId, String accessKeySecret, long timeout, String process) {
-        String imageURL = "http://jadyer.cn/";
+    public static String getImgURL(String bucket, String endpoint, String key, String accessKeyId, String accessKeySecret, String process, long timeout) {
+        LogUtil.getLogger().info("获取图片临时URL，请求ossKey=[{}]，process=[{}], timeout=[{}]min", key, process, timeout);
+        String imgURL = "http://jadyer.cn/";
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
         try {
             GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(bucket, key, HttpMethod.GET);
             req.setExpiration(new Date(new Date().getTime() + timeout));
             req.setProcess(StringUtils.isNotBlank(process) ? process : "image/resize,p_100");
-            imageURL = ossClient.generatePresignedUrl(req).toString();
+            imgURL = ossClient.generatePresignedUrl(req).toString();
         } catch (OSSException oe) {
             //异常码描述见https://help.aliyun.com/document_detail/32023.html
             LogUtil.getLogger().error("服务端异常，RequestID={}，HostID={}，Code={}，Message={}", oe.getRequestId(), oe.getHostId(), oe.getErrorCode(), oe.getMessage());
@@ -58,7 +59,8 @@ public class OSSUtil {
                 ossClient.shutdown();
             }
         }
-        return imageURL;
+        LogUtil.getLogger().info("获取图片临时URL，请求ossKey=[{}]，应答imgUrl=[{}]", key, imgURL);
+        return imgURL;
     }
 
 
