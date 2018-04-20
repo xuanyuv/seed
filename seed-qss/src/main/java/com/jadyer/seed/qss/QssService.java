@@ -23,11 +23,11 @@ import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -62,7 +62,7 @@ public class QssService {
 
 
     @PostConstruct
-    public void init() throws Exception {
+    public void init() {
         List<ScheduleTask> taskList = this.getAllTask();
         for(ScheduleTask task : taskList){
             this.addJob(task);
@@ -76,8 +76,8 @@ public class QssService {
 
 
     List<ScheduleTask> getByIds(String ids) {
-        List<String> idstr = Arrays.asList(ids.split(","));
         List<Long> idList = new ArrayList<>();
+        String[] idstr = ids.split(",");
         for(String obj : idstr){
             idList.add(Long.parseLong(obj));
         }
@@ -127,6 +127,7 @@ public class QssService {
     /**
      * 新增任务到数据库
      */
+    @Transactional(rollbackFor=Exception.class)
     ScheduleTask saveTask(ScheduleTask task){
         if(!CronExpression.isValidExpression(task.getCron())){
             throw new IllegalArgumentException("CronExpression不正确");
@@ -138,6 +139,7 @@ public class QssService {
     /**
      * 移除QuartzJob和数据库中的任务
      */
+    @Transactional(rollbackFor=Exception.class)
     void deleteTask(long taskId){
         ScheduleTask task = this.getTaskById(taskId);
         this.deleteJob(task);
@@ -156,6 +158,7 @@ public class QssService {
     /**
      * 更改QuartzJob和数据库任务状态
      */
+    @Transactional(rollbackFor=Exception.class)
     boolean updateStatus(long taskId, int status){
         ScheduleTask task = this.getTaskById(taskId);
         task.setStatus(status);
@@ -175,6 +178,7 @@ public class QssService {
     /**
      * 更新CronExpression
      */
+    @Transactional(rollbackFor=Exception.class)
     boolean updateCron(long taskId, String cron){
         if(!CronExpression.isValidExpression(cron)){
             throw new IllegalArgumentException("CronExpression不正确");
