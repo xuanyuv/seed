@@ -18,8 +18,8 @@ import java.util.concurrent.TimeoutException;
 /**
  * Created by 玄玉<http://jadyer.cn/> on 2017/4/27 18:29.
  */
-@RunWith(SpringRunner.class)
 @Profile("local")
+@RunWith(SpringRunner.class)
 @SpringBootTest(classes=QssRun.class)
 public class JPATest {
     @Resource

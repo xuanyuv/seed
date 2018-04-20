@@ -24,8 +24,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * 演示spring-boot-starter-test的几个用法
  */
-@RunWith(SpringRunner.class)
 @Profile("local")
+@RunWith(SpringRunner.class)
 @SpringBootTest(classes=BootStrap.class)
 public class BootTest {
     @Resource
