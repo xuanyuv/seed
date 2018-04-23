@@ -23,6 +23,14 @@ import java.util.List;
  */
 class LogAspect implements MethodInterceptor {
     private static Logger log = LoggerFactory.getLogger(LogAspect.class);
+    private static SerializerFeature[] serializerFeatures = new SerializerFeature[5];
+    static {
+        serializerFeatures[0] = SerializerFeature.WriteMapNullValue;
+        serializerFeatures[1] = SerializerFeature.WriteNullListAsEmpty;
+        serializerFeatures[2] = SerializerFeature.WriteNullNumberAsZero;
+        serializerFeatures[3] = SerializerFeature.WriteNullStringAsEmpty;
+        serializerFeatures[4] = SerializerFeature.WriteNullBooleanAsFalse;
+    }
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
@@ -39,12 +47,6 @@ class LogAspect implements MethodInterceptor {
             }
             argsList.add(obj);
         }
-        SerializerFeature[] serializerFeatures = new SerializerFeature[5];
-        serializerFeatures[0] = SerializerFeature.WriteMapNullValue;
-        serializerFeatures[1] = SerializerFeature.WriteNullListAsEmpty;
-        serializerFeatures[2] = SerializerFeature.WriteNullNumberAsZero;
-        serializerFeatures[3] = SerializerFeature.WriteNullStringAsEmpty;
-        serializerFeatures[4] = SerializerFeature.WriteNullBooleanAsFalse;
         log.info("{}()被调用，入参为{}", methodInfo, JSON.toJSONStringWithDateFormat(argsList, JSON.DEFFAULT_DATE_FORMAT, serializerFeatures));
         //表单验证
         for(Object obj : objs){
