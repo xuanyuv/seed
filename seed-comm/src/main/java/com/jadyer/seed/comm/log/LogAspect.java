@@ -1,6 +1,7 @@
 package com.jadyer.seed.comm.log;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.comm.log.annotation.EnableAutoValid;
@@ -38,7 +39,13 @@ class LogAspect implements MethodInterceptor {
             }
             argsList.add(obj);
         }
-        log.info("{}()被调用，入参为{}", methodInfo, JSON.toJSONStringWithDateFormat(argsList, JSON.DEFFAULT_DATE_FORMAT));
+        SerializerFeature[] serializerFeatures = new SerializerFeature[5];
+        serializerFeatures[0] = SerializerFeature.WriteMapNullValue;
+        serializerFeatures[1] = SerializerFeature.WriteNullListAsEmpty;
+        serializerFeatures[2] = SerializerFeature.WriteNullNumberAsZero;
+        serializerFeatures[3] = SerializerFeature.WriteNullStringAsEmpty;
+        serializerFeatures[4] = SerializerFeature.WriteNullBooleanAsFalse;
+        log.info("{}()被调用，入参为{}", methodInfo, JSON.toJSONStringWithDateFormat(argsList, JSON.DEFFAULT_DATE_FORMAT, serializerFeatures));
         //表单验证
         for(Object obj : objs){
             //if(null!=obj && obj.getClass().getName().startsWith("com.jadyer.seed.open.model")){
@@ -64,7 +71,7 @@ class LogAspect implements MethodInterceptor {
         }else if(respData.getClass().isAssignableFrom(ResponseEntity.class)) {
             returnInfo = "ResponseEntity";
         }else{
-            returnInfo = JSON.toJSONStringWithDateFormat(respData, JSON.DEFFAULT_DATE_FORMAT);
+            returnInfo = JSON.toJSONStringWithDateFormat(respData, JSON.DEFFAULT_DATE_FORMAT, serializerFeatures);
         }
         log.info("{}()被调用，出参为{}，Duration[{}]ms", methodInfo, returnInfo, endTime-startTime);
         log.info("---------------------------------------------------------------------------------------------");
