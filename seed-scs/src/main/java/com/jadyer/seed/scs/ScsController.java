@@ -6,6 +6,7 @@ import com.jadyer.seed.comm.util.RequestUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -87,6 +88,7 @@ public class ScsController {
     /**
      * 前台页面通过ajaxfileupload.js实现图片上传
      */
+    @CrossOrigin(maxAge=600)
     @RequestMapping("/uploadImg/{userId}")
     void uploadImg(@PathVariable int userId, MultipartFile imgData, HttpServletResponse response) throws IOException {
         response.setContentType("text/plain; charset=UTF-8");
@@ -109,6 +111,7 @@ public class ScsController {
     /**
      * 前台页面通过wangEditor上传图片
      */
+    @CrossOrigin(maxAge=600)
     @RequestMapping("/wangEditor/uploadImg")
     void wangEditorUploadImg(String username, MultipartFile minefile, HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/plain; charset=UTF-8");

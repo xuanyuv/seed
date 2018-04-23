@@ -38,7 +38,7 @@ class LogAspect implements MethodInterceptor {
         long startTime = System.currentTimeMillis();
         //类名.方法名（不含类的包名），举例：MppController.bind
         String methodInfo = invocation.getThis().getClass().getSimpleName() + "." + invocation.getMethod().getName();
-        //打印入参
+        //打印入参（对于入参为MultipartFile类型等，可以在实体类使用@com.alibaba.fastjson.annotation.JSONField(serialize=false)标识不序列化）
         Object[] objs = invocation.getArguments();
         List<Object> argsList = new ArrayList<>();
         for(Object obj : objs){
