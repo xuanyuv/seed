@@ -125,10 +125,10 @@ public class UtilTest {
      */
     @Test
     public void ossUtilForUploadTest() throws IOException {
-        String bucket = "anxin-cloud";
-        String endpoint = "http://oss-cn-szfinance.aliyuncs.com";
-        String accessKeyId = "LTAI6sHxzOaUd6HX";
-        String accessKeySecret = "RkuCJPPTH8rO3daOrx2H9r28FxhbwX";
+        String bucket = "";
+        String endpoint = "";
+        String accessKeyId = "";
+        String accessKeySecret = "";
         String filename = "http://jadyer.cn/img/2015/2015-11-14-childhood-haerbin-07.png";
         InputStream is = new URL(filename).openStream();
         String key = "ifs/test/" + IDUtil.INSTANCE.nextId() + "." + FilenameUtils.getExtension(filename);
