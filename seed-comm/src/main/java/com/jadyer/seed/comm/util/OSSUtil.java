@@ -52,11 +52,11 @@ public class OSSUtil {
             LogUtil.getLogger().info("获取图片临时URL，请求ossKey=[{}]，应答imgUrl=[{}]", key, imgURL);
             return imgURL;
         } catch (OSSException oe) {
-            throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "获取图片临时URL，OSS服务端异常，RequestID="+oe.getRequestId() + "，HostID="+oe.getHostId() + "，Code="+oe.getErrorCode() + "，Message="+oe.getMessage());
+            throw new SeedException("获取图片临时URL，OSS服务端异常，RequestID="+oe.getRequestId() + "，HostID="+oe.getHostId() + "，Code="+oe.getErrorCode() + "，Message="+oe.getMessage());
         } catch (ClientException ce) {
-            throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "获取图片临时URL，OSS客户端异常，RequestID="+ce.getRequestId() + "，Code="+ce.getErrorCode() + "，Message="+ce.getMessage());
+            throw new SeedException("获取图片临时URL，OSS客户端异常，RequestID="+ce.getRequestId() + "，Code="+ce.getErrorCode() + "，Message="+ce.getMessage());
         } catch (Throwable e) {
-            throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "获取图片临时URL，OSS未知异常：" + e.getMessage());
+            throw new SeedException("获取图片临时URL，OSS未知异常：" + e.getMessage());
         } finally {
             if(null != ossClient){
                 ossClient.shutdown();
@@ -73,18 +73,16 @@ public class OSSUtil {
      * @param is       文件流
      * Comment by 玄玉<http://jadyer.cn/> on 2018/4/9 17:24.
      */
-    public static boolean upload(String bucket, String endpoint, String key, String accessKeyId, String accessKeySecret, InputStream is) {
-        boolean uploadSuccess = false;
+    public static void upload(String bucket, String endpoint, String key, String accessKeyId, String accessKeySecret, InputStream is) {
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
         try {
             ossClient.putObject(bucket, key, is);
-            uploadSuccess = true;
         } catch (OSSException oe) {
-            LogUtil.getLogger().error("服务端异常，RequestID={}，HostID={}，Code={}，Message={}", oe.getRequestId(), oe.getHostId(), oe.getErrorCode(), oe.getMessage());
+            throw new SeedException("文件上传，OSS服务端异常，RequestID="+oe.getRequestId() + "，HostID="+oe.getHostId() + "，Code="+oe.getErrorCode() + "，Message="+oe.getMessage());
         } catch (ClientException ce) {
-            LogUtil.getLogger().error("客户端异常，RequestID={}，Code={}，Message={}", ce.getRequestId(), ce.getErrorCode(), ce.getMessage());
+            throw new SeedException("文件上传，OSS客户端异常，RequestID="+ce.getRequestId() + "，Code="+ce.getErrorCode() + "，Message="+ce.getMessage());
         } catch (Throwable e) {
-            LogUtil.getLogger().error("文件上传时发生异常，堆栈轨迹如下", e);
+            throw new SeedException("文件上传，OSS未知异常：" + e.getMessage());
         } finally {
             try {
                 if(null != is){
@@ -97,7 +95,6 @@ public class OSSUtil {
                 ossClient.shutdown();
             }
         }
-        return uploadSuccess;
     }
 
 
@@ -108,8 +105,7 @@ public class OSSUtil {
      * @param localURL 保存在本地的包含完整路径和后缀的完整文件名
      * Comment by 玄玉<http://jadyer.cn/> on 2018/4/9 17:24.
      */
-    public static boolean download(String bucket, String endpoint, String key, String accessKeyId, String accessKeySecret, String localURL) {
-        boolean downloadSuccess = false;
+    public static void download(String bucket, String endpoint, String key, String accessKeyId, String accessKeySecret, String localURL) {
         if(StringUtils.isBlank(localURL)){
             //若未传localURL，则把下载到的文件放到Java临时目录
             localURL = System.getProperty("java.io.tmpdir") + "/" + key;
@@ -126,18 +122,16 @@ public class OSSUtil {
             //ossClient.getObject(new GetObjectRequest(bucket, key), new File(localURL));
             InputStream is = ossClient.getObject(bucket, key).getObjectContent();
             FileUtils.copyInputStreamToFile(is, new File(localURL));
-            downloadSuccess = true;
         } catch (OSSException oe) {
-            LogUtil.getLogger().error("服务端异常，RequestID={}，HostID={}，Code={}，Message={}", oe.getRequestId(), oe.getHostId(), oe.getErrorCode(), oe.getMessage());
+            throw new SeedException("文件下载，OSS服务端异常，RequestID="+oe.getRequestId() + "，HostID="+oe.getHostId() + "，Code="+oe.getErrorCode() + "，Message="+oe.getMessage());
         } catch (ClientException ce) {
-            LogUtil.getLogger().error("客户端异常，RequestID={}，Code={}，Message={}", ce.getRequestId(), ce.getErrorCode(), ce.getMessage());
+            throw new SeedException("文件下载，OSS客户端异常，RequestID="+ce.getRequestId() + "，Code="+ce.getErrorCode() + "，Message="+ce.getMessage());
         } catch (Throwable e) {
-            LogUtil.getLogger().error("文件下载时发生异常，堆栈轨迹如下", e);
+            throw new SeedException("文件下载，OSS未知异常：" + e.getMessage());
         } finally {
             if(null != ossClient){
                 ossClient.shutdown();
             }
         }
-        return downloadSuccess;
     }
 }

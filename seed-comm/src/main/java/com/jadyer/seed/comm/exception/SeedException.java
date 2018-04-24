@@ -59,7 +59,10 @@ import com.jadyer.seed.comm.constant.CodeEnum;
 public class SeedException extends RuntimeException {
     private static final long serialVersionUID = 601366631919634564L;
     private int code;
-    private String message;
+
+    public int getCode() {
+        return code;
+    }
 
     //public SeedException format(Object... messages){
     //    if(null!=messages && messages.length>0){
@@ -68,36 +71,28 @@ public class SeedException extends RuntimeException {
     //    return this;
     //}
 
-    public SeedException(CodeEnum codeEnum){
-        super(codeEnum.getMsg());
-        this.code = codeEnum.getCode();
-        this.message = codeEnum.getMsg();
-    }
-
-    public SeedException(CodeEnum codeEnum, Throwable cause){
-        super(codeEnum.getMsg(), cause);
-        this.code = codeEnum.getCode();
-        this.message = codeEnum.getMsg();
+    public SeedException(String message){
+        super(message);
+        this.code = CodeEnum.SYSTEM_BUSY.getCode();
     }
 
     public SeedException(int code, String message){
         super(message);
         this.code = code;
-        this.message = message;
     }
 
     public SeedException(int code, String message, Throwable cause){
         super(message, cause);
         this.code = code;
-        this.message = message;
     }
 
-    public int getCode() {
-        return code;
+    public SeedException(CodeEnum codeEnum, Throwable cause){
+        super(codeEnum.getMsg(), cause);
+        this.code = codeEnum.getCode();
     }
 
-    @Override
-    public String getMessage() {
-        return message;
+    public SeedException(CodeEnum codeEnum){
+        super(codeEnum.getMsg());
+        this.code = codeEnum.getCode();
     }
 }

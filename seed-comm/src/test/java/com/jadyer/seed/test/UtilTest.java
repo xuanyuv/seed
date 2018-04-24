@@ -4,13 +4,16 @@ import com.jadyer.seed.comm.util.CodecUtil;
 import com.jadyer.seed.comm.util.DateUtil;
 import com.jadyer.seed.comm.util.FTPUtil;
 import com.jadyer.seed.comm.util.HTTPUtil;
+import com.jadyer.seed.comm.util.IDUtil;
 import com.jadyer.seed.comm.util.ImageUtil;
 import com.jadyer.seed.comm.util.JsoupHelper;
 import com.jadyer.seed.comm.util.MoneyUtil;
+import com.jadyer.seed.comm.util.OSSUtil;
 import com.jadyer.seed.comm.util.PasswordUtil;
 import com.jadyer.seed.comm.util.ValidatorUtil;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -26,6 +29,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
@@ -117,6 +121,23 @@ public class UtilTest {
 
 
     /**
+     * OSS文件上传测试
+     */
+    @Test
+    public void ossUtilForUploadTest() throws IOException {
+        String bucket = "anxin-cloud";
+        String endpoint = "http://oss-cn-szfinance.aliyuncs.com";
+        String accessKeyId = "LTAI6sHxzOaUd6HX";
+        String accessKeySecret = "RkuCJPPTH8rO3daOrx2H9r28FxhbwX";
+        String filename = "http://jadyer.cn/img/2015/2015-11-14-childhood-haerbin-07.png";
+        InputStream is = new URL(filename).openStream();
+        String key = "ifs/test/" + IDUtil.INSTANCE.nextId() + "." + FilenameUtils.getExtension(filename);
+        OSSUtil.upload(bucket, endpoint, key, accessKeyId, accessKeySecret, is);
+        System.out.println("本次上传的ossKey=" + key);
+    }
+
+
+    /**
      * 文件上传测试
      */
     @Test
@@ -128,7 +149,7 @@ public class UtilTest {
         Map<String, String> params = new HashMap<>();
         params.put("serialNo", UUID.randomUUID().toString().replaceAll("-", ""));
         String respData = HTTPUtil.postWithUpload(reqURL, filename, is, fileBodyName, params);
-        System.out.println("文件上传完毕,收到应答报文" + respData);
+        System.out.println("文件上传完毕，收到应答报文" + respData);
     }
 
 
@@ -142,9 +163,9 @@ public class UtilTest {
         params.put("sysCode", "33");
         Map<String, String> resultMap = HTTPUtil.postWithDownload(reqURL, params);
         if("yes".equals(resultMap.get("isSuccess"))){
-            System.out.println("文件下载成功,保存路径为" + resultMap.get("fullPath"));
+            System.out.println("文件下载成功，保存路径为" + resultMap.get("fullPath"));
         }else{
-            System.out.println("文件下载失败,失败原因为" + resultMap.get("failReason"));
+            System.out.println("文件下载失败，失败原因为" + resultMap.get("failReason"));
         }
     }
 
