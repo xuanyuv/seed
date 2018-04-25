@@ -9,7 +9,6 @@ import com.aliyun.oss.model.GeneratePresignedUrlRequest;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.exception.SeedException;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -102,17 +101,18 @@ public class OSSUtil {
      * 文件下载
      * @param bucket   存储空间名称
      * @param endpoint 存储空间所属地域的访问域名
-     * @param localURL 保存在本地的包含完整路径和后缀的完整文件名
+     * @param localURL 保存在本地的包含完整路径和后缀的完整文件名，若传空则默认放到Java临时目录中
+     * @return localURL
      * Comment by 玄玉<http://jadyer.cn/> on 2018/4/9 17:24.
      */
-    public static void download(String bucket, String endpoint, String key, String accessKeyId, String accessKeySecret, String localURL) {
+    public static String download(String bucket, String endpoint, String key, String accessKeyId, String accessKeySecret, String localURL) {
         if(StringUtils.isBlank(localURL)){
             //若未传localURL，则把下载到的文件放到Java临时目录
             localURL = System.getProperty("java.io.tmpdir") + "/" + key;
-            //若文件名称不含后缀，那就主动添加后缀
-            if("".equals(FilenameUtils.getExtension(key))){
-                localURL += ".txt";
-            }
+            ////若文件名称不含后缀，那就主动添加后缀
+            //if("".equals(FilenameUtils.getExtension(key))){
+            //    localURL += ".txt";
+            //}
         }
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
         try {
@@ -122,6 +122,7 @@ public class OSSUtil {
             //ossClient.getObject(new GetObjectRequest(bucket, key), new File(localURL));
             InputStream is = ossClient.getObject(bucket, key).getObjectContent();
             FileUtils.copyInputStreamToFile(is, new File(localURL));
+            return localURL;
         } catch (OSSException oe) {
             throw new SeedException("文件下载，OSS服务端异常，RequestID="+oe.getRequestId() + "，HostID="+oe.getHostId() + "，Code="+oe.getErrorCode() + "，Message="+oe.getMessage());
         } catch (ClientException ce) {
