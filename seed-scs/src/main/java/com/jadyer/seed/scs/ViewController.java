@@ -2,7 +2,7 @@ package com.jadyer.seed.scs;
 
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
-import com.jadyer.seed.comm.constant.Constants;
+import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.RequestUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -69,8 +69,8 @@ public class ViewController {
         dataMap.put("bindStatus", "1");
         dataMap.put("mptype", "微信公众号");
         dataMap.put("username", "玄玉");
-        session.setAttribute(Constants.WEB_SESSION_USER, dataMap);
-        session.setAttribute(Constants.WEB_CURRENT_MENU, "menu_module");
+        session.setAttribute(SeedConstants.WEB_SESSION_USER, dataMap);
+        session.setAttribute(SeedConstants.WEB_CURRENT_MENU, "menu_module");
         session.setAttribute("mpurl", "http://jadyer.cn/");
         session.setAttribute("token", "13248558648888942");
         return new CommonResult();

@@ -2,7 +2,7 @@ package com.jadyer.seed.controller;
 
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
-import com.jadyer.seed.comm.constant.Constants;
+import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.RequestUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -38,14 +38,14 @@ public class ViewController {
         if(!StringUtils.equals(captcha, (String)session.getAttribute("captcha"))){
             return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "无效的验证码");
         }
-        session.setAttribute(Constants.WEB_SESSION_USER, "玄玉登录成功");
+        session.setAttribute(SeedConstants.WEB_SESSION_USER, "玄玉登录成功");
         return new CommonResult();
     }
 
 
     @GetMapping("/logout")
     String logout(HttpSession session){
-        session.removeAttribute(Constants.WEB_SESSION_USER);
+        session.removeAttribute(SeedConstants.WEB_SESSION_USER);
         return InternalResourceViewResolver.REDIRECT_URL_PREFIX;
     }
 

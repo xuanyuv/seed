@@ -1,7 +1,7 @@
 package com.jadyer.seed.scs;
 
 import com.jadyer.seed.comm.constant.CommonResult;
-import com.jadyer.seed.comm.constant.Constants;
+import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.RequestUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -43,7 +43,7 @@ public class ScsController {
 
     @GetMapping("/logout")
     String logout(HttpSession session){
-        session.removeAttribute(Constants.WEB_SESSION_USER);
+        session.removeAttribute(SeedConstants.WEB_SESSION_USER);
         return InternalResourceViewResolver.REDIRECT_URL_PREFIX;
     }
 

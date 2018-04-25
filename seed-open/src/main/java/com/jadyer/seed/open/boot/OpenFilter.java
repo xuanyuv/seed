@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
-import com.jadyer.seed.comm.constant.Constants;
+import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.comm.util.BeanUtil;
 import com.jadyer.seed.comm.util.CodecUtil;
@@ -87,7 +87,7 @@ public class OpenFilter extends OncePerRequestFilter {
                 LogUtil.getLogger().debug("收到客户端IP=[{}]的请求报文为-->{}", reqIp, reqDataStr);
                 reqData = BeanUtil.requestToBean(request, ReqData.class);
             }else{
-                reqDataStr = IOUtils.toString(request.getInputStream(), Constants.OPEN_CHARSET_UTF8);
+                reqDataStr = IOUtils.toString(request.getInputStream(), SeedConstants.DEFAULT_CHARSET);
                 LogUtil.getLogger().debug("收到客户端IP=[{}]的请求报文为-->[{}]", reqIp, reqDataStr);
                 if(StringUtils.isBlank(reqDataStr)){
                     throw new SeedException(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "请求无数据");
@@ -108,13 +108,13 @@ public class OpenFilter extends OncePerRequestFilter {
                 throw new SeedException(CodeEnum.OPEN_UNKNOWN_APPID);
             }
             //获取协议版本
-            if(!StringUtils.equalsAny(reqData.getVersion(), Constants.OPEN_VERSION_21, Constants.OPEN_VERSION_22)){
+            if(!StringUtils.equalsAny(reqData.getVersion(), SeedConstants.OPEN_VERSION_21, SeedConstants.OPEN_VERSION_22)){
                 throw new SeedException(CodeEnum.OPEN_UNKNOWN_VERSION);
             }
             //验证接口是否已授权
             this.verifyGrant(reqData.getAppid(), method);
             //验签
-            //if(Constants.VERSION_20.equals(reqData.getVersion())){
+            //if(SeedConstants.VERSION_20.equals(reqData.getVersion())){
             //    this.verifySign(request.getParameterMap(), apiApplication.getAppSecret());
             //    filterChain.doFilter(request, response);
             //}
@@ -132,7 +132,7 @@ public class OpenFilter extends OncePerRequestFilter {
                 LogUtil.getLogger().info("返回客户端IP=[{}]的应答明文为-->[{}]", reqIp, respDataStr);
                 RespData respData = JSON.parseObject(respDataStr, RespData.class);
                 if(CodeEnum.SUCCESS.getCode() == Integer.parseInt(respData.getCode())){
-                    if(Constants.OPEN_VERSION_21.equals(reqData.getVersion())){
+                    if(SeedConstants.OPEN_VERSION_21.equals(reqData.getVersion())){
                         respData.setData(StringUtils.isBlank(respData.getData()) ? "" : CodecUtil.buildAESEncrypt(respData.getData(), appsecret));
                     }else{
                         Map<String, String> dataMap = JSON.parseObject(appsecret, new TypeReference<Map<String, String>>(){});
@@ -159,8 +159,8 @@ public class OpenFilter extends OncePerRequestFilter {
      * </p>
      */
     private void writeToResponse(String respDataStr, HttpServletResponse response) throws IOException {
-        byte[] respDataBeytes = respDataStr.getBytes(Constants.OPEN_CHARSET_UTF8);
-        response.setHeader("Content-Type", "application/json; charset=" + Constants.OPEN_CHARSET_UTF8);
+        byte[] respDataBeytes = respDataStr.getBytes(SeedConstants.DEFAULT_CHARSET);
+        response.setHeader("Content-Type", "application/json; charset=" + SeedConstants.DEFAULT_CHARSET);
         response.setHeader("Content-Length", respDataBeytes.length+"");
         try(ServletOutputStream out = response.getOutputStream()){
             out.write(respDataBeytes);
@@ -212,7 +212,7 @@ public class OpenFilter extends OncePerRequestFilter {
     @SuppressWarnings("unused")
     private void verifySign(Map<String, String[]> paramMap, String appsecret){
         String signType = paramMap.get("signType")[0];
-        if(!Constants.OPEN_SIGN_TYPE_md5.equals(signType) && !Constants.OPEN_SIGN_TYPE_hmac.equals(signType)){
+        if(!SeedConstants.OPEN_SIGN_TYPE_md5.equals(signType) && !SeedConstants.OPEN_SIGN_TYPE_hmac.equals(signType)){
             throw new SeedException(CodeEnum.OPEN_UNKNOWN_SIGN);
         }
         StringBuilder sb = new StringBuilder();
@@ -226,7 +226,7 @@ public class OpenFilter extends OncePerRequestFilter {
             sb.append(key).append(value[0]);
         }
         boolean verfiyResult;
-        if(Constants.OPEN_SIGN_TYPE_md5.equals(signType)){
+        if(SeedConstants.OPEN_SIGN_TYPE_md5.equals(signType)){
             String data = sb.append(appsecret).toString();
             String sign = DigestUtils.md5Hex(data);
             LogUtil.getLogger().debug("请求参数签名原文-->[{}]", data);
@@ -256,7 +256,7 @@ public class OpenFilter extends OncePerRequestFilter {
             throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "data is blank");
         }
         String dataPlain;
-        if(Constants.OPEN_VERSION_21.equals(reqData.getVersion())){
+        if(SeedConstants.OPEN_VERSION_21.equals(reqData.getVersion())){
             dataPlain = CodecUtil.buildAESDecrypt(reqData.getData(), appsecret);
         }else{
             //appsecret={"publicKey":"合作方公钥","openPublicKey":"我方公钥","openPrivateKey":"我方私钥"}
@@ -428,7 +428,7 @@ public class OpenFilter extends OncePerRequestFilter {
         String getContent() {
             try {
                 writer.flush();
-                return writer.getByteArrayOutputStream().toString(Constants.OPEN_CHARSET_UTF8);
+                return writer.getByteArrayOutputStream().toString(SeedConstants.DEFAULT_CHARSET);
             } catch (UnsupportedEncodingException e) {
                 return "UnsupportedEncoding";
             }

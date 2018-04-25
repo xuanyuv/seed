@@ -1,6 +1,6 @@
 package com.jadyer.seed.mpp.web.controller;
 
-import com.jadyer.seed.comm.constant.Constants;
+import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.mpp.web.model.MppUserInfo;
 import com.jadyer.seed.mpp.web.service.FansService;
 import org.springframework.stereotype.Controller;
@@ -21,7 +21,7 @@ public class FansController{
      */
     @RequestMapping("/list")
     public String listViaPage(String pageNo, HttpServletRequest request){
-        final long uid = ((MppUserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId();
+        final long uid = ((MppUserInfo)request.getSession().getAttribute(SeedConstants.WEB_SESSION_USER)).getId();
         request.setAttribute("page", fansService.listViaPage(uid, pageNo));
         return "/admin/fans.list";
     }

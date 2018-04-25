@@ -2,7 +2,7 @@ package com.jadyer.seed.mpp.web.controller;
 
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
-import com.jadyer.seed.comm.constant.Constants;
+import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.RequestUtil;
 import com.jadyer.seed.mpp.sdk.qq.helper.QQHelper;
 import com.jadyer.seed.mpp.sdk.qq.helper.QQTokenHolder;
@@ -81,11 +81,11 @@ public class MppController {
      */
     @GetMapping("/user/info")
     public String info(HttpServletRequest request){
-        MppUserInfo mppUserInfo = (MppUserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER);
+        MppUserInfo mppUserInfo = (MppUserInfo)request.getSession().getAttribute(SeedConstants.WEB_SESSION_USER);
         //每次都取最新的
         mppUserInfo = mppUserService.findOne(mppUserInfo.getId());
         //再更新HttpSession
-        request.getSession().setAttribute(Constants.WEB_SESSION_USER, mppUserInfo);
+        request.getSession().setAttribute(SeedConstants.WEB_SESSION_USER, mppUserInfo);
         //拼造开发者服务器的URL和Token
         StringBuilder sb = new StringBuilder(RequestUtil.getFullContextPath(request));
         if(1 == mppUserInfo.getMptype()){
@@ -106,7 +106,7 @@ public class MppController {
     @ResponseBody
     @PostMapping("/user/bind")
     public CommonResult bind(MppUserInfo user, HttpSession session){
-        MppUserInfo mppUserInfo = (MppUserInfo)session.getAttribute(Constants.WEB_SESSION_USER);
+        MppUserInfo mppUserInfo = (MppUserInfo)session.getAttribute(SeedConstants.WEB_SESSION_USER);
         mppUserInfo.setBindStatus(0);
         mppUserInfo.setAppid(user.getAppid());
         mppUserInfo.setAppsecret(user.getAppsecret());
@@ -115,7 +115,7 @@ public class MppController {
         mppUserInfo.setMpname(user.getMpname());
         mppUserInfo.setMchid(user.getMchid());
         mppUserInfo.setMchkey(user.getMchkey());
-        session.setAttribute(Constants.WEB_SESSION_USER, mppUserService.upsert(mppUserInfo));
+        session.setAttribute(SeedConstants.WEB_SESSION_USER, mppUserService.upsert(mppUserInfo));
         //更换绑定的公众号，也要同步更新微信或QQ公众平台的appid、appsecret、mchid
         if(1 == mppUserInfo.getMptype()){
             WeixinTokenHolder.setWeixinAppidAppsecret(mppUserInfo.getAppid(), mppUserInfo.getAppsecret());
@@ -136,10 +136,10 @@ public class MppController {
     @ResponseBody
     @PostMapping("/user/password/update")
     public CommonResult passwordUpdate(String oldPassword, String newPassword, HttpSession session){
-        MppUserInfo mppUserInfo = (MppUserInfo)session.getAttribute(Constants.WEB_SESSION_USER);
+        MppUserInfo mppUserInfo = (MppUserInfo)session.getAttribute(SeedConstants.WEB_SESSION_USER);
         MppUserInfo respMppUserInfo = mppUserService.passwordUpdate(mppUserInfo, oldPassword, newPassword);
         //修改成功后要刷新HttpSession中的用户信息
-        session.setAttribute(Constants.WEB_SESSION_USER, respMppUserInfo);
+        session.setAttribute(SeedConstants.WEB_SESSION_USER, respMppUserInfo);
         return new CommonResult();
     }
 
@@ -150,7 +150,7 @@ public class MppController {
     @ResponseBody
     @GetMapping("/menu/getjson")
     public CommonResult menuGetjson(HttpSession session){
-        long uid = ((MppUserInfo)session.getAttribute(Constants.WEB_SESSION_USER)).getId();
+        long uid = ((MppUserInfo)session.getAttribute(SeedConstants.WEB_SESSION_USER)).getId();
         return new CommonResult(mppMenuService.getMenuJson(uid));
     }
 
@@ -162,7 +162,7 @@ public class MppController {
     @ResponseBody
     @PostMapping("/menu/create")
     public CommonResult menuCreate(String menuJson, HttpSession session){
-        MppUserInfo mppUserInfo = (MppUserInfo)session.getAttribute(Constants.WEB_SESSION_USER);
+        MppUserInfo mppUserInfo = (MppUserInfo)session.getAttribute(SeedConstants.WEB_SESSION_USER);
         if(0 == mppUserInfo.getBindStatus()){
             return new CommonResult(CodeEnum.SYSTEM_ERROR.getCode(), "当前用户未绑定微信或QQ公众平台");
         }
@@ -189,7 +189,7 @@ public class MppController {
      */
     @RequestMapping("/reply/common/get")
     public String getCommon(HttpServletRequest request){
-        long uid = ((MppUserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId();
+        long uid = ((MppUserInfo)request.getSession().getAttribute(SeedConstants.WEB_SESSION_USER)).getId();
         request.setAttribute("replyInfo", mppReplyService.getByUidAndCategory(uid, 0));
         return "/admin/mpp/reply.common";
     }
@@ -200,7 +200,7 @@ public class MppController {
      */
     @RequestMapping("/reply/follow/get")
     public String getFollow(HttpServletRequest request){
-        long uid = ((MppUserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId();
+        long uid = ((MppUserInfo)request.getSession().getAttribute(SeedConstants.WEB_SESSION_USER)).getId();
         request.setAttribute("replyInfo", mppReplyService.getByUidAndCategory(uid, 1));
         return "/admin/mpp/reply.follow";
     }
@@ -212,7 +212,7 @@ public class MppController {
     @ResponseBody
     @PostMapping("/reply/follow/upsert")
     public CommonResult saveFollow(MppReplyInfo mppReplyInfo, HttpServletRequest request){
-        mppReplyInfo.setUid(((MppUserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId());
+        mppReplyInfo.setUid(((MppUserInfo)request.getSession().getAttribute(SeedConstants.WEB_SESSION_USER)).getId());
         return new CommonResult(mppReplyService.upsertFollow(mppReplyInfo));
     }
 
@@ -223,7 +223,7 @@ public class MppController {
      */
     @RequestMapping("/reply/keyword/list")
     public String listViaPage(String pageNo, HttpServletRequest request){
-        final long uid = ((MppUserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId();
+        final long uid = ((MppUserInfo)request.getSession().getAttribute(SeedConstants.WEB_SESSION_USER)).getId();
         request.setAttribute("page", mppReplyService.listViaPage(uid, pageNo));
         return "/admin/mpp/reply.keyword.list";
     }
@@ -256,7 +256,7 @@ public class MppController {
     @ResponseBody
     @RequestMapping("/reply/keyword/upsert")
     public CommonResult upsertKeyword(MppReplyInfo mppReplyInfo, HttpServletRequest request){
-        mppReplyInfo.setUid(((MppUserInfo)request.getSession().getAttribute(Constants.WEB_SESSION_USER)).getId());
+        mppReplyInfo.setUid(((MppUserInfo)request.getSession().getAttribute(SeedConstants.WEB_SESSION_USER)).getId());
         return new CommonResult(mppReplyService.upsertKeyword(mppReplyInfo));
     }
 }

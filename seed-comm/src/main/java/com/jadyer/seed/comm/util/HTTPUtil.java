@@ -1,6 +1,7 @@
 package com.jadyer.seed.comm.util;
 
 import com.jadyer.seed.comm.constant.CodeEnum;
+import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.exception.SeedException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -176,8 +177,6 @@ import java.util.Map;
  */
 @SuppressWarnings("deprecation")
 public final class HTTPUtil {
-    public static final String DEFAULT_CHARSET = "UTF-8";           //设置默认通信报文编码为UTF-8
-    public static final String CHARSET_ISO_8859_1 = "ISO-8859-1";   //设置默认通信报文编码为UTF-8
     private static final int DEFAULT_CONNECTION_TIMEOUT = 1000 * 2; //设置默认连接超时为2s
     private static final int DEFAULT_SO_TIMEOUT = 1000 * 60;        //设置默认读取超时为60s
 
@@ -190,7 +189,7 @@ public final class HTTPUtil {
      * @see 2)方法内设置了连接和读取超时(时间由本工具类全局变量限定),超时或发生其它异常将抛出RuntimeException
      * @see 3)请求参数含中文时,经测试可直接传入中文,HttpClient会自动编码发给Server,应用时应根据实际效果决定传入前是否转码
      * @see 4)该方法会自动获取到响应消息头中[Content-Type:text/html; charset=GBK]的charset值作为响应报文的解码字符集
-     * @see   若响应头中无Content-Type或charset属性，则会使用DEFAULT_CHARSET作为响应报文的解码字符集，否则以charset的值为准
+     * @see   若响应头中无Content-Type或charset属性，则会使用SeedConstants.DEFAULT_CHARSET作为响应报文的解码字符集，否则以charset的值为准
      * @param requestURL 请求地址(含参数)
      * @return 远程主机响应正文
      */
@@ -211,9 +210,9 @@ public final class HTTPUtil {
                 String decodeCharset;
                 ContentType respContentType = ContentType.get(entity);
                 if(null == respContentType){
-                    decodeCharset = DEFAULT_CHARSET;
+                    decodeCharset = SeedConstants.DEFAULT_CHARSET;
                 }else if(null == respContentType.getCharset()){
-                    decodeCharset = DEFAULT_CHARSET;
+                    decodeCharset = SeedConstants.DEFAULT_CHARSET;
                 }else{
                     decodeCharset = respContentType.getCharset().displayName();
                 }
@@ -259,9 +258,9 @@ public final class HTTPUtil {
      * @see 1)该方法允许自定义任何格式和内容的HTTP请求报文体
      * @see 2)该方法会自动关闭连接,释放资源
      * @see 3)方法内设置了连接和读取超时(时间由本工具类全局变量限定),超时或发生其它异常将抛出RuntimeException
-     * @see 4)请求参数含中文等特殊字符时,可直接传入本方法,方法内部会使用本工具类设置的全局DEFAULT_CHARSET对其转码
+     * @see 4)请求参数含中文等特殊字符时,可直接传入本方法,方法内部会使用本工具类设置的全局SeedConstants.DEFAULT_CHARSET对其转码
      * @see 5)该方法在解码响应报文时所采用的编码,取自响应消息头中的[Content-Type:text/html; charset=GBK]的charset值
-     * @see   若响应头中无Content-Type或charset属性，则会使用DEFAULT_CHARSET作为响应报文的解码字符集，否则以charset的值为准
+     * @see   若响应头中无Content-Type或charset属性，则会使用SeedConstants.DEFAULT_CHARSET作为响应报文的解码字符集，否则以charset的值为准
      * @param reqURL      请求地址
      * @param reqData     请求报文，无参数时传null即可，多个参数则应拼接为param11=value11&22=value22&33=value33的形式
      * @param contentType 设置请求头的contentType，传空则默认使用application/x-www-form-urlencoded; charset=UTF-8
@@ -279,11 +278,11 @@ public final class HTTPUtil {
         //由于下面使用的是new StringEntity(....),所以默认发出去的请求报文头中CONTENT_TYPE值为text/plain; charset=ISO-8859-1
         //这就有可能会导致服务端接收不到POST过去的参数,比如运行在Tomcat6.0.36中的Servlet,所以我们手工指定CONTENT_TYPE头消息
         if(StringUtils.isBlank(contentType)){
-            httpPost.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded; charset=" + DEFAULT_CHARSET);
+            httpPost.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded; charset=" + SeedConstants.DEFAULT_CHARSET);
         }else{
             httpPost.setHeader(HTTP.CONTENT_TYPE, contentType);
         }
-        httpPost.setEntity(new StringEntity(null==reqData?"":reqData, DEFAULT_CHARSET));
+        httpPost.setEntity(new StringEntity(null==reqData?"":reqData, SeedConstants.DEFAULT_CHARSET));
         try{
             httpClient = addTLSSupport(httpClient, filepath, password);
             HttpResponse response = httpClient.execute(httpPost);
@@ -292,9 +291,9 @@ public final class HTTPUtil {
                 String decodeCharset;
                 ContentType respContentType = ContentType.get(entity);
                 if(null == respContentType){
-                    decodeCharset = DEFAULT_CHARSET;
+                    decodeCharset = SeedConstants.DEFAULT_CHARSET;
                 }else if(null == respContentType.getCharset()){
-                    decodeCharset = DEFAULT_CHARSET;
+                    decodeCharset = SeedConstants.DEFAULT_CHARSET;
                 }else{
                     decodeCharset = respContentType.getCharset().displayName();
                 }
@@ -319,9 +318,9 @@ public final class HTTPUtil {
      * @see 1)该方法允许自定义任何格式和内容的HTTP请求报文体
      * @see 2)该方法会自动关闭连接,释放资源
      * @see 3)方法内设置了连接和读取超时(时间由本工具类全局变量限定),超时或发生其它异常将抛出RuntimeException
-     * @see 4)请求参数含中文等特殊字符时,可直接传入本方法,方法内部会使用本工具类设置的全局DEFAULT_CHARSET对其转码
+     * @see 4)请求参数含中文等特殊字符时,可直接传入本方法,方法内部会使用本工具类设置的全局SeedConstants.DEFAULT_CHARSET对其转码
      * @see 5)该方法在解码响应报文时所采用的编码,取自响应消息头中的[Content-Type:text/html; charset=GBK]的charset值
-     * @see   若响应头中无Content-Type或charset属性，则会使用DEFAULT_CHARSET作为响应报文的解码字符集，否则以charset的值为准
+     * @see   若响应头中无Content-Type或charset属性，则会使用SeedConstants.DEFAULT_CHARSET作为响应报文的解码字符集，否则以charset的值为准
      * @param reqURL      请求地址
      * @param reqData     请求报文，无参数时传null即可，多个参数则应拼接为param11=value11&22=value22&33=value33的形式
      * @param contentType 设置请求头的contentType，传空则默认使用application/x-www-form-urlencoded; charset=UTF-8
@@ -360,11 +359,11 @@ public final class HTTPUtil {
         //由于下面使用的是new StringEntity(....),所以默认发出去的请求报文头中CONTENT_TYPE值为text/plain; charset=ISO-8859-1
         //这就有可能会导致服务端接收不到POST过去的参数,比如运行在Tomcat6.0.36中的Servlet,所以我们手工指定CONTENT_TYPE头消息
         if(StringUtils.isBlank(contentType)){
-            httpPost.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded; charset=" + DEFAULT_CHARSET);
+            httpPost.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded; charset=" + SeedConstants.DEFAULT_CHARSET);
         }else{
             httpPost.setHeader(HTTP.CONTENT_TYPE, contentType);
         }
-        httpPost.setEntity(new StringEntity(null==reqData?"":reqData, DEFAULT_CHARSET));
+        httpPost.setEntity(new StringEntity(null==reqData?"":reqData, SeedConstants.DEFAULT_CHARSET));
         try{
             httpClient = addTLSSupport(httpClient);
             HttpResponse response = httpClient.execute(httpPost);
@@ -373,9 +372,9 @@ public final class HTTPUtil {
                 String decodeCharset;
                 ContentType respContentType = ContentType.get(entity);
                 if(null == respContentType){
-                    decodeCharset = DEFAULT_CHARSET;
+                    decodeCharset = SeedConstants.DEFAULT_CHARSET;
                 }else if(null == respContentType.getCharset()){
-                    decodeCharset = DEFAULT_CHARSET;
+                    decodeCharset = SeedConstants.DEFAULT_CHARSET;
                 }else{
                     decodeCharset = respContentType.getCharset().displayName();
                 }
@@ -401,9 +400,9 @@ public final class HTTPUtil {
      * @see 2)该方法会自动关闭连接,释放资源
      * @see 3)方法内自动注册443作为HTTPS端口,即处理HTTPS请求时,默认请求对方443端口
      * @see 4)方法内设置了连接和读取超时(时间由本工具类全局变量限定),超时或发生其它异常将抛出RuntimeException
-     * @see 5)请求参数含中文等特殊字符时,可直接传入本方法,方法内部会使用本工具类设置的全局DEFAULT_CHARSET对其转码
+     * @see 5)请求参数含中文等特殊字符时,可直接传入本方法,方法内部会使用本工具类设置的全局SeedConstants.DEFAULT_CHARSET对其转码
      * @see 6)该方法在解码响应报文时所采用的编码,取自响应消息头中的[Content-Type:text/html; charset=GBK]的charset值
-     * @see   若响应头中无Content-Type或charset属性，则会使用DEFAULT_CHARSET作为响应报文的解码字符集，否则以charset的值为准
+     * @see   若响应头中无Content-Type或charset属性，则会使用SeedConstants.DEFAULT_CHARSET作为响应报文的解码字符集，否则以charset的值为准
      * @param reqURL 请求地址
      * @param params 请求参数,无参数时传null即可
      * @return 远程主机响应正文
@@ -424,7 +423,7 @@ public final class HTTPUtil {
                 for(Map.Entry<String,String> entry : params.entrySet()){
                     formParams.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
                 }
-                httpPost.setEntity(new UrlEncodedFormEntity(formParams, DEFAULT_CHARSET));
+                httpPost.setEntity(new UrlEncodedFormEntity(formParams, SeedConstants.DEFAULT_CHARSET));
             }
             httpClient = addTLSSupport(httpClient);
             HttpResponse response = httpClient.execute(httpPost);
@@ -433,9 +432,9 @@ public final class HTTPUtil {
                 String decodeCharset;
                 ContentType respContentType = ContentType.get(entity);
                 if(null == respContentType){
-                    decodeCharset = DEFAULT_CHARSET;
+                    decodeCharset = SeedConstants.DEFAULT_CHARSET;
                 }else if(null == respContentType.getCharset()){
-                    decodeCharset = DEFAULT_CHARSET;
+                    decodeCharset = SeedConstants.DEFAULT_CHARSET;
                 }else{
                     decodeCharset = respContentType.getCharset().displayName();
                 }
@@ -460,9 +459,9 @@ public final class HTTPUtil {
      * @see 1)该方法用来上传文件
      * @see 2)该方法会自动关闭连接,释放资源
      * @see 3)方法内设置了连接和读取超时(时间由本工具类全局变量限定),超时或发生其它异常将抛出RuntimeException
-     * @see 4)请求参数含中文等特殊字符时,可直接传入本方法,方法内部会使用本工具类设置的全局DEFAULT_CHARSET对其转码
+     * @see 4)请求参数含中文等特殊字符时,可直接传入本方法,方法内部会使用本工具类设置的全局SeedConstants.DEFAULT_CHARSET对其转码
      * @see 5)该方法在解码响应报文时所采用的编码,取自响应消息头中的[Content-Type:text/html; charset=GBK]的charset值
-     * @see   若响应头中无Content-Type或charset属性，则会使用DEFAULT_CHARSET作为响应报文的解码字符集，否则以charset的值为准
+     * @see   若响应头中无Content-Type或charset属性，则会使用SeedConstants.DEFAULT_CHARSET作为响应报文的解码字符集，否则以charset的值为准
      * @param reqURL       请求地址
      * @param filename     待上传的文件名
      * @param is           待上传的文件流
@@ -478,14 +477,14 @@ public final class HTTPUtil {
         httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, DEFAULT_SO_TIMEOUT);
         HttpPost httpPost = new HttpPost(reqURL);
         //Charset用来保证文件域中文名不乱码,非文件域中文不乱码的话还要像下面StringBody中再设置一次Charset
-        MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE, null, Charset.forName(DEFAULT_CHARSET));
+        MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE, null, Charset.forName(SeedConstants.DEFAULT_CHARSET));
         File tmpFile = new File(filename);
         try{
             FileUtils.copyInputStreamToFile(is, tmpFile);
             reqEntity.addPart(fileBodyName, new FileBody(tmpFile));
             if(null != params){
                 for(Map.Entry<String,String> entry : params.entrySet()){
-                    reqEntity.addPart(entry.getKey(), new StringBody(entry.getValue(), Charset.forName(DEFAULT_CHARSET)));
+                    reqEntity.addPart(entry.getKey(), new StringBody(entry.getValue(), Charset.forName(SeedConstants.DEFAULT_CHARSET)));
                 }
             }
             httpPost.setEntity(reqEntity);
@@ -496,9 +495,9 @@ public final class HTTPUtil {
                 String decodeCharset;
                 ContentType respContentType = ContentType.get(entity);
                 if(null == respContentType){
-                    decodeCharset = DEFAULT_CHARSET;
+                    decodeCharset = SeedConstants.DEFAULT_CHARSET;
                 }else if(null == respContentType.getCharset()){
-                    decodeCharset = DEFAULT_CHARSET;
+                    decodeCharset = SeedConstants.DEFAULT_CHARSET;
                 }else{
                     decodeCharset = respContentType.getCharset().displayName();
                 }
@@ -524,9 +523,9 @@ public final class HTTPUtil {
      * @see 1)该方法用来下载文件
      * @see 2)该方法会自动关闭连接，释放资源
      * @see 3)方法内设置了连接和读取超时（时间由本工具类全局变量限定），超时或发生其它异常将抛出RuntimeException
-     * @see 4)请求参数含中文等特殊字符时，可直接传入本方法，方法内部会使用本工具类设置的全局DEFAULT_CHARSET对其转码
+     * @see 4)请求参数含中文等特殊字符时，可直接传入本方法，方法内部会使用本工具类设置的全局SeedConstants.DEFAULT_CHARSET对其转码
      * @see 5)该方法在解码响应报文时所采用的编码,取自响应消息头中的[Content-Type:text/html; charset=GBK]的charset值
-     * @see   若响应头中无Content-Type或charset属性，则会使用DEFAULT_CHARSET作为响应报文的解码字符集，否则以charset的值为准
+     * @see   若响应头中无Content-Type或charset属性，则会使用SeedConstants.DEFAULT_CHARSET作为响应报文的解码字符集，否则以charset的值为准
      * @see 6)下载的文件会保存在java.io.tmpdir环境变量指定的目录中
      * @see   CentOS6.5下是/tmp，CentOS6.5下的Tomcat中是/app/tomcat/temp，Win7下是C:\Users\Jadyer\AppData\Local\Temp\
      * @see 7)下载的文件若比较大，可能导致程序假死或内存溢出，此时可考虑在本方法内部直接输出流
@@ -551,7 +550,7 @@ public final class HTTPUtil {
                 for(Map.Entry<String,String> entry : params.entrySet()){
                     formParams.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
                 }
-                httpPost.setEntity(new UrlEncodedFormEntity(formParams, DEFAULT_CHARSET));
+                httpPost.setEntity(new UrlEncodedFormEntity(formParams, SeedConstants.DEFAULT_CHARSET));
             }
             httpClient = addTLSSupport(httpClient);
             HttpResponse response = httpClient.execute(httpPost);
@@ -561,9 +560,9 @@ public final class HTTPUtil {
                 String decodeCharset;
                 ContentType respContentType = ContentType.get(entity);
                 if(null == respContentType){
-                    decodeCharset = DEFAULT_CHARSET;
+                    decodeCharset = SeedConstants.DEFAULT_CHARSET;
                 }else if(null == respContentType.getCharset()){
-                    decodeCharset = DEFAULT_CHARSET;
+                    decodeCharset = SeedConstants.DEFAULT_CHARSET;
                 }else{
                     decodeCharset = respContentType.getCharset().displayName();
                 }
@@ -623,9 +622,9 @@ public final class HTTPUtil {
      * 发送HTTP_POST请求
      * @see 1)本方法是通过<code>java.net.HttpURLConnection</code>实现HTTP_POST请求的发送的
      * @see 2)方法内设置了连接和读取超时(时间由本工具类全局变量限定)
-     * @see 3)请求参数含中文等特殊字符时,可直接传入本方法,方法内部会使用本工具类设置的全局DEFAULT_CHARSET对其转码
+     * @see 3)请求参数含中文等特殊字符时,可直接传入本方法,方法内部会使用本工具类设置的全局SeedConstants.DEFAULT_CHARSET对其转码
      * @see 4)解码响应正文时,默认取响应头[Content-Type=text/html; charset=GBK]字符集
-     * @see   若无Content-Type,则使用本工具类设置的全局DEFAULT_CHARSET解码
+     * @see   若无Content-Type,则使用本工具类设置的全局SeedConstants.DEFAULT_CHARSET解码
      * @see 5)本方法的美中不足是:服务器返回500时,它会直接抛出类似下面的异常
      * @see   java.io.IOException: Server returned HTTP response code: 500 for URL: http://xxxx/xxxx
      * @see   原因是这里用到了SUN提供的基于HTTP协议的框架实现
@@ -639,7 +638,7 @@ public final class HTTPUtil {
         OutputStream out = null; //写
         InputStream in = null;   //读
         String respData;         //HTTP响应报文体
-        String respCharset = DEFAULT_CHARSET;
+        String respCharset = SeedConstants.DEFAULT_CHARSET;
         try{
             URL sendUrl = new URL(reqURL);
             httpURLConnection = (HttpURLConnection)sendUrl.openConnection();
@@ -651,7 +650,7 @@ public final class HTTPUtil {
             httpURLConnection.setRequestMethod("POST");
 
             out = httpURLConnection.getOutputStream();
-            out.write(URLEncoder.encode(reqData, DEFAULT_CHARSET).getBytes());
+            out.write(URLEncoder.encode(reqData, SeedConstants.DEFAULT_CHARSET).getBytes());
             out.flush(); //发送数据
 
             /*
@@ -774,9 +773,9 @@ public final class HTTPUtil {
      * 1)本方法是通过<code>java.net.Socket.Socket</code>实现HTTP_POST请求的发送的
      * 2)方法内设置了连接和读取超时（时间由本工具类全局变量限定）
      * 3)请求参数含中文等特殊字符时，无需<code>URLEncoder.encode(value, reqCharset)</code>可直接传入本方法
-     *   方法内部会使用本工具类设置的全局DEFAULT_CHARSET对其自动encode
+     *   方法内部会使用本工具类设置的全局SeedConstants.DEFAULT_CHARSET对其自动encode
      * 4)解码响应正文时，默认取响应头[Content-Type=text/html; charset=GBK]字符集
-     *   若无Content-Type，则使用本工具类设置的全局DEFAULT_CHARSET解码
+     *   若无Content-Type，则使用本工具类设置的全局SeedConstants.DEFAULT_CHARSET解码
      * 5)该方法的请求和应答报文分别如下
      *   -----------------------------------------------------------------------------------------------
      *   POST /tra/trade/noCardNoPassword.htm HTTP/1.1
@@ -831,7 +830,7 @@ public final class HTTPUtil {
         OutputStream out;     //写
         InputStream in;       //读
         Socket socket = null; //客户机
-        String respCharset = DEFAULT_CHARSET;
+        String respCharset = SeedConstants.DEFAULT_CHARSET;
         String respMsgHex = "";
         String respFullData;
         StringBuilder reqFullData = new StringBuilder();
@@ -913,7 +912,7 @@ public final class HTTPUtil {
             /*
              * 构造HTTP请求报文
              */
-            reqData = URLEncoder.encode(reqData, DEFAULT_CHARSET);
+            reqData = URLEncoder.encode(reqData, SeedConstants.DEFAULT_CHARSET);
             reqFullData.append("POST ").append(sendURL.getPath()).append(" HTTP/1.1\r\n");
             reqFullData.append("Cache-Control: no-cache\r\n");
             reqFullData.append("Pragma: no-cache\r\n");
@@ -921,7 +920,7 @@ public final class HTTPUtil {
             reqFullData.append("Host: ").append(sendURL.getHost()).append("\r\n");
             reqFullData.append("Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2\r\n");
             reqFullData.append("Connection: keep-alive\r\n");
-            reqFullData.append("Content-Type: application/x-www-form-urlencoded; charset=").append(DEFAULT_CHARSET).append("\r\n");
+            reqFullData.append("Content-Type: application/x-www-form-urlencoded; charset=").append(SeedConstants.DEFAULT_CHARSET).append("\r\n");
             reqFullData.append("Content-Length: ").append(reqData.getBytes().length).append("\r\n");
             reqFullData.append("\r\n");
             reqFullData.append(reqData);
@@ -1010,7 +1009,7 @@ public final class HTTPUtil {
      * 发送TCP请求
      * <p>
      *     1、方法内设置了连接和读取超时（时间由本工具类全局变量限定）
-     *     2、转码（编码为byte[]发送到Server）与解码请求响应字节时，均采用本工具类设置的全局DEFAULT_CHARSET
+     *     2、转码（编码为byte[]发送到Server）与解码请求响应字节时，均采用本工具类设置的全局SeedConstants.DEFAULT_CHARSET
      *     3、关于Socket属性的详细注释，you can see {@link #postBySocket(String, String)}
      * </p>
      * @param IP      远程主机地址
@@ -1038,7 +1037,7 @@ public final class HTTPUtil {
             localBindPort = String.valueOf(socket.getLocalPort());
             //发送TCP请求
             out = socket.getOutputStream();
-            out.write(reqData.getBytes(DEFAULT_CHARSET));
+            out.write(reqData.getBytes(SeedConstants.DEFAULT_CHARSET));
             //接收TCP响应
             in = socket.getInputStream();
             ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
@@ -1049,7 +1048,7 @@ public final class HTTPUtil {
             }
             bytesOut.flush();
             //解码TCP响应的完整报文
-            respData = bytesOut.toString(DEFAULT_CHARSET);
+            respData = bytesOut.toString(SeedConstants.DEFAULT_CHARSET);
             respDataHex = JadyerUtil.buildHexStringWithASCII(bytesOut.toByteArray());
             ///*
             // * 校验响应报文是否已全部接收

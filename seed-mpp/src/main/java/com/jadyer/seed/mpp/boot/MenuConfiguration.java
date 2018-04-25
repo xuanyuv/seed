@@ -1,6 +1,6 @@
 package com.jadyer.seed.mpp.boot;
 
-import com.jadyer.seed.comm.constant.Constants;
+import com.jadyer.seed.comm.constant.SeedConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,13 +30,13 @@ public class MenuConfiguration {
     private static class MenuFilter extends OncePerRequestFilter {
         @Override
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-            String currentSubMenu = request.getParameter(Constants.WEB_CURRENT_SUB_MENU);
+            String currentSubMenu = request.getParameter(SeedConstants.WEB_CURRENT_SUB_MENU);
             if(StringUtils.isNotBlank(currentSubMenu)){
-                request.setAttribute(Constants.WEB_CURRENT_MENU, currentSubMenu.substring(0, currentSubMenu.length()-3));
-                request.setAttribute(Constants.WEB_CURRENT_SUB_MENU, currentSubMenu);
+                request.setAttribute(SeedConstants.WEB_CURRENT_MENU, currentSubMenu.substring(0, currentSubMenu.length()-3));
+                request.setAttribute(SeedConstants.WEB_CURRENT_SUB_MENU, currentSubMenu);
             }else{
-                request.setAttribute(Constants.WEB_CURRENT_MENU, "menu_sys");
-                request.setAttribute(Constants.WEB_CURRENT_SUB_MENU, "menu_sys_01");
+                request.setAttribute(SeedConstants.WEB_CURRENT_MENU, "menu_sys");
+                request.setAttribute(SeedConstants.WEB_CURRENT_SUB_MENU, "menu_sys_01");
             }
             filterChain.doFilter(request, response);
         }

@@ -44,6 +44,7 @@
 
 package com.jadyer.seed.comm.util;
 
+import com.jadyer.seed.comm.constant.SeedConstants;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
@@ -495,7 +496,7 @@ public final class JadyerUtil {
             return "";
         }
         try {
-            input = URLDecoder.decode(input, HTTPUtil.DEFAULT_CHARSET);
+            input = URLDecoder.decode(input, SeedConstants.DEFAULT_CHARSET);
         } catch (UnsupportedEncodingException e) {
             //ingore
         }

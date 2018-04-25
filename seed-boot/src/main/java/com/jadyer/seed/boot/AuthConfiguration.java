@@ -1,6 +1,6 @@
 package com.jadyer.seed.boot;
 
-import com.jadyer.seed.comm.constant.Constants;
+import com.jadyer.seed.comm.constant.SeedConstants;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -98,7 +98,7 @@ public class AuthConfiguration {
                 }
             }
             //处理权限访问
-            if(disallowAnonymousVisit && null==request.getSession().getAttribute(Constants.WEB_SESSION_USER)){
+            if(disallowAnonymousVisit && null==request.getSession().getAttribute(SeedConstants.WEB_SESSION_USER)){
                 response.sendRedirect(request.getContextPath() + this.unauthUrl);
             }else{
                 filterChain.doFilter(request, response);

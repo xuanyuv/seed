@@ -1,6 +1,6 @@
 package com.jadyer.seed.mpp.sdk.weixin.controller;
 
-import com.jadyer.seed.comm.constant.Constants;
+import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.RequestUtil;
 import com.jadyer.seed.mpp.sdk.weixin.msg.WeixinInMsgParser;
@@ -36,7 +36,7 @@ import java.util.Arrays;
 public abstract class WeixinMsgController {
     @RequestMapping(value="/{uuid}")
     public void index(@PathVariable String uuid, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setCharacterEncoding(Constants.MPP_CHARSET_UTF8);
+        response.setCharacterEncoding(SeedConstants.DEFAULT_CHARSET);
         PrintWriter out = response.getWriter();
         String reqBodyMsg = RequestUtil.extractHttpServletRequestBodyMessage(request);
         LogUtil.getLogger().info("收到微信服务器消息如下\n{}", RequestUtil.extractHttpServletRequestHeaderMessage(request)+"\n"+reqBodyMsg);

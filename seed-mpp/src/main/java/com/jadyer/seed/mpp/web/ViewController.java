@@ -2,7 +2,7 @@ package com.jadyer.seed.mpp.web;
 
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
-import com.jadyer.seed.comm.constant.Constants;
+import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.RequestUtil;
 import com.jadyer.seed.mpp.web.model.MppUserInfo;
 import com.jadyer.seed.mpp.web.service.MppUserService;
@@ -43,15 +43,15 @@ public class ViewController {
         if(null == mppUserInfo){
             return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "无效的用户名或密码");
         }
-        session.setAttribute(Constants.WEB_SESSION_USER, mppUserInfo);
-        session.setAttribute(Constants.WEB_CURRENT_MENU, "menu_mpp");
+        session.setAttribute(SeedConstants.WEB_SESSION_USER, mppUserInfo);
+        session.setAttribute(SeedConstants.WEB_CURRENT_MENU, "menu_mpp");
         return new CommonResult();
     }
 
 
     @GetMapping("/logout")
     String logout(HttpSession session){
-        session.removeAttribute(Constants.WEB_SESSION_USER);
+        session.removeAttribute(SeedConstants.WEB_SESSION_USER);
         return InternalResourceViewResolver.REDIRECT_URL_PREFIX;
     }
 

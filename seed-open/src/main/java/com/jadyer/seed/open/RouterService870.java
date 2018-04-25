@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
-import com.jadyer.seed.comm.constant.Constants;
+import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.ValidatorUtil;
 import com.jadyer.seed.open.core.OpenMethod;
 import com.jadyer.seed.open.model.LoanSubmit;
@@ -20,7 +20,7 @@ public class RouterService870 extends RouterService100 {
     /**
      * 申请单提交接口
      */
-    @OpenMethod(Constants.OPEN_METHOD_boot_loan_submit)
+    @OpenMethod(SeedConstants.OPEN_METHOD_boot_loan_submit)
     public CommonResult loanSubmit(ReqData reqData) {
         Map<String, String> validatorMap;
         LoanSubmit loanSubmit = JSON.parseObject(reqData.getData(), LoanSubmit.class);
@@ -42,7 +42,7 @@ public class RouterService870 extends RouterService100 {
     /**
      * 开放平台接口文档
      */
-    @OpenMethod(Constants.OPEN_METHOD_boot_apidoc_h5)
+    @OpenMethod(SeedConstants.OPEN_METHOD_boot_apidoc_h5)
     public String apidocH5(ReqData reqData) {
         Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
         String method = reqMap.get("method");

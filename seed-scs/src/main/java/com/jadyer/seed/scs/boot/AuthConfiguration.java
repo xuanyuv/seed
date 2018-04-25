@@ -1,6 +1,6 @@
 package com.jadyer.seed.scs.boot;
 
-import com.jadyer.seed.comm.constant.Constants;
+import com.jadyer.seed.comm.constant.SeedConstants;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -68,7 +68,7 @@ public class AuthConfiguration {
                     break;
                 }
             }
-            if(disallowAnonymousVisit && null==request.getSession().getAttribute(Constants.WEB_SESSION_USER)){
+            if(disallowAnonymousVisit && null==request.getSession().getAttribute(SeedConstants.WEB_SESSION_USER)){
                 response.sendRedirect(request.getContextPath() + this.unauthUrl);
             }else{
                 filterChain.doFilter(request, response);

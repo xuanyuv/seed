@@ -1,7 +1,7 @@
 package com.jadyer.seed.open.boot;
 
 import com.jadyer.seed.comm.constant.CodeEnum;
-import com.jadyer.seed.comm.constant.Constants;
+import com.jadyer.seed.comm.constant.SeedConstants;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -58,7 +58,7 @@ public class RedisFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //计算请求唯一性的标记
         String redisKey = null;
-        if(Constants.OPEN_VERSION_21.equals(request.getParameter("version")) || Constants.OPEN_VERSION_22.equals(request.getParameter("version"))){
+        if(SeedConstants.OPEN_VERSION_21.equals(request.getParameter("version")) || SeedConstants.OPEN_VERSION_22.equals(request.getParameter("version"))){
             redisKey = "open-" + request.getParameter("appid") + "-" + DigestUtils.md5Hex(request.getParameter("data"));
         }
         Long initResult = jedisCluster.hsetnx(redisKey, REDIS_DATA_KEY, REDIS_DATA_CONTENT);
@@ -72,7 +72,7 @@ public class RedisFilter extends OncePerRequestFilter {
             hash.put(REDIS_DATA_KEY, content);
             jedisCluster.hmset(redisKey, hash);
             jedisCluster.expire(redisKey, EXPIRE_TIME_SECONDS);
-            response.getOutputStream().write(content.getBytes(Constants.OPEN_CHARSET_UTF8));
+            response.getOutputStream().write(content.getBytes(SeedConstants.DEFAULT_CHARSET));
             return;
         }
         //返回0表示非首次请求，此时会计算应答哪些内容
@@ -82,7 +82,7 @@ public class RedisFilter extends OncePerRequestFilter {
             response.getWriter().write(values.get(REDIS_DATA_KEY));
         }else{
             response.setHeader("Content-Type", RESP_CONTENT_TYPE);
-            response.getOutputStream().write(("{\"code\":\"" + CodeEnum.SYSTEM_BUSY.getCode() + "\", \"msg\":\"处理中，请勿重复提交\"}").getBytes(Constants.OPEN_CHARSET_UTF8));
+            response.getOutputStream().write(("{\"code\":\"" + CodeEnum.SYSTEM_BUSY.getCode() + "\", \"msg\":\"处理中，请勿重复提交\"}").getBytes(SeedConstants.DEFAULT_CHARSET));
         }
     }
 
@@ -113,7 +113,7 @@ public class RedisFilter extends OncePerRequestFilter {
         String getContent() {
             try {
                 writer.flush();
-                return writer.getByteArrayOutputStream().toString(Constants.OPEN_CHARSET_UTF8);
+                return writer.getByteArrayOutputStream().toString(SeedConstants.DEFAULT_CHARSET);
             } catch (UnsupportedEncodingException e) {
                 return "UnsupportedEncoding";
             }

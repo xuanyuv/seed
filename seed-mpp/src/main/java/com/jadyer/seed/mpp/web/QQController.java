@@ -1,6 +1,6 @@
 package com.jadyer.seed.mpp.web;
 
-import com.jadyer.seed.comm.constant.Constants;
+import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.mpp.sdk.qq.constant.QQConstants;
 import com.jadyer.seed.mpp.sdk.qq.controller.QQMsgController;
@@ -51,11 +51,11 @@ public class QQController extends QQMsgController {
             return new QQOutTextMsg(inTextMsg).setContent("该公众号未绑定");
         }
         //没绑定就提示绑定
-        if(0== mppUserInfo.getBindStatus() && !Constants.MPP_BIND_TEXT.equals(inTextMsg.getContent())){
-            return new QQOutTextMsg(inTextMsg).setContent("账户未绑定\r请发送\"" + Constants.MPP_BIND_TEXT + "\"绑定");
+        if(0== mppUserInfo.getBindStatus() && !SeedConstants.MPP_BIND_TEXT.equals(inTextMsg.getContent())){
+            return new QQOutTextMsg(inTextMsg).setContent("账户未绑定\r请发送\"" + SeedConstants.MPP_BIND_TEXT + "\"绑定");
         }
         //绑定
-        if(0== mppUserInfo.getBindStatus() && Constants.MPP_BIND_TEXT.equals(inTextMsg.getContent())){
+        if(0== mppUserInfo.getBindStatus() && SeedConstants.MPP_BIND_TEXT.equals(inTextMsg.getContent())){
             mppUserInfo.setBindStatus(1);
             mppUserInfo.setBindTime(new Date());
             mppUserService.upsert(mppUserInfo);

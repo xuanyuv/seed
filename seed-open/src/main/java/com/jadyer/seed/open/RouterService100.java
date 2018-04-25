@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommonResult;
-import com.jadyer.seed.comm.constant.Constants;
+import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
@@ -43,7 +43,7 @@ public class RouterService100 {
     /**
      * 文件上传接口
      */
-    @OpenMethod(Constants.OPEN_METHOD_boot_file_upload)
+    @OpenMethod(SeedConstants.OPEN_METHOD_boot_file_upload)
     public CommonResult fileupload(ReqData reqData, HttpServletRequest request) {
         Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
         String partnerApplyNo = reqMap.get("partnerApplyNo");
@@ -88,7 +88,7 @@ public class RouterService100 {
     /**
      * 申请单查询接口
      */
-    @OpenMethod(methodName=Constants.OPEN_METHOD_boot_loan_get)
+    @OpenMethod(methodName=SeedConstants.OPEN_METHOD_boot_loan_get)
     public CommonResult loanGet(ReqData reqData) {
         Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
         String applyNo = reqMap.get("applyNo");
@@ -116,7 +116,7 @@ public class RouterService100 {
     /**
      * 申请单协议接口
      */
-    @OpenMethod(Constants.OPEN_METHOD_boot_loan_agree)
+    @OpenMethod(SeedConstants.OPEN_METHOD_boot_loan_agree)
     public Object loanAgree(ReqData reqData, HttpServletResponse response) {
         Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
         String type = reqMap.get("type");
@@ -127,8 +127,8 @@ public class RouterService100 {
         if(!"1".equals(type) && !"2".equals(type) && !"3".equals(type)){
             return new CommonResult(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "type shoule be 1 or 2 or 3");
         }
-        response.setCharacterEncoding(Constants.OPEN_CHARSET_UTF8);
-        response.setContentType("text/plain; charset=" + Constants.OPEN_CHARSET_UTF8);
+        response.setCharacterEncoding(SeedConstants.DEFAULT_CHARSET);
+        response.setContentType("text/plain; charset=" + SeedConstants.DEFAULT_CHARSET);
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
@@ -138,7 +138,7 @@ public class RouterService100 {
         } catch (IOException e) {
             throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "返回字符串时出错-->"+e.getMessage(), e);
         }
-        out.write("<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><title>个人循环信用额度贷款合同</title></head><body><b style=\"line-height:1.5;\">这是个人循环信用额度贷款合同的正文</b></body></html>");
+        out.write("<!DOCTYPE html><html><head><meta charset=\"" + SeedConstants.DEFAULT_CHARSET + "\"><title>个人循环信用额度贷款合同</title></head><body><b style=\"line-height:1.5;\">这是个人循环信用额度贷款合同的正文</b></body></html>");
         out.flush();
         out.close();
         return null;
@@ -148,7 +148,7 @@ public class RouterService100 {
     /**
      * 申请单报表下载
      */
-    @OpenMethod(methodName=Constants.OPEN_METHOD_boot_loan_report_download)
+    @OpenMethod(methodName=SeedConstants.OPEN_METHOD_boot_loan_report_download)
     public Object loanReportDownload(ReqData reqData, HttpServletResponse response) {
         Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
         String reportType = reqMap.get("reportType");
@@ -156,11 +156,11 @@ public class RouterService100 {
         if(!"1".equals(reportType)){
             return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "暂时只能下载昨天放款成功的报表文件");
         }
-        if(!"0".equals(reportSignType) && !Constants.OPEN_SIGN_TYPE_md5.equals(reportSignType) && !Constants.OPEN_SIGN_TYPE_hmac.equals(reportSignType)){
+        if(!"0".equals(reportSignType) && !SeedConstants.OPEN_SIGN_TYPE_md5.equals(reportSignType) && !SeedConstants.OPEN_SIGN_TYPE_hmac.equals(reportSignType)){
             return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "未知的报表文件内容签名类型");
         }
-        response.setCharacterEncoding(Constants.OPEN_CHARSET_UTF8);
-        response.setContentType("text/plain; charset=" + Constants.OPEN_CHARSET_UTF8);
+        response.setCharacterEncoding(SeedConstants.DEFAULT_CHARSET);
+        response.setContentType("text/plain; charset=" + SeedConstants.DEFAULT_CHARSET);
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
