@@ -594,7 +594,7 @@ public final class HTTPUtil {
                 if(StringUtils.isBlank(filename)){
                     filename = JadyerUtil.randomNumeric(16);
                 }
-                File localFile = new File(System.getProperty("java.io.tmpdir") + "/HTTPUtil-postWithDownload" + filename);
+                File localFile = new File(System.getProperty("java.io.tmpdir") + "/HTTPUtil-postWithDownload/" + filename);
                 FileUtils.copyInputStreamToFile(entity.getContent(), localFile);
                 resultMap.put("fullPath", localFile.getCanonicalPath());
                 resultMap.put("isSuccess", "yes");

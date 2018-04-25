@@ -66,15 +66,15 @@ class LogAspect implements MethodInterceptor {
         long endTime = System.currentTimeMillis();
         String returnInfo;
         if(null == respData){
-            returnInfo = "";
+            returnInfo = "<>";
         }else if(respData instanceof ServletRequest) {
-            returnInfo = "javax.servlet.ServletRequest";
+            returnInfo = "<javax.servlet.ServletRequest>";
         }else if(respData instanceof ServletResponse) {
-            returnInfo = "javax.servlet.ServletResponse";
+            returnInfo = "<javax.servlet.ServletResponse>";
         }else if(respData instanceof InputStream) {
-            returnInfo = "java.io.InputStream";
+            returnInfo = "<java.io.InputStream>";
         }else if(respData.getClass().isAssignableFrom(ResponseEntity.class)) {
-            returnInfo = "org.springframework.http.ResponseEntity";
+            returnInfo = "<org.springframework.http.ResponseEntity>";
         }else{
             returnInfo = JSON.toJSONStringWithDateFormat(respData, JSON.DEFFAULT_DATE_FORMAT, serializerFeatures);
         }
