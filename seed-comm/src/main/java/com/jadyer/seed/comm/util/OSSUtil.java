@@ -108,7 +108,7 @@ public class OSSUtil {
     public static String download(String bucket, String endpoint, String key, String accessKeyId, String accessKeySecret, String localURL) {
         if(StringUtils.isBlank(localURL)){
             //若未传localURL，则把下载到的文件放到Java临时目录
-            localURL = System.getProperty("java.io.tmpdir") + "/" + key;
+            localURL = System.getProperty("java.io.tmpdir") + "/ossutil-download/" + key;
             ////若文件名称不含后缀，那就主动添加后缀
             //if("".equals(FilenameUtils.getExtension(key))){
             //    localURL += ".txt";
