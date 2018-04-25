@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,11 +68,13 @@ class LogAspect implements MethodInterceptor {
         if(null == respData){
             returnInfo = "";
         }else if(respData instanceof ServletRequest) {
-            returnInfo = "ServletRequest";
+            returnInfo = "javax.servlet.ServletRequest";
         }else if(respData instanceof ServletResponse) {
-            returnInfo = "ServletResponse";
+            returnInfo = "javax.servlet.ServletResponse";
+        }else if(respData instanceof InputStream) {
+            returnInfo = "java.io.InputStream";
         }else if(respData.getClass().isAssignableFrom(ResponseEntity.class)) {
-            returnInfo = "ResponseEntity";
+            returnInfo = "org.springframework.http.ResponseEntity";
         }else{
             returnInfo = JSON.toJSONStringWithDateFormat(respData, JSON.DEFFAULT_DATE_FORMAT, serializerFeatures);
         }
