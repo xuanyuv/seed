@@ -14,6 +14,9 @@
 * [x] seed-server：Mina实现的服务器
 * [x] seed-simcoder：简版的代码生成器
 * [x] seed-simulator：Swing实现的模拟器
+
+## 模块关系
+
 * .
 * ├── seed-boot
 * │   └── seed-comm
@@ -34,8 +37,8 @@
 * └── seed-simulator
 *  　　└── seed-comm
 
-
 ## 版本迭代
+
 > ### version 2.6.2.RELEASE
 >> * 新增自定义启动Banner示例
 >> * 重新梳理com.jadyer.demo.boot包结构
