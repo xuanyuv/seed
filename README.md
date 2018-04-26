@@ -15,7 +15,7 @@
 * [x] seed-simcoder：简版的代码生成器
 * [x] seed-simulator：Swing实现的模拟器
 
-## 模块关系
+## 依赖关系
 
 * .
 * ├── seed-boot
