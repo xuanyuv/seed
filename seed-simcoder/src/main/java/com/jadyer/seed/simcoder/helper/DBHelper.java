@@ -140,24 +140,21 @@ class DBHelper {
         if(StringUtils.isBlank(dbtype)){
             throw new RuntimeException("数据库列类型不能为空");
         }
-        if(StringUtils.equals(dbtype, "int")){
-            return "long";
-        }
-        if(StringUtils.equals(dbtype, "tinyint")){
+        if(StringUtils.equalsAnyIgnoreCase(dbtype, "tinyint", "smallint", "mediumint")){
             return "int";
         }
-        if(StringUtils.equals(dbtype, "bigint")){
-            return "BigInteger";
-        }
-        if(StringUtils.equals(dbtype, "decimal")){
-            return "BigDecimal";
-        }
-        if(StringUtils.equalsAnyIgnoreCase(dbtype, "datetime", "timestamp")){
-            return "Date";
+        if(StringUtils.equalsAnyIgnoreCase(dbtype, "int", "bigint")){
+            return "long";
         }
         if(StringUtils.equalsAnyIgnoreCase(dbtype, "char", "varchar", "tinytext", "text", "mediumtext")){
             return "String";
         }
-        throw new RuntimeException("不支持的类型[" + dbtype + "]");
+        if(StringUtils.equalsAnyIgnoreCase(dbtype,"datetime", "timestamp")){
+            return "Date";
+        }
+        if(StringUtils.equalsIgnoreCase(dbtype, "decimal")){
+            return "BigDecimal";
+        }
+        throw new RuntimeException("不支持的数据库列类型[" + dbtype + "]");
     }
 }
