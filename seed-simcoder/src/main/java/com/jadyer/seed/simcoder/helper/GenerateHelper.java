@@ -83,28 +83,35 @@ public class GenerateHelper {
         boolean hasColumnAnnotation = false;
         StringBuilder fields = new StringBuilder();
         StringBuilder methods = new StringBuilder();
+        /*
+         * /** 微信或QQ公众平台绑定状态：0--未绑定，1--已绑定 *\/
+         * @Column(name="bind_status")
+         * private int bindStatus;
+         *
+         * public int getBindStatus() {
+         *     return bindStatus;
+         * }
+         *
+         * public void setBindStatus(int bindStatus) {
+         *     this.bindStatus = bindStatus;
+         * }
+         */
         List<Column> columnList = DBHelper.getColumnList(tablename);
         for(int i=0; i<columnList.size(); i++){
             if(StringUtils.equalsAnyIgnoreCase(columnList.get(i).getName(), "id", "create_time", "update_time")){
                 continue;
             }
-            /*
-             * /** 字段注释 *\/
-             */
+            ///** 字段注释 */
             if(StringUtils.isNotBlank(columnList.get(i).getComment())){
                 fields.append("    /** ").append(columnList.get(i).getComment()).append(" */").append("\n");
             }
-            /*
-             * @Column(name="bind_status")
-             */
+            //@Column(name="bind_status")
             String fieldname = DBHelper.buildFieldnameFromColumnname(columnList.get(i).getName());
             if(!fieldname.equals(columnList.get(i).getName())){
                 hasColumnAnnotation = true;
                 fields.append("    @Column(name=\"").append(columnList.get(i).getName()).append("\")").append("\n");
             }
-            /*
-             * private int bindStatus;
-             */
+            //private int bindStatus;
             String javaType = DBHelper.buildJavatypeFromDbtype(columnList.get(i).getType());
             if("Date".equals(javaType)){
                 hasDate = true;
@@ -113,15 +120,7 @@ public class GenerateHelper {
                 hasBigDecimal = true;
             }
             fields.append("    private ").append(javaType).append(" ").append(fieldname).append(";").append("\n");
-            /*
-             * public int getBindStatus() {
-             *     return bindStatus;
-             * }
-             *
-             * public void setBindStatus(int bindStatus) {
-             *     this.bindStatus = bindStatus;
-             * }
-             */
+            //getter and setter
             methods.append("    public ").append(javaType).append(" get").append(StringUtils.capitalize(fieldname)).append("() {").append("\n");
             methods.append("        return ").append(fieldname).append(";").append("\n");
             methods.append("    }").append("\n");
@@ -129,7 +128,7 @@ public class GenerateHelper {
             methods.append("    public void set").append(StringUtils.capitalize(fieldname)).append("(").append(javaType).append(" ").append(fieldname).append(") {").append("\n");
             methods.append("        this.").append(fieldname).append(" = ").append(fieldname).append(";").append("\n");
             methods.append("    }");
-            //约定的
+            //方法与方法直接都空一行，并且最后一个setter之后就不用换行了
             if(i+1 != columnList.size()-2){
                 methods.append("\n\n");
             }
