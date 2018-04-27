@@ -92,7 +92,7 @@ public class GenerateHelper {
              * /** 字段注释 *\/
              */
             if(StringUtils.isNotBlank(columnList.get(i).getComment())){
-                fields.append("    /** ").append(columnList.get(i).getComment()).append(" */\n");
+                fields.append("    /** ").append(columnList.get(i).getComment()).append(" */").append("\n");
             }
             /*
              * @Column(name="bind_status")

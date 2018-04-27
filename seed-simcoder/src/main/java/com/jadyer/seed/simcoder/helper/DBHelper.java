@@ -86,6 +86,9 @@ class DBHelper {
 
     /**
      * 通过表名构建类名
+     * ----------------------------------------------------------------------------------------
+     * 表明若以“t_”打头则会忽略，比如：t_mpp_info，那么构建得到类名为：MppInfo.java
+     * ----------------------------------------------------------------------------------------
      */
     static String buildClassnameFromTablename(String tablename){
         if(StringUtils.isBlank(tablename)){
