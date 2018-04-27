@@ -9,7 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
-import org.beetl.core.Template;
 import org.beetl.core.resource.ClasspathResourceLoader;
 
 import javax.swing.filechooser.FileSystemView;
@@ -33,9 +32,20 @@ public class GenerateHelper {
     private static final String importBigDecimal = "import java.math.BigDecimal;\n";
     private static final String importBigDecimalAndDate = "import java.math.BigDecimal;\nimport java.util.Date;\n";
     private static GroupTemplate groupTemplate = null;
-    static{
+    static {
         try {
             groupTemplate = new GroupTemplate(new ClasspathResourceLoader("templates/"), Configuration.defaultConfiguration());
+            ////v2.8.1暂不支持：https://github.com/javamonkey/beetl2.0/issues/351
+            //groupTemplate.setSharedVars(new HashMap<String, Object>(){
+            //    private static final long serialVersionUID = -7774932094711543319L;
+            //    {
+            //        put("serialVersionUID", JadyerUtil.buildSerialVersionUID());
+            //        put("PACKAGE_MODEL", SimcoderRun.PACKGET_PREFIX + ".web.model");
+            //        put("PACKAGE_SERVICE", SimcoderRun.PACKGET_PREFIX + ".web.service");
+            //        put("PACKAGE_CONTROLLER", SimcoderRun.PACKGET_PREFIX + ".web.controller");
+            //        put("PACKAGE_REPOSITORY", SimcoderRun.PACKGET_PREFIX + ".web.repository");
+            //    }
+            //});
         } catch (IOException e) {
             System.err.println("加载Beetl模板失败，堆栈轨迹如下：");
             e.printStackTrace();
@@ -147,45 +157,43 @@ public class GenerateHelper {
         }
         comments.append("Generated from seed-simcoder by 玄玉<http://jadyer.cn/> on ").append(DateFormatUtils.format(new Date(), "yyyy/MM/dd HH:mm."));
         /*
-         * 构造Beetl模板变量
+         * 设置Beetl共享变量（目前2.8.1版本：共享变量只能set一次，第二次set时会冲掉之前所有的，因为源码里是直接改变对象引用的）
          */
         String classname = DBHelper.buildClassnameFromTablename(tablename);
         Map<String, Object> sharedVars = new HashMap<>();
-        sharedVars.put("PACKAGE_REPOSITORY", PACKAGE_REPOSITORY);
-        sharedVars.put("PACKAGE_CONTROLLER", PACKAGE_CONTROLLER);
-        sharedVars.put("PACKAGE_SERVICE", PACKAGE_SERVICE);
+        sharedVars.put("serialVersionUID", JadyerUtil.buildSerialVersionUID());
         sharedVars.put("PACKAGE_MODEL", PACKAGE_MODEL);
+        sharedVars.put("PACKAGE_SERVICE", PACKAGE_SERVICE);
+        sharedVars.put("PACKAGE_CONTROLLER", PACKAGE_CONTROLLER);
+        sharedVars.put("PACKAGE_REPOSITORY", PACKAGE_REPOSITORY);
         sharedVars.put("CLASS_NAME", classname);
+        sharedVars.put("CLASS_NAME_uncapitalize", StringUtils.uncapitalize(classname));
+        sharedVars.put("TABLE_NAME", tablename);
+        sharedVars.put("TABLE_NAME_nounderline", (tablename.startsWith("t_") ? tablename.substring(2) : tablename).replaceAll("_", ""));
+        sharedVars.put("TABLE_NAME_convertpoint", (tablename.startsWith("t_") ? tablename.substring(2) : tablename).replaceAll("_", "."));
+        sharedVars.put("fields", fields.toString());
+        sharedVars.put("methods", methods.toString());
         sharedVars.put("comments", comments.toString());
-        groupTemplate.setSharedVars(sharedVars);
-        Template templateRepository = groupTemplate.getTemplate("repository.btl");
-        Template templateService = groupTemplate.getTemplate("service.btl");
-        templateService.binding("CLASS_NAME_uncapitalize", StringUtils.uncapitalize(classname));
-        Template templateController = groupTemplate.getTemplate("controller.btl");
-        templateController.binding("CLASS_NAME_uncapitalize", StringUtils.uncapitalize(classname));
-        templateController.binding("TABLE_NAME_nounderline", (tablename.startsWith("t_") ? tablename.substring(2) : tablename).replaceAll("_", ""));
-        templateController.binding("TABLE_NAME_convertpoint", (tablename.startsWith("t_") ? tablename.substring(2) : tablename).replaceAll("_", "."));
-        Template templateModel = groupTemplate.getTemplate("model.btl");
-        templateModel.binding("TABLE_NAME", tablename);
-        templateModel.binding("fields", fields.toString());
-        templateModel.binding("methods", methods.toString());
-        templateModel.binding("serialVersionUID", JadyerUtil.buildSerialVersionUID());
         if(hasColumnAnnotation){
-            templateModel.binding("importColumnAnnotation", importColumnAnnotation);
+            sharedVars.put("importColumnAnnotation", importColumnAnnotation);
         }
         if(hasDate && hasBigDecimal){
-            templateModel.binding("importBigDecimalDate", importBigDecimalAndDate);
+            sharedVars.put("importBigDecimalDate", importBigDecimalAndDate);
         }else if(hasBigDecimal){
-            templateModel.binding("importBigDecimalDate", importBigDecimal);
+            sharedVars.put("importBigDecimalDate", importBigDecimal);
         }else if(hasDate){
-            templateModel.binding("importBigDecimalDate", importDate);
+            sharedVars.put("importBigDecimalDate", importDate);
         }
+        groupTemplate.setSharedVars(sharedVars);
+        /*
+         * 解析Beetl模板
+         */
         try {
             String outBaseDir = FileSystemView.getFileSystemView().getHomeDirectory().getPath() + System.getProperty("file.separator");
-            templateModel.renderTo(FileUtils.openOutputStream(new File(outBaseDir + "model" + System.getProperty("file.separator") + classname + ".java")));
-            templateService.renderTo(FileUtils.openOutputStream(new File(outBaseDir + "service" + System.getProperty("file.separator") + classname + "Service.java")));
-            templateController.renderTo(FileUtils.openOutputStream(new File(outBaseDir + "controller" + System.getProperty("file.separator") + classname + "Controller.java")));
-            templateRepository.renderTo(FileUtils.openOutputStream(new File(outBaseDir + "repository" + System.getProperty("file.separator") + classname + "Repository.java")));
+            groupTemplate.getTemplate("model.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "model" + System.getProperty("file.separator") + classname + ".java")));
+            groupTemplate.getTemplate("service.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "service" + System.getProperty("file.separator") + classname + "Service.java")));
+            groupTemplate.getTemplate("controller.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "controller" + System.getProperty("file.separator") + classname + "Controller.java")));
+            groupTemplate.getTemplate("repository.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "repository" + System.getProperty("file.separator") + classname + "Repository.java")));
         } catch (IOException e) {
             System.err.println("生成代码时发生异常，堆栈轨迹如下：");
             e.printStackTrace();
