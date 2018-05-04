@@ -1,6 +1,7 @@
 package com.jadyer.seed.comm.util;
 
 import com.jadyer.seed.comm.constant.CodeEnum;
+import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.exception.SeedException;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
@@ -55,7 +56,7 @@ import java.util.List;
  * Created by 玄玉<http://jadyer.cn/> on 2015/06/22 11:22.
  */
 public final class FTPUtil {
-    private static final String DEFAULT_CHARSET = "UTF-8";
+    private static final String DEFAULT_CHARSET = SeedConstants.DEFAULT_CHARSET;
     private static final int DEFAULT_DEFAULT_TIMEOUT = 0;
     private static final int DEFAULT_CONNECT_TIMEOUT = 1000;
     private static final int DEFAULT_DATA_TIMEOUT = 0;
