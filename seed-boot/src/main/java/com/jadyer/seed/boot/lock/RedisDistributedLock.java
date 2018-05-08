@@ -18,13 +18,13 @@ import java.util.concurrent.TimeUnit;
  *         public void initRedisDistributedLock(){
  *             this.lock = new RedisDistributedLock(jedisCluster, "demo-boot-open-router", 50000);
  *         }
- *         CommonResult loanGet(ReqData reqData){
+ *         CommResult loanGet(ReqData reqData){
  *             if(!lock.lock()){
- *                 return new CommonResult(OpenCodeEnum.SIGN_ERROR.getCode(), "获取锁失败");
+ *                 return CommResult.fail(OpenCodeEnum.SIGN_ERROR.getCode(), "获取锁失败");
  *             }
  *             //do something.
  *             lock.unLock()
- *             return new CommonResult();
+ *             return CommResult.success();
  *         }
  *     }
  * </code>

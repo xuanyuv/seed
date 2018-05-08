@@ -15,10 +15,10 @@ public class RouterService970 extends RouterService100 {
     // * ------------------------------------------------------------------------------------
     // */
     //@Override
-    //public CommonResult loanGet(ReqData reqData) {
+    //public CommResult<Map<String, Object>> loanGet(ReqData reqData) {
     //    Map<String, Object> resultMap = new HashMap<>();
     //    resultMap.put("userName", "玄玉");
     //    resultMap.put("userPhone", "13600000000");
-    //    return new CommonResult(resultMap);
+    //    return CommResult.success(resultMap);
     //}
 }

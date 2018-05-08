@@ -3,7 +3,7 @@ package com.jadyer.seed.open;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.jadyer.seed.comm.constant.CodeEnum;
-import com.jadyer.seed.comm.constant.CommonResult;
+import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.comm.util.JadyerUtil;
@@ -44,11 +44,11 @@ public class RouterService100 {
      * 文件上传接口
      */
     @OpenMethod(SeedConstants.OPEN_METHOD_boot_file_upload)
-    public CommonResult fileupload(ReqData reqData, HttpServletRequest request) {
+    public CommResult<Map<String, Integer>> fileupload(ReqData reqData, HttpServletRequest request) {
         Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
         String partnerApplyNo = reqMap.get("partnerApplyNo");
         if(StringUtils.isBlank(partnerApplyNo)){
-            return new CommonResult(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "partnerApplyNo is blank");
+            return CommResult.fail(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "partnerApplyNo is blank");
         }
         //接收并处理上传过来的文件
         MultipartFile fileData = null;
@@ -58,13 +58,13 @@ public class RouterService100 {
             fileData = multipartFile.getFile("fileData");
         }
         if(null==fileData || fileData.getSize()==0){
-            return new CommonResult(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "未传输文件流");
+            return CommResult.fail(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "未传输文件流");
         }
         InputStream is;
         try {
             is = fileData.getInputStream();
         } catch (IOException e) {
-            return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "文件流获取失败-->"+e.getMessage());
+            return CommResult.fail(CodeEnum.SYSTEM_BUSY.getCode(), "文件流获取失败-->"+e.getMessage());
         }
         LogUtil.getLogger().info("文档类型：" + fileData.getContentType());
         LogUtil.getLogger().info("文件大小：" + fileData.getSize()); // 2667993=2.54MB=2,667,993字节
@@ -76,7 +76,7 @@ public class RouterService100 {
         } catch (IOException e) {
             throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "文件流保存失败-->"+e.getMessage(), e);
         }
-        return new CommonResult(new HashMap<String, Integer>(){
+        return CommResult.success(new HashMap<String, Integer>(){
             private static final long serialVersionUID = 8673982917114045418L;
             {
                 put("fileId", 33);
@@ -89,12 +89,12 @@ public class RouterService100 {
      * 申请单查询接口
      */
     @OpenMethod(methodName=SeedConstants.OPEN_METHOD_boot_loan_get)
-    public CommonResult loanGet(ReqData reqData) {
+    public CommResult<Map<String, Object>> loanGet(ReqData reqData) {
         Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
         String applyNo = reqMap.get("applyNo");
         String partnerApplyNo = reqMap.get("partnerApplyNo");
         if(StringUtils.isBlank(applyNo) && StringUtils.isBlank(partnerApplyNo)){
-            return new CommonResult(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "applyNo and partnerApplyNo is blank");
+            return CommResult.fail(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "applyNo and partnerApplyNo is blank");
         }
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("partnerApplyNo", JadyerUtil.randomNumeric(32));
@@ -109,7 +109,7 @@ public class RouterService100 {
         resultMap.put("creditTerm", 12);
         resultMap.put("userName", "玄玉");
         resultMap.put("userPhone", "13600000000");
-        return new CommonResult(resultMap);
+        return CommResult.success(resultMap);
     }
 
 
@@ -117,15 +117,15 @@ public class RouterService100 {
      * 申请单协议接口
      */
     @OpenMethod(SeedConstants.OPEN_METHOD_boot_loan_agree)
-    public Object loanAgree(ReqData reqData, HttpServletResponse response) {
+    public CommResult loanAgree(ReqData reqData, HttpServletResponse response) {
         Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
         String type = reqMap.get("type");
         String applyNo = reqMap.get("applyNo");
         if(StringUtils.isBlank(applyNo) || StringUtils.isBlank(type)){
-            return new CommonResult(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "applyNo or type is blank");
+            return CommResult.fail(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "applyNo or type is blank");
         }
         if(!"1".equals(type) && !"2".equals(type) && !"3".equals(type)){
-            return new CommonResult(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "type shoule be 1 or 2 or 3");
+            return CommResult.fail(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "type shoule be 1 or 2 or 3");
         }
         response.setCharacterEncoding(SeedConstants.DEFAULT_CHARSET);
         response.setContentType("text/plain; charset=" + SeedConstants.DEFAULT_CHARSET);
@@ -149,15 +149,15 @@ public class RouterService100 {
      * 申请单报表下载
      */
     @OpenMethod(methodName=SeedConstants.OPEN_METHOD_boot_loan_report_download)
-    public Object loanReportDownload(ReqData reqData, HttpServletResponse response) {
+    public CommResult loanReportDownload(ReqData reqData, HttpServletResponse response) {
         Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
         String reportType = reqMap.get("reportType");
         String reportSignType = reqMap.get("reportSignType");
         if(!"1".equals(reportType)){
-            return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "暂时只能下载昨天放款成功的报表文件");
+            return CommResult.fail(CodeEnum.SYSTEM_BUSY.getCode(), "暂时只能下载昨天放款成功的报表文件");
         }
         if(!"0".equals(reportSignType) && !SeedConstants.OPEN_SIGN_TYPE_md5.equals(reportSignType) && !SeedConstants.OPEN_SIGN_TYPE_hmac.equals(reportSignType)){
-            return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "未知的报表文件内容签名类型");
+            return CommResult.fail(CodeEnum.SYSTEM_BUSY.getCode(), "未知的报表文件内容签名类型");
         }
         response.setCharacterEncoding(SeedConstants.DEFAULT_CHARSET);
         response.setContentType("text/plain; charset=" + SeedConstants.DEFAULT_CHARSET);

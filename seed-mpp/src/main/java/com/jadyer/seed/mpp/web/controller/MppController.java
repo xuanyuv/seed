@@ -1,7 +1,7 @@
 package com.jadyer.seed.mpp.web.controller;
 
 import com.jadyer.seed.comm.constant.CodeEnum;
-import com.jadyer.seed.comm.constant.CommonResult;
+import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.RequestUtil;
 import com.jadyer.seed.mpp.sdk.qq.helper.QQHelper;
@@ -105,7 +105,7 @@ public class MppController {
      */
     @ResponseBody
     @PostMapping("/user/bind")
-    public CommonResult bind(MppUserInfo user, HttpSession session){
+    public CommResult bind(MppUserInfo user, HttpSession session){
         MppUserInfo mppUserInfo = (MppUserInfo)session.getAttribute(SeedConstants.WEB_SESSION_USER);
         mppUserInfo.setBindStatus(0);
         mppUserInfo.setAppid(user.getAppid());
@@ -126,7 +126,7 @@ public class MppController {
         if(2 == mppUserInfo.getMptype()){
             QQTokenHolder.setQQAppidAppsecret(mppUserInfo.getAppid(), mppUserInfo.getAppsecret());
         }
-        return new CommonResult();
+        return CommResult.success();
     }
 
 
@@ -135,12 +135,12 @@ public class MppController {
      */
     @ResponseBody
     @PostMapping("/user/password/update")
-    public CommonResult passwordUpdate(String oldPassword, String newPassword, HttpSession session){
+    public CommResult passwordUpdate(String oldPassword, String newPassword, HttpSession session){
         MppUserInfo mppUserInfo = (MppUserInfo)session.getAttribute(SeedConstants.WEB_SESSION_USER);
         MppUserInfo respMppUserInfo = mppUserService.passwordUpdate(mppUserInfo, oldPassword, newPassword);
         //修改成功后要刷新HttpSession中的用户信息
         session.setAttribute(SeedConstants.WEB_SESSION_USER, respMppUserInfo);
-        return new CommonResult();
+        return CommResult.success();
     }
 
 
@@ -149,9 +149,9 @@ public class MppController {
      */
     @ResponseBody
     @GetMapping("/menu/getjson")
-    public CommonResult menuGetjson(HttpSession session){
+    public CommResult<String> menuGetjson(HttpSession session){
         long uid = ((MppUserInfo)session.getAttribute(SeedConstants.WEB_SESSION_USER)).getId();
-        return new CommonResult(mppMenuService.getMenuJson(uid));
+        return CommResult.success(mppMenuService.getMenuJson(uid));
     }
 
 
@@ -161,26 +161,26 @@ public class MppController {
      */
     @ResponseBody
     @PostMapping("/menu/create")
-    public CommonResult menuCreate(String menuJson, HttpSession session){
+    public CommResult menuCreate(String menuJson, HttpSession session){
         MppUserInfo mppUserInfo = (MppUserInfo)session.getAttribute(SeedConstants.WEB_SESSION_USER);
         if(0 == mppUserInfo.getBindStatus()){
-            return new CommonResult(CodeEnum.SYSTEM_ERROR.getCode(), "当前用户未绑定微信或QQ公众平台");
+            return CommResult.fail(CodeEnum.SYSTEM_ERROR.getCode(), "当前用户未绑定微信或QQ公众平台");
         }
         if(1 == mppUserInfo.getMptype()){
             WeixinErrorInfo errorInfo = WeixinHelper.createWeixinMenu(WeixinTokenHolder.getWeixinAccessToken(mppUserInfo.getAppid()), menuJson);
             if(0==errorInfo.getErrcode() && mppMenuService.menuJsonUpsert(mppUserInfo.getId(), menuJson)){
-                return new CommonResult();
+                return CommResult.success();
             }
-            return new CommonResult(errorInfo.getErrcode(), errorInfo.getErrmsg());
+            return CommResult.fail(errorInfo.getErrcode(), errorInfo.getErrmsg());
         }
         if(2 == mppUserInfo.getMptype()){
             QQErrorInfo errorInfo = QQHelper.createQQMenu(QQTokenHolder.getQQAccessToken(mppUserInfo.getAppid()), menuJson);
             if(0==errorInfo.getErrcode() && mppMenuService.menuJsonUpsert(mppUserInfo.getId(), menuJson)){
-                return new CommonResult();
+                return CommResult.success();
             }
-            return new CommonResult(errorInfo.getErrcode(), errorInfo.getErrmsg());
+            return CommResult.fail(errorInfo.getErrcode(), errorInfo.getErrmsg());
         }
-        return new CommonResult(CodeEnum.SYSTEM_ERROR.getCode(), "当前用户未关联微信或QQ公众平台");
+        return CommResult.fail(CodeEnum.SYSTEM_ERROR.getCode(), "当前用户未关联微信或QQ公众平台");
     }
 
 
@@ -211,9 +211,9 @@ public class MppController {
      */
     @ResponseBody
     @PostMapping("/reply/follow/upsert")
-    public CommonResult saveFollow(MppReplyInfo mppReplyInfo, HttpServletRequest request){
+    public CommResult<MppReplyInfo> saveFollow(MppReplyInfo mppReplyInfo, HttpServletRequest request){
         mppReplyInfo.setUid(((MppUserInfo)request.getSession().getAttribute(SeedConstants.WEB_SESSION_USER)).getId());
-        return new CommonResult(mppReplyService.upsertFollow(mppReplyInfo));
+        return CommResult.success(mppReplyService.upsertFollow(mppReplyInfo));
     }
 
 
@@ -234,8 +234,8 @@ public class MppController {
      */
     @ResponseBody
     @RequestMapping("/reply/keyword/get/{id}")
-    public CommonResult getKeyword(@PathVariable long id){
-        return new CommonResult(mppReplyService.getKeyword(id));
+    public CommResult<MppReplyInfo> getKeyword(@PathVariable long id){
+        return CommResult.success(mppReplyService.getKeyword(id));
     }
 
 
@@ -244,9 +244,9 @@ public class MppController {
      */
     @ResponseBody
     @RequestMapping("/reply/keyword/delete/{id}")
-    public CommonResult deleteKeyword(@PathVariable long id){
+    public CommResult deleteKeyword(@PathVariable long id){
         mppReplyService.deleteKeyword(id);
-        return new CommonResult();
+        return CommResult.success();
     }
 
 
@@ -255,8 +255,8 @@ public class MppController {
      */
     @ResponseBody
     @RequestMapping("/reply/keyword/upsert")
-    public CommonResult upsertKeyword(MppReplyInfo mppReplyInfo, HttpServletRequest request){
+    public CommResult<MppReplyInfo> upsertKeyword(MppReplyInfo mppReplyInfo, HttpServletRequest request){
         mppReplyInfo.setUid(((MppUserInfo)request.getSession().getAttribute(SeedConstants.WEB_SESSION_USER)).getId());
-        return new CommonResult(mppReplyService.upsertKeyword(mppReplyInfo));
+        return CommResult.success(mppReplyService.upsertKeyword(mppReplyInfo));
     }
 }

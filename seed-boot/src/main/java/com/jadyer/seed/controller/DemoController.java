@@ -5,7 +5,7 @@ import com.jadyer.seed.boot.BootProperties;
 import com.jadyer.seed.comm.annotation.ActionEnum;
 import com.jadyer.seed.comm.annotation.SeedLog;
 import com.jadyer.seed.comm.constant.CodeEnum;
-import com.jadyer.seed.comm.constant.CommonResult;
+import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.util.HTTPUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
@@ -58,7 +58,7 @@ public class DemoController {
      */
     @GetMapping("/prop")
     @SeedLog(action=ActionEnum.LIST, value="读取配置文件中的属性")
-    public Map<String, Object> prop(HttpServletRequest request){
+    public CommResult<Map<String, Object>> prop(HttpServletRequest request){
         System.out.println("data = [" + request.getParameter("data") + "]");
         Map<String, Object> map = new HashMap<>();
         map.put("weight", this.weight);
@@ -73,7 +73,7 @@ public class DemoController {
         map.put("secretName", this.bootProperties.getSecretName());
         map.put("detailInfo", this.bootProperties.getDetailInfo());
         map.put("addressList", this.bootProperties.getAddressList());
-        return map;
+        return CommResult.success(map);
     }
 
 
@@ -83,7 +83,7 @@ public class DemoController {
      * @param level 修改后的日志级别，可传info、inFO、debug、error、ErrOR等等
      */
     @GetMapping("/loglevel/{name}/{level}")
-    public CommonResult loglevel(@PathVariable String name, @PathVariable String level){
+    public CommResult loglevel(@PathVariable String name, @PathVariable String level){
         LogUtil.getLogger().info("这是info级别的日志");
         LogUtil.getLogger().debug("这是debug级别的日志");
         LogUtil.getLogger().error("这是error级别的日志");
@@ -97,12 +97,12 @@ public class DemoController {
         LogUtil.getLogger().info("这是info级别的日志");
         LogUtil.getLogger().debug("这是debug级别的日志");
         LogUtil.getLogger().error("这是error级别的日志");
-        return new CommonResult();
+        return CommResult.success();
     }
 
 
     @GetMapping("/mail")
-    public CommonResult mail(){
+    public CommResult mail(){
         //发送一封简单的邮件
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setFrom(this.mailFrom);
@@ -124,8 +124,8 @@ public class DemoController {
             helper.addAttachment("会议纪要完整图片.jpg", new FileSystemResource(new File("E:\\Jadyer\\Fedora13.jpg")));
             this.javaMailSender.send(mimeMessage);
         }catch(MessagingException e){
-            return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "邮件发送失败，堆栈轨迹如下："+ JadyerUtil.extractStackTrace(e));
+            return CommResult.fail(CodeEnum.SYSTEM_BUSY.getCode(), "邮件发送失败，堆栈轨迹如下："+ JadyerUtil.extractStackTrace(e));
         }
-        return new CommonResult();
+        return CommResult.success();
     }
 }

@@ -57,19 +57,12 @@ import com.jadyer.seed.comm.constant.CodeEnum;
  * Created by 玄玉<http://jadyer.cn/> on 2015/8/28 10:37.
  */
 public class SeedException extends RuntimeException {
-    private static final long serialVersionUID = 601366631919634564L;
+    private static final long serialVersionUID = 1742272737860212210L;
     private int code;
 
     public int getCode() {
         return code;
     }
-
-    //public SeedException format(Object... messages){
-    //    if(null!=messages && messages.length>0){
-    //        this.message = String.format(this.message, messages);
-    //    }
-    //    return this;
-    //}
 
     public SeedException(String message){
         super(message);

@@ -1,6 +1,6 @@
 package com.jadyer.seed.controller.rabbitmq;
 
-import com.jadyer.seed.comm.constant.CommonResult;
+import com.jadyer.seed.comm.constant.CommResult;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.stereotype.Controller;
@@ -22,10 +22,10 @@ public class SendController {
      */
     @ResponseBody
     @GetMapping("")
-    public CommonResult send(){
+    public CommResult send(){
         int id = 2;
         UserMsg userMsg = new UserMsg(id, "玄玉", "http://jadyer.cn/");
         this.rabbitTemplate.convertAndSend("apply.status", "apply.status.1101.123", userMsg, new CorrelationData(id+""));
-        return new CommonResult();
+        return CommResult.success();
     }
 }

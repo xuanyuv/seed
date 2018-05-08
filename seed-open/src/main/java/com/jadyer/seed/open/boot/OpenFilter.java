@@ -3,7 +3,7 @@ package com.jadyer.seed.open.boot;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.jadyer.seed.comm.constant.CodeEnum;
-import com.jadyer.seed.comm.constant.CommonResult;
+import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.comm.util.BeanUtil;
@@ -145,7 +145,7 @@ public class OpenFilter extends OncePerRequestFilter {
                 this.writeToResponse(respDataJson, response);
             }
         }catch(SeedException e){
-            respDataStr = JSON.toJSONString(new CommonResult(e.getCode(), e.getMessage()), true);
+            respDataStr = JSON.toJSONString(CommResult.fail(e.getCode(), e.getMessage()), true);
             LogUtil.getLogger().info("返回客户端IP=[{}]的应答明文为-->[{}]，Duration[{}]ms", reqIp, respDataStr, (System.currentTimeMillis()-startTime));
             this.writeToResponse(respDataStr, response);
         }

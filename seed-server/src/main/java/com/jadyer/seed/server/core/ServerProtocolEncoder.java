@@ -1,6 +1,6 @@
 package com.jadyer.seed.server.core;
 
-import com.jadyer.seed.comm.util.MinaUtil;
+import com.jadyer.seed.comm.constant.SeedConstants;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolEncoderOutput;
@@ -21,7 +21,7 @@ public class ServerProtocolEncoder implements MessageEncoder<String> {
     @Override
     public void encode(IoSession session, String message, ProtocolEncoderOutput out) throws Exception {
         IoBuffer buffer = IoBuffer.allocate(100).setAutoExpand(true);
-        buffer.putString(message, Charset.forName(MinaUtil.DEFAULT_CHARSET).newEncoder());
+        buffer.putString(message, Charset.forName(SeedConstants.DEFAULT_CHARSET).newEncoder());
         buffer.flip();
         out.write(buffer);
     }

@@ -1,6 +1,7 @@
 package com.jadyer.seed.boot;
 
 import com.alibaba.fastjson.JSON;
+import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.LogUtil;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
@@ -45,7 +46,7 @@ public class RabbitMQConfiguration {
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory){
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
         template.setMessageConverter(new Jackson2JsonMessageConverter());
-        template.setEncoding("UTF-8");
+        template.setEncoding(SeedConstants.DEFAULT_CHARSET);
         //消息发送失败时，返回到队列中（需要spring.rabbitmq.publisherReturns=true）
         template.setMandatory(true);
         //消息成功到达exchange，但没有queue与之绑定时触发的回调（即消息发送不到任何一个队列中）

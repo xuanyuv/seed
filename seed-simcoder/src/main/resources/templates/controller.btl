@@ -1,6 +1,6 @@
 package ${PACKAGE_CONTROLLER};
 
-import com.jadyer.seed.comm.constant.CommonResult;
+import com.jadyer.seed.comm.constant.CommResult;
 import ${PACKAGE_MODEL}.${CLASS_NAME};
 import ${PACKAGE_SERVICE}.${CLASS_NAME}Service;
 import org.springframework.stereotype.Controller;
@@ -35,22 +35,22 @@ public class ${CLASS_NAME}Controller {
 
     @ResponseBody
     @GetMapping("/get/{id}")
-    public CommonResult get(@PathVariable long id){
-        return new CommonResult(${CLASS_NAME_uncapitalize}Service.get(id));
+    public CommonResult<${CLASS_NAME}> get(@PathVariable long id){
+        return CommResult.success(${CLASS_NAME_uncapitalize}Service.get(id));
     }
 
 
     @ResponseBody
     @PostMapping("delete/{id}")
-    public CommonResult delete(@PathVariable long id){
+    public CommResult delete(@PathVariable long id){
         ${CLASS_NAME_uncapitalize}Service.delete(id);
-        return new CommonResult();
+        return CommResult.success();
     }
 
 
     @ResponseBody
     @PostMapping("/upsert")
-    public CommonResult upsert(${CLASS_NAME} ${CLASS_NAME_uncapitalize}){
-        return new CommonResult(${CLASS_NAME_uncapitalize}Service.upsert(${CLASS_NAME_uncapitalize}));
+    public CommonResult<${CLASS_NAME}> upsert(${CLASS_NAME} ${CLASS_NAME_uncapitalize}){
+        return CommResult.success(${CLASS_NAME_uncapitalize}Service.upsert(${CLASS_NAME_uncapitalize}));
     }
 }

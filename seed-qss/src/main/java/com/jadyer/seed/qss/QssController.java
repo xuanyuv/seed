@@ -1,7 +1,7 @@
 package com.jadyer.seed.qss;
 
 import com.jadyer.seed.comm.constant.CodeEnum;
-import com.jadyer.seed.comm.constant.CommonResult;
+import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.qss.model.ScheduleTask;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +17,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/qss")
@@ -29,8 +30,8 @@ public class QssController {
      */
     @ResponseBody
     @GetMapping("/getByIds")
-    public CommonResult getByIds(final String ids){
-        return new CommonResult(new HashMap<String, Object>(){
+    public CommResult<Map<String, Object>> getByIds(final String ids){
+        return CommResult.success(new HashMap<String, Object>(){
             private static final long serialVersionUID = 2518882720835440047L;
             {
                 put("taskInfo", qssService.getById(Long.parseLong(ids.substring(0,1))));
@@ -49,50 +50,50 @@ public class QssController {
 
     @ResponseBody
     @PostMapping("/add")
-    public CommonResult add(ScheduleTask task, String dynamicPassword){
+    public CommResult add(ScheduleTask task, String dynamicPassword){
         if(!this.verifyDynamicPassword(dynamicPassword)){
-            return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "动态密码不正确");
+            return CommResult.fail(CodeEnum.SYSTEM_BUSY.getCode(), "动态密码不正确");
         }
         ScheduleTask obj = qssService.saveTask(task);
-        return new CommonResult(CodeEnum.SUCCESS.getCode(), String.valueOf(obj.getId()));
+        return CommResult.success();
     }
 
 
     @ResponseBody
     @GetMapping("/delete/{id}/{dynamicPassword}")
-    public CommonResult delete(@PathVariable long id, @PathVariable String dynamicPassword){
+    public CommResult delete(@PathVariable long id, @PathVariable String dynamicPassword){
         if(!this.verifyDynamicPassword(dynamicPassword)){
-            return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "动态密码不正确");
+            return CommResult.fail(CodeEnum.SYSTEM_BUSY.getCode(), "动态密码不正确");
         }
         qssService.deleteTask(id);
-        return new CommonResult();
+        return CommResult.success();
     }
 
 
     @ResponseBody
     @GetMapping("/updateStatus")
-    public CommonResult updateStatus(long id, int status, String dynamicPassword){
+    public CommResult updateStatus(long id, int status, String dynamicPassword){
         if(!this.verifyDynamicPassword(dynamicPassword)){
-            return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "动态密码不正确");
+            return CommResult.fail(CodeEnum.SYSTEM_BUSY.getCode(), "动态密码不正确");
         }
         if(qssService.updateStatus(id, status)){
-            return new CommonResult();
+            return CommResult.success();
         }else{
-            return new CommonResult(CodeEnum.SYSTEM_ERROR);
+            return CommResult.fail(CodeEnum.SYSTEM_ERROR.getCode(), CodeEnum.SYSTEM_ERROR.getMsg());
         }
     }
 
 
     @ResponseBody
     @GetMapping("/updateCron")
-    public CommonResult updateCron(long id, String cron, String dynamicPassword){
+    public CommResult updateCron(long id, String cron, String dynamicPassword){
         if(!this.verifyDynamicPassword(dynamicPassword)){
-            return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "动态密码不正确");
+            return CommResult.fail(CodeEnum.SYSTEM_BUSY.getCode(), "动态密码不正确");
         }
         if(qssService.updateCron(id, cron)){
-            return new CommonResult();
+            return CommResult.success();
         }else{
-            return new CommonResult(CodeEnum.SYSTEM_ERROR);
+            return CommResult.fail(CodeEnum.SYSTEM_ERROR.getCode(), CodeEnum.SYSTEM_ERROR.getMsg());
         }
     }
 
@@ -102,13 +103,13 @@ public class QssController {
      */
     @ResponseBody
     @GetMapping("/triggerJob/{id}/{dynamicPassword}")
-    public CommonResult triggerJob(@PathVariable long id, @PathVariable String dynamicPassword){
+    public CommResult triggerJob(@PathVariable long id, @PathVariable String dynamicPassword){
         if(!this.verifyDynamicPassword(dynamicPassword)){
-            return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "动态密码不正确");
+            return CommResult.fail(CodeEnum.SYSTEM_BUSY.getCode(), "动态密码不正确");
         }
         ScheduleTask task = qssService.getTaskById(id);
         qssService.triggerJob(task);
-        return new CommonResult();
+        return CommResult.success();
     }
 
 

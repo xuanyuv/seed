@@ -1,6 +1,6 @@
 package com.jadyer.seed.scs;
 
-import com.jadyer.seed.comm.constant.CommonResult;
+import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.RequestUtil;
 import org.apache.commons.io.FileUtils;
@@ -137,8 +137,8 @@ public class ScsController {
      */
     @ResponseBody
     @RequestMapping("/wangEditor/submit")
-    CommonResult wangEditorSubmit(String mpno, String mpname) {
+    CommResult wangEditorSubmit(String mpno, String mpname) {
         System.out.println("收到wangEditor的内容，mpno=["+mpno+"]，mpname=["+mpname+"]");
-        return new CommonResult();
+        return CommResult.success();
     }
 }

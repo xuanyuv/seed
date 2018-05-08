@@ -1,7 +1,7 @@
 package com.jadyer.seed.mpp.web;
 
 import com.jadyer.seed.comm.constant.CodeEnum;
-import com.jadyer.seed.comm.constant.CommonResult;
+import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.RequestUtil;
 import com.jadyer.seed.mpp.web.model.MppUserInfo;
@@ -35,17 +35,17 @@ public class ViewController {
 
     @ResponseBody
     @PostMapping("/login")
-    public CommonResult login(String username, String password, String captcha, HttpSession session){
+    public CommResult login(String username, String password, String captcha, HttpSession session){
         if(!StringUtils.equals(captcha, (String)session.getAttribute("captcha"))){
-            return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "无效的验证码");
+            return CommResult.fail(CodeEnum.SYSTEM_BUSY.getCode(), "无效的验证码");
         }
         MppUserInfo mppUserInfo = mppUserService.findByUsernameAndPassword(username, password);
         if(null == mppUserInfo){
-            return new CommonResult(CodeEnum.SYSTEM_BUSY.getCode(), "无效的用户名或密码");
+            return CommResult.fail(CodeEnum.SYSTEM_BUSY.getCode(), "无效的用户名或密码");
         }
         session.setAttribute(SeedConstants.WEB_SESSION_USER, mppUserInfo);
         session.setAttribute(SeedConstants.WEB_CURRENT_MENU, "menu_mpp");
-        return new CommonResult();
+        return CommResult.success();
     }
 
 

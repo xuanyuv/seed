@@ -1,7 +1,7 @@
 package com.jadyer.seed.comm.exception;
 
 import com.jadyer.seed.comm.constant.CodeEnum;
-import com.jadyer.seed.comm.constant.CommonResult;
+import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.util.LogUtil;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -27,17 +27,13 @@ public class GlobalExceptionHandler {
      * 2、欲返回JSON则需使用@ResponseBody，否则会去找JSP页面（即它不会受到被捕获的方法是否使用了@ResponseBody的影响）
      */
     @ResponseBody
-    @ExceptionHandler({SeedException.class, Throwable.class})
-    public CommonResult process(Throwable cause, HttpServletRequest request){
+    @ExceptionHandler(Throwable.class)
+    public CommResult process(Throwable cause, HttpServletRequest request){
         LogUtil.getLogger().info("Exception Occured URL="+request.getRequestURL()+",堆栈轨迹如下", cause);
-        CommonResult result = new CommonResult();
         if(cause instanceof SeedException){
-            result.setCode(((SeedException)cause).getCode());
+            return CommResult.fail(((SeedException)cause).getCode(), cause.getMessage());
         }else{
-            result.setCode(CodeEnum.SYSTEM_ERROR.getCode());
+            return CommResult.fail(CodeEnum.SYSTEM_ERROR.getCode(), cause.getMessage());
         }
-        //result.setMsg(cause.getMessage().contains("%s") ? cause.getMessage().replaceAll("%s", "") : cause.getMessage());
-        result.setMsg(cause.getMessage());
-        return result;
     }
 }

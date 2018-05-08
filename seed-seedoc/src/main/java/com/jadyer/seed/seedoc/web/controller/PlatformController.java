@@ -1,6 +1,6 @@
 package com.jadyer.seed.seedoc.web.controller;
 
-import com.jadyer.seed.comm.constant.CommonResult;
+import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.seedoc.web.model.Platform;
 import com.jadyer.seed.seedoc.web.service.PlatformService;
 import org.springframework.stereotype.Controller;
@@ -36,22 +36,22 @@ public class PlatformController {
 
     @ResponseBody
     @GetMapping("/get/{id}")
-    public CommonResult get(@PathVariable long id){
-        return new CommonResult(platformService.get(id));
+    public CommResult<Platform> get(@PathVariable long id){
+        return CommResult.success(platformService.get(id));
     }
 
 
     @ResponseBody
     @PostMapping("delete/{id}")
-    public CommonResult delete(@PathVariable long id){
+    public CommResult delete(@PathVariable long id){
         platformService.delete(id);
-        return new CommonResult();
+        return CommResult.success();
     }
 
 
     @ResponseBody
     @PostMapping("/upsert")
-    public CommonResult upsert(Platform platform){
-        return new CommonResult(platformService.upsert(platform));
+    public CommResult<Platform> upsert(Platform platform){
+        return CommResult.success(platformService.upsert(platform));
     }
 }

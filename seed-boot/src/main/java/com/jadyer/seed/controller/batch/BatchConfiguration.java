@@ -1,5 +1,6 @@
 package com.jadyer.seed.controller.batch;
 
+import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.controller.batch.processor.JobExecutionListener;
 import com.jadyer.seed.controller.batch.processor.PersonItemProcessor;
 import com.jadyer.seed.controller.batch.model.Person;
@@ -75,7 +76,7 @@ public class BatchConfiguration {
         //严格模式（默认为true：即资源文件不存在会抛出异常，阻断当前job）
         txtItemReader.setStrict(true);
         //读取编码（默认为ISO-8859-1）
-        txtItemReader.setEncoding("UTF-8");
+        txtItemReader.setEncoding(SeedConstants.DEFAULT_CHARSET);
         //跳过标题行（这里跳过了前2行）
         txtItemReader.setLinesToSkip(2);
         //行映射（将每行映射为一个对象）

@@ -1,7 +1,7 @@
 package com.jadyer.seed.server.core;
 
+import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.ConfigUtil;
-import com.jadyer.seed.comm.util.MinaUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
@@ -38,7 +38,7 @@ public class ServerProtocolTCPDecoder implements MessageDecoder {
         if(session.getLocalAddress().toString().contains(":" + ConfigUtil.INSTANCE.getProperty("server.port.tcp"))){
             byte[] messageLength = new byte[6];
             in.get(messageLength);
-            if(in.limit() >= Integer.parseInt(StringUtils.toEncodedString(messageLength, Charset.forName(MinaUtil.DEFAULT_CHARSET)))){
+            if(in.limit() >= Integer.parseInt(StringUtils.toEncodedString(messageLength, Charset.forName(SeedConstants.DEFAULT_CHARSET)))){
                 return MessageDecoderResult.OK;
             }else{
                 return MessageDecoderResult.NEED_DATA;
@@ -52,9 +52,9 @@ public class ServerProtocolTCPDecoder implements MessageDecoder {
     public MessageDecoderResult decode(IoSession session, IoBuffer in, ProtocolDecoderOutput out) throws Exception {
         byte[] message = new byte[in.limit()];
         in.get(message);
-        String fullMessage = StringUtils.toEncodedString(message, Charset.forName(MinaUtil.DEFAULT_CHARSET));
+        String fullMessage = StringUtils.toEncodedString(message, Charset.forName(SeedConstants.DEFAULT_CHARSET));
         Token token = new Token();
-        token.setBusiCharset(MinaUtil.DEFAULT_CHARSET);
+        token.setBusiCharset(SeedConstants.DEFAULT_CHARSET);
         token.setBusiType(Token.BUSI_TYPE_TCP);
         token.setBusiCode(fullMessage.substring(6, 11));
         token.setBusiMessage(fullMessage);

@@ -1,6 +1,6 @@
 package com.jadyer.seed.seedoc.web.controller;
 
-import com.jadyer.seed.comm.constant.CommonResult;
+import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.seedoc.web.model.Api;
 import com.jadyer.seed.seedoc.web.service.ApiService;
 import org.springframework.stereotype.Controller;
@@ -36,23 +36,23 @@ public class ApiController {
 
     @ResponseBody
     @GetMapping("/get/{id}")
-    public CommonResult get(@PathVariable long id){
-        return new CommonResult(apiService.get(id));
+    public CommResult<Api> get(@PathVariable long id){
+        return CommResult.success(apiService.get(id));
     }
 
 
     @ResponseBody
     @PostMapping("delete/{id}")
-    public CommonResult delete(@PathVariable long id){
+    public CommResult delete(@PathVariable long id){
         apiService.delete(id);
-        return new CommonResult();
+        return CommResult.success();
     }
 
 
     @ResponseBody
     @PostMapping("/upsert")
-    public CommonResult upsert(Api api){
-        return new CommonResult(apiService.upsert(api));
+    public CommResult<Api> upsert(Api api){
+        return CommResult.success(apiService.upsert(api));
     }
 
 

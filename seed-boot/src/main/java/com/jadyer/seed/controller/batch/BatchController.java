@@ -1,6 +1,6 @@
 package com.jadyer.seed.controller.batch;
 
-import com.jadyer.seed.comm.constant.CommonResult;
+import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.util.LogUtil;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -25,10 +25,10 @@ public class BatchController {
     private JobLauncher jobLauncher;
 
     @RequestMapping("/calcBill")
-    CommonResult calcBill() throws Exception {
+    CommResult<JobExecution> calcBill() throws Exception {
         JobParameters jobParameters = new JobParametersBuilder().addDate("date", new Date()).toJobParameters();
         JobExecution execution = jobLauncher.run(importPeopleJob, jobParameters);
         LogUtil.getLogger().info("Job已启动-->{}", execution);
-        return new CommonResult(execution);
+        return CommResult.success(execution);
     }
 }

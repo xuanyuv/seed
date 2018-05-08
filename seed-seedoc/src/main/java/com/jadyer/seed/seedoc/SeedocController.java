@@ -63,7 +63,7 @@ public class SeedocController {
         return new ResponseEntity<>(FileUtils.readFileToByteArray(new File("")), headers, status);
         */
         response.setContentType("application/octet-stream");
-        response.setHeader("Content-disposition", "attachment; filename=" + new String(filename.getBytes("UTF-8"), "ISO8859-1"));
+        response.setHeader("Content-disposition", "attachment; filename=" + new String(filename.getBytes(SeedConstants.DEFAULT_CHARSET), "ISO8859-1"));
         OutputStream os = new BufferedOutputStream(response.getOutputStream());
         byte[] buff = new byte[1024];
         int len;

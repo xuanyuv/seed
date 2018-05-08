@@ -102,8 +102,8 @@ public class LogAspectOld {
         LogUtil.getLogger().info("{}()-->{}被调用，出参为[{}]，Duration[{}]ms", methodInfo, request.getRequestURI(), returnInfo, endTime-startTime);
         LogUtil.getLogger().info("---------------------------------------------------------------------------------------------");
         //注意這里一定要原封不动的返回joinPoint.proceed()结果，若返回JSON.toJSONString(respData)则会报告下面的异常
-        //java.lang.String cannot be cast to com.jadyer.seed.comm.constant.CommonResult
-        //这是由于JSON.toJSONString(respData)得到的是字符串，而实际Controller方法里面返回的是CommonResult对象
+        //java.lang.String cannot be cast to com.jadyer.seed.comm.constant.CommResult
+        //这是由于JSON.toJSONString(respData)得到的是字符串，而实际Controller方法里面返回的是CommResult对象
         return respData;
     }
 }

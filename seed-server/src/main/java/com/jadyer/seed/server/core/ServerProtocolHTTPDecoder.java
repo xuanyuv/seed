@@ -1,7 +1,7 @@
 package com.jadyer.seed.server.core;
 
+import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.ConfigUtil;
-import com.jadyer.seed.comm.util.MinaUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
@@ -36,9 +36,9 @@ public class ServerProtocolHTTPDecoder implements MessageDecoder {
     public MessageDecoderResult decode(IoSession session, IoBuffer in, ProtocolDecoderOutput out) throws Exception {
         byte[] message = new byte[in.limit()];
         in.get(message);
-        String fullMessage = StringUtils.toEncodedString(message, Charset.forName(MinaUtil.DEFAULT_CHARSET));
+        String fullMessage = StringUtils.toEncodedString(message, Charset.forName(SeedConstants.DEFAULT_CHARSET));
         Token token = new Token();
-        token.setBusiCharset(MinaUtil.DEFAULT_CHARSET);
+        token.setBusiCharset(SeedConstants.DEFAULT_CHARSET);
         token.setBusiType(Token.BUSI_TYPE_HTTP);
         token.setFullMessage(fullMessage);
         if(fullMessage.startsWith("GET")){
@@ -130,7 +130,7 @@ public class ServerProtocolHTTPDecoder implements MessageDecoder {
          */
         byte[] messages = new byte[in.limit()];
         in.get(messages);
-        String message = StringUtils.toEncodedString(messages, Charset.forName(MinaUtil.DEFAULT_CHARSET));
+        String message = StringUtils.toEncodedString(messages, Charset.forName(SeedConstants.DEFAULT_CHARSET));
         /*
          * 授理GET请求
          */
@@ -153,11 +153,11 @@ public class ServerProtocolHTTPDecoder implements MessageDecoder {
                         //取HTTP_POST请求报文体
                         String messageBody = message.split("\r\n\r\n")[1];
                         try {
-                            if(contentLength == messageBody.getBytes(MinaUtil.DEFAULT_CHARSET).length){
+                            if(contentLength == messageBody.getBytes(SeedConstants.DEFAULT_CHARSET).length){
                                 return true;
                             }
                         } catch (UnsupportedEncodingException e) {
-                            throw new IllegalArgumentException("将HTTP_POST请求报文体转为byte[]时发生异常：Unsupported Encoding-->[" + MinaUtil.DEFAULT_CHARSET + "]");
+                            throw new IllegalArgumentException("将HTTP_POST请求报文体转为byte[]时发生异常：Unsupported Encoding-->[" + SeedConstants.DEFAULT_CHARSET + "]");
                         }
                     }
                 }
