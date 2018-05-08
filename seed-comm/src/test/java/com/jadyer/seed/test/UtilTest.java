@@ -11,7 +11,6 @@ import com.jadyer.seed.comm.util.MoneyUtil;
 import com.jadyer.seed.comm.util.OSSUtil;
 import com.jadyer.seed.comm.util.PasswordUtil;
 import com.jadyer.seed.comm.util.ValidatorUtil;
-import org.apache.commons.codec.DecoderException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -28,7 +27,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.Date;
@@ -45,7 +43,7 @@ public class UtilTest {
 
 
     @Test
-    public void passwordUtilTest() throws DecoderException, UnsupportedEncodingException {
+    public void passwordUtilTest() {
         String password = "xuanyu";
         String passwordHash = PasswordUtil.createHash(password, "jadyer");
         System.out.println("password hash = [" + passwordHash + "]");
@@ -282,9 +280,9 @@ public class UtilTest {
      */
     @Test
     public void validatorUtilTest(){
-        User user = new User();
+        ValidateUser user = new ValidateUser();
         //user.setName("铁面生");
-        String validateMsg = ValidatorUtil.validate(user);
+        String validateMsg = ValidatorUtil.validate(user, "id");
         System.out.print("User验证结果为[" + validateMsg + "]-->");
         if(StringUtils.isBlank(validateMsg)){
             System.out.println("验证通过");
@@ -292,7 +290,7 @@ public class UtilTest {
             System.out.println("验证未通过");
         }
         System.out.println("-------------------------------");
-        UserDetail userDetail = new UserDetail();
+        ValidateUserDetail userDetail = new ValidateUserDetail();
         userDetail.setId(2);
         //userDetail.setSex("M");
         validateMsg = ValidatorUtil.validate(userDetail);
@@ -303,7 +301,7 @@ public class UtilTest {
             System.out.println("验证未通过");
         }
     }
-    class User{
+    class ValidateUser{
         @Min(1)
         private int id;
         @NotBlank
@@ -321,7 +319,7 @@ public class UtilTest {
             this.name = name;
         }
     }
-    public class UserDetail extends User{
+    public class ValidateUserDetail extends ValidateUser {
         @NotBlank
         @Pattern(regexp="^M|F$", message="性别只能传M或F")
         private String sex;

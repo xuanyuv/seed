@@ -6,7 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.util.Map;
 import java.util.Set;
 
@@ -81,34 +80,15 @@ import java.util.Set;
  * Created by 玄玉<http://jadyer.cn/> on 2015/06/09 23:25.
  */
 public final class ValidatorUtil {
-    private static Validator validator = null;
-
-    static{
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
-    }
+    private static Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     private ValidatorUtil() {}
 
 
     /**
-     * 判断属性是否属于例外属性列表
-     * @return true--是例外属性,false--不是例外属性
-     */
-    private static boolean isExcept(String field, String... exceptFieldName){
-        for(String obj : exceptFieldName){
-            if(StringUtils.isNotBlank(obj) && field.contains(obj)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    /**
      * 验证对象中的属性的值是否符合注解定义
      * @param obj 需要验证的对象，若其父类的属性也有验证注解则会一并验证
-     * @return 返回空字符串""表示验证通过,否则返回错误信息,多个字段的错误信息用英文分号[;]分隔
+     * @return 返回空字符串""表示验证通过，否则返回错误信息
      */
     public static String validate(Object obj){
         return validate(obj, new String[]{});
@@ -119,10 +99,10 @@ public final class ValidatorUtil {
      * 验证对象中的属性的值是否符合注解定义
      * @param obj             需要验证的对象，若其父类的属性也有验证注解则会一并验证
      * @param exceptFieldName 不需要验证的属性
-     * @return 返回空字符串""表示验证通过,否则返回错误信息,多个字段的错误信息用英文分号[;]分隔
+     * @return 返回空字符串""表示验证通过，否则返回错误信息
      */
-    private static String validate(Object obj, String... exceptFieldName){
-        String validateMsg = "";
+    public static String validate(Object obj, String... exceptFieldName){
+        StringBuilder sb = new StringBuilder();
         if(null == obj){
             return "被验证对象不能为null";
         }
@@ -130,19 +110,23 @@ public final class ValidatorUtil {
         for(ConstraintViolation<Object> constraintViolation : validateSet){
             String field = constraintViolation.getPropertyPath().toString();
             String message = constraintViolation.getMessage();
-            if(!isExcept(field, exceptFieldName)){
-                //id:最小不能小于1;name:不能为空;
-                validateMsg += field + ":" + message + ";";
+            if(!StringUtils.equalsAnyIgnoreCase(field, exceptFieldName)){
+                //id:最小不能小于1
+                //name:不能为空
+                sb.append(field).append(": ").append(message).append("\r\n");
             }
         }
-        return validateMsg;
+        if(StringUtils.isNotBlank(sb)){
+            sb.insert(0, "\r\n");
+        }
+        return sb.toString();
     }
 
 
     /**
      * 验证对象中的属性的值是否符合注解定义
      * @param obj 需要验证的对象，若其父类的属性也有验证注解则会一并验证
-     * @return 返回空Map<String, String>(not null)表示验证通过,否则会将各错误字段作为key放入Map,value为错误信息
+     * @return 返回空Map<String, String>(not null)表示验证通过，否则会将各错误字段作为key放入Map,value为错误信息
      */
     public static Map<String, String> validateToMap(Object obj){
         return validateToMap(obj, new String[]{});
@@ -153,9 +137,9 @@ public final class ValidatorUtil {
      * 验证对象中的属性的值是否符合注解定义
      * @param obj             需要验证的对象，若其父类的属性也有验证注解则会一并验证
      * @param exceptFieldName 不需要验证的属性
-     * @return 返回空Map<String, String>(not null)表示验证通过,否则会将各错误字段作为key放入Map,value为错误信息
+     * @return 返回空Map<String, String>(not null)表示验证通过，否则会将各错误字段作为key放入Map,value为错误信息
      */
-    private static Map<String, String> validateToMap(Object obj, String... exceptFieldName){
+    public static Map<String, String> validateToMap(Object obj, String... exceptFieldName){
         Map<String, String> resultMap = Maps.newHashMap();
         if(null == obj){
             throw new NullPointerException("被验证对象不能为null");
@@ -164,7 +148,7 @@ public final class ValidatorUtil {
         for(ConstraintViolation<Object> constraintViolation : validateSet){
             String field = constraintViolation.getPropertyPath().toString();
             String message = constraintViolation.getMessage();
-            if(!isExcept(field, exceptFieldName)){
+            if(!StringUtils.equalsAnyIgnoreCase(field, exceptFieldName)){
                 resultMap.put(field, message);
             }
         }
