@@ -106,6 +106,7 @@ public class GenerateHelper {
          *     this.bindStatus = bindStatus;
          * }
          */
+        Map<String, String> fieldnameMap = new HashMap<>();
         List<Column> columnList = DBHelper.getColumnList(tablename);
         for(int i=0; i<columnList.size(); i++){
             if(StringUtils.equalsAnyIgnoreCase(columnList.get(i).getName(), "id", "create_time", "update_time")){
@@ -142,6 +143,8 @@ public class GenerateHelper {
             if(i+1 != columnList.size()-2){
                 methods.append("\n\n");
             }
+            //收集属性，供分页查询时作为条件
+            fieldnameMap.put(fieldname, javaType);
         }
         /*
          * 用户信息
@@ -174,6 +177,7 @@ public class GenerateHelper {
         sharedVars.put("fields", fields.toString());
         sharedVars.put("methods", methods.toString());
         sharedVars.put("comments", comments.toString());
+        sharedVars.put("fieldnameMap", fieldnameMap);
         if(hasColumnAnnotation){
             sharedVars.put("importColumnAnnotation", importColumnAnnotation);
         }

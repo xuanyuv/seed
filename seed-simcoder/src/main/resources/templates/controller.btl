@@ -22,21 +22,10 @@ public class ${CLASS_NAME}Controller {
     @Resource
     private ${CLASS_NAME}Service ${CLASS_NAME_uncapitalize}Service;
 
-    /**
-     * 分页查询
-     * @param pageNo 页码，起始值为0，未传此值则默认取0
-     */
-    @GetMapping("/list")
-    public String list(String pageNo, HttpServletRequest request){
-        request.setAttribute("page", ${CLASS_NAME_uncapitalize}Service.list(pageNo));
-        return "${TABLE_NAME_convertpoint}.list";
-    }
-
-
     @ResponseBody
-    @GetMapping("/get/{id}")
-    public CommonResult<${CLASS_NAME}> get(@PathVariable long id){
-        return CommResult.success(${CLASS_NAME_uncapitalize}Service.get(id));
+    @PostMapping("/upsert")
+    public CommResult<${CLASS_NAME}> upsert(${CLASS_NAME} ${CLASS_NAME_uncapitalize}){
+        return CommResult.success(${CLASS_NAME_uncapitalize}Service.upsert(${CLASS_NAME_uncapitalize}));
     }
 
 
@@ -49,8 +38,19 @@ public class ${CLASS_NAME}Controller {
 
 
     @ResponseBody
-    @PostMapping("/upsert")
-    public CommonResult<${CLASS_NAME}> upsert(${CLASS_NAME} ${CLASS_NAME_uncapitalize}){
-        return CommResult.success(${CLASS_NAME_uncapitalize}Service.upsert(${CLASS_NAME_uncapitalize}));
+    @GetMapping("/get/{id}")
+    public CommResult<${CLASS_NAME}> get(@PathVariable long id){
+        return CommResult.success(${CLASS_NAME_uncapitalize}Service.get(id));
+    }
+
+
+    /**
+     * @param pageNo 此值传null或空字符串，则默认查询所有（分页查询时，第一页则此值传"0"）
+     * @param ${CLASS_NAME_uncapitalize} 此值传null或空对象，则默认查询所有
+     */
+    @GetMapping("/list")
+    public String list(String pageNo, ${CLASS_NAME} ${CLASS_NAME_uncapitalize}, HttpServletRequest request){
+        request.setAttribute("page", ${CLASS_NAME_uncapitalize}Service.list(pageNo, ${CLASS_NAME_uncapitalize}));
+        return "${TABLE_NAME_convertpoint}.list";
     }
 }
