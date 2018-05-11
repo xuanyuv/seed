@@ -112,7 +112,7 @@ public class GenerateHelper {
             if(StringUtils.equalsAnyIgnoreCase(columnList.get(i).getName(), "id", "create_time", "update_time")){
                 continue;
             }
-            ///** 字段注释 */
+            ///** 属性注释 */
             if(StringUtils.isNotBlank(columnList.get(i).getComment())){
                 fields.append("    /** ").append(columnList.get(i).getComment()).append(" */").append("\n");
             }
