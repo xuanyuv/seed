@@ -14,7 +14,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * ${comments}
+ * ${tablecomment}
+ * Generated from seed-simcoder by 玄玉<http://jadyer.cn/> on ${date(), "yyyy/MM/dd HH:mm"}.
  */
 @Controller
 @RequestMapping("/${TABLE_NAME_nounderline}")

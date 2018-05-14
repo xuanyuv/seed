@@ -6,7 +6,6 @@ import com.jadyer.seed.simcoder.model.Column;
 import com.jadyer.seed.simcoder.model.Table;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.resource.ClasspathResourceLoader;
@@ -14,7 +13,6 @@ import org.beetl.core.resource.ClasspathResourceLoader;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,29 +21,20 @@ import java.util.Map;
  * Created by 玄玉<http://jadyer.cn/> on 2017/9/8 23:22.
  */
 public class GenerateHelper {
-    private static final String PACKAGE_MODEL = SimcoderRun.PACKGET_PREFIX + ".web.model";
-    private static final String PACKAGE_SERVICE = SimcoderRun.PACKGET_PREFIX + ".web.service";
-    private static final String PACKAGE_REPOSITORY = SimcoderRun.PACKGET_PREFIX + ".web.repository";
-    private static final String PACKAGE_CONTROLLER = SimcoderRun.PACKGET_PREFIX + ".web.controller";
-    private static final String importColumnAnnotation = "\nimport javax.persistence.Column;";
-    private static final String importDate = "import java.util.Date;\n";
-    private static final String importBigDecimal = "import java.math.BigDecimal;\n";
-    private static final String importBigDecimalAndDate = "import java.math.BigDecimal;\nimport java.util.Date;\n";
     private static GroupTemplate groupTemplate = null;
     static {
         try {
             groupTemplate = new GroupTemplate(new ClasspathResourceLoader("templates/"), Configuration.defaultConfiguration());
-            ////v2.8.1暂不支持：https://github.com/javamonkey/beetl2.0/issues/351
-            //groupTemplate.setSharedVars(new HashMap<String, Object>(){
-            //    private static final long serialVersionUID = -7774932094711543319L;
-            //    {
-            //        put("serialVersionUID", JadyerUtil.buildSerialVersionUID());
-            //        put("PACKAGE_MODEL", SimcoderRun.PACKGET_PREFIX + ".web.model");
-            //        put("PACKAGE_SERVICE", SimcoderRun.PACKGET_PREFIX + ".web.service");
-            //        put("PACKAGE_CONTROLLER", SimcoderRun.PACKGET_PREFIX + ".web.controller");
-            //        put("PACKAGE_REPOSITORY", SimcoderRun.PACKGET_PREFIX + ".web.repository");
-            //    }
-            //});
+            groupTemplate.setSharedVars(new HashMap<String, Object>(){
+                private static final long serialVersionUID = -7774932094711543319L;
+                {
+                    put("serialVersionUID", JadyerUtil.buildSerialVersionUID());
+                    put("PACKAGE_MODEL", SimcoderRun.PACKGET_PREFIX + ".web.model");
+                    put("PACKAGE_SERVICE", SimcoderRun.PACKGET_PREFIX + ".web.service");
+                    put("PACKAGE_CONTROLLER", SimcoderRun.PACKGET_PREFIX + ".web.controller");
+                    put("PACKAGE_REPOSITORY", SimcoderRun.PACKGET_PREFIX + ".web.repository");
+                }
+            });
         } catch (IOException e) {
             System.err.println("加载Beetl模板失败，堆栈轨迹如下：");
             e.printStackTrace();
@@ -91,21 +80,11 @@ public class GenerateHelper {
         boolean hasDate = false;
         boolean hasBigDecimal = false;
         boolean hasColumnAnnotation = false;
+        boolean hasNotNullAnnotation = false;
+        boolean hasNotBlankAnnotation = false;
+        boolean hasNotBlankSizeAnnotation = false;
         StringBuilder fields = new StringBuilder();
         StringBuilder methods = new StringBuilder();
-        /*
-         * /** 微信或QQ公众平台绑定状态：0--未绑定，1--已绑定 *\/
-         * @Column(name="bind_status")
-         * private int bindStatus;
-         *
-         * public int getBindStatus() {
-         *     return bindStatus;
-         * }
-         *
-         * public void setBindStatus(int bindStatus) {
-         *     this.bindStatus = bindStatus;
-         * }
-         */
         Map<String, String> fieldnameMap = new HashMap<>();
         List<Column> columnList = DBHelper.getColumnList(tablename);
         for(int i=0; i<columnList.size(); i++){
@@ -116,6 +95,24 @@ public class GenerateHelper {
             if(StringUtils.isNotBlank(columnList.get(i).getComment())){
                 fields.append("    /** ").append(columnList.get(i).getComment()).append(" */").append("\n");
             }
+            //暂时只对Integer、Long、String三种类型增加校验注解：@NotNull @NotBlank @Size(max=16)
+            String javaType = DBHelper.buildJavatypeFromDbtype(columnList.get(i).getType());
+            if(!columnList.get(i).isNullable()){
+                if("Integer".equals(javaType) || "Long".equals(javaType)){
+                    hasNotNullAnnotation = true;
+                    fields.append("    @NotNull").append("\n");
+                    fields.append("    //@Min(1)").append("\n");
+                    fields.append("    //@Max(3)").append("\n");
+                }
+                if("String".equals(javaType)){
+                    hasNotBlankAnnotation = true;
+                    fields.append("    @NotBlank").append("\n");
+                    if(columnList.get(i).getLength() > 0){
+                        hasNotBlankSizeAnnotation = true;
+                        fields.append("    @Size(max=").append(columnList.get(i).getLength()).append(")").append("\n");
+                    }
+                }
+            }
             //@Column(name="bind_status")
             String fieldname = DBHelper.buildFieldnameFromColumnname(columnList.get(i).getName());
             if(!fieldname.equals(columnList.get(i).getName())){
@@ -123,7 +120,6 @@ public class GenerateHelper {
                 fields.append("    @Column(name=\"").append(columnList.get(i).getName()).append("\")").append("\n");
             }
             //private int bindStatus;
-            String javaType = DBHelper.buildJavatypeFromDbtype(columnList.get(i).getType());
             if("Date".equals(javaType)){
                 hasDate = true;
             }
@@ -150,25 +146,18 @@ public class GenerateHelper {
          * 用户信息
          * Generated from seed-simcoder by 玄玉<http://jadyer.cn/> on 2017/9/5 14:40.
          */
-        StringBuilder comments = new StringBuilder();
         if(StringUtils.isNotBlank(tablecomment)){
             if(tablecomment.endsWith("表")){
                 tablecomment = tablecomment.substring(0, tablecomment.length()-1);
             }
-            comments.append(tablecomment).append("\n");
-            comments.append(" * ");
+        }else{
+            tablecomment = tablename;
         }
-        comments.append("Generated from seed-simcoder by 玄玉<http://jadyer.cn/> on ").append(DateFormatUtils.format(new Date(), "yyyy/MM/dd HH:mm."));
         /*
          * 设置Beetl共享变量（目前2.8.1版本：共享变量只能set一次，第二次set时会冲掉之前所有的，因为源码里是直接改变对象引用的）
          */
         String classname = DBHelper.buildClassnameFromTablename(tablename);
         Map<String, Object> sharedVars = new HashMap<>();
-        sharedVars.put("serialVersionUID", JadyerUtil.buildSerialVersionUID());
-        sharedVars.put("PACKAGE_MODEL", PACKAGE_MODEL);
-        sharedVars.put("PACKAGE_SERVICE", PACKAGE_SERVICE);
-        sharedVars.put("PACKAGE_CONTROLLER", PACKAGE_CONTROLLER);
-        sharedVars.put("PACKAGE_REPOSITORY", PACKAGE_REPOSITORY);
         sharedVars.put("CLASS_NAME", classname);
         sharedVars.put("CLASS_NAME_uncapitalize", StringUtils.uncapitalize(classname));
         sharedVars.put("TABLE_NAME", tablename);
@@ -176,18 +165,14 @@ public class GenerateHelper {
         sharedVars.put("TABLE_NAME_convertpoint", (tablename.startsWith("t_") ? tablename.substring(2) : tablename).replaceAll("_", "."));
         sharedVars.put("fields", fields.toString());
         sharedVars.put("methods", methods.toString());
-        sharedVars.put("comments", comments.toString());
+        sharedVars.put("tablecomment", tablecomment);
         sharedVars.put("fieldnameMap", fieldnameMap);
-        if(hasColumnAnnotation){
-            sharedVars.put("importColumnAnnotation", importColumnAnnotation);
-        }
-        if(hasDate && hasBigDecimal){
-            sharedVars.put("importBigDecimalDate", importBigDecimalAndDate);
-        }else if(hasBigDecimal){
-            sharedVars.put("importBigDecimalDate", importBigDecimal);
-        }else if(hasDate){
-            sharedVars.put("importBigDecimalDate", importDate);
-        }
+        sharedVars.put("hasDate", hasDate);
+        sharedVars.put("hasBigDecimal", hasBigDecimal);
+        sharedVars.put("hasColumnAnnotation", hasColumnAnnotation);
+        sharedVars.put("hasNotNullAnnotation", hasNotNullAnnotation);
+        sharedVars.put("hasNotBlankAnnotation", hasNotBlankAnnotation);
+        sharedVars.put("hasNotBlankSizeAnnotation", hasNotBlankSizeAnnotation);
         groupTemplate.setSharedVars(sharedVars);
         /*
          * 解析Beetl模板

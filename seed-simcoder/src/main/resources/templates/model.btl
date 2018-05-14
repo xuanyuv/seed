@@ -3,12 +3,31 @@ package ${PACKAGE_MODEL};
 import com.jadyer.seed.comm.jpa.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-${importColumnAnnotation!}
+<%if(hasNotBlankAnnotation){%>
+import org.hibernate.validator.constraints.NotBlank;
+<%}%>
+
+<%if(hasColumnAnnotation){%>
+import javax.persistence.Column;
+<%}%>
 import javax.persistence.Entity;
 import javax.persistence.Table;
-${importBigDecimalDate!}
+<%if(hasNotNullAnnotation){%>
+import javax.validation.constraints.NotNull;
+<%}%>
+<%if(hasNotBlankSizeAnnotation){%>
+import javax.validation.constraints.Size;
+<%}%>
+<%if(hasBigDecimal){%>
+import java.math.BigDecimal;
+<%}%>
+<%if(hasDate){%>
+import java.util.Date;
+<%}%>
+
 /**
- * ${comments}
+ * ${tablecomment}
+ * Generated from seed-simcoder by 玄玉<http://jadyer.cn/> on ${date(), "yyyy/MM/dd HH:mm"}.
  */
 @Entity
 @DynamicInsert

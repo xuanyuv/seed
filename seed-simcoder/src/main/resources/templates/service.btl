@@ -15,7 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 
 /**
- * ${comments}
+ * ${tablecomment}
+ * Generated from seed-simcoder by 玄玉<http://jadyer.cn/> on ${date(), "yyyy/MM/dd HH:mm"}.
  */
 @Service
 public class ${CLASS_NAME}Service {
