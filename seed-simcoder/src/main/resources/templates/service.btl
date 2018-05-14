@@ -40,10 +40,10 @@ public class ${CLASS_NAME}Service {
 
 
     /**
-     * @param pageNo 此值传null或空字符串，则默认查询所有（分页查询时，第一页则此值传"0"）
-     * @param ${CLASS_NAME_uncapitalize} 此值传null或空对象，则默认查询所有
+     * @param pageNo 页码从“1”开始，传“0”表示不分页
+     * @param ${CLASS_NAME_uncapitalize} null或空对象表示查询所有
      */
-    public Page<${CLASS_NAME}> list(String pageNo, ${CLASS_NAME} ${CLASS_NAME_uncapitalize}){
+    public Page<${CLASS_NAME}> list(int pageNo, ${CLASS_NAME} ${CLASS_NAME_uncapitalize}){
         //按条件查询
         Condition<${CLASS_NAME}> spec = Condition.and();
         if(null != ${CLASS_NAME_uncapitalize}){
@@ -63,15 +63,9 @@ public class ${CLASS_NAME}Service {
         <%}%>
         <%}%>
         }
-        //计算查询范围
-        int pageSize = 10;
-        if(StringUtils.isBlank(pageNo)){
-            pageNo = "0";
-            pageSize = 999;
-        }
         //查询数据
         Sort sort = new Sort(Sort.Direction.DESC, "id");
-        Pageable pageable = new PageRequest(Integer.parseInt(pageNo), pageSize, sort);
+        Pageable pageable = new PageRequest(pageNo>0 ? pageNo-1 : 0, pageNo>0 ? 10 : 999, sort);
         return ${CLASS_NAME_uncapitalize}Repository.findAll(spec, pageable);
     }
 }

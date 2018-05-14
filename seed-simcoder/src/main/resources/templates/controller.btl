@@ -45,11 +45,11 @@ public class ${CLASS_NAME}Controller {
 
 
     /**
-     * @param pageNo 此值传null或空字符串，则默认查询所有（分页查询时，第一页则此值传"0"）
-     * @param ${CLASS_NAME_uncapitalize} 此值传null或空对象，则默认查询所有
+     * @param pageNo 页码从“1”开始，传“0”表示不分页
+     * @param ${CLASS_NAME_uncapitalize} null或空对象表示查询所有
      */
     @GetMapping("/list")
-    public String list(String pageNo, ${CLASS_NAME} ${CLASS_NAME_uncapitalize}, HttpServletRequest request){
+    public String list(int pageNo, ${CLASS_NAME} ${CLASS_NAME_uncapitalize}, HttpServletRequest request){
         request.setAttribute("page", ${CLASS_NAME_uncapitalize}Service.list(pageNo, ${CLASS_NAME_uncapitalize}));
         return "${TABLE_NAME_convertpoint}.list";
     }
