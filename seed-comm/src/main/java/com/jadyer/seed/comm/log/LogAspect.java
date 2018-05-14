@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.exception.SeedException;
-import com.jadyer.seed.comm.log.annotation.EnableAutoValid;
+import com.jadyer.seed.comm.log.annotation.EnableFormValid;
 import com.jadyer.seed.comm.util.ValidatorUtil;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -51,7 +51,7 @@ class LogAspect implements MethodInterceptor {
         log.info("{}()被调用，入参为{}", methodInfo, JSON.toJSONStringWithDateFormat(argsList, JSON.DEFFAULT_DATE_FORMAT, serializerFeatures));
         //表单验证
         for(Object obj : objs){
-            if(null!=obj && (obj.getClass().isAnnotationPresent(EnableAutoValid.class) || invocation.getMethod().isAnnotationPresent(EnableAutoValid.class))){
+            if(null!=obj && (obj.getClass().isAnnotationPresent(EnableFormValid.class) || invocation.getMethod().isAnnotationPresent(EnableFormValid.class))){
                 String validateResult = ValidatorUtil.validate(obj);
                 log.info("{}()的表单-->{}", methodInfo, StringUtils.isBlank(validateResult)?"验证通过":"验证未通过");
                 if (StringUtils.isNotBlank(validateResult)) {
