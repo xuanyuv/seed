@@ -48,6 +48,12 @@ import java.util.Set;
  * 常用的pojo配置例子
  * @Min(value=3)
  * private int id;
+ * @NotNull
+ * @Min(3)
+ * @Max(4)
+ * private Integer id;
+ * @NotEmpty
+ * private List<OssInfo> ossInfoList = new ArrayList<>();
  * @NotBlank
  * @Size(max=10)
  * @Pattern(regexp="^[\\u4e00-\\u9fa5]+(·[\\u4e00-\\u9fa5]+)*$", message="不合法的中文姓名")
