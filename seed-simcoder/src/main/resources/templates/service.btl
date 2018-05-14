@@ -50,9 +50,9 @@ public class ${CLASS_NAME}Service {
         <%
         for(entry in fieldnameMap){
         var fielename_getter = CLASS_NAME_uncapitalize + ".get" + @org.apache.commons.lang3.StringUtils.capitalize(entry.key) + "()";
-        if(entry.value=="int" || entry.value=="long"){
+        if(entry.value=="Integer" || entry.value=="Long"){
         %>
-            if(${fielename_getter} > 0){
+            if(null != ${fielename_getter}){
                 spec.eq("${entry.key}", ${fielename_getter});
             }
         <%}%>

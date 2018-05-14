@@ -141,10 +141,10 @@ class DBHelper {
             throw new RuntimeException("数据库列类型不能为空");
         }
         if(StringUtils.equalsAnyIgnoreCase(dbtype, "tinyint", "smallint", "mediumint")){
-            return "int";
+            return "Integer";
         }
         if(StringUtils.equalsAnyIgnoreCase(dbtype, "int", "bigint")){
-            return "long";
+            return "Long";
         }
         if(StringUtils.equalsAnyIgnoreCase(dbtype, "char", "varchar", "tinytext", "text", "mediumtext")){
             return "String";

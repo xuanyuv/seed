@@ -133,7 +133,7 @@ public class GenerateHelper {
             fields.append("    private ").append(javaType).append(" ").append(fieldname).append(";").append("\n");
             //getter and setter
             methods.append("    public ").append(javaType).append(" get").append(StringUtils.capitalize(fieldname)).append("() {").append("\n");
-            methods.append("        return ").append(fieldname).append(";").append("\n");
+            methods.append("        return this.").append(fieldname).append(";").append("\n");
             methods.append("    }").append("\n");
             methods.append("\n");
             methods.append("    public void set").append(StringUtils.capitalize(fieldname)).append("(").append(javaType).append(" ").append(fieldname).append(") {").append("\n");
