@@ -65,7 +65,7 @@ class LogAspect implements MethodInterceptor {
         long endTime = System.currentTimeMillis();
         String returnInfo;
         if(null == respData){
-            returnInfo = "<>";
+            returnInfo = "<null>";
         }else if(respData instanceof ServletRequest) {
             returnInfo = "<javax.servlet.ServletRequest>";
         }else if(respData instanceof ServletResponse) {
