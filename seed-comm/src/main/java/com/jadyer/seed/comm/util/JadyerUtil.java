@@ -75,6 +75,7 @@ import java.util.Random;
 
 /**
  * 玄玉的开发工具类
+ * ---------------------------------------------------------------------------------------------------------------
  * @version v3.20
  * @history v3.20-->移动若干网络请求的相关方法至RequestUtil.java
  * @history v3.19-->移除buildSequenceNo()，可用IDUtil.java代替
@@ -112,6 +113,7 @@ import java.util.Random;
  * @history v1.3-->修改<code>getSysJournalNo()</code>实现细节为<code>java.util.UUID.randomUUID()</code>
  * @history v1.2-->新增<code>getString()</code>字节数组转为字符串方法
  * @history v1.1-->新增<code>getHexSign()</code>通过指定算法签名字符串方法
+ * ---------------------------------------------------------------------------------------------------------------
  * Created by 玄玉<http://jadyer.cn/> on 2012/12/22 19:00.
  */
 public final class JadyerUtil {

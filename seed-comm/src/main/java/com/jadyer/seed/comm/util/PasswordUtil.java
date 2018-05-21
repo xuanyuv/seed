@@ -11,14 +11,16 @@ import java.security.spec.InvalidKeySpecException;
 
 /**
  * 处理加盐Hash操作密码的工具类
+ * --------------------------------------------------------------------------------------------------------
  * <p>
  *     参考了以下两篇文章<br>
  *     http://drops.wooyun.org/papers/1066<br>
  *     https://github.com/defuse/password-hashing/blob/master/PasswordStorage.java
  * </p>
+ * --------------------------------------------------------------------------------------------------------
  * @version 1.0
  * @history 1.0-->初始化，增加加盐Hash以及密码验证的方法
- * @update 2016/7/7 13:12.
+ * --------------------------------------------------------------------------------------------------------
  * Created by 玄玉<http://jadyer.cn/> on 2016/7/7 9:37.
  */
 public final class PasswordUtil {

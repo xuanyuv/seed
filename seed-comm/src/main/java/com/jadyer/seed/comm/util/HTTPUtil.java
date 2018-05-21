@@ -161,7 +161,7 @@ import java.util.Map;
  * @history v2.6-->修复部分细节，增加入参出参的日志打印
  * @history v2.5-->修复<code>postWithUpload()</code>方法的<code>Map<String, String> params</code>参数传入null时无法上传文件的BUG
  * @history v2.4-->重命名GET和POST方法名,全局定义通信报文编码和连接读取超时时间,通信发生异常时修改为直接抛出RuntimeException
- * @history v2.3-->增加<code>sendPostRequestWithUpload()</code><code>sendPostRequestWithDownload()</code>方法,用于上传和下载文件
+ * @history v2.3-->增加<code>sendPostRequestWithUpload()</code><code>sendPostRequestWithDownload()</code>方法，用于上传和下载文件
  * @history v2.2-->增加<code>sendPostRequestBySocket()</code>方法,用于处理请求参数非字符串而是Map的情景
  * @history v2.1-->增加<code>sendTCPRequest()</code>方法,用于发送TCP请求
  * @history v2.0-->HttpClientUtil更名为HttpUtil,同时增加<code>sendPostRequestByJava()</code>和<code>sendPostRequestBySocket()</code>
@@ -173,6 +173,7 @@ import java.util.Map;
  * @history v1.2-->新增<code>sendPostRequest()</code>方法,用于发送HTTP协议报文体为任意字符串的POST请求
  * @history v1.1-->新增<code>sendPostSSLRequest()</code>方法,用于发送HTTPS的POST请求
  * @history v1.0-->新建<code>sendGetRequest()</code>和<code>sendPostRequest()</code>方法
+ * -----------------------------------------------------------------------------------------------------------
  * Created by 玄玉<http://jadyer.cn/> on 2012/2/1 15:02.
  */
 @SuppressWarnings("deprecation")
@@ -469,7 +470,7 @@ public final class HTTPUtil {
      * @param params       请求参数,无参数时传null即可
      * @return 远程主机响应正文
      */
-    public static String postWithUpload(String reqURL, String filename, InputStream is, String fileBodyName, Map<String, String> params){
+    public static String upload(String reqURL, String filename, InputStream is, String fileBodyName, Map<String, String> params){
         LogUtil.getLogger().info("请求{}的报文为-->>{}", reqURL, JadyerUtil.buildStringFromMap(params));
         String respData = "";
         HttpClient httpClient = new DefaultHttpClient();
@@ -533,7 +534,7 @@ public final class HTTPUtil {
      * @param params 请求参数,无参数时传null即可
      * @return 应答Map有两个key,isSuccess--yes or no,fullPath--isSuccess为yes时返回文件完整保存路径,failReason--isSuccess为no时返回下载失败的原因
      */
-    public static Map<String, String> postWithDownload(String reqURL, Map<String, String> params){
+    public static Map<String, String> download(String reqURL, Map<String, String> params){
         LogUtil.getLogger().info("请求{}的报文为-->>{}", reqURL, JadyerUtil.buildStringFromMap(params));
         Map<String, String> resultMap = new HashMap<>();
         HttpClient httpClient = new DefaultHttpClient();
@@ -594,7 +595,7 @@ public final class HTTPUtil {
                 if(StringUtils.isBlank(filename)){
                     filename = JadyerUtil.randomNumeric(16);
                 }
-                File localFile = new File(System.getProperty("java.io.tmpdir") + "/HTTPUtil-postWithDownload/" + filename);
+                File localFile = new File(System.getProperty("java.io.tmpdir") + "/seed/HTTPUtil-download/" + filename);
                 FileUtils.copyInputStreamToFile(entity.getContent(), localFile);
                 resultMap.put("fullPath", localFile.getCanonicalPath());
                 resultMap.put("isSuccess", "yes");

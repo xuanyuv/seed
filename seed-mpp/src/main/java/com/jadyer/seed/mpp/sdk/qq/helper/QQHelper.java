@@ -260,7 +260,7 @@ public final class QQHelper {
      */
     public static String downloadQQTempMediaFile(String accesstoken, String mediaId){
         String reqURL = QQConstants.URL_QQ_GET_TEMP_MEDIA_FILE.replace(QQConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken).replace(QQConstants.URL_PLACEHOLDER_MEDIAID, mediaId);
-        Map<String, String> resultMap = HTTPUtil.postWithDownload(reqURL, null);
+        Map<String, String> resultMap = HTTPUtil.download(reqURL, null);
         if("no".equals(resultMap.get("isSuccess"))){
             Map<String, String> errmap = JSON.parseObject(resultMap.get("failReason"), new TypeReference<Map<String, String>>(){});
             String errmsg = QQCodeEnum.getMsgByCode(Integer.parseInt((errmap.get("errcode"))));

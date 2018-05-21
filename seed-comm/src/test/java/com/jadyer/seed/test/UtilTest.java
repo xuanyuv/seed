@@ -139,14 +139,14 @@ public class UtilTest {
      * 文件上传测试
      */
     @Test
-    public void httpUtilForUploadTest() throws FileNotFoundException{
+    public void httpUtilForUploadTest() throws FileNotFoundException {
         String reqURL = "http://127.0.0.1:8080/engine/file/upload";
         String filename = "菱纱.jpg";
         InputStream is = new FileInputStream("E:\\Wallpaper\\菱纱.jpg");
         String fileBodyName = "fileData";
         Map<String, String> params = new HashMap<>();
         params.put("serialNo", UUID.randomUUID().toString().replaceAll("-", ""));
-        String respData = HTTPUtil.postWithUpload(reqURL, filename, is, fileBodyName, params);
+        String respData = HTTPUtil.upload(reqURL, filename, is, fileBodyName, params);
         System.out.println("文件上传完毕，收到应答报文" + respData);
     }
 
@@ -155,11 +155,11 @@ public class UtilTest {
      * 文件下载测试
      */
     @Test
-    public void httpUtilForDownloadTest() throws IOException{
+    public void httpUtilForDownloadTest() {
         String reqURL = "http://127.0.0.1:8080/engine/file/download";
         Map<String, String> params = new HashMap<>();
         params.put("sysCode", "33");
-        Map<String, String> resultMap = HTTPUtil.postWithDownload(reqURL, params);
+        Map<String, String> resultMap = HTTPUtil.download(reqURL, params);
         if("yes".equals(resultMap.get("isSuccess"))){
             System.out.println("文件下载成功，保存路径为" + resultMap.get("fullPath"));
         }else{

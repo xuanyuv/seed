@@ -277,7 +277,7 @@ public final class WeixinHelper {
      */
     public static String downloadWeixinTempMediaFile(String accesstoken, String mediaId){
         String reqURL = WeixinConstants.URL_WEIXIN_GET_TEMP_MEDIA_FILE.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken).replace(WeixinConstants.URL_PLACEHOLDER_MEDIAID, mediaId);
-        Map<String, String> resultMap = HTTPUtil.postWithDownload(reqURL, null);
+        Map<String, String> resultMap = HTTPUtil.download(reqURL, null);
         if("no".equals(resultMap.get("isSuccess"))){
             Map<String, String> errmap = JSON.parseObject(resultMap.get("failReason"), new TypeReference<Map<String, String>>(){});
             String errmsg = WeixinCodeEnum.getMsgByCode(Integer.parseInt((errmap.get("errcode"))));
