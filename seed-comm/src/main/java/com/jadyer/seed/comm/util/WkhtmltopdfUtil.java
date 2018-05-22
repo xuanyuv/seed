@@ -166,7 +166,7 @@ public final class WkhtmltopdfUtil {
      * java.io.IOException: Cannot run program "wkhtmltopdf" (in directory "/app/ifs/tmp/20180521"): error=2, 没有那个文件或目录
      * 所以Linux下既要传完整命令目录，不过Windows下直接传"wkhtmltopdf"就行（前提是已经加到环境变量）
      * -------------------------------------------------------------------------------------------------------
-     * @param commandPath    wkhtmltopdf命令目录
+     * @param commandPath    wkhtmltopdf命令完整目录
      * @param headerHtmlPath 页眉html文件（其源码必须是以＜!DOCTYPE html>打头的html字符串）
      * @param htmlPath       html文件路径（比如：/app/ifs/contract.html，可以是本地或网络完整路径，本地文件则需含文件名和后缀）
      * @param pdfPath        pdf存储路径（比如：/app/ifs/contract.pdf，包含文件名和后缀的完整路径）
