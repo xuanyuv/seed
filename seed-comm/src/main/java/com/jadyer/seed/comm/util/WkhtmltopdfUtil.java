@@ -137,7 +137,8 @@ import java.util.concurrent.Executors;
  *  --toc-l7-indentation*     <num>    Set indentation on level of the toc (default)
  *  --toc-no-dots*                     Do not use dots, in the toc
  * ------------------------------------------------------------------------------------------------------------
- * @version v1.1
+ * @version v1.2
+ * @version v1.2-->支持自定义wkhtmltopdf命令目录
  * @history v1.1-->适配Linux：注意要设置工作目录，以及命令要写其所在的完整目录
  * @history v1.0-->新建
  * ------------------------------------------------------------------------------------------------------------
@@ -145,6 +146,17 @@ import java.util.concurrent.Executors;
  */
 public final class WkhtmltopdfUtil {
     private WkhtmltopdfUtil() {}
+
+    public static boolean convert(String headerHtmlPath, String htmlPath, String pdfPath){
+        String commandPath;
+        if(System.getProperty("os.name").contains("Windows")){
+            commandPath = "wkhtmltopdf";
+        }else{
+            commandPath = "/opt/wkhtmltox/bin/wkhtmltopdf";
+        }
+        return convert(commandPath, headerHtmlPath, htmlPath, pdfPath);
+    }
+
 
     /**
      * HTML文件转为PDF文件
@@ -154,13 +166,13 @@ public final class WkhtmltopdfUtil {
      * java.io.IOException: Cannot run program "wkhtmltopdf" (in directory "/app/ifs/tmp/20180521"): error=2, 没有那个文件或目录
      * 所以Linux下既要传完整命令目录，不过Windows下直接传"wkhtmltopdf"就行（前提是已经加到环境变量）
      * -------------------------------------------------------------------------------------------------------
-     * @param commandPath    wkhtmltopdf命令目录（Linux下必传）
+     * @param commandPath    wkhtmltopdf命令目录
      * @param headerHtmlPath 页眉html文件（其源码必须是以＜!DOCTYPE html>打头的html字符串）
      * @param htmlPath       html文件路径（比如：/app/ifs/contract.html，可以是本地或网络完整路径，本地文件则需含文件名和后缀）
      * @param pdfPath        pdf存储路径（比如：/app/ifs/contract.pdf，包含文件名和后缀的完整路径）
      * @return 转换成功或失败
      */
-    public static boolean convert(String headerHtmlPath, String htmlPath, String pdfPath){
+    public static boolean convert(String commandPath, String headerHtmlPath, String htmlPath, String pdfPath){
         //PDF存储目录不存在，则新建
         File parent = new File(pdfPath).getParentFile();
         if(!parent.exists()){
@@ -168,11 +180,7 @@ public final class WkhtmltopdfUtil {
         }
         //组装命令
         StringBuilder cmd = new StringBuilder();
-        if(System.getProperty("os.name").contains("Windows")){
-            cmd.append("wkhtmltopdf");
-        }else{
-            cmd.append("/opt/wkhtmltox/bin/wkhtmltopdf");
-        }
+        cmd.append(commandPath);
         cmd.append(" --footer-center 第[page]页／共[topage]页");
         cmd.append(" --margin-top 30mm");
         cmd.append(" --margin-bottom 20mm");
@@ -181,7 +189,7 @@ public final class WkhtmltopdfUtil {
         cmd.append(" --header-html ").append(headerHtmlPath);
         Process process;
         try{
-            //执行命令
+            //执行命令（根据源HTML为网络路径或本地路径，来决定是否设置工作目录）
             String workPath = FilenameUtils.getFullPath(htmlPath);
             if(!htmlPath.startsWith("/") || StringUtils.isBlank(workPath)){
                 cmd.append(" ").append(htmlPath);
