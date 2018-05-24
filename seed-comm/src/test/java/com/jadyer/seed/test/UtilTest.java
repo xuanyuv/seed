@@ -271,6 +271,13 @@ public class UtilTest {
 
     @Test
     public void moneyUtilTest(){
+        System.out.println(MoneyUtil.toChinese("0"));
+        System.out.println(MoneyUtil.toChinese("00"));
+        System.out.println(MoneyUtil.toChinese("000"));
+        System.out.println(MoneyUtil.toChinese("0.0"));
+        System.out.println(MoneyUtil.toChinese("0.00"));
+        System.out.println(MoneyUtil.toChinese("0.000"));
+        System.out.println(MoneyUtil.toChinese("0.001"));
         Assert.assertEquals("玖仟玖佰玖拾玖万伍仟陆佰柒拾捌亿玖仟零壹拾贰万叁仟肆佰伍拾陆元柒角捌分玖厘", MoneyUtil.toChinese("9999567890123456.7899"));
     }
 

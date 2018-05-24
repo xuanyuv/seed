@@ -10,7 +10,8 @@ import java.text.DecimalFormat;
  * -------------------------------------------------------------------------------
  * 目前只处理人民币（CNY）
  * -------------------------------------------------------------------------------
- * @version v1.2
+ * @version v1.3
+ * @history v1.3-->金额转中文增加“零元整”的判断
  * @history v1.2-->增加金额转中文的方法
  * @history v1.1-->重写金额元转分和分转元方法，并增加两个方法：金额格式化和区间判断
  * @history v1.0-->初建
@@ -213,6 +214,10 @@ public class MoneyUtil {
         } else {
             intNumberStr = amount;
             decimalNumberStr = "";
+        }
+        //判断“零元整”的情况
+        if(("".equals(intNumberStr)||0==Long.parseLong(intNumberStr)) && ("".equals(decimalNumberStr)||0==Long.parseLong(decimalNumberStr))){
+            return "零元";
         }
         //整数部分需去掉首0，小数部分的0不用管（超出部分会被舍去，该方法只会计算到角、分、厘三位）
         if(!"".equals(intNumberStr)){
