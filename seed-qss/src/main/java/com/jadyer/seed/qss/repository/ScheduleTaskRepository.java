@@ -29,7 +29,7 @@ import java.util.concurrent.Future;
  */
 public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Long> {
     @Query("SELECT st.name as name, st.url as url FROM ScheduleTask st WHERE st.id IN (?1)")
-    List<ScheduleSummary> findByIds(List<Long> idList);
+    List<ScheduleSummary> selectByIdList(List<Long> idList);
 
     /**
      * 通过SQL的IN()函数批量查询定时任务
@@ -38,7 +38,7 @@ public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Lon
      * </p>
      */
     @Query("SELECT st.name, st.url FROM ScheduleTask st WHERE st.id IN (?1)")
-    Object[] getByIds(List<Long> idList);
+    Object[] selectByIds(List<Long> idList);
 
     /**
      * 更新定时任务的状态

@@ -83,7 +83,7 @@ public class QssService {
         }
         //使用@Query查询的方式
         List<ScheduleTask> taskList = new ArrayList<>();
-        Object[] objs = scheduleTaskRepository.getByIds(idList);
+        Object[] objs = scheduleTaskRepository.selectByIds(idList);
         for(Object obj : objs){
             ScheduleTask task = new ScheduleTask();
             task.setName(((Object[])obj)[0].toString());
@@ -94,7 +94,7 @@ public class QssService {
             System.out.println("11--查询到name=[" + obj.getName() + "]，url=[" + obj.getUrl() +"]");
         }
         //使用接口作为返回值实现多表查询
-        List<ScheduleSummary> scheduleSummaryList = scheduleTaskRepository.findByIds(idList);
+        List<ScheduleSummary> scheduleSummaryList = scheduleTaskRepository.selectByIdList(idList);
         for(ScheduleSummary obj : scheduleSummaryList){
             System.out.println("22--查询到name=[" + obj.getName() + "]，url=[" + obj.getUrl() +"]");
         }
