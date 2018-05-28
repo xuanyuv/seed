@@ -4,6 +4,7 @@ import com.jadyer.seed.comm.jpa.Condition;
 import com.jadyer.seed.qss.boot.QssRun;
 import com.jadyer.seed.qss.model.ScheduleTask;
 import com.jadyer.seed.qss.repository.ScheduleTaskRepository;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,5 +62,14 @@ public class JPATest {
         //Assert.assertEquals("test55", scheduleTaskRepository.findByName("test55").get(60, TimeUnit.SECONDS).getName());
         //Assert.assertEquals("test22", scheduleTaskRepository.findOneByUrl("http://127.0.0.1/seed/user/getJson/2").get(60, TimeUnit.SECONDS).getName());
         //Assert.assertEquals("test33", scheduleTaskRepository.findOneByName("test33").get(60, TimeUnit.SECONDS).getName());
+        for(ScheduleTask obj : scheduleTaskRepository.findDistinctByNameOrStatus("1", 0)){
+            System.out.println("----" + ReflectionToStringBuilder.toString(obj));
+        }
+        for(ScheduleTask obj : scheduleTaskRepository.findDistinctCronByNameOrStatus("1", 0)){
+            System.out.println("===" + ReflectionToStringBuilder.toString(obj));
+        }
+        for(ScheduleTask obj : scheduleTaskRepository.findTaskDistinctByNameOrStatus("1", 0)){
+            System.out.println(">>>" + ReflectionToStringBuilder.toString(obj));
+        }
     }
 }

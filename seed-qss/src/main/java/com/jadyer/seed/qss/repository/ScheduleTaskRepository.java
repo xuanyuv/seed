@@ -101,7 +101,8 @@ public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Lon
     //唯一查询
     //也可以写成findDistinctByNameOrStatus，Distinct前后加单词或者表字段名等等，都是没意义的
     //实际查询都是select distinct id,name,url,status... from ... where name=? or status=?
-    List<ScheduleTask> findDistinctTaskByNameOrStatus(String name, Integer status);
+    List<ScheduleTask> findDistinctByNameOrStatus(String name, Integer status);
+    List<ScheduleTask> findDistinctCronByNameOrStatus(String name, Integer status);
     List<ScheduleTask> findTaskDistinctByNameOrStatus(String name, Integer status);
 
     //对某一属性不区分大小写
