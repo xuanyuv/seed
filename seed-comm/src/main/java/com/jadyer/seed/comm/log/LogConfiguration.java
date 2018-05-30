@@ -48,7 +48,7 @@ public class LogConfiguration {
                     }
                     //若方法上面注解了EnableLog，则打印日志
                     if(method.isAnnotationPresent(EnableLog.class)){
-                        return false;
+                        return true;
                     }
                     //默认的：打印标注了RestController的类、以及ResponseBody的方法，的日志
                     return targetClass.isAnnotationPresent(RestController.class) || method.isAnnotationPresent(ResponseBody.class);

@@ -76,7 +76,8 @@ import java.util.Random;
 /**
  * 玄玉的开发工具类
  * ---------------------------------------------------------------------------------------------------------------
- * @version v3.20
+ * @version v3.21
+ * @history v3.21-->增加extractStackTraceCausedBy()方法用于提取堆栈轨迹中，表示真正错误提示的的[Caused by: ]部分
  * @history v3.20-->移动若干网络请求的相关方法至RequestUtil.java
  * @history v3.19-->移除buildSequenceNo()，可用IDUtil.java代替
  * @history v3.18-->增加escapeXSS()用来XSS过滤的方法
@@ -626,6 +627,20 @@ public final class JadyerUtil {
         try (PrintWriter pw = new PrintWriter(sw)) {
             cause.printStackTrace(pw);
             return sw.toString();
+        }
+    }
+
+
+    /**
+     * 提取堆栈信息中最后一个Caused by
+     */
+    public static String extractStackTraceCausedBy(Throwable cause){
+        String allMsg = extractStackTrace(cause);
+        String causeByMsg = allMsg.substring(allMsg.lastIndexOf("Caused by: ") + 11);
+        if(causeByMsg.contains(": ")){
+            return causeByMsg.substring(causeByMsg.lastIndexOf(": ")+2, causeByMsg.indexOf("\n"));
+        }else{
+            return causeByMsg.substring(0, causeByMsg.indexOf("\n"));
         }
     }
 

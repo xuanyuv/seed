@@ -2,6 +2,8 @@ package com.jadyer.seed.comm.exception;
 
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommResult;
+import com.jadyer.seed.comm.log.annotation.DisableLog;
+import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
  * ----------------------------------------------------------------------------------------------------------------------
  * Created by 玄玉<http://jadyer.cn/> on 2015/6/6 12:31.
  */
+@DisableLog
 @ControllerAdvice
 public class GlobalExceptionHandler {
     /**
@@ -29,11 +32,11 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(Throwable.class)
     public CommResult process(Throwable cause, HttpServletRequest request){
-        LogUtil.getLogger().info("Exception Occured URL="+request.getRequestURL()+",堆栈轨迹如下", cause);
+        LogUtil.getLogger().info("Exception Occured URL=" + request.getRequestURL() + "，堆栈轨迹如下", cause);
+        int code = CodeEnum.SYSTEM_ERROR.getCode();
         if(cause instanceof SeedException){
-            return CommResult.fail(((SeedException)cause).getCode(), cause.getMessage());
-        }else{
-            return CommResult.fail(CodeEnum.SYSTEM_ERROR.getCode(), cause.getMessage());
+            code = ((SeedException)cause).getCode();
         }
+        return CommResult.fail(code, JadyerUtil.extractStackTraceCausedBy(cause));
     }
 }
