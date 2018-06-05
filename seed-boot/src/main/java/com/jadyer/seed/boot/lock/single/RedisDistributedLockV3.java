@@ -1,4 +1,4 @@
-package com.jadyer.seed.boot.lock;
+package com.jadyer.seed.boot.lock.single;
 
 import redis.clients.jedis.JedisCluster;
 
