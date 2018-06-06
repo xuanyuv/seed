@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Seed分布式锁处理器
  * Created by 玄玉<http://jadyer.cn/> on 2018/6/5 10:00.
  */
 @Aspect
