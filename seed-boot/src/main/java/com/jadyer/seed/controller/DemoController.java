@@ -2,6 +2,7 @@ package com.jadyer.seed.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.jadyer.seed.boot.BootProperties;
+import com.jadyer.seed.boot.lock.cluster.annotation.SeedLock;
 import com.jadyer.seed.comm.annotation.ActionEnum;
 import com.jadyer.seed.comm.annotation.SeedLog;
 import com.jadyer.seed.comm.constant.CodeEnum;
@@ -9,6 +10,7 @@ import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.util.HTTPUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
+import com.jadyer.seed.controller.rabbitmq.UserMsg;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
@@ -21,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,9 +58,9 @@ public class DemoController {
      * 读取配置文件中的属性
      */
     @GetMapping("/prop")
+    @SeedLock("#userMsg.name")
     @SeedLog(action=ActionEnum.LIST, value="读取配置文件中的属性")
-    public CommResult<Map<String, Object>> prop(HttpServletRequest request){
-        System.out.println("data = [" + request.getParameter("data") + "]");
+    public CommResult<Map<String, Object>> prop(int id, UserMsg userMsg){
         Map<String, Object> map = new HashMap<>();
         map.put("weight", this.weight);
         map.put("height", this.height);

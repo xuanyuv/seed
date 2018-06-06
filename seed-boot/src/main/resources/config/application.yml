@@ -124,6 +124,17 @@ redis:
     - 192.168.2.210:7005
 
 
+redisson:
+  password: xuanyu
+  nodes:
+    - 192.168.2.210:7000
+    - 192.168.2.210:7001
+    - 192.168.2.210:7002
+    - 192.168.2.210:7003
+    - 192.168.2.210:7004
+    - 192.168.2.210:7005
+
+
 xxljob:
   adminAddresses: http://127.0.0.1:8080/xxl-job-admin
   executorAppname: seed-boot

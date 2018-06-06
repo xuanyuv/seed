@@ -1,7 +1,5 @@
 package com.jadyer.seed.boot.lock.cluster.annotation;
 
-import org.springframework.core.annotation.AliasFor;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -19,17 +17,15 @@ import java.util.concurrent.TimeUnit;
 public @interface SeedLock {
     /**
      * 锁的资源
-     * 与属性key相同的含义和作用，支持SpringEL表达式
+     * --------------------------------------------------------------------------------
+     * 支持EL表达式：比如下面的两种加锁，是分别针对入参id，和UserMsg的name属性
+     * @SeedLock("#id")
+     * public CommResult<Map<String, Object>> prop(int id, UserMsg userMsg){}
+     * @SeedLock("#userMsg.name")
+     * public CommResult<Map<String, Object>> prop(int id, UserMsg userMsg){}
+     * --------------------------------------------------------------------------------
      */
-    @AliasFor("key")
     String value() default "";
-
-    /**
-     * 锁的资源
-     * 与属性value相同的含义和作用，支持SpringEL表达式
-     */
-    @AliasFor("value")
-    String key() default "";
 
     /**
      * 锁等待时间
