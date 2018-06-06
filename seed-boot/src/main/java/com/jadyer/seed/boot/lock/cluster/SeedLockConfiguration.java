@@ -13,7 +13,6 @@ import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.ExpressionParser;
@@ -46,9 +45,9 @@ import java.util.List;
  * ---------------------------------------------------------------------------------------------------
  * Created by 玄玉<http://jadyer.cn/> on 2018/6/5 10:00.
  */
+//@Configuration
 @Aspect
 @Component
-@Configuration
 @ConditionalOnClass({RedissonClient.class})
 @ConfigurationProperties(prefix="redisson")
 public class SeedLockConfiguration {
