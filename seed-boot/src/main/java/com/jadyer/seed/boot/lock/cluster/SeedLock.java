@@ -1,4 +1,4 @@
-package com.jadyer.seed.boot.lock.cluster.annotation;
+package com.jadyer.seed.boot.lock.cluster;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

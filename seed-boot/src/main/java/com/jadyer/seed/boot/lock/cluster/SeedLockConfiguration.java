@@ -1,6 +1,5 @@
 package com.jadyer.seed.boot.lock.cluster;
 
-import com.jadyer.seed.boot.lock.cluster.annotation.SeedLock;
 import com.jadyer.seed.comm.util.LogUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -55,7 +54,7 @@ public class SeedLockConfiguration {
         }
     }
 
-    @Around("@annotation(com.jadyer.seed.boot.lock.cluster.annotation.SeedLock)")
+    @Around("@annotation(com.jadyer.seed.boot.lock.cluster.SeedLock)")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         //计算上锁的key
         Method method = ((MethodSignature)joinPoint.getSignature()).getMethod();

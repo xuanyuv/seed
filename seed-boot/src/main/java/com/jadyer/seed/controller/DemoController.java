@@ -2,7 +2,7 @@ package com.jadyer.seed.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.jadyer.seed.boot.BootProperties;
-import com.jadyer.seed.boot.lock.cluster.annotation.SeedLock;
+import com.jadyer.seed.boot.lock.cluster.SeedLock;
 import com.jadyer.seed.comm.annotation.ActionEnum;
 import com.jadyer.seed.comm.annotation.SeedLog;
 import com.jadyer.seed.comm.constant.CodeEnum;
