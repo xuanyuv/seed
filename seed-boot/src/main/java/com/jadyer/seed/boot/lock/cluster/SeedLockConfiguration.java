@@ -87,12 +87,12 @@ public class SeedLockConfiguration {
             rLocks[i] = redissonClientList.get(i).getLock(key);
         }
         RedissonRedLock redLock = new RedissonRedLock(rLocks);
-        if(!redLock.tryLock(seedLock.waitTime(), seedLock.leaseTime(), seedLock.unit())){
-            LogUtil.getLogger().info("资源[{}]加锁-->失败", key);
-            return null;
-        }
-        LogUtil.getLogger().info("资源[{}]加锁-->成功", key);
         try{
+            if(!redLock.tryLock(seedLock.waitTime(), seedLock.leaseTime(), seedLock.unit())){
+                LogUtil.getLogger().info("资源[{}]加锁-->失败", key);
+                return null;
+            }
+            LogUtil.getLogger().info("资源[{}]加锁-->成功", key);
             return joinPoint.proceed();
         }finally{
             redLock.unlock();
