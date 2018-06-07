@@ -125,14 +125,18 @@ redis:
 
 
 redisson:
+  lockWatchdogTimeout: 10000
+  connectionMinimumIdleSize: 16
+  connectionPoolSize: 32
+  connectTimeout: 3000
   password: xuanyu
   nodes:
-    - 192.168.2.210:7000
-    - 192.168.2.210:7001
-    - 192.168.2.210:7002
-    - 192.168.2.210:7003
-    - 192.168.2.210:7004
-    - 192.168.2.210:7005
+    - redis://192.168.2.210:7000
+    - redis://192.168.2.210:7001
+    - redis://192.168.2.210:7002
+    - redis://192.168.2.210:7003
+    - redis://192.168.2.210:7004
+    - redis://192.168.2.210:7005
 
 
 xxljob:
