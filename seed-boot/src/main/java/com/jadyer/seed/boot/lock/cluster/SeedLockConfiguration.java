@@ -51,7 +51,7 @@ import java.util.List;
  * 4、@SeedLock("#userMsg.name")
  *    public CommResult<Map<String, Object>> prop(int id, UserMsg userMsg){ // do business... }
  * ---------------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2018/6/5 10:00.
+ * Created by 玄玉<https://jadyer.cn/> on 2018/6/5 10:00.
  */
 //@Configuration
 @Aspect

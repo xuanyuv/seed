@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Seed分布式锁（采用Redisson实现的RedLock算法）
- * Created by 玄玉<http://jadyer.cn/> on 2018/6/5 9:53.
+ * Created by 玄玉<https://jadyer.cn/> on 2018/6/5 9:53.
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
