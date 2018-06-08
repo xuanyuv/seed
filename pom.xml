@@ -34,8 +34,8 @@
         <google.guice.version>4.1.0</google.guice.version>
         <google.guava.version>18.0</google.guava.version>
         <alibaba.oss.version>3.1.0</alibaba.oss.version>
-        <alibaba.druid.version>1.1.6</alibaba.druid.version>
-        <alibaba.fastjson.version>1.2.43</alibaba.fastjson.version>
+        <alibaba.druid.version>1.1.10</alibaba.druid.version>
+        <alibaba.fastjson.version>1.2.47</alibaba.fastjson.version>
         <!--<dangdang.shardingjdbc.version>2.0.1</dangdang.shardingjdbc.version>-->
         <!--
         若显式使用的是23.0版本的Guava，那么启动elastic-job的demo时会报告下面的异常

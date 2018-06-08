@@ -23,7 +23,7 @@ spring:
     maxPoolSize: 500
     queueCapacity: 1000
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/mpp?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://127.0.0.1:3306/mpp?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
     username: root
     password: xuanyu
     druid:

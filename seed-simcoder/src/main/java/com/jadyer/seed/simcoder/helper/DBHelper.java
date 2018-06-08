@@ -16,7 +16,7 @@ import java.util.List;
  * Created by 玄玉<http://jadyer.cn/> on 2017/9/7 17:18.
  */
 class DBHelper {
-    private static final String DB_URL = "jdbc:mysql://" + SimcoderRun.DB_ADDRESS + "/" + SimcoderRun.DB_NAME + "?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull";
+    private static final String DB_URL = "jdbc:mysql://" + SimcoderRun.DB_ADDRESS + "/" + SimcoderRun.DB_NAME + "?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai";
     private static final String DB_USERNAME = SimcoderRun.DB_USERNAME;
     private static final String DB_PASSWORD = SimcoderRun.DB_PASSWORD;
     private static final String SQL_GET_TABLE = "SELECT TABLE_NAME, TABLE_COMMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA=?;";

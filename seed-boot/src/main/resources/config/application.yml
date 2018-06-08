@@ -72,7 +72,7 @@ spring:
       enabled: true
   datasource:
     #url: jdbc:h2:mem:jadyer;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    url: jdbc:mysql://${db.address}/${db.name}?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://${db.address}/${db.name}?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
     username: ${db.username}
     password: ${db.password}
     # 更多属性：https://github.com/alibaba/druid/issues/1344
