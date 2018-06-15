@@ -45,8 +45,8 @@ import org.quartz.JobExecutionException;
 public class JobDisallowConcurrentFactory implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        //Quartz有状态的JobDataMap-->http://www.cnblogs.com/interdrp/p/3463583.html
-        //ScheduleTask task = (ScheduleTask)context.getJobDetail().getJobDataMap().get(ScheduleTask.JOB_DATAMAP_KEY);
+        //Quartz有状态的JobDataMap-->http://www.cnblogs.com/interdrp/p/3463583.html-->https://segmentfault.com/a/1190000009128328
+        //ScheduleTask task = (ScheduleTask)context.getJobDetail().getJobDataMap().get(SeedConstants.QSS_JOB_DATAMAP_KEY);
         ScheduleTask task = (ScheduleTask)context.getMergedJobDataMap().get(SeedConstants.QSS_JOB_DATAMAP_KEY);
         JobExecute.invokMethod(task);
     }

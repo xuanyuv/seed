@@ -41,7 +41,7 @@ spring:
         loginUsername: druid
         loginPassword: http://jadyer.cn/
   jpa:
-    showSql: true
+    showSql: false
     database: MYSQL
     generateDdl: false
     databasePlatform: org.hibernate.dialect.MySQL5InnoDBDialect

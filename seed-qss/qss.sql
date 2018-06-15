@@ -18,4 +18,4 @@ UNIQUE INDEX uniq_appname_name(appname, name)
 
 INSERT INTO t_schedule_task(appname, name, cron, url) VALUES
 ('ifs', 'testTask', '0 */1 * * * ?', 'http://127.0.0.1:8008/qss/getByIds?ids=1'),
-('mss', 'testTask', '0 */2 * * * ?', 'http://127.0.0.1:8008/qss/getByIds?ids=1`2');
+('mss', 'testTask', '0 */2 * * * ?', 'http://127.0.0.1:8008/qss/getByIds?ids=1%602');

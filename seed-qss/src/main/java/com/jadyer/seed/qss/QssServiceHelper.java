@@ -136,15 +136,12 @@ public class QssServiceHelper {
     void updateJobCron(String jobname, String cron){
         TriggerKey triggerKey = TriggerKey.triggerKey(jobname);
         try{
-            // TODO 测试下更新后会不会立即自动执行一次 https://ask.csdn.net/questions/203797
-            // https://www.cnblogs.com/shihaiming/p/7814516.html
-            // https://blog.csdn.net/xiyang_1990/article/details/72178030
-            // https://segmentfault.com/a/1190000009128328
             CronTrigger trigger = (CronTrigger)scheduler.getTrigger(triggerKey);
             if(cron.equals(trigger.getCronExpression())){
                 return;
             }
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(cron);
+            //withMisfireHandlingInstructionDoNothing不触发立即执行，等待下次Cron触发时再开始按频率执行
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(cron).withMisfireHandlingInstructionDoNothing();
             //按新的cronExpression表达式重新构建Trigger
             trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
             //按新的Trigger重新设置Job执行
