@@ -42,7 +42,7 @@ public class QssController {
      * 此接口只做演示用：http://127.0.0.1/qss/getByIds?ids=1`2
      */
     @ResponseBody
-    @GetMapping("/getByIds")
+    @RequestMapping("/getByIds")
     public CommResult<Map<String, Object>> getByIds(final String ids){
         List<Long> idList = new ArrayList<>();
         String[] idstr = ids.split("`");
