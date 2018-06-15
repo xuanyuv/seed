@@ -82,10 +82,6 @@ public class QssServiceHelper {
 
     /**
      * 更新QuartzJobCronExpression
-     * @return <code>null</code> if a <code>Trigger</code> with the given
-     *         name & group was not found and removed from the store (and the 
-     *         new trigger is therefore not stored), otherwise
-     *         the first fire time of the newly scheduled trigger is returned.
      */
     void updateJobCron(String jobname, String cron){
         TriggerKey triggerKey = TriggerKey.triggerKey(jobname);
@@ -124,8 +120,7 @@ public class QssServiceHelper {
 
 
     /**
-     * 删除一个QuartzJob
-     * 删除任务后，所对应的Trigger也将被删除
+     * 删除一个QuartzJob（删除任务后，所对应的Trigger也将被删除）
      * @return rue if the Job was found and deleted.
      */
     void deleteJob(String jobname){
