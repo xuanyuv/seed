@@ -51,6 +51,7 @@ class JobExecute {
      * Created by 玄玉<http://jadyer.cn/> on 2015/8/8 20:33.
      */
     @SeedLock(key="#task.jobname")
+    // TODO 想办法生效
     static void invokMethod(ScheduleTask task){
         LogUtil.getLogger().info("start-->定时任务：[{}]=[{}]", task.getJobname(), task.getUrl());
         String respData = HTTPUtil.post(task.getUrl(), null);
