@@ -51,52 +51,6 @@ public class QssServiceHelper {
     private Scheduler scheduler;
 
     /**
-     * 获取所有正在运行的QuartzJob
-     * -------------------------------------------------------------------------------------
-     * Trigger各状态说明
-     * None------Trigger已经完成，且不会再执行，或者找不到该触发器，或者Trigger已被删除
-     * NORMAL----正常状态
-     * PAUSED----暂停状态
-     * COMPLETE--触发器完成，但任务可能还正在执行中
-     * BLOCKED---线程阻塞状态
-     * ERROR-----出现错误
-     * -------------------------------------------------------------------------------------
-     */
-    public List<ScheduleTask> getAllRunningJob(){
-        try{
-            List<JobExecutionContext> executingJobs = scheduler.getCurrentlyExecutingJobs();
-            List<ScheduleTask> taskList = new ArrayList<>(executingJobs.size());
-            for(JobExecutionContext obj : executingJobs){
-                taskList.add(this.convertToScheduleTask(obj.getJobDetail().getKey(), obj.getTrigger()));
-            }
-            return taskList;
-        }catch(SchedulerException e){
-            throw new SeedException(CodeEnum.SYSTEM_ERROR.getCode(), "获取所有正在运行的QuartzJob失败", e);
-        }
-    }
-
-
-    /**
-     * 获取所有计划中的QuartzJob
-     */
-    public List<ScheduleTask> getAllJob(){
-        try{
-            List<ScheduleTask> taskList = new ArrayList<>();
-            Set<JobKey> jobKeys = scheduler.getJobKeys(GroupMatcher.anyJobGroup());
-            for(JobKey jobKey : jobKeys){
-                List<? extends Trigger> triggers = scheduler.getTriggersOfJob(jobKey);
-                for(Trigger trigger : triggers){
-                    taskList.add(this.convertToScheduleTask(jobKey, trigger));
-                }
-            }
-            return taskList;
-        }catch(SchedulerException e){
-            throw new SeedException(CodeEnum.SYSTEM_ERROR.getCode(), "获取所有计划中的QuartzJob失败", e);
-        }
-    }
-
-
-    /**
      * 添加QuartzJob
      */
     @SeedLock(key="#task.jobname")
@@ -174,10 +128,10 @@ public class QssServiceHelper {
      * 删除任务后，所对应的Trigger也将被删除
      * @return rue if the Job was found and deleted.
      */
-    boolean deleteJob(String jobname){
+    void deleteJob(String jobname){
         JobKey jobKey = JobKey.jobKey(jobname);
         try{
-            return scheduler.deleteJob(jobKey);
+            scheduler.deleteJob(jobKey);
         }catch(SchedulerException e){
             throw new SeedException(CodeEnum.SYSTEM_ERROR.getCode(), "删除QuartzJob失败：jobname=["+jobname+"]", e);
         }
@@ -206,6 +160,52 @@ public class QssServiceHelper {
             scheduler.resumeJob(jobKey);
         }catch(SchedulerException e){
             throw new SeedException(CodeEnum.SYSTEM_ERROR.getCode(), "恢复QuartzJob失败：jobname=["+jobname+"]", e);
+        }
+    }
+
+
+    /**
+     * 获取所有正在运行的QuartzJob
+     * -------------------------------------------------------------------------------------
+     * Trigger各状态说明
+     * None------Trigger已经完成，且不会再执行，或者找不到该触发器，或者Trigger已被删除
+     * NORMAL----正常状态
+     * PAUSED----暂停状态
+     * COMPLETE--触发器完成，但任务可能还正在执行中
+     * BLOCKED---线程阻塞状态
+     * ERROR-----出现错误
+     * -------------------------------------------------------------------------------------
+     */
+    List<ScheduleTask> getAllRunningJob(){
+        try{
+            List<JobExecutionContext> executingJobs = scheduler.getCurrentlyExecutingJobs();
+            List<ScheduleTask> taskList = new ArrayList<>(executingJobs.size());
+            for(JobExecutionContext obj : executingJobs){
+                taskList.add(this.convertToScheduleTask(obj.getJobDetail().getKey(), obj.getTrigger()));
+            }
+            return taskList;
+        }catch(SchedulerException e){
+            throw new SeedException(CodeEnum.SYSTEM_ERROR.getCode(), "获取所有正在运行的QuartzJob失败", e);
+        }
+    }
+
+
+    /**
+     * 获取所有计划中的QuartzJob
+     */
+    List<ScheduleTask> getAllJob(){
+        try{
+            List<ScheduleTask> taskList = new ArrayList<>();
+            Set<JobKey> jobKeys = scheduler.getJobKeys(GroupMatcher.anyJobGroup());
+            for(JobKey jobKey : jobKeys){
+                List<? extends Trigger> triggers = scheduler.getTriggersOfJob(jobKey);
+                for(Trigger trigger : triggers){
+                    taskList.add(this.convertToScheduleTask(jobKey, trigger));
+                }
+            }
+            return taskList;
+        }catch(SchedulerException e){
+            throw new SeedException(CodeEnum.SYSTEM_ERROR.getCode(), "获取所有计划中的QuartzJob失败", e);
         }
     }
 
