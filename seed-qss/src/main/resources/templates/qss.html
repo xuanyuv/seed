@@ -162,9 +162,11 @@ function inputDynamicPassword(){
                     <td>
                         <%if(task.status==0){%>
                             <a href="javascript:updateStatus(${task.id}, ${@com.jadyer.seed.comm.constant.SeedConstants.QSS_STATUS_RUNNING});">启动</a>
+                            立即执行
                         <%}%>
                         <%if(task.status==1){%>
                             <a href="javascript:updateStatus(${task.id}, ${@com.jadyer.seed.comm.constant.SeedConstants.QSS_STATUS_STOP});">停止</a>
+                            <a href="javascript:triggerJob(${task.id});">立即执行</a>
                         <%}%>
                         <a href="javascript:updateCron(${task.id}, '${task.cron}');">更新Cron</a>
                         <a href="javascript:deleteTask(${task.id});">删除</a>
