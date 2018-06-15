@@ -25,6 +25,17 @@ public interface SeedConstants {
     String MPP_BIND_TEXT = "我是玄玉";
 
     /**
+     * seed-qss用到的常量
+     */
+    int QSS_STATUS_STOP        = 0; //停止
+    int QSS_STATUS_RUNNING     = 1; //启动
+    //int QSS_STATUS_PAUSE     = 2; //暂停
+    //int QSS_STATUS_RESUME    = 3; //暂停后恢复
+    int QSS_CONCURRENT_NO      = 0; //禁止并发执行
+    int QSS_CONCURRENT_YES     = 1; //允许并发执行
+    String QSS_JOB_DATAMAP_KEY = "qss"; //存放在Quartz测JobDataMap中的key
+
+    /**
      * seed-open用到的常量
      */
     //seed-open的API协议版本

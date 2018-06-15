@@ -1,16 +1,19 @@
 server:
-  port: 80
+  port: 8008
   sessionTimeout: 3000
   tomcat:
     uriEncoding: UTF-8
+
 
 scan:
   base:
     packages: com.jadyer.seed
 
+
 logging:
   path: /home/seed/log/qss
   config: classpath:config/logback-qss.xml
+
 
 spring:
   datasource:
@@ -45,6 +48,13 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+
+redisson:
+  password: xuanyu
+  nodes:
+    - redis://127.0.0.1:6379
+
 
 ---
 spring:

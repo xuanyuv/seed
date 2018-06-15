@@ -38,6 +38,11 @@ public class CommResult<T> {
     }
 
 
+    public static <Void> CommResult<Void> fail(){
+        return new CommResult<>(CodeEnum.SYSTEM_ERROR.getCode(), CodeEnum.SYSTEM_ERROR.getMsg());
+    }
+
+
     public static <Void> CommResult<Void> success(){
         return new CommResult<>();
     }

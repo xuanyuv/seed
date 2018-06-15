@@ -12,12 +12,13 @@ logging:
   path: /home/seed/log/seedoc
   config: classpath:config/logback-seedoc.xml
 
-multipart:
-  enabled: true
-  maxFileSize: 10Mb
-  maxRequestSize: 10Mb
-
 spring:
+  http:
+    multipart:
+      enabled: true
+      location: /home/data/seed-seedoc
+      maxFileSize: 10MB
+      maxRequestSize: 10MB
   async:
     corePoolSize: 100
     maxPoolSize: 500

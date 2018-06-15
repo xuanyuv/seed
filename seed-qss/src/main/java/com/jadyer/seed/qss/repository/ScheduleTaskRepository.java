@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.concurrent.ListenableFuture;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
@@ -39,6 +40,11 @@ public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Lon
      */
     @Query("SELECT st.name, st.url FROM ScheduleTask st WHERE st.id IN (?1)")
     Object[] selectByIds(List<Long> idList);
+
+    @Modifying
+    @Transactional(timeout=10)
+    @Query("UPDATE ScheduleTask SET nextFireTime=?1, previousFireTime=?2 WHERE id=?3")
+    int updateTriggerTimeById(Date nextFireTime, Date previousFireTime, long id);
 
     /**
      * 更新定时任务的状态
@@ -81,6 +87,7 @@ public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Lon
      */
     //根据 name 来获取对应的 ScheduleTask
     ScheduleTask getByName(String name);
+    ScheduleTask getByAppnameAndName(String appname, String name);
 
     //WHERE name=? AND cron=?
     //如果能确认name和cron联合条件只会查到一条结果，那么可以用一个实体接收

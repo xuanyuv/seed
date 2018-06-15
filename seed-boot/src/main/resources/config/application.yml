@@ -58,6 +58,7 @@ spring:
     # 文件上传限制（默认的enabled=true，maxFileSize=1MB，maxRequestSize=10MB）
     multipart:
       enabled: true
+      location: /home/data/seed-boot
       maxFileSize: 10MB
       maxRequestSize: 10MB
     # SpringWeb项目需要添加CharacterEncodingFilter，SpringBoot只需以下配置（默认的force=true，enabled=true，charset=UTF-8）

@@ -1,4 +1,4 @@
-package com.jadyer.seed.boot.lock.cluster;
+package com.jadyer.seed.comm.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -19,13 +19,13 @@ public @interface SeedLock {
      * 锁的资源
      * --------------------------------------------------------------------------------
      * 支持EL表达式：比如下面的两种加锁，是分别针对入参id，和UserMsg的name属性
-     * @SeedLock("#id")
+     * @SeedLock(key="#id")
      * public CommResult<Map<String, Object>> prop(int id, UserMsg userMsg){}
-     * @SeedLock("#userMsg.name")
+     * @SeedLock(key="#userMsg.name")
      * public CommResult<Map<String, Object>> prop(int id, UserMsg userMsg){}
      * --------------------------------------------------------------------------------
      */
-    String value() default "";
+    String key() default "";
 
     /**
      * 锁等待时间

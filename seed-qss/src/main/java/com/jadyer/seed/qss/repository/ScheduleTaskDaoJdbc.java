@@ -32,12 +32,12 @@ public class ScheduleTaskDaoJdbc {
         public ScheduleTask mapRow(ResultSet rs, int index) throws SQLException {
             ScheduleTask task = new ScheduleTask();
             task.setId(rs.getLong("id"));
+            task.setAppname(rs.getString("appname"));
             task.setName(rs.getString("name"));
             task.setCron(rs.getString("cron"));
+            task.setUrl(rs.getString("url"));
             task.setStatus(rs.getInt("status"));
             task.setConcurrent(rs.getInt("concurrent"));
-            task.setUrl(rs.getString("url"));
-            task.setComment(rs.getString("comment"));
             task.setCreateTime(rs.getDate("create_time"));
             task.setUpdateTime(rs.getDate("update_time"));
             return task;

@@ -1,5 +1,6 @@
 package com.jadyer.seed.qss.helper;
 
+import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.qss.model.ScheduleTask;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
@@ -46,7 +47,7 @@ public class JobDisallowConcurrentFactory implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         //Quartz有状态的JobDataMap-->http://www.cnblogs.com/interdrp/p/3463583.html
         //ScheduleTask task = (ScheduleTask)context.getJobDetail().getJobDataMap().get(ScheduleTask.JOB_DATAMAP_KEY);
-        ScheduleTask task = (ScheduleTask)context.getMergedJobDataMap().get(ScheduleTask.JOB_DATAMAP_KEY);
-        JobHelper.invokMethod(task);
+        ScheduleTask task = (ScheduleTask)context.getMergedJobDataMap().get(SeedConstants.QSS_JOB_DATAMAP_KEY);
+        JobExecute.invokMethod(task);
     }
 }

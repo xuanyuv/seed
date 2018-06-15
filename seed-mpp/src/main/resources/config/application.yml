@@ -12,12 +12,13 @@ logging:
   path: /home/seed/log/mpp
   config: classpath:config/logback-mpp.xml
 
-multipart:
-  enabled: true
-  maxFileSize: 10Mb
-  maxRequestSize: 10Mb
-
 spring:
+  http:
+    multipart:
+      enabled: true
+      location: /home/data/seed-mpp
+      maxFileSize: 10MB
+      maxRequestSize: 10MB
   async:
     corePoolSize: 100
     maxPoolSize: 500

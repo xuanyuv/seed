@@ -16,7 +16,7 @@ import java.util.List;
 public class QuartzDemo {
     //@Scheduled(cron="${spring.quartz.cron.demo}")
     void justDoIt(){
-        System.out.println("quartz-demo-" + System.currentTimeMillis());
+        LogUtil.getLogger().info("定时任务：xxxx-->启动--------------------------------------------------->");
         List<String> dataList = Arrays.asList("1", "2", "3", "4", "5", "6");
         for(int i=0, len=dataList.size(); i<len; i++){
             String idx = JadyerUtil.leftPadUseZero(i+"", (len+"").length());
@@ -24,5 +24,6 @@ public class QuartzDemo {
             LogUtil.getLogger().info("读到数据：{}", dataList.get(i));
             LogUtil.getLogger().info("定时任务：xxxx-->[{}-{}]-->处理完毕", len, idx);
         }
+        LogUtil.getLogger().info("定时任务：xxxx-->结束<---------------------------------------------------");
     }
 }

@@ -22,6 +22,7 @@
 
     <logger name="org.jboss" level="WARN"/>
     <logger name="org.apache" level="WARN"/>
+    <logger name="org.redisson" level="INFO"/>
     <logger name="org.hibernate" level="WARN"/>
     <logger name="org.thymeleaf" level="WARN"/>
     <logger name="org.springframework" level="WARN"/>

@@ -2,9 +2,10 @@ package com.jadyer.seed.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.jadyer.seed.boot.BootProperties;
-import com.jadyer.seed.boot.lock.cluster.SeedLock;
 import com.jadyer.seed.comm.annotation.ActionEnum;
+import com.jadyer.seed.comm.annotation.SeedLock;
 import com.jadyer.seed.comm.annotation.SeedLog;
+import com.jadyer.seed.comm.annotation.SeedQSSReg;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.util.HTTPUtil;
@@ -18,6 +19,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -57,9 +59,10 @@ public class DemoController {
     /**
      * 读取配置文件中的属性
      */
-    @GetMapping("/prop")
-    @SeedLock("#userMsg.name")
+    @PostMapping("/prop")
+    @SeedLock(key="#userMsg.name")
     @SeedLog(action=ActionEnum.LIST, value="读取配置文件中的属性")
+    @SeedQSSReg(qssHost="http://127.0.0.1:8008", appHost="http://127.0.0.1/boot", appname="seedboot", name="打印系统属性", cron="0 */2 * * * ?")
     public CommResult<Map<String, Object>> prop(int id, UserMsg userMsg){
         Map<String, Object> map = new HashMap<>();
         map.put("weight", this.weight);

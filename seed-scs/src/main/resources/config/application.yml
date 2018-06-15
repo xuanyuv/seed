@@ -12,12 +12,13 @@ logging:
   path: /home/seed/log/scs
   config: classpath:config/logback-scs.xml
 
-multipart:
-  enabled: true
-  maxFileSize: 10Mb
-  maxRequestSize: 10Mb
-
 spring:
+  http:
+    multipart:
+      enabled: true
+      location: /home/data/seed-scs
+      maxFileSize: 10MB
+      maxRequestSize: 10MB
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/scs?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
     username: root
