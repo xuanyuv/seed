@@ -32,8 +32,6 @@ public class QssController {
     @Resource
     private QssService qssService;
     @Resource
-    private QssServiceHelper qssServiceHelper;
-    @Resource
     private ScheduleTaskDaoJdbc scheduleTaskDaoJdbc;
     @Resource
     private ScheduleTaskRepository scheduleTaskRepository;
@@ -70,8 +68,8 @@ public class QssController {
         return CommResult.success(new HashMap<String, Object>(){
             private static final long serialVersionUID = 2518882720835440047L;
             {
-                put("allJob", qssServiceHelper.getAllJob());
-                put("allRunningJob", qssServiceHelper.getAllRunningJob());
+                put("allJob", qssService.getAllJob());
+                put("allRunningJob", qssService.getAllRunningJob());
                 put("taskInfo", scheduleTaskDaoJdbc.getById(Long.parseLong(ids.substring(0,1))));
                 put("taskList", scheduleTaskRepository.findAll(Condition.<ScheduleTask>and().in("id", idList)));
             }
@@ -86,7 +84,8 @@ public class QssController {
     @PostMapping("/reg")
     public CommResult<Boolean> reg(ScheduleTask task, String dynamicPassword){
         this.verifyDynamicPassword(dynamicPassword);
-        return CommResult.success(qssService.reg(task));
+        qssService.reg(task);
+        return CommResult.success();
     }
 
 

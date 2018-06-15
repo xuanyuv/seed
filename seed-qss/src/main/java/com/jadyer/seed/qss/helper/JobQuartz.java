@@ -1,8 +1,7 @@
 package com.jadyer.seed.qss.helper;
 
-import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.log.annotation.EnableLog;
-import com.jadyer.seed.qss.QssServiceHelper;
+import com.jadyer.seed.qss.QssService;
 import com.jadyer.seed.qss.model.ScheduleTask;
 import com.jadyer.seed.qss.repository.ScheduleTaskRepository;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -18,7 +17,7 @@ import javax.annotation.Resource;
 @EnableScheduling
 public class JobQuartz {
     @Resource
-    private QssServiceHelper qssServiceHelper;
+    private QssService qssService;
     @Resource
     private ScheduleTaskRepository scheduleTaskRepository;
 
@@ -30,10 +29,7 @@ public class JobQuartz {
     void syncTask(){
         // TODO Redis消息订阅
         for(ScheduleTask task : scheduleTaskRepository.findAll()){
-            if(task.getStatus() == SeedConstants.QSS_STATUS_STOP){
-                continue;
-            }
-            qssServiceHelper.addJob(task);
+            qssService.upsertJob(task);
         }
     }
 }
