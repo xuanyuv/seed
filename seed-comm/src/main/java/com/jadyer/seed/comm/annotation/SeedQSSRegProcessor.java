@@ -45,7 +45,7 @@ public class SeedQSSRegProcessor implements BeanPostProcessor {
      */
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        Class clazz = bean.getClass();
+        Class clazz = bean.getClass().getSuperclass();
         if(!clazz.isAnnotationPresent(Controller.class) && !clazz.isAnnotationPresent(RestController.class)){
             return bean;
         }
@@ -134,12 +134,10 @@ public class SeedQSSRegProcessor implements BeanPostProcessor {
                 methodURL = urls[0];
             }
             if(StringUtils.isBlank(methodURL)){
-                // TODO 这里记得测试一下 "" 的情况
                 LogUtil.getLogger().error("QSS任务注册-->失败：[{}]：未获取到方法URL", methodInfo);
                 continue;
             }
             //构造任务完整URL
-            // TODO request ??
             String taskURL = reg.appHost();
             if(taskURL.endsWith("/")){
                 taskURL = taskURL.substring(0, taskURL.length()-1);

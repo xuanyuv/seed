@@ -23,6 +23,7 @@ public class QssService {
         ScheduleTask taskFromDB = scheduleTaskRepository.getByAppnameAndName(task.getAppname(), task.getName());
         //新增任务
         if(null == taskFromDB){
+            task.setStatus(SeedConstants.QSS_STATUS_RUNNING);
             qssServiceHelper.addJob(scheduleTaskRepository.saveAndFlush(task));
             return true;
         }
