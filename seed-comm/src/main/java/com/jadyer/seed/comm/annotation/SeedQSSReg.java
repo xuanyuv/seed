@@ -32,6 +32,7 @@ import java.lang.annotation.Target;
 public @interface SeedQSSReg {
     /**
      * QSS系统地址（举例：http://192.168.2.34:8008/）
+     * 注意：该地址可以为QSS负载均衡的地址，也可以是QSS某一个节点的地址
      */
     String qssHost();
 

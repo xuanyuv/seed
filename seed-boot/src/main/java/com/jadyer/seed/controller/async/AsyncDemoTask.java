@@ -21,8 +21,7 @@ class AsyncDemoTask {
             TimeUnit.SECONDS.sleep(1);
             LogUtil.getLogger().info("任务一执行完毕，耗时：" + (System.currentTimeMillis() - start) + "ms");
         }catch(Exception e){
-            LogUtil.getLogger().info("任务一执行期间发生异常，堆栈轨迹如下：");
-            e.printStackTrace();
+            LogUtil.getLogger().info("任务一执行期间发生异常，堆栈轨迹如下：", e);
         }
     }
 
@@ -33,8 +32,7 @@ class AsyncDemoTask {
             TimeUnit.SECONDS.sleep(2);
             LogUtil.getLogger().info("任务二执行完毕，耗时：" + (System.currentTimeMillis() - start) + "ms");
         }catch(Exception e){
-            LogUtil.getLogger().info("任务二执行期间发生异常，堆栈轨迹如下：");
-            e.printStackTrace();
+            LogUtil.getLogger().info("任务二执行期间发生异常，堆栈轨迹如下：", e);
         }
     }
 
@@ -45,8 +43,7 @@ class AsyncDemoTask {
             TimeUnit.SECONDS.sleep(3);
             LogUtil.getLogger().info("任务三执行完毕，耗时：" + (System.currentTimeMillis() - start) + "ms");
         }catch(Exception e){
-            LogUtil.getLogger().info("任务三执行期间发生异常，堆栈轨迹如下：");
-            e.printStackTrace();
+            LogUtil.getLogger().info("任务三执行期间发生异常，堆栈轨迹如下：", e);
         }
     }
 
@@ -59,8 +56,7 @@ class AsyncDemoTask {
             LogUtil.getLogger().info("任务一执行完毕，耗时：" + (System.currentTimeMillis() - start) + "ms");
             return new AsyncResult<>("任务一执行完毕");
         }catch(Exception e){
-            LogUtil.getLogger().info("任务一执行期间发生异常，堆栈轨迹如下：");
-            e.printStackTrace();
+            LogUtil.getLogger().info("任务一执行期间发生异常，堆栈轨迹如下：", e);
             return new AsyncResult<>("任务一执行期间发生异常");
         }
     }
@@ -74,8 +70,7 @@ class AsyncDemoTask {
             LogUtil.getLogger().info("任务二执行完毕，耗时：" + (System.currentTimeMillis() - start) + "ms");
             return new AsyncResult<>(2);
         }catch(Exception e){
-            LogUtil.getLogger().info("任务二执行期间发生异常，堆栈轨迹如下：");
-            e.printStackTrace();
+            LogUtil.getLogger().info("任务二执行期间发生异常，堆栈轨迹如下：", e);
             return new AsyncResult<>(-2);
         }
     }
@@ -89,8 +84,7 @@ class AsyncDemoTask {
             LogUtil.getLogger().info("任务三执行完毕，耗时：" + (System.currentTimeMillis() - start) + "ms");
             return new AsyncResult<>(3L);
         }catch(Exception e){
-            LogUtil.getLogger().info("任务三执行期间发生异常，堆栈轨迹如下：");
-            e.printStackTrace();
+            LogUtil.getLogger().info("任务三执行期间发生异常，堆栈轨迹如下：", e);
             return new AsyncResult<>(-3L);
         }
     }

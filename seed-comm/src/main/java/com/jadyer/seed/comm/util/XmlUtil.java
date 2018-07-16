@@ -1,6 +1,5 @@
 package com.jadyer.seed.comm.util;
 
-import com.google.common.collect.Maps;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -40,11 +39,20 @@ public final class XmlUtil {
      *     示例字符串：<xml><name>鬼谷子</name></xml>，则转换后的Map只有一个key=name，value=鬼谷子
      *     示例字符串：<xml><name>鬼谷子</name><aa><bb>老子</bb></aa></xml>，则得到Map有两个key：name和aa，值分别为鬼谷子和老子
      * </p>
+     * <p>
+     *     微信支付相关的XXE漏洞：https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=23_5
+     * </p>
      */
     public static Map<String, String> xmlToMap(String xmlStr){
-        Map<String, String> dataMap = Maps.newHashMap();
+        Map<String, String> dataMap = new HashMap<>();
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            documentBuilderFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            documentBuilderFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            documentBuilderFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            documentBuilderFactory.setXIncludeAware(false);
+            documentBuilderFactory.setExpandEntityReferences(false);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document document = documentBuilder.parse(IOUtils.toInputStream(xmlStr, StandardCharsets.UTF_8));
             //获得文档的根元素节点

@@ -3,6 +3,7 @@ package com.jadyer.seed.test;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
+import com.jadyer.seed.test.model.FastjsonDataInfo;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.junit.Test;
@@ -269,6 +270,12 @@ public class FastjsonTest {
         System.out.println(dataMap.get("SERVICE").get("SERVICE_BODY").get("RESPONSE"));
         System.out.println(JSONObject.parseObject(dataMap.get("SERVICE").get("SERVICE_HEADER").get("SERV_RESPONSE")).get("CODE"));
         System.out.println(JSONObject.parseObject(dataMap.get("SERVICE").get("SERVICE_BODY").get("RESPONSE")).get("APP_NO"));
+        System.out.println("----------------------------------------------------------------------------------------------");
+        String  mydata = "{\"loginname\":\"lisi\",\"blackList\":\"\",\"param\":\"\",\"redblackBackList\":{\"requestId\":\"be7fa8d1-52616687680c\",\"redblackRequestId\":\"ed59adf3-9037dbe4a384\",\"redblackBack\":[{\"redblackType\":[{\"unitedName\":\"A级纳税人\",\"clTime\":\"2017-7-20 09:10:00\",\"originDept\":\"税务总局\",\"unionPairList\":{\"unionPair\":[{\"unionPairContent\":[{\"content\":\"建立绿色通道\",\"title\":\"措施\"}]}]},\"remark\":\"remark-tongdao\",\"handleType\":\"1\",\"redblackDetailList\":null,\"unitedId\":\"8\",\"action\":\"action-tongdao\",\"unitedType\":\"red\",\"feedbackResult\":\"feedbackResult-tongdao\"}],\"name\":\"远古公司\",\"code\":\"91500250\"}]},\"unitedType\":\"\",\"departmentname\":\"运管局\",\"personname\":\"小李飞刀\",\"redList\":\"\"}";
+        //Map<String, Map<String, List<Map<String, List<Map<String, Map<String, List<Map<String, List<Map<String, String>>>>>>>>>>> myMap = JSON.parseObject(mydata, new TypeReference<Map<String, Map<String, List<Map<String, List<Map<String, Map<String, List<Map<String, List<Map<String, String>>>>>>>>>>>>(){});
+        FastjsonDataInfo di = JSON.parseObject(mydata, FastjsonDataInfo.class);
+        System.out.println(ReflectionToStringBuilder.toString(di, ToStringStyle.MULTI_LINE_STYLE));
+        System.out.println(ReflectionToStringBuilder.toString(di.getRedblackBackList(), ToStringStyle.MULTI_LINE_STYLE));
     }
 
 

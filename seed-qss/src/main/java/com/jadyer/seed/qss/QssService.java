@@ -1,9 +1,12 @@
 package com.jadyer.seed.qss;
 
+import com.alibaba.fastjson.JSON;
 import com.jadyer.seed.comm.annotation.SeedLock;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.exception.SeedException;
+import com.jadyer.seed.comm.util.LogUtil;
+import com.jadyer.seed.qss.boot.QssRun;
 import com.jadyer.seed.qss.helper.JobAllowConcurrentFactory;
 import com.jadyer.seed.qss.helper.JobDisallowConcurrentFactory;
 import com.jadyer.seed.qss.model.ScheduleTask;
@@ -25,6 +28,7 @@ import org.quartz.TriggerKey;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import redis.clients.jedis.JedisCluster;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -53,15 +57,24 @@ public class QssService {
     @Resource
     private Scheduler scheduler;
     @Resource
+    private JedisCluster jedisCluster;
+    @Resource
     private ScheduleTaskRepository scheduleTaskRepository;
 
     /**
      * 通过注解注册任务
      */
     void reg(ScheduleTask task){
+        LogUtil.getLogger().info("收到任务注册请求：{}" + ReflectionToStringBuilder.toString(task));
         if(null == scheduleTaskRepository.getByAppnameAndName(task.getAppname(), task.getName())){
+            //注册过来的任务自动启动
             task.setStatus(SeedConstants.QSS_STATUS_RUNNING);
-            this.upsertJob(scheduleTaskRepository.saveAndFlush(task));
+            task = scheduleTaskRepository.saveAndFlush(task);
+            //通过Redis发布订阅来同步到所有QSS节点里面，所以这里注释掉
+            //this.upsertJob(task);
+            jedisCluster.publish(QssRun.CHANNEL_SUBSCRIBER, JSON.toJSONString(task));
+        }else{
+            LogUtil.getLogger().info("收到任务注册请求：任务已存在：{}#{}，自动忽略。" + task.getAppname(), task.getName());
         }
     }
 
@@ -85,8 +98,9 @@ public class QssService {
     void deleteTask(long taskId){
         ScheduleTask task = scheduleTaskRepository.findOne(taskId);
         task.setStatus(SeedConstants.QSS_STATUS_STOP);
-        this.upsertJob(task);
         scheduleTaskRepository.delete(taskId);
+        //this.upsertJob(task);
+        jedisCluster.publish(QssRun.CHANNEL_SUBSCRIBER, JSON.toJSONString(task));
     }
 
 
@@ -97,8 +111,10 @@ public class QssService {
     boolean updateStatus(long taskId, int status){
         ScheduleTask task = scheduleTaskRepository.findOne(taskId);
         task.setStatus(status);
-        this.upsertJob(task);
-        return 1==scheduleTaskRepository.updateStatusById(status, taskId);
+        boolean flag = 1==scheduleTaskRepository.updateStatusById(status, taskId);
+        //this.upsertJob(task);
+        jedisCluster.publish(QssRun.CHANNEL_SUBSCRIBER, JSON.toJSONString(task));
+        return flag;
     }
 
 
@@ -112,8 +128,10 @@ public class QssService {
         }
         ScheduleTask task = scheduleTaskRepository.findOne(taskId);
         task.setCron(cron);
-        this.upsertJob(task);
-        return 1==scheduleTaskRepository.updateCronById(cron, taskId);
+        boolean flag = 1==scheduleTaskRepository.updateCronById(cron, taskId);
+        //this.upsertJob(task);
+        jedisCluster.publish(QssRun.CHANNEL_SUBSCRIBER, JSON.toJSONString(task));
+        return flag;
     }
 
 
@@ -128,6 +146,7 @@ public class QssService {
         ScheduleTask task = scheduleTaskRepository.findOne(taskId);
         JobKey jobKey = JobKey.jobKey(task.getJobname());
         try{
+            //TODO 注意这里没有把本次出发时间更新到数据库，会造成前段页面看到的上次更新时间没有变
             scheduler.triggerJob(jobKey);
         }catch(SchedulerException e){
             throw new SeedException(CodeEnum.SYSTEM_ERROR.getCode(), "立即执行QuartzJob失败：jobname=["+task.getJobname()+"]", e);

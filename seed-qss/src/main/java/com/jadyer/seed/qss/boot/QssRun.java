@@ -1,6 +1,8 @@
 package com.jadyer.seed.qss.boot;
 
 import com.jadyer.seed.comm.constant.SeedConstants;
+import com.jadyer.seed.comm.util.LogUtil;
+import com.jadyer.seed.qss.helper.JobSubscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,6 +10,12 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import redis.clients.jedis.JedisCluster;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by 玄玉<http://jadyer.cn/> on 2017/3/4 18:39.
@@ -37,5 +45,23 @@ public class QssRun {
 
     public static void main(String[] args) {
         new SpringApplicationBuilder().sources(QssRun.class).profiles(getProfile(new SimpleCommandLinePropertySource(args))).run(args);
+    }
+
+
+    public static final String CHANNEL_SUBSCRIBER = "qss_jedis_pubsub_channel";
+    @Resource
+    private JedisCluster jedisCluster;
+    @Resource
+    private JobSubscriber jobSubscriber;
+    @PostConstruct
+    public void scheduleReport(){
+        Executors.newScheduledThreadPool(1).schedule(new Runnable(){
+            @Override
+            public void run() {
+                LogUtil.getLogger().info("JedisSubscribe：开始注册...");
+                jedisCluster.subscribe(jobSubscriber, CHANNEL_SUBSCRIBER);
+                LogUtil.getLogger().info("JedisSubscribe：注册完毕...");
+            }
+        }, 10, TimeUnit.SECONDS);
     }
 }

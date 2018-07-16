@@ -186,7 +186,9 @@ public final class WkhtmltopdfUtil {
         cmd.append(" --margin-bottom 20mm");
         cmd.append(" --footer-spacing 5");
         cmd.append(" --header-spacing 5");
-        cmd.append(" --header-html ").append(headerHtmlPath);
+        if(StringUtils.isNotBlank(headerHtmlPath)){
+            cmd.append(" --header-html ").append(headerHtmlPath);
+        }
         Process process;
         try{
             //执行命令（根据源HTML为网络路径或本地路径，来决定是否设置工作目录）

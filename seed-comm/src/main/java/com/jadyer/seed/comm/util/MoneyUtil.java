@@ -192,6 +192,7 @@ public class MoneyUtil {
 
     /**
      * 金额转中文
+     * 返回值举例：零元整、壹元整、壹厘、壹元壹分、玖亿捌仟柒佰陆拾伍万肆仟叁佰贰拾壹元整
      */
     public static String toChinese(String amount){
         if(StringUtils.isBlank(amount)){
@@ -217,7 +218,7 @@ public class MoneyUtil {
         }
         //判断“零元整”的情况
         if(("".equals(intNumberStr)||0==Long.parseLong(intNumberStr)) && ("".equals(decimalNumberStr)||0==Long.parseLong(decimalNumberStr))){
-            return "零元";
+            return "零元整";
         }
         //整数部分需去掉首0，小数部分的0不用管（超出部分会被舍去，该方法只会计算到角、分、厘三位）
         if(!"".equals(intNumberStr)){
@@ -292,6 +293,7 @@ public class MoneyUtil {
         /*
          * 返回结果
          */
-        return intNumberChinese.toString() + decimalNumberChinese.toString();
+        String chinese = intNumberChinese.append(decimalNumberChinese).toString();
+        return chinese.endsWith("元") ? chinese+"整" : chinese;
     }
 }
