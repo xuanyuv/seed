@@ -1,8 +1,9 @@
 package com.jadyer.seed.qss.helper;
 
-import com.jadyer.seed.comm.annotation.SeedLock;
+import com.jadyer.seed.comm.SeedLockHelper;
 import com.jadyer.seed.comm.util.HTTPUtil;
 import com.jadyer.seed.comm.util.LogUtil;
+import com.jadyer.seed.qss.boot.SeedLockConfiguration;
 import com.jadyer.seed.qss.model.ScheduleTask;
 
 class JobExecute {
@@ -50,11 +51,15 @@ class JobExecute {
      * 通过HTTP接口调用任务
      * Created by 玄玉<http://jadyer.cn/> on 2015/8/8 20:33.
      */
-    @SeedLock(key="#task.jobname")
-    // TODO 想办法生效
     static void invokMethod(ScheduleTask task){
-        LogUtil.getLogger().info("start-->定时任务：[{}]=[{}]", task.getJobname(), task.getUrl());
-        String respData = HTTPUtil.post(task.getUrl(), null);
-        LogUtil.getLogger().info("stopp-->定时任务：[{}]=[{}]，return=[{}]", task.getJobname(), task.getUrl(), respData);
+        try {
+            if(SeedLockHelper.lock(SeedLockConfiguration.redissonClientList, task.getJobname())){
+                LogUtil.getLogger().info("start-->定时任务：[{}]=[{}]", task.getJobname(), task.getUrl());
+                String respData = HTTPUtil.post(task.getUrl(), null);
+                LogUtil.getLogger().info("stopp-->定时任务：[{}]=[{}]，return=[{}]", task.getJobname(), task.getUrl(), respData);
+            }
+        } finally {
+            SeedLockHelper.unlock();
+        }
     }
 }

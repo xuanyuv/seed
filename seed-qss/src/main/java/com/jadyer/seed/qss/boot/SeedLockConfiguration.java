@@ -75,7 +75,7 @@ public class SeedLockConfiguration {
     private int database;
     /** 密码（默认值：null） */
     private String password;
-    private static final List<RedissonClient> redissonClientList = new ArrayList<>();
+    public static final List<RedissonClient> redissonClientList = new ArrayList<>();
     private ExpressionParser parser = new SpelExpressionParser();
     private LocalVariableTableParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
 

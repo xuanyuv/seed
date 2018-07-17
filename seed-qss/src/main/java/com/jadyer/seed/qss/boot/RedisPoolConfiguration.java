@@ -20,6 +20,13 @@ import java.util.List;
  * 阿里云Redis客户端连接：https://help.aliyun.com/document_detail/43848.html
  * 阿里云Redis消息发布订阅：https://help.aliyun.com/document_detail/26368.html
  * --------------------------------------------------------------------------------------------
+ * 使用举例：
+ * @Resource
+ * private JedisPool jedisPool;
+ * try (Jedis jedis = jedisPool.getResource()) {
+ *     jedis.publish("seed_channel", jsonData);
+ * }
+ * --------------------------------------------------------------------------------------------
  * Created by 玄玉<http://jadyer.cn/> on 2016/11/24 10:46.
  */
 @Configuration
