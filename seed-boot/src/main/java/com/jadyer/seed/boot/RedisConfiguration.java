@@ -32,6 +32,7 @@ public class RedisConfiguration {
     private int maxTotal = 16;
     private int maxIdle = 8;
     private int minIdle = 0;
+    private String password;
     private List<String> nodes = new ArrayList<>();
 
     @Bean
@@ -53,7 +54,7 @@ public class RedisConfiguration {
         config.setMaxTotal(this.getMaxTotal());
         config.setMaxIdle(this.getMaxIdle());
         config.setMinIdle(this.getMinIdle());
-        return new JedisCluster(nodes, this.getConnectionTimeout(), this.getSoTimeout(), this.getMaxRedirections(), config);
+        return new JedisCluster(nodes, this.getConnectionTimeout(), this.getSoTimeout(), this.getMaxRedirections(), this.getPassword(), config);
     }
 
     public int getConnectionTimeout() {
@@ -102,6 +103,14 @@ public class RedisConfiguration {
 
     public void setMinIdle(int minIdle) {
         this.minIdle = minIdle;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public List<String> getNodes() {

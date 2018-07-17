@@ -22,7 +22,7 @@ public class JobSubscriber extends JedisPubSub {
     @Override
     @EnableLog
     public void onMessage(String channel, String message) {
-        LogUtil.getLogger().info("收到来自渠道[{}]的消息[{}]", channel, message);
+        LogUtil.getLogger().info("收到来自渠道[{}]的订阅消息[{}]", channel, message);
         if(QssRun.CHANNEL_SUBSCRIBER.equals(channel)){
             ScheduleTask task = JSON.parseObject(message, ScheduleTask.class);
             qssService.upsertJob(task);

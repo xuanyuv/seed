@@ -1,7 +1,6 @@
 package com.jadyer.seed.qss.boot;
 
 import com.jadyer.seed.comm.constant.SeedConstants;
-import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.qss.helper.JobSubscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +9,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import redis.clients.jedis.JedisCluster;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -25,6 +25,24 @@ import java.util.concurrent.TimeUnit;
 @SpringBootApplication(scanBasePackages="${scan.base.packages}")
 public class QssRun {
     private static final Logger log = LoggerFactory.getLogger(QssRun.class);
+    public static final String CHANNEL_SUBSCRIBER = "qss_jedis_pubsub_channel";
+    @Resource
+    private JedisPool jedisPool;
+    @Resource
+    private JobSubscriber jobSubscriber;
+
+    @PostConstruct
+    public void scheduleReport(){
+        Executors.newScheduledThreadPool(1).schedule(new Runnable(){
+            @Override
+            public void run() {
+                try (Jedis jedis = jedisPool.getResource()) {
+                    jedis.subscribe(jobSubscriber, CHANNEL_SUBSCRIBER);
+                }
+            }
+        }, 10, TimeUnit.SECONDS);
+    }
+
 
     private static String getProfile(SimpleCommandLinePropertySource source){
         if(source.containsProperty(SeedConstants.BOOT_ACTIVE_NAME)){
@@ -43,25 +61,8 @@ public class QssRun {
         return SeedConstants.BOOT_ACTIVE_DEFAULT_VALUE;
     }
 
+
     public static void main(String[] args) {
         new SpringApplicationBuilder().sources(QssRun.class).profiles(getProfile(new SimpleCommandLinePropertySource(args))).run(args);
-    }
-
-
-    public static final String CHANNEL_SUBSCRIBER = "qss_jedis_pubsub_channel";
-    @Resource
-    private JedisCluster jedisCluster;
-    @Resource
-    private JobSubscriber jobSubscriber;
-    @PostConstruct
-    public void scheduleReport(){
-        Executors.newScheduledThreadPool(1).schedule(new Runnable(){
-            @Override
-            public void run() {
-                LogUtil.getLogger().info("JedisSubscribe：开始注册...");
-                jedisCluster.subscribe(jobSubscriber, CHANNEL_SUBSCRIBER);
-                LogUtil.getLogger().info("JedisSubscribe：注册完毕...");
-            }
-        }, 10, TimeUnit.SECONDS);
     }
 }
