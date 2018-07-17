@@ -135,7 +135,6 @@ public class QssService {
         }
         ScheduleTask task = scheduleTaskRepository.findOne(taskId);
         task.setCron(cron);
-        //TODO 注意这里没有把下次触发时间更新到数据库，会造成前段页面看到的时间没有变
         boolean flag = 1==scheduleTaskRepository.updateCronById(cron, taskId);
         //this.upsertJob(task);
         try (Jedis jedis = jedisPool.getResource()) {
@@ -156,7 +155,6 @@ public class QssService {
         ScheduleTask task = scheduleTaskRepository.findOne(taskId);
         JobKey jobKey = JobKey.jobKey(task.getJobname());
         try{
-            //TODO 注意这里没有把本次出发时间更新到数据库，会造成前段页面看到的时间没有变
             scheduler.triggerJob(jobKey);
         }catch(SchedulerException e){
             throw new SeedException(CodeEnum.SYSTEM_ERROR.getCode(), "立即执行QuartzJob失败：jobname=["+task.getJobname()+"]", e);
