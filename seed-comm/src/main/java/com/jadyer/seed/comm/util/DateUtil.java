@@ -162,7 +162,7 @@ public final class DateUtil {
             begin = DateUtils.parseDate(DateFormatUtils.format(begin, pattern), pattern);
             end = DateUtils.parseDate(DateFormatUtils.format(end, pattern), pattern);
         } catch (ParseException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         long time = end.getTime() - begin.getTime();
         return time / (24 * 60 * 60 * 1000);

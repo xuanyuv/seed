@@ -37,14 +37,6 @@ import java.util.Random;
  */
 public final class RequestUtil {
     private RequestUtil(){}
-    private static final Map<String, String> SUBNET_MASK_MAP = new HashMap<>();
-    static{
-        SUBNET_MASK_MAP.put("8", "255.0.0.0");
-        SUBNET_MASK_MAP.put("16", "255.255.0.0");
-        SUBNET_MASK_MAP.put("24", "255.255.255.0");
-        SUBNET_MASK_MAP.put("128", "(::1/128");
-        SUBNET_MASK_MAP.put("10", "fe80::203:baff:fe27:1243/10");
-    }
 
     /**
      * 获取客户端IP
@@ -99,6 +91,16 @@ public final class RequestUtil {
      * --------------------------------------------------------------------------------------------------
      */
     public static String getServerIP(){
+        Map<String, String> SUBNET_MASK_MAP = new HashMap<String, String>(){
+            private static final long serialVersionUID = 2303073623617570607L;
+            {
+                put("8", "255.0.0.0");
+                put("16", "255.255.0.0");
+                put("24", "255.255.255.0");
+                put("128", "(::1/128");
+                put("10", "fe80::203:baff:fe27:1243/10");
+            }
+        };
         String serverIP = "";
         try{
             Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
@@ -108,7 +110,7 @@ public final class RequestUtil {
                     List<InterfaceAddress> addressList = net.getInterfaceAddresses();
                     for(InterfaceAddress obj : addressList){
                         InetAddress IP = obj.getAddress();
-                        if(null!=IP && IP instanceof Inet4Address && !"127.0.0.1".equals(IP.getHostAddress())){
+                        if(IP instanceof Inet4Address && !"127.0.0.1".equals(IP.getHostAddress())){
                             serverIP = IP.getHostAddress();
                             LogUtil.getLogger().debug("IP=[{}]的子网掩码为=[{}]", serverIP, SUBNET_MASK_MAP.get(String.valueOf(obj.getNetworkPrefixLength())));
                             break tag;
