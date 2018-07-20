@@ -16,6 +16,22 @@ UNIQUE INDEX uniq_appname_name(appname, name)
 )ENGINE=InnoDB DEFAULT CHARSET=UTF8 COMMENT='定时任务信息表';
 
 
+DROP TABLE IF EXISTS t_schedule_log;
+CREATE TABLE t_schedule_log(
+id         INT AUTO_INCREMENT PRIMARY KEY COMMENT '主键',
+task_id    INT          NOT NULL COMMENT '任务ID，对应t_schedule_task#id',
+appname    VARCHAR(32)  NOT NULL COMMENT '定时任务的应用名称',
+name       VARCHAR(32)  NOT NULL COMMENT '定时任务名称',
+url        VARCHAR(512) NOT NULL COMMENT '定时任务URL',
+fire_time  DATETIME     NOT NULL COMMENT '定时任务触发时间',
+duration   BIGINT      DEFAULT 0 COMMENT '定时任务所耗时间，单位：ms',
+resp_data  MEDIUMTEXT            COMMENT '定时任务返回结果',
+create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+INDEX idx_taskId(task_id)
+)ENGINE=InnoDB DEFAULT CHARSET=UTF8 COMMENT='定时任务执行记录表';
+
+
 INSERT INTO t_schedule_task(appname, name, cron, url) VALUES
 ('ifs', 'testTask', '15 */1 * * * ?', 'http://127.0.0.1:8008/qss/getByIds?ids=1'),
 ('mss', 'testTask', '35 */1 * * * ?', 'http://127.0.0.1:8008/qss/getByIds?ids=1%602');
