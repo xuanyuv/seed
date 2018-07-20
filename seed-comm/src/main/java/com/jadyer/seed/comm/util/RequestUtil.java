@@ -91,6 +91,7 @@ public final class RequestUtil {
      * --------------------------------------------------------------------------------------------------
      */
     public static String getServerIP(){
+        String localAddress = "127.0.0.1";
         Map<String, String> SUBNET_MASK_MAP = new HashMap<String, String>(){
             private static final long serialVersionUID = 2303073623617570607L;
             {
@@ -110,7 +111,7 @@ public final class RequestUtil {
                     List<InterfaceAddress> addressList = net.getInterfaceAddresses();
                     for(InterfaceAddress obj : addressList){
                         InetAddress IP = obj.getAddress();
-                        if(IP instanceof Inet4Address && !"127.0.0.1".equals(IP.getHostAddress())){
+                        if(IP instanceof Inet4Address && !localAddress.equals(IP.getHostAddress())){
                             serverIP = IP.getHostAddress();
                             LogUtil.getLogger().debug("IP=[{}]的子网掩码为=[{}]", serverIP, SUBNET_MASK_MAP.get(String.valueOf(obj.getNetworkPrefixLength())));
                             break tag;
