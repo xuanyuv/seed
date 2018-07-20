@@ -514,7 +514,13 @@ public final class HTTPUtil {
             throw new SeedException(CodeEnum.SYSTEM_ERROR.getCode(), "请求通信[" + reqURL + "]时遇到异常", e);
         }finally{
             httpClient.getConnectionManager().shutdown();
-            tmpFile.delete();
+            //File file = new File("e:\\xuanyu\\test\\jadyer.png");
+            //file.getCanonicalPath() = E:\xuanyu\test\jadyer.png
+            //file.getAbsolutePath()  = e:\xuanyu\test\jadyer.png
+            //file.getPath()          = e:\xuanyu\test\jadyer.png
+            //file.getParent()        = e:\xuanyu\test
+            //file.getName()          = jadyer.png
+            LogUtil.getLogger().info("临时文件[{}]删除[{}]", tmpFile.getAbsolutePath(), tmpFile.delete()?"成功":"失败");
         }
     }
 

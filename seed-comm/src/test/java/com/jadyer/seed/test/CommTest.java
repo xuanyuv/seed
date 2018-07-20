@@ -7,7 +7,7 @@ import org.junit.Test;
  */
 public class CommTest {
     @Test
-    public void common(){
+    public void common() {
         System.out.println("java.io.tmpdir is " + System.getProperty("java.io.tmpdir"));
     }
 
