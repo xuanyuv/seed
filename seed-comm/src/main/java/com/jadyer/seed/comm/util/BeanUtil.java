@@ -15,7 +15,8 @@ import java.util.Map;
 
 /**
  * Bean工具类
- * @version v1.3
+ * @version v1.4
+ * @history v1.4-->copyProperties()增加返回值并修改内部实现为Spring#BeanUtils，同时增加copyPropertiesForList()
  * @history v1.3-->mapTobean()方法增加除String外的int和long类型支持
  * @history v1.2-->增加mapTobean()方法
  * @history v1.1-->增加beanToMap()方法
