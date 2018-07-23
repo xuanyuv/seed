@@ -25,6 +25,12 @@ import java.util.Map;
 public final class BeanUtil {
     private BeanUtil(){}
 
+    /**
+     * JavaBean属性拷贝
+     * -------------------------------------------------------------------------------------
+     * 用法：List<User> userList = BeanUtil.copyPropertiesForList(userDataList, User.class)
+     * -------------------------------------------------------------------------------------
+     */
     public static <E, T> List<T> copyPropertiesForList(List<E> sourceList, Class<T> targetClass) {
         List<T> targetList = new ArrayList<>();
         for(E e : sourceList){
@@ -36,6 +42,8 @@ public final class BeanUtil {
 
     /**
      * JavaBean属性拷贝
+     * -------------------------------------------------------------------------------------
+     * 用法：User user = BeanUtil.copyProperties(userData, User.class)
      * -------------------------------------------------------------------------------------
      * 1、cglib 和 Spring 就足够了，Apache的还是算了
      * 2、使用时注意目标类应public，若内部类则应为静态内部类
