@@ -27,9 +27,10 @@ public final class BeanUtil {
 
     /**
      * HttpServletRequest参数值转为JavaBean
-     * @see 该方法目前只能处理所有属性均为String的JavaBean
-     * @see 且只能处理当前类,暂不能处理父类和子类
-     * @see 且类属性只能是String
+     * --------------------------------------------------------------------------------------
+     * 1、类属性只能是String
+     * 2、只能处理当前类，暂不能处理父类和子类
+     * --------------------------------------------------------------------------------------
      */
     public static <T> T requestToBean(HttpServletRequest request, Class<T> beanClass){
         try{
@@ -116,9 +117,9 @@ public final class BeanUtil {
 
     /**
      * Bean属性转为Map（key=属性名，value=属性值）
-     * <p>
-     *     另附注意事项：http://jadyer.cn/2013/09/24/spring-introspector-cleanup-listener/
-     * </p>
+     * -------------------------------------------------------------------------------------
+     * 另附注意事项：https://jadyer.cn/2013/09/24/spring-introspector-cleanup-listener/
+     * -------------------------------------------------------------------------------------
      */
     public static Map<String, String> beanToMap(Object bean) {
         if(null == bean){
@@ -154,10 +155,10 @@ public final class BeanUtil {
 
     /**
      * Map转为Bean（根据key找到属性名，再将value作为属性值）
-     * <ul>
-     *     <li>注意：Bean的属性值目前只支持String、int、long，其它未做兼容</li>
-     *     <li>另附注意事项：http://jadyer.cn/2013/09/24/spring-introspector-cleanup-listener/</li>
-     * </ul>
+     * -------------------------------------------------------------------------------------
+     * Bean的属性值目前只支持String、int、long，其它未做兼容
+     * 另附注意事项：https://jadyer.cn/2013/09/24/spring-introspector-cleanup-listener/
+     * -------------------------------------------------------------------------------------
      */
     public static <T> T mapTobean(Map<String, String> dataMap, Class<T> beanClass) {
         try{

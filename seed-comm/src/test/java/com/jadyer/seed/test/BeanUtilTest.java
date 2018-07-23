@@ -2,11 +2,7 @@ package com.jadyer.seed.test;
 
 import com.jadyer.seed.comm.util.BeanUtil;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.hibernate.validator.constraints.NotBlank;
 import org.junit.Test;
-
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Pattern;
 
 public class BeanUtilTest {
     /**
@@ -28,9 +24,7 @@ public class BeanUtilTest {
 
 
     class User{
-        @Min(1)
         private int id;
-        @NotBlank
         private String name;
         public int getId() {
             return id;
@@ -46,13 +40,11 @@ public class BeanUtilTest {
         }
     }
     public class UserDetail extends User{
-        @NotBlank
-        @Pattern(regexp="^M|F$", message="性别只能传M或F")
         private String sex;
         public String getSex() {
             return sex;
         }
-        void setSex(String sex) {
+        public void setSex(String sex) {
             this.sex = sex;
         }
     }
