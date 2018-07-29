@@ -1,6 +1,7 @@
 package com.jadyer.seed.qss.boot;
 
 import com.jadyer.seed.comm.annotation.SeedLock;
+import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -128,8 +129,13 @@ public class SeedLockConfiguration {
         }
         RedissonRedLock redLock = new RedissonRedLock(rLocks);
         try{
-            if(!redLock.tryLock(seedLock.waitTime(), seedLock.leaseTime(), seedLock.unit())){
-                LogUtil.getLogger().error("资源[{}]加锁-->失败", key);
+            try {
+                if(!redLock.tryLock(seedLock.waitTime(), seedLock.leaseTime(), seedLock.unit())){
+                    LogUtil.getLogger().error("资源[{}]加锁-->失败", key);
+                    return null;
+                }
+            } catch (InterruptedException e) {
+                LogUtil.getLogger().error("资源[{}]加锁-->失败：{}", key, JadyerUtil.extractStackTraceCausedBy(e));
                 return null;
             }
             LogUtil.getLogger().info("资源[{}]加锁-->成功", key);

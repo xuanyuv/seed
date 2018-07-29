@@ -30,12 +30,12 @@ public @interface SeedLock {
     /**
      * 锁等待时间
      */
-    int waitTime() default -1;
+    long waitTime() default -1;
 
     /**
      * 锁释放时间
      */
-    int leaseTime() default -1;
+    long leaseTime() default -1;
 
     /**
      * 时间单位，默认：秒

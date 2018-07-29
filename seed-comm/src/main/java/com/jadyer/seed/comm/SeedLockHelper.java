@@ -1,11 +1,13 @@
 package com.jadyer.seed.comm;
 
+import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import org.redisson.RedissonRedLock;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by 玄玉<http://jadyer.cn/> on 2018/7/17 16:44.
@@ -16,6 +18,11 @@ public class SeedLockHelper {
     private static ThreadLocal<RedissonRedLock> redLockMap = new ThreadLocal<>();
 
     public static boolean lock(List<RedissonClient> redissonClientList, String key){
+        return lock(redissonClientList, key, -1, TimeUnit.SECONDS);
+    }
+
+
+    public static boolean lock(List<RedissonClient> redissonClientList, String key, long waitTime, TimeUnit unit){
         key = PREFIX + key;
         RedissonRedLock redLock = redLockMap.get();
         if(null != redLock){
@@ -28,9 +35,13 @@ public class SeedLockHelper {
             rLocks[i] = redissonClientList.get(i).getLock(key);
         }
         redLock = new RedissonRedLock(rLocks);
-        if(!redLock.tryLock()){
-            LogUtil.getLogger().error("资源[{}]加锁-->失败", key);
-            return false;
+        try {
+            if(!redLock.tryLock(waitTime, unit)){
+                LogUtil.getLogger().error("资源[{}]加锁-->失败", key);
+                return false;
+            }
+        } catch (InterruptedException e) {
+            LogUtil.getLogger().error("资源[{}]加锁-->失败：{}", key, JadyerUtil.extractStackTraceCausedBy(e));
         }
         keyMap.set(key);
         redLockMap.set(redLock);
