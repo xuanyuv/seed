@@ -178,7 +178,7 @@ public class QssService {
                 //scheduler.resumeJob(jobKey);
                 //删除一个QuartzJob（删除任务后，所对应的Trigger也将被删除）
                 scheduler.deleteJob(JobKey.jobKey(task.getJobname()));
-                LogUtil.getLogger().info("任务[{}]已从Quartz内存中移除", task.getJobname());
+                LogUtil.getLogger().info("Quartz内存：已移除任务[{}]", task.getJobname());
                 return;
             }
             TriggerKey triggerKey = TriggerKey.triggerKey(task.getJobname());
@@ -193,6 +193,7 @@ public class QssService {
                 trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
                 //按新的Trigger重新设置Job执行
                 scheduler.rescheduleJob(triggerKey, trigger);
+                LogUtil.getLogger().info("Quartz内存：已更新任务[{}]", task.getJobname());
             }else{
                 //Trigger不存在就创建一个
                 Class<? extends Job> clazz = SeedConstants.QSS_CONCURRENT_YES == task.getConcurrent() ? JobAllowConcurrentFactory.class : JobDisallowConcurrentFactory.class;
@@ -203,6 +204,7 @@ public class QssService {
                 //按新的cronExpression表达式构建一个新的Trigger
                 trigger = TriggerBuilder.newTrigger().withIdentity(task.getJobname()).withSchedule(scheduleBuilder).build();
                 scheduler.scheduleJob(jobDetail, trigger);
+                LogUtil.getLogger().info("Quartz内存：已新增任务[{}]", task.getJobname());
             }
         }catch(SchedulerException e){
             throw new SeedException(CodeEnum.SYSTEM_ERROR.getCode(), "UpsertJob失败："+ReflectionToStringBuilder.toString(task), e);
