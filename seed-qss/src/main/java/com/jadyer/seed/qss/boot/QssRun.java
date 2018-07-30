@@ -48,10 +48,10 @@ public class QssRun {
                     jedis.subscribe(jobSubscriber, CHANNEL_SUBSCRIBER);
                 }
             }
-        }, 10, TimeUnit.SECONDS);
+        }, 3, TimeUnit.SECONDS);
         LogUtil.getLogger().info("同步所有任务到内存：begin...");
         try {
-            TimeUnit.SECONDS.sleep(15);
+            TimeUnit.SECONDS.sleep(6);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -59,6 +59,11 @@ public class QssRun {
             try (Jedis jedis = jedisPool.getResource()) {
                 jedis.publish(CHANNEL_SUBSCRIBER, JSON.toJSONString(task));
             }
+        }
+        try {
+            TimeUnit.SECONDS.sleep(15);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         LogUtil.getLogger().info("同步所有任务到内存：end.....");
     }

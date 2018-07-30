@@ -127,21 +127,26 @@ public class SeedLockConfiguration {
         for(int i=0; i<redissonClientList.size(); i++){
             rLocks[i] = redissonClientList.get(i).getLock(key);
         }
-        RedissonRedLock redLock = new RedissonRedLock(rLocks);
+        RedissonRedLock redLock = null;
         try{
             try {
+                //new RedissonRedLock(rLocks)可能发生异常：比如应用正在启动中，就来调用这里
+                //Caused by: java.lang.IllegalArgumentException: Lock objects are not defined
+                redLock = new RedissonRedLock(rLocks);
                 if(!redLock.tryLock(seedLock.waitTime(), seedLock.leaseTime(), seedLock.unit())){
                     LogUtil.getLogger().error("资源[{}]加锁-->失败", key);
                     return null;
                 }
-            } catch (InterruptedException e) {
+            } catch (InterruptedException | IllegalArgumentException e) {
                 LogUtil.getLogger().error("资源[{}]加锁-->失败：{}", key, JadyerUtil.extractStackTraceCausedBy(e));
                 return null;
             }
             LogUtil.getLogger().info("资源[{}]加锁-->成功", key);
             return joinPoint.proceed();
         }finally{
-            redLock.unlock();
+            if(null != redLock){
+                redLock.unlock();
+            }
             LogUtil.getLogger().info("资源[{}]解锁-->完毕", key);
         }
     }

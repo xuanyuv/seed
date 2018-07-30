@@ -199,7 +199,7 @@ public class QssService {
                 JobDetail jobDetail = JobBuilder.newJob(clazz).withIdentity(task.getJobname()).build();
                 jobDetail.getJobDataMap().put(SeedConstants.QSS_JOB_DATAMAP_KEY, task);
                 //表达式调度构建器
-                CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(task.getCron());
+                CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(task.getCron()).withMisfireHandlingInstructionDoNothing();
                 //按新的cronExpression表达式构建一个新的Trigger
                 trigger = TriggerBuilder.newTrigger().withIdentity(task.getJobname()).withSchedule(scheduleBuilder).build();
                 scheduler.scheduleJob(jobDetail, trigger);
