@@ -178,6 +178,7 @@ public class QssService {
                 //scheduler.resumeJob(jobKey);
                 //删除一个QuartzJob（删除任务后，所对应的Trigger也将被删除）
                 scheduler.deleteJob(JobKey.jobKey(task.getJobname()));
+                LogUtil.getLogger().info("任务[{}]已从Quartz内存中移除", task.getJobname());
                 return;
             }
             TriggerKey triggerKey = TriggerKey.triggerKey(task.getJobname());
