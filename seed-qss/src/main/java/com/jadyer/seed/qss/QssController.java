@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -86,13 +85,6 @@ public class QssController {
         this.verifyDynamicPassword(dynamicPassword);
         qssService.reg(task);
         return CommResult.success();
-    }
-
-
-    @GetMapping({"", "/"})
-    public String list(HttpServletRequest request){
-        request.setAttribute("taskList", scheduleTaskRepository.findAll());
-        return "/qss";
     }
 
 
