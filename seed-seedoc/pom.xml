@@ -27,6 +27,11 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <!--
+                    addResources配置之后，通过spring-boot:run启动
+                    这样html静态文件就会直接从resources目录读取，而不是编译之后的target目录了
+                    -->
+                    <addResources>true</addResources>
                     <mainClass>com.jadyer.seed.seedoc.boot.SeedocRun</mainClass>
                 </configuration>
                 <executions>
