@@ -34,6 +34,7 @@ public interface SeedConstants {
     int QSS_CONCURRENT_NO      = 0; //禁止并发执行
     int QSS_CONCURRENT_YES     = 1; //允许并发执行
     String QSS_JOB_DATAMAP_KEY = "qss"; //存放在Quartz测JobDataMap中的key
+    String CHANNEL_SUBSCRIBER  = "qss_jedis_pubsub_channel";
 
     /**
      * seed-open用到的常量

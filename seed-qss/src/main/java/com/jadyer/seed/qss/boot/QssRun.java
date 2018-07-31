@@ -30,7 +30,6 @@ import java.util.concurrent.TimeUnit;
 @SpringBootApplication(scanBasePackages="${scan.base.packages}")
 public class QssRun {
     private static final Logger log = LoggerFactory.getLogger(QssRun.class);
-    public static final String CHANNEL_SUBSCRIBER = "qss_jedis_pubsub_channel";
     @Resource
     private JedisPool jedisPool;
     @Resource
@@ -45,7 +44,7 @@ public class QssRun {
             public void run() {
                 try (Jedis jedis = jedisPool.getResource()) {
                     LogUtil.getLogger().info("异步订阅：jedis.subscribe");
-                    jedis.subscribe(jobSubscriber, CHANNEL_SUBSCRIBER);
+                    jedis.subscribe(jobSubscriber, SeedConstants.CHANNEL_SUBSCRIBER);
                 }
             }
         }, 3, TimeUnit.SECONDS);
@@ -57,7 +56,7 @@ public class QssRun {
         }
         for(ScheduleTask task : scheduleTaskRepository.findAll(Condition.<ScheduleTask>and().eq("status", SeedConstants.QSS_STATUS_RUNNING))){
             try (Jedis jedis = jedisPool.getResource()) {
-                jedis.publish(CHANNEL_SUBSCRIBER, JSON.toJSONString(task));
+                jedis.publish(SeedConstants.CHANNEL_SUBSCRIBER, JSON.toJSONString(task));
             }
         }
         try {

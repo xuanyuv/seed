@@ -6,7 +6,6 @@ import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.comm.util.LogUtil;
-import com.jadyer.seed.qss.boot.QssRun;
 import com.jadyer.seed.qss.helper.JobAllowConcurrentFactory;
 import com.jadyer.seed.qss.helper.JobDisallowConcurrentFactory;
 import com.jadyer.seed.qss.model.ScheduleTask;
@@ -74,7 +73,7 @@ public class QssService {
             //通过Redis发布订阅来同步到所有QSS节点里面，所以这里注释掉
             //this.upsertJob(task);
             try (Jedis jedis = jedisPool.getResource()) {
-                jedis.publish(QssRun.CHANNEL_SUBSCRIBER, JSON.toJSONString(task));
+                jedis.publish(SeedConstants.CHANNEL_SUBSCRIBER, JSON.toJSONString(task));
             }
         }else{
             LogUtil.getLogger().info("收到任务注册请求：任务已存在：{}#{}，自动忽略。" + task.getAppname(), task.getName());
@@ -104,7 +103,7 @@ public class QssService {
         scheduleTaskRepository.delete(taskId);
         //this.upsertJob(task);
         try (Jedis jedis = jedisPool.getResource()) {
-            jedis.publish(QssRun.CHANNEL_SUBSCRIBER, JSON.toJSONString(task));
+            jedis.publish(SeedConstants.CHANNEL_SUBSCRIBER, JSON.toJSONString(task));
         }
     }
 
@@ -119,7 +118,7 @@ public class QssService {
         boolean flag = 1==scheduleTaskRepository.updateStatusById(status, taskId);
         //this.upsertJob(task);
         try (Jedis jedis = jedisPool.getResource()) {
-            jedis.publish(QssRun.CHANNEL_SUBSCRIBER, JSON.toJSONString(task));
+            jedis.publish(SeedConstants.CHANNEL_SUBSCRIBER, JSON.toJSONString(task));
         }
         return flag;
     }
@@ -138,7 +137,7 @@ public class QssService {
         boolean flag = 1==scheduleTaskRepository.updateCronById(cron, taskId);
         //this.upsertJob(task);
         try (Jedis jedis = jedisPool.getResource()) {
-            jedis.publish(QssRun.CHANNEL_SUBSCRIBER, JSON.toJSONString(task));
+            jedis.publish(SeedConstants.CHANNEL_SUBSCRIBER, JSON.toJSONString(task));
         }
         return flag;
     }
