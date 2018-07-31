@@ -18,7 +18,8 @@ import java.util.concurrent.TimeUnit;
  * -----------------------------------------------------------------------------------------------------
  * Created by 玄玉<http://jadyer.cn/> on 2017/11/24 19:36.
  */
-//@Component
+//@Configuration
+//@ConditionalOnClass({JedisCluster.class})
 public class RedisDistributedLockV3 {
     @Resource
     private JedisCluster jedisCluster;
