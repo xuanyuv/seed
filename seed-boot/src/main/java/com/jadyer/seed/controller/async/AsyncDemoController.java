@@ -33,13 +33,10 @@ public class AsyncDemoController {
         Future<String> task11 = this.asyncDemoTask.doTaskAndGetResultOne();
         Future<Integer> task22 = this.asyncDemoTask.doTaskAndGetResultTwo();
         Future<Long> task33 = this.asyncDemoTask.doTaskAndGetResultThree();
-        while(true){
-            if(task11.isDone() && task22.isDone() && task33.isDone()){
-                break;
-            }
-            try{
+        while (!task11.isDone() || !task22.isDone() || !task33.isDone()) {
+            try {
                 TimeUnit.MILLISECONDS.sleep(300);
-            }catch(InterruptedException e){
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
