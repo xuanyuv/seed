@@ -84,7 +84,7 @@ class JobExecute {
                 try {
                     TimeUnit.SECONDS.sleep(6);
                 } catch (InterruptedException e){
-                    LogUtil.getLogger().error("服务器时间容错处理时，遇到异常", e);
+                    LogUtil.getLogger().error("服务器时间误差容错处理时，遇到异常", e);
                 }
                 //更新耗时及应答结果
                 ScheduleLog finalLog = log;
