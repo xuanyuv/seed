@@ -12,6 +12,7 @@ import com.jadyer.seed.qss.repository.ScheduleLogRepository;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 class JobExecute {
     private static ExecutorService threadPool = Executors.newCachedThreadPool();
@@ -74,16 +75,23 @@ class JobExecute {
                 log.setFireTime(new Date());
                 log = repository.saveAndFlush(log);
                 //正式调用
-                long startTime = System.currentTimeMillis();
                 LogUtil.getLogger().info("start-->定时任务：[{}]=[{}]", task.getJobname(), task.getUrl());
+                long startTime = System.currentTimeMillis();
                 String respData = HTTPUtil.post(task.getUrl(), null);
+                long endTime = System.currentTimeMillis();
                 LogUtil.getLogger().info("stopp-->定时任务：[{}]=[{}]，return=[{}]", task.getJobname(), task.getUrl(), respData);
+                //服务器时间同步存在误差时的容错处理：最多容错6s，即最多允许服务器之间的时间同步误差为6s
+                try {
+                    TimeUnit.SECONDS.sleep(6);
+                } catch (InterruptedException e){
+                    LogUtil.getLogger().error("服务器时间容错处理时，遇到异常", e);
+                }
                 //更新耗时及应答结果
                 ScheduleLog finalLog = log;
                 threadPool.execute(new Runnable() {
                     @Override
                     public void run() {
-                        finalLog.setDuration(System.currentTimeMillis() - startTime);
+                        finalLog.setDuration(endTime - startTime);
                         finalLog.setRespData(respData);
                         repository.saveAndFlush(finalLog);
                     }

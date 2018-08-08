@@ -11,7 +11,6 @@ next_fire_time     DATETIME     COMMENT '下次触发时间',
 previous_fire_time DATETIME     COMMENT '上次触发时间',
 create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-UNIQUE INDEX uniq_url(url),
 UNIQUE INDEX uniq_appname_name(appname, name)
 )ENGINE=InnoDB DEFAULT CHARSET=UTF8 COMMENT='定时任务信息表';
 
