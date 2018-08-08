@@ -20,10 +20,14 @@
         </encoder>
     </appender>
 
+    <logger name="io.netty" level="INFO"/>
     <logger name="org.jboss" level="WARN"/>
     <logger name="org.apache" level="WARN"/>
+    <logger name="org.quartz" level="INFO"/>
+    <logger name="org.redisson" level="INFO"/>
     <logger name="org.hibernate" level="WARN"/>
     <logger name="org.thymeleaf" level="WARN"/>
+    <logger name="com.alibaba.druid" level="INFO"/>
     <logger name="org.springframework" level="WARN"/>
     <logger name="org.springframework.boot.context.embedded.tomcat" level="INFO"/>
 
