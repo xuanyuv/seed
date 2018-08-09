@@ -30,9 +30,10 @@ import javax.sql.DataSource;
 import java.util.Arrays;
 
 /**
- * -----------------------------------------------------------------
+ * ----------------------------------------------------------------------
  * https://spring.io/guides/gs/batch-processing/
- * -----------------------------------------------------------------
+ * https://docs.spring.io/spring-batch/4.0.x/reference/html/index.html
+ * ----------------------------------------------------------------------
  * Created by 玄玉<http://jadyer.cn/> on 2017/11/20 11:12.
  */
 @Configuration
