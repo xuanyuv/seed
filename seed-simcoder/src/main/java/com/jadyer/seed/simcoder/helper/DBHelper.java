@@ -149,7 +149,7 @@ class DBHelper {
         if(StringUtils.equalsAnyIgnoreCase(dbtype, "char", "varchar", "tinytext", "text", "mediumtext")){
             return "String";
         }
-        if(StringUtils.equalsAnyIgnoreCase(dbtype,"datetime", "timestamp")){
+        if(StringUtils.equalsAnyIgnoreCase(dbtype,"date", "datetime", "timestamp")){
             return "Date";
         }
         if(StringUtils.equalsIgnoreCase(dbtype, "decimal")){
