@@ -28,7 +28,6 @@ public class GenerateHelper {
             groupTemplate.setSharedVars(new HashMap<String, Object>(){
                 private static final long serialVersionUID = -7774932094711543319L;
                 {
-                    put("serialVersionUID", JadyerUtil.buildSerialVersionUID());
                     put("PACKAGE_MODEL", SimcoderRun.PACKGET_PREFIX + ".web.model");
                     put("PACKAGE_SERVICE", SimcoderRun.PACKGET_PREFIX + ".web.service");
                     put("PACKAGE_CONTROLLER", SimcoderRun.PACKGET_PREFIX + ".web.controller");
@@ -159,6 +158,7 @@ public class GenerateHelper {
          */
         String classname = DBHelper.buildClassnameFromTablename(tablename);
         Map<String, Object> sharedVars = new HashMap<>();
+        sharedVars.put("serialVersionUID", JadyerUtil.buildSerialVersionUID());
         sharedVars.put("CLASS_NAME", classname);
         sharedVars.put("CLASS_NAME_uncapitalize", StringUtils.uncapitalize(classname));
         sharedVars.put("TABLE_NAME", tablename);
