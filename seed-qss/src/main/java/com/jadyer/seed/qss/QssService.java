@@ -65,7 +65,7 @@ public class QssService {
      * 通过注解注册任务
      */
     void reg(ScheduleTask task){
-        LogUtil.getLogger().info("收到任务注册请求：{}" + ReflectionToStringBuilder.toString(task));
+        LogUtil.getLogger().info("收到任务注册请求：{}", ReflectionToStringBuilder.toString(task));
         if(null == scheduleTaskRepository.getByAppnameAndName(task.getAppname(), task.getName())){
             //注册过来的任务自动启动
             task.setStatus(SeedConstants.QSS_STATUS_RUNNING);
@@ -76,7 +76,7 @@ public class QssService {
                 jedis.publish(SeedConstants.CHANNEL_SUBSCRIBER, JSON.toJSONString(task));
             }
         }else{
-            LogUtil.getLogger().info("收到任务注册请求：任务已存在：{}#{}，自动忽略。" + task.getAppname(), task.getName());
+            LogUtil.getLogger().info("收到任务注册请求：任务已存在：{}#{}，auto ignore...", task.getAppname(), task.getName());
         }
     }
 
