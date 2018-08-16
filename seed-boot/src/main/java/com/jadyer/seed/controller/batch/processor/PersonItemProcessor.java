@@ -1,5 +1,6 @@
 package com.jadyer.seed.controller.batch.processor;
 
+import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.ValidatorUtil;
 import com.jadyer.seed.controller.batch.model.Person;
@@ -19,11 +20,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class PersonItemProcessor implements ItemProcessor<Person, Person> {
     @Override
-    public Person process(Person item) throws Exception {
+    public Person process(Person item) {
         String validateResult = ValidatorUtil.validate(item);
         if(StringUtils.isNotEmpty(validateResult)){
-            LogUtil.getLogger().error("数据校验未通过-->[{}]", validateResult);
-            return null;
+            //return null;
+            throw new SeedException("数据校验未通过-->" + validateResult);
         }
         LogUtil.getLogger().info("读取到-->{}", ReflectionToStringBuilder.toString(item));
         item.setAge(item.getAge() * 2);
