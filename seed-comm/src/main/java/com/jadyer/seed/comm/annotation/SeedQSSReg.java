@@ -16,13 +16,17 @@ import java.lang.annotation.Target;
  * @RestController
  * public class DemoController {
  *     @PostMapping("/prop")
- *     @SeedQSSReg(qssHost="http://127.0.0.1:8008", appHost="http://127.0.0.1/boot", appname="seedboot", name="打印系统属性", cron="0 *／2 * * * ?")
+ *     @SeedQSSReg(qssHost="${qss.host}", appHost="${qss.appHost}", appname="seedboot", name="打印系统属性", cron="0 *／2 * * * ?")
  *     public CommResult<Map<String, Object>> prop(){
  *         Map<String, Object> map = new HashMap<>();
  *         map.put("hello", "Hello QSS.");
  *         return CommResult.success(map);
  *     }
  * }
+ * ----------------------------------------------------------------------------------------------------
+ * 本注解的所有属性传参，均支持两种方式：
+ * 1、从配置文件读值：@SeedQSSReg(qssHost="${jadyer.qss.host}")
+ * 2、直接写具体的值：@SeedQSSReg(qssHost="http://192.168.2.34:8008")
  * ----------------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.github.io/> on 2018/6/12 16:46.
  */
@@ -31,13 +35,15 @@ import java.lang.annotation.Target;
 @Documented
 public @interface SeedQSSReg {
     /**
-     * QSS系统地址（举例：http://192.168.2.34:8008/）
+     * QSS系统地址
      * 注意：该地址可以为QSS负载均衡的地址，也可以是QSS某一个节点的地址
+     * 传值：尾部斜线可加可不加，比如“http://192.168.2.34:8008”和“http://192.168.2.34:8008/”都可以
      */
     String qssHost();
 
     /**
-     * 定时任务的应用系统地址（举例：https://192.168.2.36/boot/）
+     * 定时任务的应用系统地址
+     * 传值：尾部斜线可加可不加，比如“https://192.168.2.36/boot”和“https://192.168.2.36/boot/”都可以
      */
     String appHost();
 

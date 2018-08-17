@@ -76,6 +76,9 @@ public class SeedQSSRegProcessor implements BeanPostProcessor, EnvironmentAware 
                 LogUtil.getLogger().error("QSS任务注册-->失败：[{}]：空的QSS系统地址", methodInfo);
                 continue;
             }
+            if(qssHost.endsWith("/")){
+                qssHost = qssHost.substring(0, qssHost.length()-1);
+            }
             if(StringUtils.isBlank(appHost)){
                 LogUtil.getLogger().error("QSS任务注册-->失败：[{}]：空的应用系统地址", methodInfo);
                 continue;
