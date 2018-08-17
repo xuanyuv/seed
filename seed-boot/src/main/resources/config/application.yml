@@ -54,6 +54,11 @@ jasypt:
 
 
 spring:
+  batch:
+    job:
+      enabled: false  # SpringBatch加载时默认会执行所有Job，这里取消掉
+    initializer:
+      enabled: false  # SpringBatch加载时默认会初始化数据库，这里取消掉
   http:
     # 文件上传限制（默认的enabled=true，maxFileSize=1MB，maxRequestSize=10MB）
     multipart:

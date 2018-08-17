@@ -21,7 +21,6 @@ import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.Method;
@@ -57,7 +56,6 @@ import java.util.List;
  */
 //@Configuration
 @Aspect
-@Component
 @ConditionalOnClass({RedissonClient.class})
 @ConfigurationProperties(prefix="redisson")
 public class SeedLockConfiguration {
