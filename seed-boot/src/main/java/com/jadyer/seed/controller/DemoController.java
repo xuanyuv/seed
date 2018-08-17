@@ -62,7 +62,7 @@ public class DemoController {
     @PostMapping("/prop")
     @SeedLock(key="#userMsg.name")
     @SeedLog(action=ActionEnum.LIST, value="读取配置文件中的属性")
-    @SeedQSSReg(qssHost="http://127.0.0.1:8008", appHost="http://127.0.0.1/boot", appname="seedboot", name="打印系统属性", cron="0 */2 * * * ?")
+    @SeedQSSReg(qssHost="${qss.host}", appHost="${qss.appHost}", appname="seedboot", name="打印系统属性", cron="${qss.cron}")
     public CommResult<Map<String, Object>> prop(int id, UserMsg userMsg){
         Map<String, Object> map = new HashMap<>();
         map.put("weight", this.weight);

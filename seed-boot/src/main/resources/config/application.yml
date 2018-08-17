@@ -148,6 +148,12 @@ xxljob:
   executorLogRetentionDays: -1
 
 
+qss:
+  host: http://127.0.0.1:8008
+  appHost: http://127.0.0.1/boot
+  cron: 0 */2 * * * ?
+
+
 # 允许匿名访问的资源列表
 auth:
   unauthUrl: /index

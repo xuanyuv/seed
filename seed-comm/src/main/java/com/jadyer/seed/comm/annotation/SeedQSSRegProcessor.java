@@ -7,6 +7,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.quartz.CronExpression;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.context.EnvironmentAware;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +22,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class SeedQSSRegProcessor implements BeanPostProcessor {
+public class SeedQSSRegProcessor implements BeanPostProcessor, EnvironmentAware {
     private static final String URL_API_QSS = "{qssHost}/qss/reg";
+    private Environment environment;
+
+    @Override
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
+
 
     /**
      * bean初始化方法调用前被调用
@@ -58,27 +67,32 @@ public class SeedQSSRegProcessor implements BeanPostProcessor {
             String methodInfo = clazz.getSimpleName() + "." + method.getName();
             //校验SeedQSSReg
             SeedQSSReg reg = method.getAnnotation(SeedQSSReg.class);
-            if(StringUtils.isBlank(reg.qssHost())){
+            String qssHost = this.getPropertyFromEnv(reg.qssHost());
+            String appHost = this.getPropertyFromEnv(reg.appHost());
+            String appname = this.getPropertyFromEnv(reg.appname());
+            String name = this.getPropertyFromEnv(reg.name());
+            String cron = this.getPropertyFromEnv(reg.cron());
+            if(StringUtils.isBlank(qssHost)){
                 LogUtil.getLogger().error("QSS任务注册-->失败：[{}]：空的QSS系统地址", methodInfo);
                 continue;
             }
-            if(StringUtils.isBlank(reg.appHost())){
+            if(StringUtils.isBlank(appHost)){
                 LogUtil.getLogger().error("QSS任务注册-->失败：[{}]：空的应用系统地址", methodInfo);
                 continue;
             }
-            if(StringUtils.isBlank(reg.appname())){
+            if(StringUtils.isBlank(appname)){
                 LogUtil.getLogger().error("QSS任务注册-->失败：[{}]：空的应用名称", methodInfo);
                 continue;
             }
-            if(StringUtils.isBlank(reg.name())){
+            if(StringUtils.isBlank(name)){
                 LogUtil.getLogger().error("QSS任务注册-->失败：[{}]：空的任务名称", methodInfo);
                 continue;
             }
-            if(StringUtils.isBlank(reg.cron())){
+            if(StringUtils.isBlank(cron)){
                 LogUtil.getLogger().error("QSS任务注册-->失败：[{}]：空的CronExpression", methodInfo);
                 continue;
             }
-            if(!CronExpression.isValidExpression(reg.cron())){
+            if(!CronExpression.isValidExpression(cron)){
                 LogUtil.getLogger().error("QSS任务注册-->失败：[{}]：不正确的CronExpression", methodInfo);
                 continue;
             }
@@ -138,7 +152,7 @@ public class SeedQSSRegProcessor implements BeanPostProcessor {
                 continue;
             }
             //构造任务完整URL
-            String taskURL = reg.appHost();
+            String taskURL = appHost;
             if(taskURL.endsWith("/")){
                 taskURL = taskURL.substring(0, taskURL.length()-1);
             }
@@ -152,12 +166,21 @@ public class SeedQSSRegProcessor implements BeanPostProcessor {
             //注册到QSS
             Map<String, String> params = new HashMap<>();
             params.put("dynamicPassword", "https://jadyer.cn/");
-            params.put("appname", reg.appname());
-            params.put("name", reg.name());
-            params.put("cron", reg.cron());
+            params.put("appname", appname);
+            params.put("name", name);
+            params.put("cron", cron);
             params.put("url", taskURL);
-            HTTPUtil.post(URL_API_QSS.replace("{qssHost}", reg.qssHost()), params);
+            HTTPUtil.post(URL_API_QSS.replace("{qssHost}", qssHost), params);
         }
         return bean;
+    }
+
+
+    private String getPropertyFromEnv(String prop){
+        if(prop.startsWith("${") && prop.endsWith("}")){
+            prop = prop.substring(2, prop.length()-1);
+            prop = this.environment.getProperty(prop);
+        }
+        return prop;
     }
 }
