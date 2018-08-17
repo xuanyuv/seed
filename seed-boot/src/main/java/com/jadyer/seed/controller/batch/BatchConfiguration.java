@@ -113,14 +113,14 @@ public class BatchConfiguration {
         jdbcBatchItemWriter.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>());
         jdbcBatchItemWriter.setSql("INSERT INTO t_person(name, age) VALUES(:name, :age)");
         jdbcBatchItemWriter.setDataSource(dataSource);
-        //输出多个write时这里要设置一下，否则会报异常
+        //这里如果报以下异常，则需要设置一下afterPropertiesSet
         //java.lang.NullPointerException: null
         //at org.springframework.batch.item.database.JdbcBatchItemWriter$1.doInPreparedStatement(JdbcBatchItemWriter.java:189)
         //https://stackoverflow.com/questions/32656581/pb-using-jdbcbatchitemwriter-with-compositeitemwriter-in-java-code-spring-batch
         jdbcBatchItemWriter.afterPropertiesSet();
         //写到文件
         FlatFileItemWriter<Person> flatFileItemWriter = new FlatFileItemWriter<>();
-        flatFileItemWriter.setEncoding("UTF-8");
+        flatFileItemWriter.setEncoding(SeedConstants.DEFAULT_CHARSET);
         flatFileItemWriter.setResource(new FileSystemResource("/app/data/seed-result.txt"));
         //创建对象属性聚合字符串（它会根据设置的分隔符以及对象属性对应的字符名称来聚合）
         flatFileItemWriter.setLineAggregator(new DelimitedLineAggregator<Person>() {{

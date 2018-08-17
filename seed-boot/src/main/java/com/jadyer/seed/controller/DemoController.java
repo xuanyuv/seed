@@ -5,7 +5,6 @@ import com.jadyer.seed.boot.BootProperties;
 import com.jadyer.seed.comm.annotation.ActionEnum;
 import com.jadyer.seed.comm.annotation.SeedLock;
 import com.jadyer.seed.comm.annotation.SeedLog;
-import com.jadyer.seed.comm.annotation.SeedQSSReg;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.util.HTTPUtil;
@@ -62,7 +61,7 @@ public class DemoController {
     @PostMapping("/prop")
     @SeedLock(key="#userMsg.name")
     @SeedLog(action=ActionEnum.LIST, value="读取配置文件中的属性")
-    @SeedQSSReg(qssHost="${qss.host}", appHost="${qss.appHost}", appname="seedboot", name="打印系统属性", cron="${qss.cron}")
+    //@SeedQSSReg(qssHost="${qss.host}", appHost="${qss.appHost}", appname="seedboot", name="打印系统属性", cron="${qss.cron}")
     public CommResult<Map<String, Object>> prop(int id, UserMsg userMsg){
         Map<String, Object> map = new HashMap<>();
         map.put("weight", this.weight);
