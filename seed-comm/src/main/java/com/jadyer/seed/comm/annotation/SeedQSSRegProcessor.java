@@ -121,7 +121,7 @@ public class SeedQSSRegProcessor implements BeanPostProcessor, EnvironmentAware 
             String methodURL;
             if(method.isAnnotationPresent(RequestMapping.class)){
                 RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
-                if(!ArrayUtils.contains(requestMapping.method(), RequestMethod.POST)){
+                if(ArrayUtils.isNotEmpty(requestMapping.method()) && !ArrayUtils.contains(requestMapping.method(), RequestMethod.POST)){
                     LogUtil.getLogger().error("QSS任务注册-->失败：[{}]：任务必须支持POST请求", methodInfo);
                     continue;
                 }
