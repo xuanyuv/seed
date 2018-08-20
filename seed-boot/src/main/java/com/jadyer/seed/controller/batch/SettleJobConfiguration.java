@@ -3,10 +3,13 @@ package com.jadyer.seed.controller.batch;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.SystemClockUtil;
 import org.springframework.batch.core.BatchStatus;
+import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
@@ -49,18 +52,38 @@ public class SettleJobConfiguration {
 
 
     private JobExecutionListener jobExecutionListener() {
-        final long[] startTime = new long[1];
         return new JobExecutionListener() {
             @Override
             public void beforeJob(JobExecution jobExecution) {
-                startTime[0] = SystemClockUtil.INSTANCE.now();
-                LogUtil.getLogger().info("ID=[{}]的任务处理开始，JobParameters=[{}]", jobExecution.getJobId(), jobExecution.getJobParameters());
+                LogUtil.getLogger().info("=======================================================================");
+                LogUtil.getLogger().info("批量任务-->[{}-{}]-->開始处理，JobParameters=[{}]", jobExecution.getJobId(), "step0000", jobExecution.getJobParameters());
             }
             @Override
             public void afterJob(JobExecution jobExecution) {
                 if(jobExecution.getStatus() == BatchStatus.COMPLETED){
-                    LogUtil.getLogger().info("ID=[{}]的任务处理结束，耗时[{}]ms", jobExecution.getJobId(), SystemClockUtil.INSTANCE.now()- startTime[0]);
+                    LogUtil.getLogger().info("批量任务-->[{}-{}]-->处理完成，TotalDuration[{}]ms", jobExecution.getJobId(), "step0000", SystemClockUtil.INSTANCE.now()-jobExecution.getStartTime().getTime());
+                    LogUtil.getLogger().info("=======================================================================");
                 }
+            }
+        };
+    }
+
+
+    @Bean
+    public StepExecutionListener stepExecutionListener() {
+        return new StepExecutionListener() {
+            @Override
+            public void beforeStep(StepExecution stepExecution) {
+                LogUtil.getLogger().info("-----------------------------------------------------------------------");
+                LogUtil.getLogger().info("批量任务-->[{}-{}]-->開始处理", stepExecution.getJobExecutionId(), stepExecution.getStepName());
+            }
+            @Override
+            public ExitStatus afterStep(StepExecution stepExecution) {
+                if(stepExecution.getStatus() == BatchStatus.COMPLETED){
+                    LogUtil.getLogger().info("批量任务-->[{}-{}]-->处理完成，ReadCount=[{}]，WriteCount=[{}]，CommitCount==[{}]，Duration[{}]ms", stepExecution.getJobExecutionId(), stepExecution.getStepName(), stepExecution.getReadCount(), stepExecution.getWriteCount(), stepExecution.getCommitCount(), SystemClockUtil.INSTANCE.now()-stepExecution.getStartTime().getTime());
+                    LogUtil.getLogger().info("-----------------------------------------------------------------------");
+                }
+                return null;
             }
         };
     }

@@ -9,6 +9,7 @@ import com.jadyer.seed.controller.batch.model.PersonRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
@@ -36,6 +37,8 @@ public class StepService0002 {
     private PersonRepository personRepository;
     @Resource
     private StepBuilderFactory stepBuilderFactory;
+    @Resource
+    private StepExecutionListener stepExecutionListener;
 
     @Bean
     public Step step0002(){
@@ -44,6 +47,7 @@ public class StepService0002 {
                 .reader(this.reader())
                 .processor(this.processor())
                 .writer(this.writer())
+                .listener(stepExecutionListener)
                 .build();
     }
 

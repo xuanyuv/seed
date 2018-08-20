@@ -9,6 +9,7 @@ import com.jadyer.seed.controller.batch.model.Person;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.database.JdbcPagingItemReader;
@@ -35,6 +36,8 @@ public class StepService0003 {
     private DruidDataSource dataSource;
     @Resource
     private StepBuilderFactory stepBuilderFactory;
+    @Resource
+    private StepExecutionListener stepExecutionListener;
 
     @Bean
     public Step step0003(){
@@ -43,6 +46,7 @@ public class StepService0003 {
                 .reader(this.reader())
                 .processor(this.processor())
                 .writer(this.writer())
+                .listener(stepExecutionListener)
                 .build();
     }
 

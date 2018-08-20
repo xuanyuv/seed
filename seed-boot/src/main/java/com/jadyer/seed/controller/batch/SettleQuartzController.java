@@ -8,6 +8,7 @@ import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,7 +30,13 @@ public class SettleQuartzController {
     CommResult<JobExecution> batch() throws Exception {
         LogUtil.getLogger().info("结算跑批：Starting...");
         JobParameters jobParameters = new JobParametersBuilder().addLong("time", SystemClockUtil.INSTANCE.now()).toJobParameters();
-        JobExecution execution = jobLauncher.run(settleJob, jobParameters);
+        JobExecution execution = null;
+        try {
+            execution = jobLauncher.run(settleJob, jobParameters);
+        } catch (JobInstanceAlreadyCompleteException e) {
+            //org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException: A job instance already exists and is complete for parameters={time=1534750955369}.  If you want to run this job again, change the parameters.
+            LogUtil.getLogger().info("结算跑批：该任务已存在且执行成功，如需重复执行，请更换JobParameters");
+        }
         LogUtil.getLogger().info("结算跑批：Ending......");
         return CommResult.success(execution);
     }
