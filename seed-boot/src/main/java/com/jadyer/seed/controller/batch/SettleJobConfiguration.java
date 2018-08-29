@@ -43,10 +43,9 @@ public class SettleJobConfiguration {
         return jobBuilderFactory.get("settleJob")
                 .incrementer(new RunIdIncrementer())
                 .listener(this.jobExecutionListener())
-                .flow(step0001)
+                .start(step0001)
                 .next(step0002)
                 .next(step0003)
-                .end()
                 .build();
     }
 

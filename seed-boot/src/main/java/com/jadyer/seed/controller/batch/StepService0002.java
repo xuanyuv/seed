@@ -43,11 +43,11 @@ public class StepService0002 {
     @Bean
     public Step step0002(){
         return stepBuilderFactory.get("step0002")
+                .listener(stepExecutionListener)
                 .<Person, Person>chunk(10) //批处理每次提交10条数据
                 .reader(this.reader())
                 .processor(this.processor())
                 .writer(this.writer())
-                .listener(stepExecutionListener)
                 .build();
     }
 
