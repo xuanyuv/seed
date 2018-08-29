@@ -11,6 +11,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.database.JdbcPagingItemReader;
 import org.springframework.batch.item.database.Order;
@@ -40,6 +41,7 @@ public class StepService0003 {
     private StepExecutionListener stepExecutionListener;
 
     @Bean
+    @StepScope
     public Step step0003(){
         return stepBuilderFactory.get("step0003")
                 .listener(stepExecutionListener)

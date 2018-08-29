@@ -11,6 +11,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
@@ -41,6 +42,7 @@ public class StepService0002 {
     private StepExecutionListener stepExecutionListener;
 
     @Bean
+    @StepScope
     public Step step0002(){
         return stepBuilderFactory.get("step0002")
                 .listener(stepExecutionListener)
