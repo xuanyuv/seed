@@ -77,6 +77,7 @@ public class QssService {
             }
         }else{
             LogUtil.getLogger().info("收到任务注册请求：任务已存在：{}#{}，auto ignore...", task.getAppname(), task.getName());
+            throw new RuntimeException("任务已存在：" + task.getAppname() + "#" + task.getName() + "，auto ignore...");
         }
     }
 
