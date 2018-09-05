@@ -12,9 +12,13 @@ import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.job.builder.FlowBuilder;
+import org.springframework.batch.core.job.flow.Flow;
+import org.springframework.batch.core.job.flow.support.SimpleFlow;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 
 import javax.annotation.Resource;
 
@@ -36,6 +40,12 @@ public class SettleJobConfiguration {
     @Resource
     private Step step0003;
     @Resource
+    private Step step0004;
+    @Resource
+    private Step step0005;
+    @Resource
+    private Step step0006;
+    @Resource
     private JobBuilderFactory jobBuilderFactory;
 
     @Bean
@@ -43,9 +53,27 @@ public class SettleJobConfiguration {
         return jobBuilderFactory.get("settleJob")
                 .incrementer(new RunIdIncrementer())
                 .listener(this.jobExecutionListener())
-                .start(step0001)
+                //先执行step0001
+                .flow(step0001)
+                //然后step0004、step0005、step0006开始执行且三者是并行执行互不影响的
+                .next(this.splitFlow())
+                //接着等三者全都执行完毕才会去执行step0002
                 .next(step0002)
+                //最后执行step0003
                 .next(step0003)
+                .end()
+                .build();
+    }
+
+
+    //https://docs.spring.io/spring-batch/4.0.x/reference/html/index-single.html#scalabilityParallelSteps
+    private Flow splitFlow(){
+        Flow flow04 = new FlowBuilder<SimpleFlow>("flow04").start(step0004).build();
+        Flow flow05 = new FlowBuilder<SimpleFlow>("flow05").start(step0005).build();
+        Flow flow06 = new FlowBuilder<SimpleFlow>("flow06").start(step0006).build();
+        return new FlowBuilder<SimpleFlow>("splitFlow")
+                .split(new SimpleAsyncTaskExecutor("spring_batch_seedboot"))
+                .add(flow04, flow05, flow06)
                 .build();
     }
 

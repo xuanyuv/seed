@@ -11,7 +11,6 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
@@ -20,6 +19,7 @@ import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
 
@@ -45,7 +45,8 @@ public class StepService0001 {
 
     @Bean
     //防止应用启动时初始化reader()，我们要在使用的时候再初始化
-    @StepScope
+    //@StepScope
+    @Lazy
     public Step step0001(){
         return stepBuilderFactory.get("step0001")
                 .listener(stepExecutionListener)

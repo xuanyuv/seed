@@ -11,7 +11,6 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.database.JdbcPagingItemReader;
 import org.springframework.batch.item.database.Order;
@@ -20,6 +19,7 @@ import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Component;
@@ -41,11 +41,11 @@ public class StepService0003 {
     private StepExecutionListener stepExecutionListener;
 
     @Bean
-    @StepScope
+    @Lazy
     public Step step0003(){
         return stepBuilderFactory.get("step0003")
                 .listener(stepExecutionListener)
-                .<Person, Person>chunk(10) //批处理每次提交10条数据
+                .<Person, Person>chunk(10)
                 .reader(this.reader())
                 .processor(this.processor())
                 .writer(this.writer())
