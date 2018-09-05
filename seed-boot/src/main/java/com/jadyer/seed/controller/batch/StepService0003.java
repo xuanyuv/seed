@@ -19,7 +19,6 @@ import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Component;
@@ -41,7 +40,6 @@ public class StepService0003 {
     private StepExecutionListener stepExecutionListener;
 
     @Bean
-    @Lazy
     public Step step0003(){
         return stepBuilderFactory.get("step0003")
                 .listener(stepExecutionListener)

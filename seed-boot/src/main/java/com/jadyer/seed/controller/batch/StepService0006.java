@@ -15,7 +15,6 @@ import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +36,6 @@ public class StepService0006 {
     private StepExecutionListener stepExecutionListener;
 
     @Bean
-    @Lazy
     public Step step0006(){
         return stepBuilderFactory.get("step0006")
                 .listener(stepExecutionListener)

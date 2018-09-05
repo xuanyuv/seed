@@ -19,7 +19,6 @@ import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
 
@@ -44,9 +43,6 @@ public class StepService0001 {
     private StepExecutionListener stepExecutionListener;
 
     @Bean
-    //防止应用启动时初始化reader()，我们要在使用的时候再初始化
-    //@StepScope
-    @Lazy
     public Step step0001(){
         return stepBuilderFactory.get("step0001")
                 .listener(stepExecutionListener)

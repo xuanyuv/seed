@@ -15,7 +15,6 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Component;
@@ -42,7 +41,6 @@ public class StepService0002 {
     private StepExecutionListener stepExecutionListener;
 
     @Bean
-    @Lazy
     public Step step0002(){
         return stepBuilderFactory.get("step0002")
                 .listener(stepExecutionListener)
