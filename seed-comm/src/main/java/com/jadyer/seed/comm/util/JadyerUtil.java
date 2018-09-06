@@ -632,15 +632,15 @@ public final class JadyerUtil {
 
 
     /**
-     * 提取堆栈信息中最后一个Caused by
+     * 提取堆栈轨迹中的真实异常
      */
     public static String extractStackTraceCausedBy(Throwable cause){
         String allMsg = extractStackTrace(cause);
-        String causeByMsg = allMsg.substring(allMsg.lastIndexOf("Caused by: ") + 11);
-        if(causeByMsg.contains(": ")){
-            return causeByMsg.substring(causeByMsg.lastIndexOf(": ")+2, causeByMsg.indexOf("\n"));
+        String causeMsg = allMsg.substring(allMsg.lastIndexOf("Caused by: ") + 11);
+        if(causeMsg.contains(": ")){
+            return causeMsg.substring(causeMsg.indexOf(": ")+2, causeMsg.indexOf("\r\n"));
         }else{
-            return causeByMsg.substring(0, causeByMsg.indexOf("\n"));
+            return causeMsg.substring(0, causeMsg.indexOf("\n"));
         }
     }
 
