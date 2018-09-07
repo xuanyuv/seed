@@ -52,6 +52,7 @@ public class StepService0003 {
 
 
     private JdbcPagingItemReader<Person> reader(){
+        //由JpaPagingItemReader引发的死循环：http://www.kailing.pub/article/index/arcid/201.html
         JdbcPagingItemReader<Person> reader = new JdbcPagingItemReader<>();
         reader.setDataSource(dataSource);
         reader.setFetchSize(100);

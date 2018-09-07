@@ -28,6 +28,8 @@ import javax.annotation.Resource;
  * https://spring.io/guides/gs/batch-processing/
  * https://docs.spring.io/spring-batch/4.0.x/reference/html/index.html
  * ----------------------------------------------------------------------
+ * 远程分区Step：http://www.kailing.pub/article/index/arcid/196.html
+ * ----------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.cn/> on 2018/8/15 17:00.
  */
 @Configuration
