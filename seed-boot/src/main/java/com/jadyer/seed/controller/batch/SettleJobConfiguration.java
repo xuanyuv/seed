@@ -51,9 +51,12 @@ public class SettleJobConfiguration {
     @Bean
     public Job settleJob() {
         return jobBuilderFactory.get("settleJob")
+                //使每个Job的运行ID都唯一
                 .incrementer(new RunIdIncrementer())
                 .listener(this.jobExecutionListener())
-                //先执行step0001
+                //.flow(step0001).split(new SimpleAsyncTaskExecutor("springbatch_seedboot")).add(flow04, flow05, flow06)
+                //.start(step0001).split(new SimpleAsyncTaskExecutor("springbatch_seedboot")).add(flow04, flow05, flow06)
+                //先执行step0001（注意：上面注释的这两种写法都不会step0001先执行然后再执行step0004...，他们都会使得step0001和step0004...同时执行）
                 .flow(step0001)
                 //然后step0004、step0005、step0006开始执行且三者是并行执行互不影响的
                 .next(this.splitFlow())
@@ -72,7 +75,7 @@ public class SettleJobConfiguration {
         Flow flow05 = new FlowBuilder<SimpleFlow>("flow05").start(step0005).build();
         Flow flow06 = new FlowBuilder<SimpleFlow>("flow06").start(step0006).build();
         return new FlowBuilder<SimpleFlow>("splitFlow")
-                .split(new SimpleAsyncTaskExecutor("spring_batch_seedboot"))
+                .split(new SimpleAsyncTaskExecutor("springbatch_seedboot"))
                 .add(flow04, flow05, flow06)
                 .build();
     }

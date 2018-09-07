@@ -3,14 +3,13 @@ package com.jadyer.seed.controller.batch;
 import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.SystemClockUtil;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.launch.JobOperator;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,14 +28,30 @@ public class SettleQuartzController {
     private JobLauncher jobLauncher;
     @Resource
     private JobExplorer jobExplorer;
-    @Resource
-    private JobOperator jobOperator;
 
+    /**
+     * SpringBatch的断点续跑
+     * --------------------------------------------------------------------------------------------------------
+     * 1、执行Step过程中发生异常时，而该异常又没有被配置为skip，那么整个Job会中断
+     * 2、当人工修正完异常数据后，再次调用jobLauncher.run()，SpringBatch会从上次异常的地方开始跑
+     * 3、注意：传入的jobParameters必须相同，若第二次跑时传的值不同则会被认为是另一个任务，就会从头跑，不会从断点的地方跑
+     * 4、假设：10条数据，Step配置chunk=3（表明每三条Write一次），若第5条出现异常，则修复后再跑的时，会从第4条开始开始读
+     * 5、如果：并行Step中的某个Step出现异常，那么并行中的其它Step不会受影响会继续跑完，然后才会中断Job
+     *         修复数据后再跑时，会直接从并行中发生异常的该Step开始跑，这一切都建立在jobParameters传值相同的条件下
+     * 6、对于JobOperator.start()和restart()两个方法都试过，都没实现断点续跑的功能
+     * --------------------------------------------------------------------------------------------------------
+     */
     @RequestMapping("/batch")
     //@SeedQSSReg(qssHost="${qss.host}", appHost="${qss.appHost}", appname="${qss.appname}", name="${qss.name}", cron="${qss.cron}")
-    CommResult<JobExecution> batch() throws Exception {
-        LogUtil.getLogger().info("结算跑批：Starting...");
-        JobParameters jobParameters = new JobParametersBuilder().addLong("time", SystemClockUtil.INSTANCE.now()).toJobParameters();
+    CommResult<JobExecution> batch(String time) throws Exception {
+        long timeLong;
+        if(StringUtils.isBlank(time)){
+            timeLong = SystemClockUtil.INSTANCE.now();
+        }else{
+            timeLong = Long.parseLong(time);
+        }
+        LogUtil.getLogger().info("结算跑批：Starting...time={}", time);
+        JobParameters jobParameters = new JobParametersBuilder().addLong("time", timeLong).toJobParameters();
         JobExecution execution = null;
         try {
             execution = jobLauncher.run(settleJob, jobParameters);
@@ -46,15 +61,5 @@ public class SettleQuartzController {
         }
         LogUtil.getLogger().info("结算跑批：Ending......");
         return CommResult.success(execution);
-    }
-
-
-    @RequestMapping("/getinfo")
-    CommResult<Boolean> test() throws Exception {
-        System.out.println(ReflectionToStringBuilder.toString(jobExplorer.getJobInstance(7L)));
-        //Set<Long> executions = jobOperator.getRunningExecutions("sampleJob");
-        //jobOperator.stop(executions.iterator().next());
-        System.out.println(ReflectionToStringBuilder.toString(jobOperator.getRunningExecutions("job001")));
-        return CommResult.success(Boolean.TRUE);
     }
 }

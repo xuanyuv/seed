@@ -54,7 +54,7 @@ jasypt:
 
 
 spring:
-  batch:
+  batch:              # org.springframework.boot.autoconfigure.batch.BatchProperties.java
     job:
       enabled: false  # SpringBatch加载时默认会执行所有Job，这里取消掉
     initializer:
@@ -156,6 +156,8 @@ xxljob:
 qss:
   host: http://127.0.0.1:8008
   appHost: http://127.0.0.1/boot
+  appname: seedboot
+  name: SpringBatchDemo
   cron: 0 */2 * * * ?
 
 

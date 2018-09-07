@@ -2,6 +2,7 @@ package com.jadyer.seed.controller.batch;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.jadyer.seed.comm.constant.SeedConstants;
+import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.controller.batch.model.Person;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -39,7 +40,7 @@ public class StepService0004 {
     public Step step0004(){
         return stepBuilderFactory.get("step0004")
                 .listener(stepExecutionListener)
-                .<Person, Person>chunk(10)
+                .<Person, Person>chunk(1)
                 .reader(this.reader())
                 .processor(this.processor())
                 .writer(this.writer())
@@ -81,6 +82,9 @@ public class StepService0004 {
             @Override
             public Person process(Person item) {
                 LogUtil.getLogger().info("读取到-->{}", ReflectionToStringBuilder.toString(item));
+                if(item.getRealName().contains("玄玉")){
+                    throw new SeedException("这是测试断点续跑的异常");
+                }
                 try {
                     TimeUnit.SECONDS.sleep(4);
                 } catch (InterruptedException e) {
