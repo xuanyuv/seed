@@ -96,7 +96,7 @@ public class SeedQSSRegProcessor implements BeanPostProcessor, EnvironmentAware 
                 continue;
             }
             if(!CronExpression.isValidExpression(cron)){
-                LogUtil.getLogger().error("QSS任务注册-->失败：[{}]：不正确的CronExpression", methodInfo);
+                LogUtil.getLogger().error("QSS任务注册-->失败：[{}]：不正确的CronExpression=[{}]", methodInfo, cron);
                 continue;
             }
             //Validate：方法所在类是否为Controller or RestController，并获取类地址
