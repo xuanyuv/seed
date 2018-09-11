@@ -71,9 +71,10 @@ public class RedisPoolConfiguration {
         //    }
         //}
         //return new ShardedJedisPool(config, nodes);
-        //这是传URI（带上密码）的方式，会更简洁一些
+        //这是传URI（带上密码）的方式
         //URI uri = URI.create("redis://redis:password@redis.dev1.ctstest.com:6379");
         //JedisPool pool = new JedisPool(config, uri, this.connectionTimeout);
+        //这是普通host和port的方式
         String[] parts = StringUtils.split(this.nodes.get(0), ":");
         JedisPool pool = new JedisPool(config, parts[0], Integer.parseInt(parts[1]),  this.connectionTimeout, this.password);
         //预热
