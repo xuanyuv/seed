@@ -73,7 +73,7 @@ public class RedisPoolConfiguration {
         //}
         //return new ShardedJedisPool(config, nodes);
         //这是传URI的方式，会更简洁一些
-        //URI uri = URI.create("redis://redis:abc@redis.dev1.ctstest.com");
+        //URI uri = URI.create("redis://redis:password@redis.dev1.ctstest.com");
         //JedisPool pool = new JedisPool(config, uri, this.connectionTimeout);
         String[] parts = StringUtils.split(this.nodes.get(0), ":");
         JedisPool pool = new JedisPool(config, parts[0], Integer.parseInt(parts[1]),  this.connectionTimeout, this.password);
