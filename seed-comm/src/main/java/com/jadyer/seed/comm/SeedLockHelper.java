@@ -12,9 +12,9 @@ import java.util.concurrent.TimeUnit;
 /**
  * --------------------------------------------------------------------------------------------------------------
  * try {
- *     if(SeedLockHelper.lock(SeedLockConfiguration.redissonClientList, task.getJobname())){
+ *     if(SeedLockHelper.lock(SeedLockConfiguration.redissonClientList, "资源key")){
  *         //业务处理-->start...
- *         HTTPUtil.post(task.getUrl(), null);
+ *         HTTPUtil.post("the url", "the params");
  *         //业务处理-->end.....
  *     }
  * } finally {
