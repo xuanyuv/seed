@@ -10,6 +10,17 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * --------------------------------------------------------------------------------------------------------------
+ * try {
+ *     if(SeedLockHelper.lock(SeedLockConfiguration.redissonClientList, task.getJobname())){
+ *         //业务处理-->start...
+ *         HTTPUtil.post(task.getUrl(), null);
+ *         //业务处理-->end.....
+ *     }
+ * } finally {
+ *     SeedLockHelper.unlock();
+ * }
+ * --------------------------------------------------------------------------------------------------------------
  * Created by 玄玉<http://jadyer.cn/> on 2018/7/17 16:44.
  */
 public class SeedLockHelper {

@@ -65,7 +65,6 @@ class JobExecute {
     static void invokMethod(ScheduleTask task){
         try {
             if(SeedLockHelper.lock(SeedLockConfiguration.redissonClientList, task.getJobname())){
-                //单起线程记录调用请求
                 ScheduleLogRepository repository = SpringContextHolder.getBean(ScheduleLogRepository.class);
                 ScheduleLog log = new ScheduleLog();
                 log.setTaskId(task.getId());
