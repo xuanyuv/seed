@@ -38,8 +38,8 @@ import java.util.List;
  * ---------------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.cn/> on 2018/6/5 10:00.
  */
-@Configuration
 @Aspect
+@Configuration
 @ConditionalOnClass({RedissonClient.class})
 @ConditionalOnProperty(name="redisson")
 @ConfigurationProperties(prefix="redisson")
