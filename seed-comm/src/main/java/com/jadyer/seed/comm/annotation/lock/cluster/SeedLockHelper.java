@@ -29,6 +29,11 @@ public class SeedLockHelper {
     private static ThreadLocal<String> keyMap = new ThreadLocal<>();
     private static ThreadLocal<RedissonRedLock> redLockMap = new ThreadLocal<>();
 
+    public static boolean lock(List<RedissonClient> redissonClientList, String key){
+        return lock(redissonClientList, key, null, -1, TimeUnit.SECONDS);
+    }
+
+
     public static boolean lock(List<RedissonClient> redissonClientList, String key, String appname){
         return lock(redissonClientList, key, appname, -1, TimeUnit.SECONDS);
     }
