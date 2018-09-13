@@ -1,4 +1,4 @@
-package com.jadyer.seed.comm.annotation;
+package com.jadyer.seed.comm.annotation.qss;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

@@ -1,4 +1,4 @@
-package com.jadyer.seed.comm.annotation;
+package com.jadyer.seed.comm.annotation.qss;
 
 import com.jadyer.seed.comm.util.HTTPUtil;
 import com.jadyer.seed.comm.util.LogUtil;
@@ -180,6 +180,9 @@ public class SeedQSSRegProcessor implements BeanPostProcessor, EnvironmentAware 
 
 
     private String getPropertyFromEnv(String prop){
+        if(StringUtils.isBlank(prop)){
+            return "";
+        }
         if(prop.startsWith("${") && prop.endsWith("}")){
             prop = prop.substring(2, prop.length()-1);
             prop = this.environment.getProperty(prop);

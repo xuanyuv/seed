@@ -1,4 +1,4 @@
-package com.jadyer.seed.comm.log;
+package com.jadyer.seed.comm.annotation.log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;

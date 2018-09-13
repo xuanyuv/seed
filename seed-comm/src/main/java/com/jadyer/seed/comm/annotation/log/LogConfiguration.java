@@ -1,7 +1,5 @@
-package com.jadyer.seed.comm.log;
+package com.jadyer.seed.comm.annotation.log;
 
-import com.jadyer.seed.comm.log.annotation.DisableLog;
-import com.jadyer.seed.comm.log.annotation.EnableLog;
 import org.aopalliance.aop.Advice;
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.support.AbstractPointcutAdvisor;

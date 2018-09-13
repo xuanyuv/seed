@@ -1,10 +1,9 @@
-package com.jadyer.seed.comm.log;
+package com.jadyer.seed.comm.annotation.log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.exception.SeedException;
-import com.jadyer.seed.comm.log.annotation.EnableFormValid;
 import com.jadyer.seed.comm.util.ValidatorUtil;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;

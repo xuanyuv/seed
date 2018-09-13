@@ -1,7 +1,7 @@
 package com.jadyer.seed.qss;
 
 import com.alibaba.fastjson.JSON;
-import com.jadyer.seed.comm.annotation.SeedLock;
+import com.jadyer.seed.comm.annotation.lock.cluster.SeedLock;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.exception.SeedException;
@@ -165,7 +165,7 @@ public class QssService {
     /**
      * 添加／更新／删除QuartzJob
      */
-    @SeedLock(key="#task.jobname")
+    @SeedLock(key="#task.jobname", appname="seedqss")
     public void upsertJob(ScheduleTask task){
         if(null == task){
             return;

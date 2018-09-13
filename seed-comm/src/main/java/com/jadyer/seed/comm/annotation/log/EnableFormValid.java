@@ -1,4 +1,4 @@
-package com.jadyer.seed.comm.log.annotation;
+package com.jadyer.seed.comm.annotation.log;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

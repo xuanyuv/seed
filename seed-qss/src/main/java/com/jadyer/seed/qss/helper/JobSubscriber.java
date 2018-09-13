@@ -2,7 +2,7 @@ package com.jadyer.seed.qss.helper;
 
 import com.alibaba.fastjson.JSON;
 import com.jadyer.seed.comm.constant.SeedConstants;
-import com.jadyer.seed.comm.log.annotation.EnableLog;
+import com.jadyer.seed.comm.annotation.log.EnableLog;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.qss.QssService;
 import com.jadyer.seed.qss.model.ScheduleTask;

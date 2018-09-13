@@ -1,4 +1,4 @@
-package com.jadyer.seed.boot.lock.single;
+package com.jadyer.seed.comm.annotation.lock.single;
 
 import org.apache.commons.lang3.StringUtils;
 import redis.clients.jedis.JedisCluster;

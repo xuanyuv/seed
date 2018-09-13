@@ -1,10 +1,10 @@
 package com.jadyer.seed.qss.helper;
 
-import com.jadyer.seed.comm.SeedLockHelper;
 import com.jadyer.seed.comm.SpringContextHolder;
+import com.jadyer.seed.comm.annotation.lock.cluster.SeedLockConfiguration;
+import com.jadyer.seed.comm.annotation.lock.cluster.SeedLockHelper;
 import com.jadyer.seed.comm.util.HTTPUtil;
 import com.jadyer.seed.comm.util.LogUtil;
-import com.jadyer.seed.qss.boot.SeedLockConfiguration;
 import com.jadyer.seed.qss.model.ScheduleLog;
 import com.jadyer.seed.qss.model.ScheduleTask;
 import com.jadyer.seed.qss.repository.ScheduleLogRepository;
@@ -64,7 +64,7 @@ class JobExecute {
      */
     static void invokMethod(ScheduleTask task){
         try {
-            if(SeedLockHelper.lock(SeedLockConfiguration.redissonClientList, task.getJobname())){
+            if(SeedLockHelper.lock(SeedLockConfiguration.redissonClientList, task.getJobname(), "seedqss")){
                 ScheduleLogRepository repository = SpringContextHolder.getBean(ScheduleLogRepository.class);
                 ScheduleLog log = new ScheduleLog();
                 log.setTaskId(task.getId());

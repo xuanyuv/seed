@@ -1,4 +1,4 @@
-package com.jadyer.seed.boot.lock.single;
+package com.jadyer.seed.comm.annotation.lock.single;
 
 /**
  * Created by 玄玉<http://jadyer.cn/> on 2016/7/8 17:04.
