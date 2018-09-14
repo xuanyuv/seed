@@ -14,7 +14,6 @@ import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 import org.redisson.config.SingleServerConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Configuration;
@@ -41,7 +40,6 @@ import java.util.List;
 @Aspect
 @Configuration
 @ConditionalOnClass({RedissonClient.class})
-@ConditionalOnProperty(name="redisson")
 @ConfigurationProperties(prefix="redisson")
 public class SeedLockConfiguration implements EnvironmentAware {
     /** 节点地址：[host:port] */
@@ -162,7 +160,13 @@ public class SeedLockConfiguration implements EnvironmentAware {
      * @return spel解析结果
      */
     private String parseSpringEL(String key, Method method, Object[] args) {
+        if(!key.contains("#") && !key.contains("'")){
+            return key;
+        }
         String[] params = discoverer.getParameterNames(method);
+        if(null==params || 0==params.length){
+            return key;
+        }
         EvaluationContext context = new StandardEvaluationContext();
         for(int i=0; i<params.length; i++){
             context.setVariable(params[i], args[i]);
