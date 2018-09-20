@@ -124,6 +124,7 @@ public class GenerateHelper {
                     if(columnList.get(i).getLength() > 0){
                         hasNotBlankSizeAnnotation = true;
                         fields.append("    @Size(");
+                        //对于CHAR(6)类型的数据库字段，增加最小长度注解配置
                         if(columnList.get(i).getType().equals("char")){
                             fields.append("min=").append(columnList.get(i).getLength()).append(", ");
                         }
