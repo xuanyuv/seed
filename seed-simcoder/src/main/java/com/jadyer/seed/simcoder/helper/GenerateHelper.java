@@ -73,6 +73,21 @@ public class GenerateHelper {
 
 
     /**
+     * 生成整个数据库的
+     * @param databaseName    数据库名
+     * @param tablenamePrefix 表名前缀，即此时只为数据库中的表名前缀为tablenamePrefix的表生成代码
+     */
+    public static void generate(String databaseName, String tablenamePrefix){
+        List<Table> tableList = DBHelper.getTableList(databaseName);
+        for(Table table : tableList){
+            if(table.getName().startsWith(tablenamePrefix)){
+                generateFromTable(table.getName(), table.getComment());
+            }
+        }
+    }
+
+
+    /**
      * 生成某张表的
      */
     private static void generateFromTable(String tablename, String tablecomment){
