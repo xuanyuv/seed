@@ -123,8 +123,11 @@ public class GenerateHelper {
                     fields.append("    @NotBlank").append("\n");
                     if(columnList.get(i).getLength() > 0){
                         hasNotBlankSizeAnnotation = true;
-                        //TODO 针对CHAR(6)做处理
-                        fields.append("    @Size(max=").append(columnList.get(i).getLength()).append(")").append("\n");
+                        fields.append("    @Size(");
+                        if(columnList.get(i).getType().equals("char")){
+                            fields.append("min=").append(columnList.get(i).getLength()).append(", ");
+                        }
+                        fields.append("max=").append(columnList.get(i).getLength()).append(")").append("\n");
                     }
                 }
             }
