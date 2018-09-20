@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  * Created by 玄玉<https://jadyer.github.io/> on 2017/6/7 10:26.
  */
 @Component
-@Async("mySimpleExecutor")
+@Async
 class AsyncDemoTask {
     void doTaskOne(){
         try{
@@ -25,12 +25,13 @@ class AsyncDemoTask {
         }
     }
 
-    void doTaskTwo(){
+    void doTaskTwo() {
         try{
             LogUtil.getLogger().info("任务二开始执行");
             long start = System.currentTimeMillis();
             TimeUnit.SECONDS.sleep(2);
             LogUtil.getLogger().info("任务二执行完毕，耗时：" + (System.currentTimeMillis() - start) + "ms");
+            throw new RuntimeException("测试异常");
         }catch(Exception e){
             LogUtil.getLogger().info("任务二执行期间发生异常，堆栈轨迹如下：", e);
         }
@@ -47,7 +48,7 @@ class AsyncDemoTask {
         }
     }
 
-    @Async("myExecutor")
+    @Async("seedSimpleExecutor")
     Future<String> doTaskAndGetResultOne(){
         try{
             LogUtil.getLogger().info("任务一开始执行");
@@ -61,7 +62,7 @@ class AsyncDemoTask {
         }
     }
 
-    @Async("myExecutor")
+    @Async("seedSimpleExecutor")
     Future<Integer> doTaskAndGetResultTwo(){
         try{
             LogUtil.getLogger().info("任务二开始执行");
@@ -75,7 +76,7 @@ class AsyncDemoTask {
         }
     }
 
-    @Async("myExecutor")
+    @Async("seedSimpleExecutor")
     Future<Long> doTaskAndGetResultThree(){
         try{
             LogUtil.getLogger().info("任务三开始执行");
