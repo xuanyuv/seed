@@ -145,6 +145,11 @@ redisson:
     - redis://192.168.2.210:7005
 
 
+#seed:
+#  lock:
+#    enabled: true
+
+
 qss:
   host: http://127.0.0.1:8008
   appHost: http://127.0.0.1/boot

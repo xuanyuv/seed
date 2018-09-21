@@ -14,6 +14,7 @@ import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 import org.redisson.config.SingleServerConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Configuration;
@@ -40,6 +41,7 @@ import java.util.List;
 @Aspect
 @Configuration
 @ConditionalOnClass({RedissonClient.class})
+@ConditionalOnProperty(name="seed.lock.enabled", havingValue="true")
 @ConfigurationProperties(prefix="redisson")
 public class SeedLockConfiguration implements EnvironmentAware {
     /** 节点地址：[host:port] */

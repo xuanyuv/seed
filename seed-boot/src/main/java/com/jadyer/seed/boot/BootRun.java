@@ -74,9 +74,13 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
  * 9.@ConditionalOnExpression       ：基于SpEL表达式作为判断条件
  * 10.@ConditionalOnJava            ：基于JVM版本作为判断条件
  * 下面以org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration.java举例说明一下
- * 其中的@ConditionalOnClass()就表示RabbitTemplate.class和Channel.class文件存在于classpath里面时
- * 才会解析RabbitAutoConfiguration.java，否则直接跳过不解析
- * 这也是为什么没有导入RabbitMQ的依赖Jar时，工程仍能正常启动的原因
+ * 也就是：@ConditionalOnClass({ RabbitTemplate.class, Channel.class })
+ * 它表示：RabbitTemplate.class和Channel.class文件存在于classpath里面时，才允许解析RabbitAutoConfiguration.java
+ *        否则直接跳过不解析（这也是为什么没有导入RabbitMQ的依赖Jar时，工程仍能正常启动的原因）
+ * 再比如：@ConditionalOnProperty(name="seed.lock.enabled", havingValue="true", matchIfMissing=true)
+ * 它表示：如果配置文件中没有配置seed.lock.enabled，那么允许加载（因为matchIfMissing=true）
+ *        如果配置文件中seed.lock.enabled=true，那么允许加载（因为havingValue="true"二者的值匹配结果为相同）
+ *        如果配置文件中seed.lock.enabled=false，那么禁止加载（因为havingValue="true"二者的值匹配结果为不同）
  * ---------------------------------------------------------------------------------------------------------------
  * 发布成war
  * 1、<packaging>war</packaging>
