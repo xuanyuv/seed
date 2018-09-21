@@ -26,7 +26,7 @@ import org.springframework.core.io.support.ResourcePropertySource;
  * 根據http://www.jasypt.org/cli.html提示到http://www.jasypt.org/download.html下載到jasypt-1.9.2-dist.zip
  * 解壓jasypt-1.9.2-dist.zip得到文件夾，并進入目錄為C:\Users\Jadyer\Desktop\jasypt-1.9.2\bin的命令行窗口
  * encrypt.bat input=xuanyu password=https://jadyer.cn/ stringOutputType=hexadecimal
- * decrypt.bat input=6D7FAC8372B28C725D2672F6F3AB7A3A password=https://jadyer.cn/ stringOutputType=hexadecimal
+ * decrypt.bat input=B9063BE29557963568F929EBBD682B5C password=https://jadyer.cn/ stringOutputType=hexadecimal
  * 注意：每一次生成的密文都是不同的，但都可以解密成xuanyu
  * ----------------------------------------------------------------------------------------------
  * 关于实现EnvironmentAware.java接口
