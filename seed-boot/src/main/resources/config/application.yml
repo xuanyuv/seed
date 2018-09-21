@@ -145,14 +145,6 @@ redisson:
     - redis://192.168.2.210:7005
 
 
-xxljob:
-  adminAddresses: http://127.0.0.1:8080/xxl-job-admin
-  executorAppname: seed-boot
-  executorPort: 8088
-  executorLogPath: /home/seed/log/boot/xxl-job
-  executorLogRetentionDays: -1
-
-
 qss:
   host: http://127.0.0.1:8008
   appHost: http://127.0.0.1/boot

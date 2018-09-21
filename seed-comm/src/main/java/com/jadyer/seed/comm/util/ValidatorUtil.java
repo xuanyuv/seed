@@ -1,11 +1,11 @@
 package com.jadyer.seed.comm.util;
 
-import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -148,7 +148,7 @@ public final class ValidatorUtil {
      * @return 返回空Map<String, String>(not null)表示验证通过，否则会将各错误字段作为key放入Map,value为错误信息
      */
     public static Map<String, String> validateToMap(Object obj, String... exceptFieldName){
-        Map<String, String> resultMap = Maps.newHashMap();
+        Map<String, String> resultMap = new HashMap<>();
         if(null == obj){
             throw new NullPointerException("被验证对象不能为null");
         }

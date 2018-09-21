@@ -32,18 +32,9 @@
         <apache.httpclient.version>4.5.3</apache.httpclient.version>
         <google.zxing.version>2.2</google.zxing.version>
         <google.guice.version>4.1.0</google.guice.version>
-        <google.guava.version>18.0</google.guava.version>
         <alibaba.oss.version>3.1.0</alibaba.oss.version>
         <alibaba.druid.version>1.1.10</alibaba.druid.version>
         <alibaba.fastjson.version>1.2.47</alibaba.fastjson.version>
-        <!--<dangdang.shardingjdbc.version>2.0.1</dangdang.shardingjdbc.version>-->
-        <!--
-        若显式使用的是23.0版本的Guava，那么启动elastic-job的demo时会报告下面的异常
-        java.lang.NoSuchMethodError: com.google.common.util.concurrent.MoreExecutors.sameThreadExecutor()Lcom/google/common/util/concurrent/ListeningExecutorService;
-        这是由于elastic-job使用的是18.0版本的Guava
-        -->
-        <dangdang.elastic-job.version>2.1.5</dangdang.elastic-job.version>
-        <xxl-job.version>1.9.0</xxl-job.version>
         <beetl.version>2.8.2</beetl.version>
         <jsch.version>0.1.54</jsch.version>
         <hutool.version>4.1.12</hutool.version>
@@ -212,11 +203,6 @@
             <artifactId>guice</artifactId>
             <version>${google.guice.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${google.guava.version}</version>
-        </dependency>
 
         <!-- Alibaba -->
         <dependency>
@@ -243,16 +229,6 @@
             <version>${dangdang.shardingjdbc.version}</version>
         </dependency>
         -->
-        <dependency>
-            <groupId>com.dangdang</groupId>
-            <artifactId>elastic-job-lite-core</artifactId>
-            <version>${dangdang.elastic-job.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.xuxueli</groupId>
-            <artifactId>xxl-job-core</artifactId>
-            <version>${xxl-job.version}</version>
-        </dependency>
         <dependency>
             <groupId>com.ibeetl</groupId>
             <artifactId>beetl</artifactId>

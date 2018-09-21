@@ -1,6 +1,5 @@
 package com.jadyer.seed.mpp.sdk.weixin.controller;
 
-import com.google.common.collect.Maps;
 import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
@@ -29,6 +28,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -98,7 +98,7 @@ public class WeixinHelperController {
                 .append("noncestr=").append(noncestr).append("&")
                 .append("timestamp=").append(timestamp).append("&")
                 .append("url=").append(url);
-        Map<String, String> resultMap = Maps.newHashMap();
+        Map<String, String> resultMap = new HashMap<>();
         resultMap.put("appid", appid);
         resultMap.put("timestamp", String.valueOf(timestamp));
         resultMap.put("noncestr", noncestr);
