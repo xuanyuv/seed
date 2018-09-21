@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * 微信红包--查询红包记录--接口出参
- * Created by 玄玉<http://jadyer.cn/> on 2017/7/28 10:54.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/7/28 10:54.
  */
 public class WeixinRedpackGethbinfoRespData extends WeixinRedpackRespData {
     /** 商户使用查询API填写的商户单号的原路返回 */

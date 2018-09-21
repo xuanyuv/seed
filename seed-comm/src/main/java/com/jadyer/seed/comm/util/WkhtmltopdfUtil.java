@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 /**
  * wkhtmltopdf工具类
  * ------------------------------------------------------------------------------------------------------------
- * Linux下安装wkhtmltopdf：http://jadyer.cn/2013/09/07/centos-config-develop/#安装wkhtmltopdf
+ * Linux下安装wkhtmltopdf：https://jadyer.cn/2013/09/07/centos-config-develop/#安装wkhtmltopdf
  * C:\Users\Jadyer\Desktop>wkhtmltopdf --footer-center 第[page]页／共[topage]页 --margin-top 30mm --margin-bottom 20mm --footer-spacing 5 --header-spacing 5 --header-html header.html 11.html 11.pdf
  * C:\Users\Jadyer\Desktop>wkhtmltopdf --footer-center 第[page]页／共[topage]页 --margin-top 30mm --margin-bottom 20mm --footer-spacing 5 --header-spacing 5 --header-html http://127.0.0.1:8000/headerpdf 11.html 11.pdf
  * ------------------------------------------------------------------------------------------------------------
@@ -142,7 +142,7 @@ import java.util.concurrent.Executors;
  * @history v1.1-->适配Linux：注意要设置工作目录，以及命令要写其所在的完整目录
  * @history v1.0-->新建
  * ------------------------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2018/5/17 10:26.
+ * Created by 玄玉<https://jadyer.cn/> on 2018/5/17 10:26.
  */
 public final class WkhtmltopdfUtil {
     private WkhtmltopdfUtil() {}

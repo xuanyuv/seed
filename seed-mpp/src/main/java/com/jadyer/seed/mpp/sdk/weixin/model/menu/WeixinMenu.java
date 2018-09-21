@@ -3,7 +3,7 @@ package com.jadyer.seed.mpp.sdk.weixin.model.menu;
 /**
  * 封装整个菜单对象
  * @create Oct 18, 2015 8:57:46 PM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public class WeixinMenu {
     private WeixinButton[] button;

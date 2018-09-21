@@ -4,7 +4,7 @@ package com.jadyer.seed.mpp.sdk.weixin.constant;
  * 微信公众平台全局返回码
  * @see http://mp.weixin.qq.com/wiki/17/fa4e1434e57290788bde25603fa2fcbd.html
  * @create Nov 26, 2015 10:38:31 PM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public enum WeixinCodeEnum {
     WEIXIN_MINUS_1 (-1,    "系统繁忙，此时请开发者稍候再试"),

@@ -21,7 +21,7 @@ import java.util.Map;
  * @history v1.2-->增加mapTobean()方法
  * @history v1.1-->增加beanToMap()方法
  * @history v1.0-->初建
- * Created by 玄玉<http://jadyer.cn/> on 2017/5/18 17:22.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/5/18 17:22.
  */
 public final class BeanUtil {
     private BeanUtil(){}

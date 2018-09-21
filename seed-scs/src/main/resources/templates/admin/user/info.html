@@ -110,7 +110,7 @@ function submit(){
     <!--Table order list-->
     <table class="tab_head tab_in tab_list2" width="100%">
         <tr class="ti"><th colspan="2">个人信息</th></tr>
-        <tr><th width="15%">用户名：</th><td>${uname!session.user.username!"http://jadyer.cn/"}</td></tr>
+        <tr><th width="15%">用户名：</th><td>${uname!session.user.username!"https://jadyer.cn/"}</td></tr>
         <tr><th>平台类型：</th><td>${strutil.length(session.user.mptype)>32 ? strutil.subStringTo(session.user.mptype, 0, 32)+"..." : session.user.mptype}</td></tr>
         <tr><th>绑解状态：</th><td>${session.user.bindStatus==0 ? '<span class="cf30 fw">未绑定</span>' : '<span class="cgre fw">已绑定</span>'}</td></tr>
         <tr><th>绑解时间：</th><td>${session.user.bindTime, dateFormat="yyyy-MM-dd HH:mm:ss"}</td></tr>

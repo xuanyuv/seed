@@ -46,7 +46,7 @@ import java.util.Vector;
  * <p>
  *     负责解析请求参数以及加解密等操作
  * </p>
- * Created by 玄玉<http://jadyer.cn/> on 2016/5/8 19:34.
+ * Created by 玄玉<https://jadyer.cn/> on 2016/5/8 19:34.
  */
 public class OpenFilter extends OncePerRequestFilter {
     private static final int TIMESTAMP_VALID_MILLISECONDS = 1000 * 60 * 10; //时间戳验证：服务端允许客户端请求最大时间误差为10分钟
@@ -294,7 +294,7 @@ public class OpenFilter extends OncePerRequestFilter {
      * RequestParameterWrapper requestWrapper = new RequestParameterWrapper(request);
      * Map<String, Object> allParams = new HashMap<>();
      * allParams.put("appid", "101");
-     * allParams.put("data", "{\"name\":\"玄玉<http://jadyer.cn/>\"}");
+     * allParams.put("data", "{\"name\":\"玄玉<https://jadyer.cn/>\"}");
      * requestWrapper.addAllParameters(allParams);
      * Map<String, String> allHeaders = new HashMap<>();
      * allHeaders.put("From-SYS", "seed-test");

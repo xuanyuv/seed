@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *     <li>appid和appsecret是与Token息息相关的，故一并缓存于此处</li>
  *     <li>flag常量均加了appid是考虑到更换绑定的公众号时，获取到access_token是旧的，从而影响自定义菜单发布</li>
  * </ul>
- * Created by 玄玉<http://jadyer.cn/> on 2015/10/29 20:11.
+ * Created by 玄玉<https://jadyer.cn/> on 2015/10/29 20:11.
  */
 public class WeixinTokenHolder {
     private static final String FLAG_WEIXIN_ACCESSTOKEN = "weixin_access_token_";

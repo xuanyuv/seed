@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by 玄玉<http://jadyer.cn/> on 2017/9/8 23:22.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/9/8 23:22.
  */
 public class GenerateHelper {
     private static GroupTemplate groupTemplate = null;
@@ -163,7 +163,7 @@ public class GenerateHelper {
         }
         /*
          * 用户信息
-         * Generated from seed-simcoder by 玄玉<http://jadyer.cn/> on 2017/9/5 14:40.
+         * Generated from seed-simcoder by 玄玉<https://jadyer.cn/> on 2017/9/5 14:40.
          */
         if(StringUtils.isNotBlank(tablecomment)){
             if(tablecomment.endsWith("表")){

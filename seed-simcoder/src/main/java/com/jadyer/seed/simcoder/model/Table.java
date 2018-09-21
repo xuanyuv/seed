@@ -2,7 +2,7 @@ package com.jadyer.seed.simcoder.model;
 
 /**
  * 表信息
- * Created by 玄玉<http://jadyer.cn/> on 2017/9/7 17:22.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/9/7 17:22.
  */
 public class Table {
     /** 表名 */

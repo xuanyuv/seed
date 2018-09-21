@@ -2,7 +2,7 @@ package com.jadyer.seed.mpp.sdk.weixin.model.redpack;
 
 /**
  * 微信红包--接口出参基类
- * Created by 玄玉<http://jadyer.cn/> on 2017/7/28 10:43.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/7/28 10:43.
  */
 public abstract class WeixinRedpackRespData {
     /** 返回状态码：SUCCESS/FAIL */

@@ -31,7 +31,7 @@ import java.net.NetworkInterface;
  * @version v1.0
  * @history v1.0-->新建
  * ----------------------------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2017/10/9 17:26.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/10/9 17:26.
  */
 @SuppressWarnings("FieldCanBeLocal")
 public enum IDUtil {

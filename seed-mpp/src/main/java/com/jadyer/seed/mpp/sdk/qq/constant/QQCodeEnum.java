@@ -5,7 +5,7 @@ package com.jadyer.seed.mpp.sdk.qq.constant;
  * <p>
  *     取自<<QQ公众号API文档.pdf>>-20150907版
  * </p>
- * Created by 玄玉<http://jadyer.cn/> on 2015/11/26 22:39.
+ * Created by 玄玉<https://jadyer.cn/> on 2015/11/26 22:39.
  */
 public enum QQCodeEnum {
     QQ_MINUS_1 (-1,    "未知错误"),

@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Open注解处理器
- * Created by 玄玉<http://jadyer.cn/> on 2017/9/19 19:20.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/9/19 19:20.
  */
 enum OpenAnnotationProcessor {
     INSTANCE;

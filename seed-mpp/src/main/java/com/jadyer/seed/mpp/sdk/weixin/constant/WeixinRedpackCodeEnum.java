@@ -2,7 +2,7 @@ package com.jadyer.seed.mpp.sdk.weixin.constant;
 
 /**
  * 微信红包--错误码
- * Created by 玄玉<http://jadyer.cn/> on 2017/7/28 11:09.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/7/28 11:09.
  */
 public enum WeixinRedpackCodeEnum {
     WEIXIN_REDPACK_NO_AUTH             ("NO_AUTH",             "没有权限"),

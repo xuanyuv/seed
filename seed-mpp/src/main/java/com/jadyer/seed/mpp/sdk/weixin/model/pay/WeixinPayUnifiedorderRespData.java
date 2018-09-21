@@ -5,7 +5,7 @@ package com.jadyer.seed.mpp.sdk.weixin.model.pay;
  * <p>
  *     该出参为前台页面呼起微信支付所需的json数据实体
  * </p>
- * Created by 玄玉<http://jadyer.cn/> on 2017/7/10 10:39.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/7/10 10:39.
  */
 public class WeixinPayUnifiedorderRespData {
     private String appId;

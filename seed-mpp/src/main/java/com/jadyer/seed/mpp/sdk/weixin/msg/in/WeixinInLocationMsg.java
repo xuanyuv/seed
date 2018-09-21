@@ -3,7 +3,7 @@ package com.jadyer.seed.mpp.sdk.weixin.msg.in;
 /**
  * 接收地理位置消息
  * @create Oct 18, 2015 11:42:05 AM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public class WeixinInLocationMsg extends WeixinInMsg {
     /**

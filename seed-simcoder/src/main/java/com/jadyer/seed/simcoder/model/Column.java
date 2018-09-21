@@ -2,7 +2,7 @@ package com.jadyer.seed.simcoder.model;
 
 /**
  * 列信息
- * Created by 玄玉<http://jadyer.cn/> on 2017/9/7 17:23.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/9/7 17:23.
  */
 public class Column {
     /** 列的名称 */

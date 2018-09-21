@@ -28,7 +28,7 @@ import java.util.Map;
  * @version v1.0
  * @history v1.0-->新建此类并添加了四个方法：xml和map互转、美化xml、转义xml
  * ------------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2017/7/8 16:44.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/7/8 16:44.
  */
 public final class XmlUtil {
     private XmlUtil(){}

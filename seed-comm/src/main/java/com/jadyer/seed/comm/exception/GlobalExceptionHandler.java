@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
  * ----------------------------------------------------------------------------------------------------------------------
  * ControllerAdvice注解的作用域是全局Controller
  * ----------------------------------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2015/6/6 12:31.
+ * Created by 玄玉<https://jadyer.cn/> on 2015/6/6 12:31.
  */
 @DisableLog
 @ControllerAdvice

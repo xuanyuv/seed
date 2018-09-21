@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 /**
  * 由于Spring-Session暂不支持Redis3.0，故写此配置实现通过Redis集中管理HttpSession
  * 这里拦截的是[/*]，对于使用者而言是透明的，就像使用普通的HttpSession一样像以往那样使用就行
- * Created by 玄玉<http://jadyer.cn/> on 2016/6/19 18:15.
+ * Created by 玄玉<https://jadyer.cn/> on 2016/6/19 18:15.
  */
 //@Configuration
 public class SessionConfiguration {

@@ -9,7 +9,7 @@ import com.jadyer.seed.mpp.sdk.qq.msg.out.QQOutTextMsg;
 /**
  * 回复QQ公众号消息的构建器
  * @create Nov 26, 2015 7:33:28 PM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public class QQOutMsgXmlBuilder {
     private QQOutMsgXmlBuilder(){}

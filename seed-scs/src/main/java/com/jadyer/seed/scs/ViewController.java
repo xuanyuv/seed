@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by 玄玉<http://jadyer.cn/> on 2017/9/23 12:09.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/9/23 12:09.
  */
 @Controller
 public class ViewController {
@@ -71,7 +71,7 @@ public class ViewController {
         dataMap.put("username", "玄玉");
         session.setAttribute(SeedConstants.WEB_SESSION_USER, dataMap);
         session.setAttribute(SeedConstants.WEB_CURRENT_MENU, "menu_module");
-        session.setAttribute("mpurl", "http://jadyer.cn/");
+        session.setAttribute("mpurl", "https://jadyer.cn/");
         session.setAttribute("token", "13248558648888942");
         return CommResult.success();
     }

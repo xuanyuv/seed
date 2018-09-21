@@ -3,7 +3,7 @@ package com.jadyer.seed.mpp.sdk.qq.model;
 /**
  * 封装获取到的QQ网页授权的网页access_token
  * @create Nov 28, 2015 8:36:15 PM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public class QQOAuthAccessToken {
     /**

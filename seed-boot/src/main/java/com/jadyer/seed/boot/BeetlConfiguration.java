@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
  * --------------------------------------------------------
  * 【注意】：以上方法，还未测试
  * --------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2017/9/13 9:38.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/9/13 9:38.
  */
 @Configuration
 public class BeetlConfiguration {

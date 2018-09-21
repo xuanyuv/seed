@@ -9,7 +9,7 @@ import javax.servlet.jsp.tagext.TagSupport;
  * ----------------------------------------------------------------------------------------------------
  * 目前该标签仅实现了根据是否含登录用户来决定JSP页面内容的显示与否
  * 这里采用了Java模板方法模式中的HookMethod实现,事实上Apache Mina和Shiro都是这么用的
- * 详见http://jadyer.cn/2013/05/13/mina-hook-method/
+ * 详见https://jadyer.cn/2013/05/13/mina-hook-method/
  * ----------------------------------------------------------------------------------------------------
  * 为了更好的在其它Web项目中重复使用定制标记库,可以把相关的标记处理类/简单标记处理类/Tag/TLD等文件打包成一个Jar
  * 当需要在其它Web应用中使用该定制标记库时,直接把该Jar复制到/WEB-INF/lib目录下即可
@@ -90,7 +90,7 @@ import javax.servlet.jsp.tagext.TagSupport;
  * [INFO] ------------------------------------------------------------------------
  * C:\Users\Jadyer>
  * ----------------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2015/3/4 10:47.
+ * Created by 玄玉<https://jadyer.cn/> on 2015/3/4 10:47.
  */
 public abstract class PermissionTag extends TagSupport {
     private static final long serialVersionUID = 4677922552292876458L;

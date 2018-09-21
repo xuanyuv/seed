@@ -8,7 +8,7 @@ package com.jadyer.seed.mpp.sdk.qq.model.menu;
  *     则屏蔽右上角菜单的URL即为：http://qq.msxf.com/view/apply/index?openid=openid&oauth=base&_wv=4099
  *     关于4099这个数字，它是专门用来屏蔽右上角菜单的（比如禁止粉丝分享功能），当然也有其它数字，其各自对应不同的功能
  * </p>
- * Created by 玄玉<http://jadyer.cn/> on 2015/11/28 20:58.
+ * Created by 玄玉<https://jadyer.cn/> on 2015/11/28 20:58.
  */
 public class QQMenu {
     private QQButton[] button;

@@ -3,7 +3,7 @@ package com.jadyer.seed.mpp.sdk.weixin.model.pay;
 /**
  * 微信支付--公众号支付--下载对账单接口入参
  * https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_6
- * Created by 玄玉<http://jadyer.cn/> on 2017/7/10 20:01.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/7/10 20:01.
  */
 public class WeixinPayDownloadbillReqData extends WeixinPayReqData {
     /** 微信支付分配的终端设备号 */

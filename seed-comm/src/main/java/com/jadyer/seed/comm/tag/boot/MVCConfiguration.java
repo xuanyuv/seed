@@ -15,7 +15,7 @@ import org.springframework.web.servlet.view.JstlView;
 /**
  * JSP文件必须放在/src/main/webapp/目录下
  * 因为/src/main/resources/下的任何一个位置在打包war时都会被编译到/WEB-INF/classes/下面，这个目录下的JSP文件是不会被JavaEE容器识别的
- * Created by 玄玉<http://jadyer.cn/> on 2016/11/24 10:45.
+ * Created by 玄玉<https://jadyer.cn/> on 2016/11/24 10:45.
  */
 //@Configuration
 public class MVCConfiguration extends WebMvcConfigurerAdapter {

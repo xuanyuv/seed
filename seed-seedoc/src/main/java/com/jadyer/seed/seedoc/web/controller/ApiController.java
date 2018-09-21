@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * API
- * Generated from seed-simcoder by 玄玉<http://jadyer.cn/> on 2017/11/15 17:42.
+ * Generated from seed-simcoder by 玄玉<https://jadyer.cn/> on 2017/11/15 17:42.
  */
 @Controller
 @RequestMapping("/api")

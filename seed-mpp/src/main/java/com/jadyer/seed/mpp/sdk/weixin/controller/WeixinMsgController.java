@@ -41,7 +41,7 @@ public abstract class WeixinMsgController {
         String reqBodyMsg = RequestUtil.extractHttpServletRequestBodyMessage(request);
         LogUtil.getLogger().info("收到微信服务器消息如下\n{}", RequestUtil.extractHttpServletRequestHeaderMessage(request)+"\n"+reqBodyMsg);
         //验签
-        if(!this.verifySignature(DigestUtils.md5Hex(uuid+"http://jadyer.cn/"), request)){
+        if(!this.verifySignature(DigestUtils.md5Hex(uuid+"https://jadyer.cn/"), request)){
             out.write("verify signature failed");
             out.flush();
             out.close();

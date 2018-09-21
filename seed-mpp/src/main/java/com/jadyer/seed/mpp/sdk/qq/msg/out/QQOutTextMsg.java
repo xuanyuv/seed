@@ -5,7 +5,7 @@ import com.jadyer.seed.mpp.sdk.qq.msg.in.QQInMsg;
 /**
  * 回复文本消息
  * @create Nov 26, 2015 7:36:52 PM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public class QQOutTextMsg extends QQOutMsg {
     private String content;

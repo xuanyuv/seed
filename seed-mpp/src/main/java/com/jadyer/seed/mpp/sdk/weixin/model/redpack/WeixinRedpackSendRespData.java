@@ -2,7 +2,7 @@ package com.jadyer.seed.mpp.sdk.weixin.model.redpack;
 
 /**
  * 微信红包--发放普通红包--接口出参
- * Created by 玄玉<http://jadyer.cn/> on 2017/7/28 10:46.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/7/28 10:46.
  */
 public class WeixinRedpackSendRespData extends WeixinRedpackRespData {
     /** 商户appid，接口传入的所有appid应该为公众号的appid（在mp.weixin.qq.com申请的），不能为APP的appid（在open.weixin.qq.com申请的）。 */

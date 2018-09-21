@@ -24,7 +24,7 @@ import java.util.Date;
  * @history v1.1-->获取图片临时URL接口支持自定义x-oss-process参数
  * @history v1.0-->新建
  * ----------------------------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2018/4/9 16:09.
+ * Created by 玄玉<https://jadyer.cn/> on 2018/4/9 16:09.
  */
 public class OSSUtil {
     private OSSUtil(){}
@@ -38,7 +38,7 @@ public class OSSUtil {
      * @param timeout  有效时长，单位：分钟
      * @param process  图片的x-oss-process参数值（传空则返回原图），举例：image/resize,p_50表示将图按比例缩略到原来的1/2
      * @return 返回图片的完整地址（浏览器可直接访问）
-     * Comment by 玄玉<http://jadyer.cn/> on 2018/4/9 17:23.
+     * Comment by 玄玉<https://jadyer.cn/> on 2018/4/9 17:23.
      */
     public static String getImgURL(String bucket, String endpoint, String key, String accessKeyId, String accessKeySecret, String process, int timeout) {
         LogUtil.getLogger().info("获取图片临时URL，请求ossKey=[{}]，process=[{}], timeout=[{}]min", key, process, timeout);
@@ -70,7 +70,7 @@ public class OSSUtil {
      * @param endpoint 存储空间所属地域的访问域名
      * @param key      文件完整名称（建议含后缀）
      * @param is       文件流
-     * Comment by 玄玉<http://jadyer.cn/> on 2018/4/9 17:24.
+     * Comment by 玄玉<https://jadyer.cn/> on 2018/4/9 17:24.
      */
     public static void upload(String bucket, String endpoint, String key, String accessKeyId, String accessKeySecret, InputStream is) {
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
@@ -103,7 +103,7 @@ public class OSSUtil {
      * @param endpoint 存储空间所属地域的访问域名
      * @param localURL 保存在本地的包含完整路径和后缀的完整文件名，若传空则默认放到Java临时目录中
      * @return localURL
-     * Comment by 玄玉<http://jadyer.cn/> on 2018/4/9 17:24.
+     * Comment by 玄玉<https://jadyer.cn/> on 2018/4/9 17:24.
      */
     public static String download(String bucket, String endpoint, String key, String accessKeyId, String accessKeySecret, String localURL) {
         if(StringUtils.isBlank(localURL)){

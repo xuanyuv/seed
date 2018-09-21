@@ -3,7 +3,7 @@ package com.jadyer.seed.mpp.sdk.weixin.model.pay;
 /**
  * 微信支付--公众号支付--统一下单接口入参
  * https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_1
- * Created by 玄玉<http://jadyer.cn/> on 2017/7/10 10:16.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/7/10 10:16.
  */
 public class WeixinPayUnifiedorderReqData extends WeixinPayReqData {
     /** 自定义参数，可以为终端设备号(门店号或收银设备ID)，PC网页或公众号内支付可以传"WEB" */

@@ -114,7 +114,7 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
  *    </build>
  * 3、启动应用：java -jar -Dspring.profiles.active=prod seed-boot-1.1.jar
  * ---------------------------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2015/11/29 15:35.
+ * Created by 玄玉<https://jadyer.cn/> on 2015/11/29 15:35.
  */
 @SpringBootApplication(scanBasePackages="${scan.base.packages}")
 public class BootRun {

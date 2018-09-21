@@ -5,7 +5,7 @@ import java.util.HashMap;
 /**
  * QQ模板消息对象
  * @create Dec 30, 2015 11:03:44 PM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public class QQTemplateMsg {
     public static final String TEMPLATE_MSG_TYPE_VIEW = "view";

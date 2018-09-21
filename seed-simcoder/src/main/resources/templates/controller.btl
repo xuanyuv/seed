@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * ${tablecomment}
- * Generated from seed-simcoder by 玄玉<http://jadyer.cn/> on ${date(), "yyyy/MM/dd HH:mm"}.
+ * Generated from seed-simcoder by 玄玉<https://jadyer.cn/> on ${date(), "yyyy/MM/dd HH:mm"}.
  */
 @Controller
 @RequestMapping("/${TABLE_NAME_nounderline}")

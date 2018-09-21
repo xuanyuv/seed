@@ -4,7 +4,7 @@ package com.jadyer.seed.mpp.sdk.weixin.model;
  * 封装粉丝基本信息
  * @see http://mp.weixin.qq.com/wiki/14/bb5031008f1494a59c6f71fa0f319c66.html
  * @create Oct 18, 2015 8:17:06 PM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public class WeixinFansInfo {
     private int subscribe;         //用户是否订阅该公众号标识,值为0时,代表此用户没有关注该公众号,拉取不到其余信息

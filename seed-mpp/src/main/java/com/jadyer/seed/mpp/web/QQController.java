@@ -68,7 +68,7 @@ public class QQController extends QQMsgController {
         }
         //否则原样返回
         //20151128183801测试发现QQ公众号暂时还不支持QQ表情的显示，但是支持在文本消息里写链接
-        //return new QQOutTextMsg(inTextMsg).setContent("言毕，二人竟瞬息不见，步法之神令人叹绝。欲知后事如何，请访问<a href=\"http://jadyer.cn/\">我的博客</a>[阴险][阴险]");
+        //return new QQOutTextMsg(inTextMsg).setContent("言毕，二人竟瞬息不见，步法之神令人叹绝。欲知后事如何，请访问<a href=\"https://jadyer.cn/\">我的博客</a>[阴险][阴险]");
         return new QQOutTextMsg(inTextMsg).setContent(inTextMsg.getContent());
     }
 
@@ -77,7 +77,7 @@ public class QQController extends QQMsgController {
     protected QQOutMsg processInImageMsg(QQInImageMsg inImageMsg) {
         //QQOutNewsMsg outMsg = new QQOutNewsMsg(inImageMsg);
         //outMsg.addNews("查看刚才发送的图片", "第一个大图文描述", inImageMsg.getPicUrl(), inImageMsg.getPicUrl());
-        //outMsg.addNews("点击访问我的博客", "第二个图文的描述", "http://img.my.csdn.net/uploads/201507/26/1437881866_3678.png", "http://jadyer.cn/");
+        //outMsg.addNews("点击访问我的博客", "第二个图文的描述", "http://img.my.csdn.net/uploads/201507/26/1437881866_3678.png", "https://jadyer.cn/");
         //outMsg.addNews("点击访问我的Github", "第三个图文的描述", "http://img.my.csdn.net/uploads/201009/14/7892753_1284475095fyR0.jpg", "https://github.com/jadyer");
         //return outMsg;
         return new QQOutTextMsg(inImageMsg).setContent("<a href=\""+inImageMsg.getPicUrl()+"\">点此查看</a>刚才发送的图片");
@@ -123,7 +123,7 @@ public class QQController extends QQMsgController {
             fansSaveAsync.save(mppUserInfo, inFollowEventMsg.getFromUserName());
             //目前设定关注后固定回复
             QQOutNewsMsg outMsg = new QQOutNewsMsg(inFollowEventMsg);
-            outMsg.addNews("欢迎关注", "更多精彩请访问我的博客", "http://img.my.csdn.net/uploads/201507/26/1437881866_3678.png", "http://jadyer.cn/");
+            outMsg.addNews("欢迎关注", "更多精彩请访问我的博客", "http://img.my.csdn.net/uploads/201507/26/1437881866_3678.png", "https://jadyer.cn/");
             return outMsg;
         }
         if(QQInFollowEventMsg.EVENT_INFOLLOW_UNSUBSCRIBE.equals(inFollowEventMsg.getEvent())){
@@ -169,7 +169,7 @@ public class QQController extends QQMsgController {
      * 单发主动推模板消息
      * <p>
      *     {"button":{"url":{"name":"test","type":"view","value":"https://github.com/jadyer/seed/"}},"data":{"keynote4":{"value":"通路无双"},"keynote3":{"value":"789"},"first":{"value":"天下无敌任我行"},"keynote2":{"value":"456"},"end":{"value":"随心所欲陪你玩"},"keynote1":{"value":"123"}},"templateid":"mytemplateid","tousername":"E12D231CFC30438FB6970B0C7669C101"}
-     *     {"button":{"url":{"name":"test","type":"view","value":"https://github.com/jadyer/seed/"}},"data":{"keynote4":{"value":"通路无双"},"keynote3":{"value":"789"},"first":{"value":"天下无敌任我行"},"keynote2":{"value":"456"},"end":{"value":"随心所欲陪你玩"},"keynote1":{"value":"123"}},"templateid":"mytemplateid","tousername":"E12D231CFC30438FB6970B0C7669C101","type":"view","url":"http://jadyer.cn/"}
+     *     {"button":{"url":{"name":"test","type":"view","value":"https://github.com/jadyer/seed/"}},"data":{"keynote4":{"value":"通路无双"},"keynote3":{"value":"789"},"first":{"value":"天下无敌任我行"},"keynote2":{"value":"456"},"end":{"value":"随心所欲陪你玩"},"keynote1":{"value":"123"}},"templateid":"mytemplateid","tousername":"E12D231CFC30438FB6970B0C7669C101","type":"view","url":"https://jadyer.cn/"}
      * </p>
      */
     @ResponseBody
@@ -189,7 +189,7 @@ public class QQController extends QQMsgController {
         templateMsg.setTousername(openid);
         templateMsg.setTemplateid(templateid);
         //templateMsg.setType(QQTemplateMsg.TEMPLATE_MSG_TYPE_VIEW);
-        //templateMsg.setUrl("http://jadyer.cn/");
+        //templateMsg.setUrl("https://jadyer.cn/");
         templateMsg.setData(data);
         templateMsg.setButton(button);
         return QQHelper.pushQQTemplateMsgToFans(QQTokenHolder.getQQAccessToken(appid), templateMsg);
@@ -202,7 +202,7 @@ public class QQController extends QQMsgController {
     @RequestMapping(value="/createQQMenu")
     public QQErrorInfo createQQMenu(String appid, String appsecret){
         QQTokenHolder.setQQAppidAppsecret(appid, appsecret);
-        QQSubViewButton btn11 = new QQSubViewButton("我的博客", "http://jadyer.cn/");
+        QQSubViewButton btn11 = new QQSubViewButton("我的博客", "https://jadyer.cn/");
         QQSubViewButton btn22 = new QQSubViewButton("我的GitHub", "https://github.com/jadyer");
         QQSubClickButton btn33 = new QQSubClickButton("历史上的今天", "123abc");
         QQSubClickButton btn44 = new QQSubClickButton("天气预报", "456");
@@ -229,7 +229,7 @@ public class QQController extends QQMsgController {
     public QQErrorInfo pushQQMsgToFans(String appid, String appsecret, String openid){
         QQTokenHolder.setQQAppidAppsecret(appid, appsecret);
         ////推图文消息
-        //QQCustomNewsMsg.MPNews.Article article11 = new QQCustomNewsMsg.MPNews.Article("", "", "", "欢迎访问玄玉博客", "玄玉博客是一个开放态度的Java生态圈", "http://avatar.csdn.net/6/0/B/1_jadyer.jpg", "http://jadyer.cn/");
+        //QQCustomNewsMsg.MPNews.Article article11 = new QQCustomNewsMsg.MPNews.Article("", "", "", "欢迎访问玄玉博客", "玄玉博客是一个开放态度的Java生态圈", "http://avatar.csdn.net/6/0/B/1_jadyer.jpg", "https://jadyer.cn/");
         //QQCustomNewsMsg.MPNews.Article article22 = new QQCustomNewsMsg.MPNews.Article("", "", "", "玄玉微信SDK", "玄玉微信SDK是一个正在研发中的SDK", "http://img.my.csdn.net/uploads/201507/26/1437881866_3678.png", "https://github.com/jadyer");
         //QQCustomNewsMsg customNewsMsg = new QQCustomNewsMsg(openid, new QQCustomNewsMsg.MPNews(new QQCustomNewsMsg.MPNews.Article[]{article11, article22}));
         //return QQHelper.pushQQMsgToFans(QQTokenHolder.getQQAccessToken(appid), customNewsMsg);

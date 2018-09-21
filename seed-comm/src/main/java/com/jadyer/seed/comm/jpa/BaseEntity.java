@@ -27,7 +27,7 @@ import java.util.Objects;
  * 2. 如果使用Java配置的话，在配置类上使用@EnableJpaAuditing（若使用XML配置则添加<jpa:auditing/>）
  * 3. 最后在实体类上添加@EntityListeners(AuditingEntityListener.class)
  * -------------------------------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2017/2/28 18:36.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/2/28 18:36.
  */
 @MappedSuperclass
 public abstract class BaseEntity<ID extends Serializable> implements Persistable<ID> {

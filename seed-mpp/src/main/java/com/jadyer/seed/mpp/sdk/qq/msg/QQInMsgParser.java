@@ -16,7 +16,7 @@ import org.dom4j.Element;
 /**
  * QQ服务器请求消息解析器
  * @create Nov 26, 2015 7:27:24 PM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public class QQInMsgParser{
     private QQInMsgParser(){}
@@ -25,7 +25,7 @@ public class QQInMsgParser{
      * 解析QQ服务器请求的xml报文体为com.jadyer.sdk.qq.msg.in.QQInMsg对象
      * @see 若无法识别请求的MsgType或解析xml出错,会抛出RuntimeException
      * @create Nov 26, 2015 7:28:14 PM
-     * @author 玄玉<http://jadyer.cn/>
+     * @author 玄玉<https://jadyer.cn/>
      */
     public static QQInMsg parse(String xml) {
         try {

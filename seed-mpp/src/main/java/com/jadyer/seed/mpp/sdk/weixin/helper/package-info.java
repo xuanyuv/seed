@@ -48,6 +48,6 @@ public class TokenHolder {
 使用前TokenHolder.setTokenCache(new RedisTokenCache(jedisCluster))
 然后再ITokenCache cache = TokenHolder.getTokenCache()
 接下来就可以cache.set()或者get()数据了
- * Created by 玄玉<http://jadyer.cn/> on 2017/7/1 11:46.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/7/1 11:46.
  */
 package com.jadyer.seed.mpp.sdk.weixin.helper;

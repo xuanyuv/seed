@@ -29,7 +29,7 @@ import java.util.Date;
  * 从动态生成的UPDATE语句可以看出：其默认会更新所有字段，而使用了@DynamicUpdate就只会更新上一步对比的不一样值的字段
  * 但若待更新的Entity属性值与查询到的字段值都一样的话，那么无论请求多少次，Sping-Data-JPA都不会向数据库发起更新请求
  * -----------------------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2015/08/08 20:18.
+ * Created by 玄玉<https://jadyer.cn/> on 2015/08/08 20:18.
  */
 @Entity
 @DynamicInsert

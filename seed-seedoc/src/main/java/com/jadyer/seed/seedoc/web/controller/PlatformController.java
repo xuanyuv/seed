@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * 平台
- * Generated from seed-simcoder by 玄玉<http://jadyer.cn/> on 2017/11/15 15:45.
+ * Generated from seed-simcoder by 玄玉<https://jadyer.cn/> on 2017/11/15 15:45.
  */
 @Controller
 @RequestMapping("/platform")

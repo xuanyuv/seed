@@ -33,7 +33,7 @@ import java.util.Map;
 
 /**
  * 接收微信服务器回调以及其它的辅助功能
- * Created by 玄玉<http://jadyer.cn/> on 2015/10/19 20:30.
+ * Created by 玄玉<https://jadyer.cn/> on 2015/10/19 20:30.
  */
 @Controller
 @RequestMapping(value="/weixin/helper")
@@ -85,7 +85,7 @@ public class WeixinHelperController {
      * http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
      * 注意：这里使用的是noncestr，非nonceStr
      * @param url 当前网页的URL，不包含#及其后面部分
-     * Created by 玄玉<http://jadyer.cn/> on 2015/10/29 22:11.
+     * Created by 玄玉<https://jadyer.cn/> on 2015/10/29 22:11.
      */
     @ResponseBody
     @RequestMapping(value="/jssdk/sign")

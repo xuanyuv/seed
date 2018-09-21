@@ -1,7 +1,7 @@
 package com.jadyer.seed.comm.annotation.lock.single;
 
 /**
- * Created by 玄玉<http://jadyer.cn/> on 2016/7/8 17:04.
+ * Created by 玄玉<https://jadyer.cn/> on 2016/7/8 17:04.
  */
 public interface DistributedLock {
     /**

@@ -11,13 +11,13 @@ import org.springframework.stereotype.Component;
  * 当应用中添加了DataSource类型的bean时,SpringBoot会自动在health服务中暴露数据库连接的信息
  * 应用也可提供自己的健康状态信息,实现org.springframework.boot.actuate.health.HealthIndicator即可
  * -----------------------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2015/11/29 15:48.
+ * Created by 玄玉<https://jadyer.cn/> on 2015/11/29 15:48.
  */
 @Component
 public class BootHealthIndicator implements HealthIndicator {
     @Override
     public Health health() {
-        return Health.up().withDetail("myblog", "http://jadyer.cn/")
+        return Health.up().withDetail("myblog", "https://jadyer.cn/")
                             .withDetail("mygithub", "https://github.com/jadyer")
                             .build();
     }

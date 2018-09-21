@@ -36,7 +36,7 @@ import java.util.Map;
  * ------------------------------------------------------------------------
  * 具体的业务实现类只有一个约定：类名为“RouterService + {appid}”即可
  * ------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2017/9/20 17:57.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/9/20 17:57.
  */
 @Service
 public class RouterService100 {

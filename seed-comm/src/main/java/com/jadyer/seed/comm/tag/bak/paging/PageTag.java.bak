@@ -7,7 +7,7 @@ import java.io.IOException;
 
 /**
  * 自定义的分页标签类
- * Created by 玄玉<http://jadyer.cn/> on 2011/04/06 21:00.
+ * Created by 玄玉<https://jadyer.cn/> on 2011/04/06 21:00.
  */
 public class PageTag extends SimpleTagSupport {
     //private int pageStyle = 1;  //分页风格

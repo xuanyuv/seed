@@ -8,7 +8,7 @@ import java.util.List;
  * <p>
  *     注意：退款申请接收成功时，本实体类有值，但退款结果需要调用退款查询接口查询
  * </p>
- * Created by 玄玉<http://jadyer.cn/> on 2017/7/10 15:52.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/7/10 15:52.
  */
 public class WeixinPayRefundRespData extends WeixinPayRespData {
     /** 微信订单号 */

@@ -21,10 +21,10 @@ import java.io.PrintWriter;
  * 用于处理QQ相关的Filter
  * <ul>
  *     目前该Filter主要用来网页授权获取粉丝信息，这里有两种方式（第二种不经过该Filter适用于前端应用与mpp是分离的情况）
- *     <li>经过该Filter进行处理：菜单地址配置示例为http://jadyer.cn/mpp/portal/user/reg.html?appid=wx63ae5326e400cca2&oauth=base&openid=openid</li>
- *     <li>不经过该Filter的处理：菜单地址配置示例为https://open.mp.qq.com/connect/oauth2/authorize?appid={appid}&redirect_uri=http://jadyer.cn/mpp/qq/helper/oauth/{appid}&response_type=code&scope=snsapi_base&state=http://jadyer.cn/mpp/portal/user/reg.html/uid=50/openid=openid#qq_redirect</li>
+ *     <li>经过该Filter进行处理：菜单地址配置示例为https://jadyer.cn/mpp/portal/user/reg.html?appid=wx63ae5326e400cca2&oauth=base&openid=openid</li>
+ *     <li>不经过该Filter的处理：菜单地址配置示例为https://open.mp.qq.com/connect/oauth2/authorize?appid={appid}&redirect_uri=https://jadyer.cn/mpp/qq/helper/oauth/{appid}&response_type=code&scope=snsapi_base&state=https://jadyer.cn/mpp/portal/user/reg.html/uid=50/openid=openid#qq_redirect</li>
  * </ul>
- * Created by 玄玉<http://jadyer.cn/> on 2015/12/24 12:00.
+ * Created by 玄玉<https://jadyer.cn/> on 2015/12/24 12:00.
  */
 public class QQFilter implements Filter {
     @Override
@@ -55,7 +55,7 @@ public class QQFilter implements Filter {
                 return;
             }
             /*
-             * state=http://jadyer.cn/mpp/user/get/2/uname=玄玉/openid=openid
+             * state=https://jadyer.cn/mpp/user/get/2/uname=玄玉/openid=openid
              */
             String fullURL = request.getRequestURL().toString() + (null==request.getQueryString()?"":"?"+request.getQueryString());
             String state = fullURL.replace("?", "/").replaceAll("&", "/").replace("/oauth=base", "");

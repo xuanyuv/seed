@@ -23,7 +23,7 @@ import java.io.PrintWriter;
 import java.net.URL;
 
 /**
- * Created by 玄玉<http://jadyer.cn/> on 2017/11/15 15:59.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/11/15 15:59.
  */
 @Controller
 @RequestMapping("/seedoc")

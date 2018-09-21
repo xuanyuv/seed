@@ -3,7 +3,7 @@ package com.jadyer.seed.mpp.sdk.weixin.msg.in.event;
 /**
  * 多客服会话状态通知事件
  * @create Oct 19, 2015 10:12:02 AM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public class WeixinInCustomServiceEventMsg extends WeixinInEventMsg {
     /**

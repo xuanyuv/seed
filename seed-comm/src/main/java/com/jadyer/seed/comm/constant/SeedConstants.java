@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * 接口中属性都是public static final的，即public static final int id=1;等价于int id=1;
  * 接口中的方法都是public abstract的，即public abstract void start();等价于void start();
- * Created by 玄玉<http://jadyer.cn/> on 2015/08/27 20:21.
+ * Created by 玄玉<https://jadyer.cn/> on 2015/08/27 20:21.
  */
 public interface SeedConstants {
     String DEFAULT_CHARSET = StandardCharsets.UTF_8.displayName();

@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  * @history v1.1-->编码器和解码器中的字符处理,升级为Mina2.x提供的<code>putString()</code>方法来处理
  * @history v1.0-->初建
  * ------------------------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2012/10/03 00:42.
+ * Created by 玄玉<https://jadyer.cn/> on 2012/10/03 00:42.
  */
 public final class MinaUtil {
     private static final int DEFAULT_BOTHIDLE_TIMEOUT = 90;         //设置默认发呆时间为90s

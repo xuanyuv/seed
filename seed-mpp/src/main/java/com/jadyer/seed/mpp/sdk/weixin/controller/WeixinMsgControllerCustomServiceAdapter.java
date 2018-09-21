@@ -12,7 +12,7 @@ import com.jadyer.seed.mpp.sdk.weixin.msg.out.WeixinOutMsg;
  * 用于将消息转发到多客服的Adapter
  * @see 对WeixinMsgController部分方法提供默认实现,以便开发者可以只关注需要处理的抽象方法
  * @create Oct 19, 2015 10:56:56 AM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public abstract class WeixinMsgControllerCustomServiceAdapter extends WeixinMsgControllerAdapter {
     @Override

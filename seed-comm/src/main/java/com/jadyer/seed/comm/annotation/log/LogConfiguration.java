@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.lang.reflect.Method;
 
 /**
- * Created by 玄玉<http://jadyer.cn/> on 2018/4/17 13:24.
+ * Created by 玄玉<https://jadyer.cn/> on 2018/4/17 13:24.
  */
 @Configuration
 public class LogConfiguration {

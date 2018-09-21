@@ -16,7 +16,7 @@ import java.text.DecimalFormat;
  * @history v1.1-->重写金额元转分和分转元方法，并增加两个方法：金额格式化和区间判断
  * @history v1.0-->初建
  * -------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2017/5/19 11:45.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/5/19 11:45.
  */
 public class MoneyUtil {
     /** 转中文：大写数字 */

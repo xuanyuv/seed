@@ -3,7 +3,7 @@ package com.jadyer.seed.mpp.sdk.weixin.model.pay;
 /**
  * 微信支付--公众号支付--申请退款接口入参
  * https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_4
- * Created by 玄玉<http://jadyer.cn/> on 2017/7/10 15:36.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/7/10 15:36.
  */
 public class WeixinPayRefundReqData extends WeixinPayReqData {
     /** 微信生成的订单号，在支付通知中有返回 */

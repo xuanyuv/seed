@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * 微信支付--公众号支付--查询订单接口出参
- * Created by 玄玉<http://jadyer.cn/> on 2017/7/10 11:26.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/7/10 11:26.
  */
 public class WeixinPayOrderqueryRespData extends WeixinPayRespData {
     /** 微信支付分配的终端设备号 */

@@ -17,7 +17,7 @@ import java.util.Collections;
 
 /**
  * 經測試：SpringBoot本身以及它打成的war默認都會加載WEB-INF下的tld文件，故此類暫未用到
- * Created by 玄玉<http://jadyer.cn/> on 2016/7/9 19:34.
+ * Created by 玄玉<https://jadyer.cn/> on 2016/7/9 19:34.
  */
 //@Configuration
 //@HandlesTypes(WebApplicationInitializer.class)

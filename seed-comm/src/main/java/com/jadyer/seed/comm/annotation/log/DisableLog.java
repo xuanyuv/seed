@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 /**
  * 禁用日志记录
- * Created by 玄玉<http://jadyer.cn/> on 2018/4/17 13:22.
+ * Created by 玄玉<https://jadyer.cn/> on 2018/4/17 13:22.
  */
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

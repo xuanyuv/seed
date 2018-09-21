@@ -174,7 +174,7 @@ import java.util.Map;
  * @history v1.1-->新增<code>sendPostSSLRequest()</code>方法,用于发送HTTPS的POST请求
  * @history v1.0-->新建<code>sendGetRequest()</code>和<code>sendPostRequest()</code>方法
  * -----------------------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2012/2/1 15:02.
+ * Created by 玄玉<https://jadyer.cn/> on 2012/2/1 15:02.
  */
 @SuppressWarnings("deprecation")
 public final class HTTPUtil {
@@ -347,8 +347,8 @@ public final class HTTPUtil {
         //PoolingClientConnectionManager poolingManager = new PoolingClientConnectionManager();
         ////设置整个连接池的最大连接数（假设只连接一个主机）
         ////MaxtTotal是整个池子的大小，DefaultMaxPerRoute是根据连接到的主机对MaxTotal的一个细分
-        ////比如MaxtTotal=400，DefaultMaxPerRoute=200，当只连接到http://jadyer.cn/时，到该主机的并发最多只有200，而非400
-        ////而当连接http://jadyer.cn/和http://blog.csdn.net/jadyer时，到每个主机的并发最多只有200，即加起来是400（但不能超过400）
+        ////比如MaxtTotal=400，DefaultMaxPerRoute=200，当只连接到https://jadyer.cn/时，到该主机的并发最多只有200，而非400
+        ////而当连接https://jadyer.cn/和http://blog.csdn.net/jadyer时，到每个主机的并发最多只有200，即加起来是400（但不能超过400）
         //poolingManager.setMaxTotal(200);
         //poolingManager.setDefaultMaxPerRoute(poolingManager.getMaxTotal());
         ////另外设置http client的重试次数，默认是3次；当前是禁用掉（如果项目量不到，这个默认即可）

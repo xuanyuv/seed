@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * -----------------------------------------------------------------
  * 【注】：本注解暂未使用
  * -----------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2017/9/19 19:12.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/9/19 19:12.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

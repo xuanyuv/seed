@@ -6,7 +6,7 @@ package com.jadyer.seed.mpp.sdk.qq.model.menu;
  * @see 2.这里的子菜单指的是没有子菜单的菜单项
  * @see   其可能是二级菜单项(QQ公众号菜单最多两级),也有能是不含二级菜单的一级菜单(即进入QQ公众号第一眼看到的)
  * @create Nov 28, 2015 8:58:36 PM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public class QQSubClickButton extends QQButton {
     private String type;

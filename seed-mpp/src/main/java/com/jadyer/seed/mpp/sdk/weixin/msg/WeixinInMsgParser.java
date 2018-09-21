@@ -20,7 +20,7 @@ import org.dom4j.Element;
 /**
  * 微信服务器请求消息解析器
  * @create Oct 18, 2015 12:53:31 PM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public class WeixinInMsgParser{
     private WeixinInMsgParser(){}
@@ -29,7 +29,7 @@ public class WeixinInMsgParser{
      * 解析微信服务器请求的xml报文体为com.jadyer.sdk.weixin.msg.in.WeixinInMsg对象
      * @see 若无法识别请求的MsgType或解析xml出错,会抛出RuntimeException
      * @create Oct 18, 2015 12:59:48 PM
-     * @author 玄玉<http://jadyer.cn/>
+     * @author 玄玉<https://jadyer.cn/>
      */
     public static WeixinInMsg parse(String xml) {
         try {

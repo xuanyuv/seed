@@ -3,7 +3,7 @@ package com.jadyer.seed.mpp.sdk.weixin.msg.in;
 /**
  * 接收图片消息
  * @create Oct 18, 2015 11:37:50 AM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public class WeixinInImageMsg extends WeixinInMsg {
     /**

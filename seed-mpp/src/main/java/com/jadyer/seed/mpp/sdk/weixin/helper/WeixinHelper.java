@@ -83,7 +83,7 @@ public final class WeixinHelper {
      * @see {"errcode":40001,"errmsg":"invalid credential, access_token is invalid or not latest hint: [3sEnya0653vr23]"}
      * @see {"errcode":0,"errmsg":"ok","ticket":"sM4AOVdWfPE4DxkXGEs8VDqmMJ5Cg8sos8UXyJqPG4FpcrJtLcmFoV69dhqNmiQdoF1HjamNrYH9c8S9r4B_MA","expires_in":7200}
      * @return 获取失败时将抛出Exception
-     * Created by 玄玉<http://jadyer.cn/> on 2015/10/29 21:45.
+     * Created by 玄玉<https://jadyer.cn/> on 2015/10/29 21:45.
      */
     static String getWeixinJSApiTicket(String accesstoken) throws IllegalAccessException {
         String reqURL = WeixinConstants.URL_WEIXIN_GET_JSAPI_TICKET.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
@@ -172,8 +172,8 @@ public final class WeixinHelper {
 
     /**
      * 创建自定义菜单
-     * @see String menuJson = "{\"button\":[{\"type\":\"view\", \"name\":\"我的博客\", \"url\":\"http://jadyer.cn/\"}, {\"type\":\"click\", \"name\":\"今日歌曲\", \"key\":\"V1001_TODAY_MUSIC\"}, {\"name\":\"个人中心\", \"sub_button\": [{\"type\":\"view\", \"name\":\"搜索\", \"url\":\"http://www.soso.com/\"}, {\"type\":\"view\", \"name\":\"视频\", \"url\":\"http://v.qq.com/\"}, {\"type\":\"click\", \"name\":\"赞一下我们\", \"key\":\"V1001_GOOD\"}]}]}";
-     * @see String menuJson = "{\"button\":[{\"type\":\"view\", \"name\":\"我的博客\", \"url\":\"http://jadyer.cn/\"}, {\"name\":\"个人中心\", \"sub_button\": [{\"type\":\"view\", \"name\":\"搜索\", \"url\":\"http://www.soso.com/\"}, {\"type\":\"view\", \"name\":\"视频\", \"url\":\"http://v.qq.com/\"}, {\"type\":\"click\", \"name\":\"赞一下我们\", \"key\":\"V1001_GOOD\"}]}]}";
+     * @see String menuJson = "{\"button\":[{\"type\":\"view\", \"name\":\"我的博客\", \"url\":\"https://jadyer.cn/\"}, {\"type\":\"click\", \"name\":\"今日歌曲\", \"key\":\"V1001_TODAY_MUSIC\"}, {\"name\":\"个人中心\", \"sub_button\": [{\"type\":\"view\", \"name\":\"搜索\", \"url\":\"http://www.soso.com/\"}, {\"type\":\"view\", \"name\":\"视频\", \"url\":\"http://v.qq.com/\"}, {\"type\":\"click\", \"name\":\"赞一下我们\", \"key\":\"V1001_GOOD\"}]}]}";
+     * @see String menuJson = "{\"button\":[{\"type\":\"view\", \"name\":\"我的博客\", \"url\":\"https://jadyer.cn/\"}, {\"name\":\"个人中心\", \"sub_button\": [{\"type\":\"view\", \"name\":\"搜索\", \"url\":\"http://www.soso.com/\"}, {\"type\":\"view\", \"name\":\"视频\", \"url\":\"http://v.qq.com/\"}, {\"type\":\"click\", \"name\":\"赞一下我们\", \"key\":\"V1001_GOOD\"}]}]}";
      */
     public static WeixinErrorInfo createWeixinMenu(String accesstoken, String menuJson){
         String reqURL = WeixinConstants.URL_WEIXIN_GET_CREATE_MENU.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
@@ -273,7 +273,7 @@ public final class WeixinHelper {
      * 获取临时素材
      * @see http://mp.weixin.qq.com/wiki/11/07b6b76a6b6e8848e855a435d5e34a5f.html
      * @return 获取成功时返回文件保存在本地的路径,获取失败时将抛出RuntimeException
-     * Created by 玄玉<http://jadyer.cn/> on 2015/10/30 16:02.
+     * Created by 玄玉<https://jadyer.cn/> on 2015/10/30 16:02.
      */
     public static String downloadWeixinTempMediaFile(String accesstoken, String mediaId){
         String reqURL = WeixinConstants.URL_WEIXIN_GET_TEMP_MEDIA_FILE.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken).replace(WeixinConstants.URL_PLACEHOLDER_MEDIAID, mediaId);
@@ -299,7 +299,7 @@ public final class WeixinHelper {
      * @param expireSeconds 二维码临时有效的时间,单位为秒,最大不超过2592000s,即30天,不填则默认有效期为30s
      * @param sceneId       二维码参数场景值ID,临时二维码时为32位非0整型,永久二维码时值为1--100000
      * @param sceneStr      二维码参数场景值ID,字符串形式的ID,字符串类型,长度限制为1到64,仅永久二维码支持此字段
-     * Created by 玄玉<http://jadyer.cn/> on 2016/2/22 22:33.
+     * Created by 玄玉<https://jadyer.cn/> on 2016/2/22 22:33.
      */
     public static String createQrcodeTicket(String accesstoken, int type, int expireSeconds, long sceneId, String sceneStr){
         String reqURL = WeixinConstants.URL_WEIXIN_GET_QRCODE_TICKET.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
@@ -356,7 +356,7 @@ public final class WeixinHelper {
      *     <li>目前该方法主要用在微信公众号支付中，对于微信推送或被动回复内容的验签</li>
      *     <li>验签未通过时，方法内部会抛出{@link com.jadyer.seed.comm.exception.SeedException#SeedException(int, String)}</li>
      * </ul>
-     * Created by 玄玉<http://jadyer.cn/> on 2017/7/8 18:50.
+     * Created by 玄玉<https://jadyer.cn/> on 2017/7/8 18:50.
      */
     public static void payVerifySign(Map<String, String> dataMap, String appid){
         //注意：微信红包--发放普通红包和查询红包记录--两个接口返回的<xml>都没有<sign>标签

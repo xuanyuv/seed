@@ -11,7 +11,7 @@ import java.sql.SQLException;
  * @version v1.1
  * @history v1.1-->getConnection()支持手动传入数据库URL和用户密码
  * @history v1.0-->通过枚举实现的单例，创建工具类
- * Created by 玄玉<http://jadyer.cn/> on 2013/07/09 13:56.
+ * Created by 玄玉<https://jadyer.cn/> on 2013/07/09 13:56.
  */
 public enum DBUtil {
     INSTANCE;

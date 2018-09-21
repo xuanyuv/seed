@@ -18,13 +18,13 @@ public class SendController {
 
     /**
      * 发送一个消息到RabbitMQ
-     * Comment by 玄玉<http://jadyer.cn/> on 2018/3/23 14:53.
+     * Comment by 玄玉<https://jadyer.cn/> on 2018/3/23 14:53.
      */
     @ResponseBody
     @GetMapping("")
     public CommResult send(){
         int id = 2;
-        UserMsg userMsg = new UserMsg(id, "玄玉", "http://jadyer.cn/");
+        UserMsg userMsg = new UserMsg(id, "玄玉", "https://jadyer.cn/");
         this.rabbitTemplate.convertAndSend("apply.status", "apply.status.1101.123", userMsg, new CorrelationData(id+""));
         return CommResult.success();
     }

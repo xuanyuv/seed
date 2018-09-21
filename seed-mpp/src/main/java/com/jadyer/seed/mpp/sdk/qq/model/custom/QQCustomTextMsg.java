@@ -3,7 +3,7 @@ package com.jadyer.seed.mpp.sdk.qq.model.custom;
 /**
  * 单发文本消息
  * @create Nov 28, 2015 9:47:11 PM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public class QQCustomTextMsg extends QQCustomMsg {
     /**

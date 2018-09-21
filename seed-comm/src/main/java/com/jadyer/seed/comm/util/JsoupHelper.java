@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * Jsoup帮助类
- * Created by 玄玉<http://jadyer.cn/> on 2017/1/7 14:20.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/1/7 14:20.
  */
 public final class JsoupHelper {
     private JsoupHelper(){}

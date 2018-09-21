@@ -1,7 +1,7 @@
 package com.jadyer.seed.controller.rabbitmq;
 
 /**
- * Created by 玄玉<http://jadyer.cn/> on 2018/3/23 12:09.
+ * Created by 玄玉<https://jadyer.cn/> on 2018/3/23 12:09.
  */
 public class UserMsg {
     private int id;

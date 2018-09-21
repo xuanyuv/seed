@@ -27,7 +27,7 @@ import java.util.Date;
 
 /**
  * ${tablecomment}
- * Generated from seed-simcoder by 玄玉<http://jadyer.cn/> on ${date(), "yyyy/MM/dd HH:mm"}.
+ * Generated from seed-simcoder by 玄玉<https://jadyer.cn/> on ${date(), "yyyy/MM/dd HH:mm"}.
  */
 @Entity
 @DynamicInsert

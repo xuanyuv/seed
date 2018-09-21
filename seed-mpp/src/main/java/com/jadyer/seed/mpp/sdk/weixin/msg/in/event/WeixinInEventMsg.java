@@ -5,7 +5,7 @@ import com.jadyer.seed.mpp.sdk.weixin.msg.in.WeixinInMsg;
 /**
  * 接收事件推送的公共类
  * @create Oct 18, 2015 5:25:34 PM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public abstract class WeixinInEventMsg extends WeixinInMsg {
     /**

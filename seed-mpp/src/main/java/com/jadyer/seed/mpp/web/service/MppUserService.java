@@ -17,7 +17,7 @@ public class MppUserService {
     private MppUserInfoRepository mppUserInfoRepository;
 
     private String buildEncryptPassword(String password){
-        return DigestUtils.md5Hex(password + "http://jadyer.cn/");
+        return DigestUtils.md5Hex(password + "https://jadyer.cn/");
     }
 
 

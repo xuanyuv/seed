@@ -28,7 +28,7 @@ package com.jadyer.seed.mpp.sdk.qq.msg.in;
  * @see </xml>
  * @see -----------------------------------------------------------------------------------------------------------
  * @create Nov 26, 2015 7:38:16 PM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public class QQInTextMsg extends QQInMsg {
     /**

@@ -31,7 +31,7 @@ import java.util.concurrent.Executors;
  * STOMP是一个非常简单和容易实现的协议，其设计灵感源自于HTTP的简单性。
  * 尽管STOMP协议在服务器端的实现可能有一定的难度，但客户端的实现却很容易。例如，可以使用Telnet登录到任何的STOMP代理，并与STOMP代理进行交互。
  * -----------------------------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2018/2/13 17:11.
+ * Created by 玄玉<https://jadyer.cn/> on 2018/2/13 17:11.
  */
 @Configuration
 @EnableWebSocketMessageBroker

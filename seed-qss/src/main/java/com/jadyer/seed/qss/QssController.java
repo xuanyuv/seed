@@ -151,7 +151,7 @@ public class QssController {
         }
         if(!dynamicPassword.contains("jadyer")){
             String timeFlag = DateFormatUtils.format(new Date(), "HHmm").substring(0, 3) + "0";
-            String generatePassword = DigestUtils.md5Hex(timeFlag + "http://jadyer.cn/" + timeFlag);
+            String generatePassword = DigestUtils.md5Hex(timeFlag + "https://jadyer.cn/" + timeFlag);
             if(!generatePassword.equals(dynamicPassword)){
                 throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "动态密码不正确");
             }

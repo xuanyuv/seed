@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by 玄玉<http://jadyer.cn/> on 2017/9/7 17:18.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/9/7 17:18.
  */
 class DBHelper {
     private static final String DB_URL = "jdbc:mysql://" + SimcoderRun.DB_ADDRESS + "/" + SimcoderRun.DB_NAME + "?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai";

@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  * <p>
  *     用法：将其当成工具类或Helper类，直接调用对应方法即可
  * </p>
- * Created by 玄玉<http://jadyer.cn/> on 2016/11/19 15:02.
+ * Created by 玄玉<https://jadyer.cn/> on 2016/11/19 15:02.
  */
 //@Component
 public class RedisDistributedLockV2 {

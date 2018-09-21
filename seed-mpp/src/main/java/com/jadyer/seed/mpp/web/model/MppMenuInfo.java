@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 /**
  * mpplus平台自定义菜单
- * Generated from seed-simcoder by 玄玉<http://jadyer.cn/> on 2017/09/10 21:44.
+ * Generated from seed-simcoder by 玄玉<https://jadyer.cn/> on 2017/09/10 21:44.
  */
 @Entity
 @DynamicInsert

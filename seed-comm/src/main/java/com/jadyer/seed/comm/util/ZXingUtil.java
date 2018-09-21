@@ -25,35 +25,34 @@ import java.util.Map;
 
 /**
  * ZXing工具类
- * @see -----------------------------------------------------------------------------------------------------------------------
- * @see 首页--https://code.google.com/p/zxing
- * @see 介绍--用于解析多种格式条形码(EAN-13)和二维码(QRCode)的开源Java类库,其提供了多种应用的类库,如javase/jruby/cpp/csharp/android
- * @see 说明--下载到的ZXing-2.2.zip是它的源码,我们在JavaSE中使用时需用到其core和javase两部分
- * @see      可直接引入它俩的源码到项目中,或将它俩编译为jar再引入,这是我编译好的http://download.csdn.net/detail/jadyer/6245849
- * @see -----------------------------------------------------------------------------------------------------------------------
- * @see 经测试:用微信扫描GBK编码的中文二维码时出现乱码,用UTF-8编码时微信可正常识别
- * @see       并且MultiFormatWriter.encode()时若传入hints参数来指定UTF-8编码中文时,微信压根就不识别所生成的二维码
- * @see       所以这里使用的是这种方式new String(content.getBytes("UTF-8"), "ISO-8859-1")
- * @see       encodeQRCodeImage("我的博客：http://jadyer.cn/", null, "C:/Users/Jadyer/Desktop/myQRCodeImage.png", 300, 300, "C:/Users/Jadyer/Desktop/玄玉.png");
- * @see       System.out.println(decodeQRCodeImage("C:/Users/Jadyer/Desktop/myQRCodeImage.png", null));
- * @see -----------------------------------------------------------------------------------------------------------------------
- * @see 将logo图片加入二维码中间时,需注意以下几点
- * @see 1)生成二维码的纠错级别建议采用最高等级H,这样可以增加二维码的正确识别能力(我测试过,不设置级别时,二维码工具无法读取生成的二维码图片)
- * @see 2)头像大小最好不要超过二维码本身大小的1/5,而且只能放在正中间部位,这是由于二维码本身结构造成的(你就把它理解成图片水印吧)
- * @see 3)在仿照腾讯微信在二维码四周增加装饰框,那么一定要在装饰框和二维码之间留出白边,这是为了二维码可被识别
- * @see -----------------------------------------------------------------------------------------------------------------------
+ * ----------------------------------------------------------------------------------------------------------------------------
+ * 首页--https://code.google.com/p/zxing
+ * 介绍--用于解析多种格式条形码(EAN-13)和二维码(QRCode)的开源Java类库，其提供了多种应用的类库：javase/jruby/cpp/csharp/android
+ * 说明--下载到的ZXing-2.2.zip是它的源码，我们在JavaSE中使用时需用到其core和javase两部分
+ *      可直接引入它俩的源码到项目中，或将它俩编译为jar再引入，这是我编译好的http://download.csdn.net/detail/jadyer/6245849
+ * ----------------------------------------------------------------------------------------------------------------------------
+ * 经测试：用微信扫描GBK编码的中文二维码时出现乱码，用UTF-8编码时微信可正常识别
+ *        并且MultiFormatWriter.encode()时若传入hints参数来指定UTF-8编码中文时，微信压根就不识别所生成的二维码
+ *        所以这里使用的是这种方式new String(content.getBytes("UTF-8"), "ISO-8859-1")
+ *        encodeQRCodeImage("我的博客：https://jadyer.cn/", null, "C:/Users/Jadyer/Desktop/myQRCodeImage.png", 300, 300, "C:/Users/Jadyer/Desktop/玄玉.png");
+ *        System.out.println(decodeQRCodeImage("C:/Users/Jadyer/Desktop/myQRCodeImage.png", null));
+ * ----------------------------------------------------------------------------------------------------------------------------
+ * 将logo图片加入二维码中间时，需注意以下几点
+ * 1)生成二维码的纠错级别建议采用最高等级H，这样可以增加二维码的正确识别能力（我测试过，不设置级别时，二维码工具无法读取生成的二维码图片）
+ * 2)头像大小最好不要超过二维码本身大小的1/5，而且只能放在正中间部位，这是由于二维码本身结构造成的（你就把它理解成图片水印吧）
+ * 3)在仿照腾讯微信在二维码四周增加装饰框，那么一定要在装饰框和二维码之间留出白边，这是为了二维码可被识别
+ * ----------------------------------------------------------------------------------------------------------------------------
  * @version v1.0
  * @history v1.0-->方法新建,目前仅支持二维码的生成和解析,生成二维码时支持添加logo头像
- * @editor Sep 10, 2013 9:32:23 PM
- * @create Sep 10, 2013 2:08:16 PM
- * @author 玄玉<http://jadyer.cn/>
+ * ----------------------------------------------------------------------------------------------------------------------------
+ * Created by 玄玉<https://jadyer.cn/> on 2013/9/10 14:08.
  */
 public final class ZXingUtil {
     private ZXingUtil(){}
 
     /**
      * 为二维码图片增加logo头像
-     * @see 其原理类似于图片加水印
+     * 其原理类似于图片加水印
      * @param imagePath 二维码图片存放路径(含文件名)
      * @param logoPath  logo头像存放路径(含文件名)
      */
@@ -81,13 +80,13 @@ public final class ZXingUtil {
      * @return 生成二维码结果(true or false)
      */
     public static boolean encodeQRCodeImage(String content, String charset, String imagePath, int width, int height, String logoPath) {
-        Map<EncodeHintType, Object> hints = new HashMap<EncodeHintType, Object>();
+        Map<EncodeHintType, Object> hints = new HashMap<>();
         //指定编码格式
         //hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
         //指定纠错级别(L--7%,M--15%,Q--25%,H--30%)
         hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
         //编码内容,编码类型(这里指定为二维码),生成图片宽度,生成图片高度,设置参数
-        BitMatrix bitMatrix = null;
+        BitMatrix bitMatrix;
         try {
             bitMatrix = new MultiFormatWriter().encode(new String(content.getBytes(charset==null?"UTF-8":charset), "ISO-8859-1"), BarcodeFormat.QR_CODE, width, height, hints);
         } catch (Exception e) {
@@ -134,7 +133,7 @@ public final class ZXingUtil {
      * @return 解析成功后返回二维码文本,否则返回空字符串
      */
     public static String decodeQRCodeImage(String imagePath, String charset) {
-        BufferedImage image = null;
+        BufferedImage image;
         try {
             image = ImageIO.read(new File(imagePath));
         } catch (IOException e) {
@@ -146,9 +145,9 @@ public final class ZXingUtil {
             return "";
         }
         BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(new BufferedImageLuminanceSource(image)));
-        Map<DecodeHintType, String> hints = new HashMap<DecodeHintType, String>();
+        Map<DecodeHintType, String> hints = new HashMap<>();
         hints.put(DecodeHintType.CHARACTER_SET, charset==null ? "UTF-8" : charset);
-        Result result = null;
+        Result result;
         try {
             result = new MultiFormatReader().decode(bitmap, hints);
             return result.getText();

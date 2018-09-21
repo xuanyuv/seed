@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by 玄玉<http://jadyer.cn/> on 2016/5/8 19:32.
+ * Created by 玄玉<https://jadyer.cn/> on 2016/5/8 19:32.
  */
 @Configuration
 public class OpenConfiguration {

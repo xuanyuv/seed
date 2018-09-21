@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationListener;
  * -----------------------------------------------------------------------
  * 它是在SpringBoot启动异常时执行的事件
  * -----------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2015/12/08 19:09.
+ * Created by 玄玉<https://jadyer.cn/> on 2015/12/08 19:09.
  */
 public class ApplicationFailedEventListener implements ApplicationListener<ApplicationFailedEvent> {
     @Override

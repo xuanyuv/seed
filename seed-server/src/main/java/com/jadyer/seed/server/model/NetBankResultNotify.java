@@ -2,7 +2,7 @@ package com.jadyer.seed.server.model;
 
 /**
  * 对应支付处理系统的网银结果通知接口
- * Created by 玄玉<http://jadyer.cn/> on 2012/12/25 22:55.
+ * Created by 玄玉<https://jadyer.cn/> on 2012/12/25 22:55.
  */
 public class NetBankResultNotify {
     private String orderNo;       //订单号：即网银网关流水号，对银行订单

@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * 2.锁过期时，若多个客户端getSet()，虽然最终只会有一人持锁成功，但该人的锁的过期时间是有可能被其它人覆盖的
  * 3.并且getSet()的if{}语句块中，是要求各个客户端的时间必须精确同步的（NTPD也不是精确可靠的，更不用说ntpdate了）
  * -----------------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2017/11/24 19:36.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/11/24 19:36.
  */
 //@Configuration
 //@ConditionalOnClass({JedisCluster.class})

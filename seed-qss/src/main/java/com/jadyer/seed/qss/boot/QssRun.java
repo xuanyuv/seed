@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by 玄玉<http://jadyer.cn/> on 2017/3/4 18:39.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/3/4 18:39.
  */
 @EntityScan(basePackages="${scan.base.packages}")
 @EnableJpaRepositories(basePackages="${scan.base.packages}")

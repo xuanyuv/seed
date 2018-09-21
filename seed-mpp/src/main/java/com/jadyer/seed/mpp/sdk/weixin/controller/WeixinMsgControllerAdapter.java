@@ -20,7 +20,7 @@ import com.jadyer.seed.mpp.sdk.weixin.msg.out.WeixinOutTextMsg;
  * 通用的微信消息Adapter
  * @see 对WeixinMsgController部分方法提供默认实现,以便开发者可以只关注需要处理的抽象方法
  * @create Oct 19, 2015 11:33:07 AM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 abstract class WeixinMsgControllerAdapter extends WeixinMsgController {
     @Override

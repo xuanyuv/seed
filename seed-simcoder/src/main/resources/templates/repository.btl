@@ -5,7 +5,7 @@ import ${PACKAGE_MODEL}.${CLASS_NAME};
 
 /**
  * ${tablecomment}
- * Generated from seed-simcoder by 玄玉<http://jadyer.cn/> on ${date(), "yyyy/MM/dd HH:mm"}.
+ * Generated from seed-simcoder by 玄玉<https://jadyer.cn/> on ${date(), "yyyy/MM/dd HH:mm"}.
  */
 public interface ${CLASS_NAME}Repository extends BaseRepository<${CLASS_NAME}, Long> {
 }

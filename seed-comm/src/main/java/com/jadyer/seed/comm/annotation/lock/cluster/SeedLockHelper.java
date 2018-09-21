@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  *     SeedLockHelper.unlock();
  * }
  * --------------------------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2018/7/17 16:44.
+ * Created by 玄玉<https://jadyer.cn/> on 2018/7/17 16:44.
  */
 public class SeedLockHelper {
     private static final String LOCK_PREFIX = "seedLockHelper:";

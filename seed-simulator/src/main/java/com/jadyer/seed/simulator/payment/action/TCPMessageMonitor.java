@@ -15,7 +15,7 @@ import java.net.Socket;
 
 /**
  * TCP报文监控器
- * Created by 玄玉<http://jadyer.cn/> on 2013/05/20 17:23.
+ * Created by 玄玉<https://jadyer.cn/> on 2013/05/20 17:23.
  */
 public class TCPMessageMonitor extends JPanel implements ActionListener {
     private static final long serialVersionUID = -5516580977254338556L;

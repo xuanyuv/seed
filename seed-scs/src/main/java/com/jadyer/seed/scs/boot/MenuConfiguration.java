@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by 玄玉<http://jadyer.cn/> on 2017/3/11 11:30.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/3/11 11:30.
  */
 @Configuration
 public class MenuConfiguration {
@@ -25,7 +25,7 @@ public class MenuConfiguration {
 
     /**
      * 后台管理页面菜单高亮焦点设置
-     * Created by 玄玉<http://jadyer.cn/> on 2017/3/11 11:32.
+     * Created by 玄玉<https://jadyer.cn/> on 2017/3/11 11:32.
      */
     private static class MenuFilter extends OncePerRequestFilter {
         @Override

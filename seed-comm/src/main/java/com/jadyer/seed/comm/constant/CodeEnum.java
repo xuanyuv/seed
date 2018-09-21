@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * 操作码
- * Created by 玄玉<http://jadyer.cn/> on 2015/6/3 21:26.
+ * Created by 玄玉<https://jadyer.cn/> on 2015/6/3 21:26.
  */
 public enum CodeEnum {
     SUCCESS              (0,    "成功"),

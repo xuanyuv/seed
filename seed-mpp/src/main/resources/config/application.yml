@@ -46,7 +46,7 @@ spring:
         enabled: true
         urlPattern: /druid/*
         loginUsername: druid
-        loginPassword: http://jadyer.cn/
+        loginPassword: https://jadyer.cn/
   jpa:
     showSql: false
     database: MYSQL

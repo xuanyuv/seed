@@ -13,7 +13,7 @@ import java.util.Date;
  *     <li>通过两个实例变量接收JSP页面传来的属性，并格式化后输出相应的时间</li>
  *     <li>若没有传这俩属性参数，则默认按照yyyy-MM-dd hh:mm:ss输出当前时间</li>
  * </ul>
- * Created by 玄玉<http://jadyer.cn/> on 2016/7/9 19:15.
+ * Created by 玄玉<https://jadyer.cn/> on 2016/7/9 19:15.
  */
 public class DateTimeTag extends TagSupport {
     private static final long serialVersionUID = 6861117798037409372L;

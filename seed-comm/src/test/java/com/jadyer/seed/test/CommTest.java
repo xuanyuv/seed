@@ -3,7 +3,7 @@ package com.jadyer.seed.test;
 import org.junit.Test;
 
 /**
- * Created by 玄玉<http://jadyer.cn/> on 2017/3/14 16:57.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/3/14 16:57.
  */
 public class CommTest {
     @Test

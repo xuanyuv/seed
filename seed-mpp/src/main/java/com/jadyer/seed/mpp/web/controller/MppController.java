@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
- * Created by 玄玉<http://jadyer.cn/> on 2017/7/15 12:45.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/7/15 12:45.
  */
 @Controller
 @RequestMapping("/mpp")
@@ -94,7 +94,7 @@ public class MppController {
         if(2 == mppUserInfo.getMptype()){
             sb.append("/qq/").append(mppUserInfo.getUuid());
         }
-        request.setAttribute("token", DigestUtils.md5Hex(mppUserInfo.getUuid() + "http://jadyer.cn/"));
+        request.setAttribute("token", DigestUtils.md5Hex(mppUserInfo.getUuid() + "https://jadyer.cn/"));
         request.setAttribute("mpurl", sb.toString());
         return "/admin/mpp/user.info";
     }

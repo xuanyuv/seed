@@ -5,7 +5,7 @@ import java.util.HashMap;
 /**
  * 微信模板消息对象
  * <p>http://mp.weixin.qq.com/wiki/5/6dde9eaa909f83354e0094dc3ad99e05.html#.E5.8F.91.E9.80.81.E6.A8.A1.E6.9D.BF.E6.B6.88.E6.81.AF</p>
- * Created by 玄玉<http://jadyer.cn/> on 2016/5/18 17:35.
+ * Created by 玄玉<https://jadyer.cn/> on 2016/5/18 17:35.
  */
 public class WeixinTemplateMsg {
     private String touser;

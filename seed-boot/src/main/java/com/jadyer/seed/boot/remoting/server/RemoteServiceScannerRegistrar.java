@@ -35,7 +35,7 @@ import java.util.Set;
  * 比如本工程扫描到com.jadyer.demo.boot.remoting.server.RemotingConfiguration.java时候
  * 发现它标注了@Import注解，于是就找到了本类，接下来就会在适当的生命周期，执行这里的手工注册Bean
  * -------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2016/11/21 18:24.
+ * Created by 玄玉<https://jadyer.cn/> on 2016/11/21 18:24.
  */
 public class RemoteServiceScannerRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware {
     private ResourceLoader resourceLoader;

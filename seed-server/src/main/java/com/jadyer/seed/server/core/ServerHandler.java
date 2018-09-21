@@ -16,7 +16,7 @@ import java.util.Map;
  * <p>
  *     用于将收到的请求报文解码后的数据分发到具体的业务处理类
  * </p>
- * Created by 玄玉<http://jadyer.cn/> on 2012/12/22 19:23.
+ * Created by 玄玉<https://jadyer.cn/> on 2012/12/22 19:23.
  */
 public class ServerHandler extends IoHandlerAdapter {
     //装载业务码和与之对应的接口业务实现类

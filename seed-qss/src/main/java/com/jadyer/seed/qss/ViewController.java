@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created by 玄玉<http://jadyer.cn/> on 2017/9/24 15:40.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/9/24 15:40.
  */
 @Controller
 public class ViewController {

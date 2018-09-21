@@ -10,7 +10,7 @@ import java.util.Set;
 
 /**
  * 参考https://github.com/spring-projects/spring-session/blob/master/spring-session/src/main/java/org/springframework/session/web/http/ExpiringSessionHttpSession.java
- * Created by 玄玉<http://jadyer.cn/> on 2016/6/19 20:47.
+ * Created by 玄玉<https://jadyer.cn/> on 2016/6/19 20:47.
  */
 class MapSessionWrapper implements HttpSession {
     private MapSession session;

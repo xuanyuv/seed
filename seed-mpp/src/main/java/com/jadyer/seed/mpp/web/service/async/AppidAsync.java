@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * Created by 玄玉<http://jadyer.cn/> on 2017/7/7 19:46.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/7/7 19:46.
  */
 @Async
 @Component

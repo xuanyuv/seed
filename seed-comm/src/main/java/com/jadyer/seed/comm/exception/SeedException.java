@@ -54,7 +54,7 @@ import com.jadyer.seed.comm.constant.CodeEnum;
  *     ... 68 more
  * [20150828 10:34:59][qtp594160358-16][AbstractHandlerExceptionResolver.logException]Handler execution resulted in exception: CronExpression不正确
  * -----------------------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2015/8/28 10:37.
+ * Created by 玄玉<https://jadyer.cn/> on 2015/8/28 10:37.
  */
 public class SeedException extends RuntimeException {
     private static final long serialVersionUID = 1742272737860212210L;

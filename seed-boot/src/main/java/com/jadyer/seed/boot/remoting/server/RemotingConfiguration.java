@@ -59,7 +59,7 @@ package com.jadyer.seed.boot.remoting.server;
  *     </server>
  * </servers>
  * -------------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2016/11/22 19:42.
+ * Created by 玄玉<https://jadyer.cn/> on 2016/11/22 19:42.
  */
 //@Configuration
 @RemoteServiceScan("com.jadyer.seed")

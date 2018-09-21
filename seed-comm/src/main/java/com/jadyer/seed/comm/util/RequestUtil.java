@@ -33,7 +33,7 @@ import java.util.Random;
  * @history v1.1-->增加获取服务端IP的方法
  * @history v1.0-->增加获取客户端IP的方法
  * ------------------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2017/9/21 16:34.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/9/21 16:34.
  */
 public final class RequestUtil {
     private RequestUtil(){}
@@ -192,7 +192,7 @@ public final class RequestUtil {
 
     /**
      * 获取应用的完整根地址
-     * @return http://jadyer.cn/mpp（尾部不含斜线）
+     * @return https://jadyer.cn/mpp（尾部不含斜线）
      */
     public static String getFullContextPath(HttpServletRequest request){
         StringBuilder sb = new StringBuilder();

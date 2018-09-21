@@ -12,7 +12,7 @@ import redis.clients.jedis.JedisPubSub;
 import javax.annotation.Resource;
 
 /**
- * Created by 玄玉<http://jadyer.cn/> on 2018/6/13 18:59.
+ * Created by 玄玉<https://jadyer.cn/> on 2018/6/13 18:59.
  */
 @Component
 public class JobSubscriber extends JedisPubSub {

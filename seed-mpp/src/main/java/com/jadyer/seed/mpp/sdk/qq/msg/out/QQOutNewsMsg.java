@@ -9,7 +9,7 @@ import java.util.List;
  * 回复图文消息
  * @see 回复单图文时添加一个QQOutNewsMsg.QQNews即可,多图文就添加做个
  * @create Oct 18, 2015 6:04:05 PM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public class QQOutNewsMsg extends QQOutMsg {
     private List<QQNews> articles = new ArrayList<QQNews>();
@@ -35,7 +35,7 @@ public class QQOutNewsMsg extends QQOutMsg {
     /**
      * 图文消息
      * @create Oct 18, 2015 5:57:18 PM
-     * @author 玄玉<http://jadyer.cn/>
+     * @author 玄玉<https://jadyer.cn/>
      */
     public static class QQNews {
         /**

@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Vector;
 
 /**
- * Created by 玄玉<http://jadyer.cn/> on 2017/9/28 11:28.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/9/28 11:28.
  */
 @Configuration
 public class XSSConfiguration {

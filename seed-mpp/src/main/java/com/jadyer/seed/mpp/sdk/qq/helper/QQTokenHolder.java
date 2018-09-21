@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @see 1.appid和appsecret是与Token息息相关的,故一并缓存于此处
  * @see 2.flag常量均加了appid是考虑到更换绑定的公众号时,获取到access_token是旧的,从而影响自定义菜单发布
  * @create Nov 28, 2015 8:25:40 PM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public class QQTokenHolder {
     private static final String FLAG_QQ_ACCESSTOKEN = "qq_access_token_";
@@ -31,7 +31,7 @@ public class QQTokenHolder {
      * 登记QQappid和appsecret
      * @return 返回已登记的QQappsecret
      * @create Jan 3, 2016 7:09:04 PM
-     * @author 玄玉<http://jadyer.cn/>
+     * @author 玄玉<https://jadyer.cn/>
      */
     public static String setQQAppidAppsecret(String appid, String appsecret){
         for(Map.Entry<String,Object> entry : tokenMap.entrySet()){
@@ -47,7 +47,7 @@ public class QQTokenHolder {
     /**
      * 获取已登记的QQappsecret
      * @create Jan 3, 2016 7:09:18 PM
-     * @author 玄玉<http://jadyer.cn/>
+     * @author 玄玉<https://jadyer.cn/>
      */
     public static String getQQAppsecret(String appid){
         String appsecret = (String)tokenMap.get(appid);
@@ -64,7 +64,7 @@ public class QQTokenHolder {
      * @param localFileFullPath QQ媒体文件存储在本地的完整路径
      * @return 返回已设置的QQ媒体文件存储在本地的完整路径
      * @create Nov 28, 2015 8:27:41 PM
-     * @author 玄玉<http://jadyer.cn/>
+     * @author 玄玉<https://jadyer.cn/>
      */
     public static String setMediaIdFilePath(String appid, String mediaId, String localFileFullPath){
         tokenMap.put(appid+"_"+mediaId, localFileFullPath);
@@ -77,7 +77,7 @@ public class QQTokenHolder {
      * @param mediaId QQ媒体文件ID
      * @return 返回QQ媒体文件存储在本地的完整路径
      * @create Nov 28, 2015 8:28:36 PM
-     * @author 玄玉<http://jadyer.cn/>
+     * @author 玄玉<https://jadyer.cn/>
      */
     public static String getMediaIdFilePath(String appid, String mediaId){
         String localFileFullPath = (String)tokenMap.get(appid+"_"+mediaId);
@@ -93,7 +93,7 @@ public class QQTokenHolder {
      * @see 这里只缓存7000s,详细介绍见<<QQ公众号API文档.pdf>>-20150907版
      * @see 7000s到期时,一个请求在更新access_token的过程中,另一个请求进来时,其取到的是旧的access_token(200s内都是有效的)
      * @create Nov 28, 2015 8:30:12 PM
-     * @author 玄玉<http://jadyer.cn/>
+     * @author 玄玉<https://jadyer.cn/>
      */
     public static String getQQAccessToken(String appid){
         Long expireTime = (Long)tokenMap.get(FLAG_QQ_ACCESSTOKEN_EXPIRETIME + appid);
@@ -119,7 +119,7 @@ public class QQTokenHolder {
      * 获取QQjsapi_ticket
      * @see 这里只缓存7000s,详细介绍见<<QQ公众号API文档.pdf>>-20150907版
      * @create Nov 28, 2015 8:31:20 PM
-     * @author 玄玉<http://jadyer.cn/>
+     * @author 玄玉<https://jadyer.cn/>
      */
     public static String getQQJSApiTicket(String appid){
         Long expireTime = (Long)tokenMap.get(FLAG_QQ_JSAPI_TICKET_EXPIRETIME + appid);
@@ -147,7 +147,7 @@ public class QQTokenHolder {
      * @param code 换取access_token的有效期为5分钟的票据
      * @return 返回获取到的网页access_token(获取失败时的应答码也在该返回中)
      * @create Nov 28, 2015 8:32:05 PM
-     * @author 玄玉<http://jadyer.cn/>
+     * @author 玄玉<https://jadyer.cn/>
      */
     public static QQOAuthAccessToken getQQOAuthAccessToken(String appid, String code){
         //Long expireTime = (Long)tokenMap.get(FLAG_QQ_OAUTH_ACCESSTOKEN_EXPIRETIME + appid);

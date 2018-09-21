@@ -5,7 +5,7 @@ import com.jadyer.seed.mpp.sdk.qq.msg.in.QQInMsg;
 /**
  * 接收事件推送的公共类
  * @create Nov 26, 2015 7:38:36 PM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public abstract class QQInEventMsg extends QQInMsg {
     /**

@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * Created by 玄玉<http://jadyer.cn/> on 2017/7/15 14:02.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/7/15 14:02.
  */
 @Service
 public class FansService {

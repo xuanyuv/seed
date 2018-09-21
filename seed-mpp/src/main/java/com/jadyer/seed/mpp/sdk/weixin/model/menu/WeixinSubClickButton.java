@@ -6,7 +6,7 @@ package com.jadyer.seed.mpp.sdk.weixin.model.menu;
  * @see 2.这里的子菜单指的是没有子菜单的菜单项
  * @see   其可能是二级菜单项(微信菜单最多两级),也有能是不含二级菜单的一级菜单(即进入微信第一眼看到的)
  * @create Oct 18, 2015 8:55:19 PM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public class WeixinSubClickButton extends WeixinButton {
     private String type;

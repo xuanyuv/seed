@@ -5,7 +5,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * 创建一个阻塞队列，作为日志系统输出的日志的一个临时载体
- * Created by 玄玉<http://jadyer.cn/> on 2018/2/13 16:51.
+ * Created by 玄玉<https://jadyer.cn/> on 2018/2/13 16:51.
  */
 public class LogQueue {
     //队列大小

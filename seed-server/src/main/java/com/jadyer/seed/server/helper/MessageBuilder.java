@@ -17,7 +17,7 @@ import java.util.Properties;
 
 /**
  * 组装TCP和HTTP报文的工具类
- * Created by 玄玉<http://jadyer.cn/> on 2012/12/25 22:12.
+ * Created by 玄玉<https://jadyer.cn/> on 2012/12/25 22:12.
  */
 public final class MessageBuilder {
     private MessageBuilder(){}

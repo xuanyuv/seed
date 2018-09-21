@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * Server端单元测试类
- * Created by 玄玉<http://jadyer.cn/> on 2012/11/21 16:45.
+ * Created by 玄玉<https://jadyer.cn/> on 2012/11/21 16:45.
  */
 public class ServerTest {
     /**

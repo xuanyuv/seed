@@ -72,7 +72,7 @@ import org.slf4j.LoggerFactory;
  * @history v2.0-->新增日志的数据库保存和邮件发送功能
  * @history v1.0-->通过<code>java.lang.ThreadLocal</code>实现日志记录器
  * -----------------------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2012/11/18 18:19.
+ * Created by 玄玉<https://jadyer.cn/> on 2012/11/18 18:19.
  */
 public final class LogUtil {
     private static final String LOGGER_NAME_DEFAULT = "defaultLogger";

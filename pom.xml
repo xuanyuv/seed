@@ -31,13 +31,12 @@
         <apache.mina.version>2.0.16</apache.mina.version>
         <apache.httpclient.version>4.5.3</apache.httpclient.version>
         <google.zxing.version>2.2</google.zxing.version>
-        <google.guice.version>4.1.0</google.guice.version>
         <alibaba.oss.version>3.1.0</alibaba.oss.version>
         <alibaba.druid.version>1.1.10</alibaba.druid.version>
         <alibaba.fastjson.version>1.2.47</alibaba.fastjson.version>
         <beetl.version>2.8.2</beetl.version>
         <jsch.version>0.1.54</jsch.version>
-        <hutool.version>4.1.12</hutool.version>
+        <hutool.version>4.1.14</hutool.version>
         <jedis.version>2.9.0</jedis.version>
         <redisson.version>3.8.0</redisson.version>
         <jcifs.version>1.3.17</jcifs.version>
@@ -197,11 +196,6 @@
             <groupId>com.google.zxing</groupId>
             <artifactId>javase</artifactId>
             <version>${google.zxing.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-            <version>${google.guice.version}</version>
         </dependency>
 
         <!-- Alibaba -->

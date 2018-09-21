@@ -6,7 +6,7 @@ import com.jadyer.seed.mpp.sdk.qq.msg.in.QQInMsg;
  * 被动回复消息的公共类
  * @see 禁止SDK接入方使用此类
  * @create Nov 26, 2015 7:36:13 PM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public class QQOutMsg {
     /**

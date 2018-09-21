@@ -5,7 +5,7 @@ import com.jadyer.seed.mpp.sdk.qq.msg.in.QQInMsg;
 /**
  * 回复图片消息
  * @create Nov 28, 2015 7:39:27 PM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public class QQOutImageMsg extends QQOutMsg {
     private String mediaId;

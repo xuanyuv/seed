@@ -21,7 +21,7 @@ import java.io.IOException;
  * @history v1.0-->工具类初建,封装了resize()、combineWithPicture()、emphasize()三个方法
  * @update Aug 15, 2015 4:10:03 PM
  * @create Aug 15, 2015 4:10:03 PM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public final class ImageUtil {
     private ImageUtil(){}
@@ -32,7 +32,7 @@ public final class ImageUtil {
      * @param destImagePath     生成的目标图片路径
      * @param percentOfOriginal 压缩比例,可输入1--100的整数,100表示原尺寸压缩
      * @create Aug 15, 2015 4:05:28 PM
-     * @author 玄玉<http://jadyer.cn/>
+     * @author 玄玉<https://jadyer.cn/>
      */
     public static void resize(String sourceImagePath, String destImagePath, int percentOfOriginal){
         EasyImage easyimage = new EasyImage(sourceImagePath);
@@ -44,7 +44,7 @@ public final class ImageUtil {
     /**
      * 融合两张图片
      * @create Aug 15, 2015 4:13:52 PM
-     * @author 玄玉<http://jadyer.cn/>
+     * @author 玄玉<https://jadyer.cn/>
      */
     public static void combineWithPicture(String sourceImagePathA, String sourceImagePathB, String destImagePath){
         EasyImage easyimage = new EasyImage(sourceImagePathA);
@@ -56,7 +56,7 @@ public final class ImageUtil {
     /**
      * 强调图像的某个部分(有点高亮的意思)
      * @create Aug 15, 2015 4:21:21 PM
-     * @author 玄玉<http://jadyer.cn/>
+     * @author 玄玉<https://jadyer.cn/>
      */
     public static void emphasize(String sourceImagePath, String destImagePath, int startX, int startY, int endX, int endY){
         EasyImage easyimage = new EasyImage(sourceImagePath);

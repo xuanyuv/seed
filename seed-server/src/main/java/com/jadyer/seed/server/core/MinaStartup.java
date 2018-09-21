@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * 用于启动Mina2.x服务
- * Created by 玄玉<http://jadyer.cn/> on 2012/12/19 10:01.
+ * Created by 玄玉<https://jadyer.cn/> on 2012/12/19 10:01.
  */
 public class MinaStartup {
     private IoHandler handler;                   //处理器

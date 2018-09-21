@@ -3,7 +3,7 @@ package com.jadyer.seed.mpp.sdk.weixin.model.redpack;
 /**
  * 微信红包--查询红包记录--接口入参
  * https://pay.weixin.qq.com/wiki/doc/api/tools/cash_coupon.php?chapter=13_6&index=5
- * Created by 玄玉<http://jadyer.cn/> on 2017/7/28 10:51.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/7/28 10:51.
  */
 public class WeixinRedpackGethbinfoReqData extends WeixinRedpackReqData {
     /** 微信分配的公众账号ID（企业号corpid即为此appId），接口传入的所有appid应该为公众号的appid（在mp.weixin.qq.com申请的），不能为APP的appid（在open.weixin.qq.com申请的）。 */

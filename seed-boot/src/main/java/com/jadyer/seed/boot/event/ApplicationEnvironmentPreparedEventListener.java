@@ -12,7 +12,7 @@ import org.springframework.core.env.PropertySource;
  * 它表示SpringBoot对应Enviroment已经准备完毕，但此时上下文Context还没有创建
  * 该监听中获取到ConfigurableEnvironment后可以操作配置信息，比如修改或增加配置信息
  * --------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2015/12/08 18:56.
+ * Created by 玄玉<https://jadyer.cn/> on 2015/12/08 18:56.
  */
 public class ApplicationEnvironmentPreparedEventListener implements ApplicationListener<ApplicationEnvironmentPreparedEvent> {
     @Override

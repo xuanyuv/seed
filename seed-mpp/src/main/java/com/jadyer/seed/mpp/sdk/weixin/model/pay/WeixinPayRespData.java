@@ -2,7 +2,7 @@ package com.jadyer.seed.mpp.sdk.weixin.model.pay;
 
 /**
  * 微信支付--公众号支付--接口出参基类
- * Created by 玄玉<http://jadyer.cn/> on 2017/7/10 16:26.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/7/10 16:26.
  */
 public abstract class WeixinPayRespData {
     /** 返回状态码：SUCCESS/FAIL */

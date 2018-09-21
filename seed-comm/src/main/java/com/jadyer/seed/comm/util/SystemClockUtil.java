@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @version v1.0
  * @history v1.0-->新建
  * -----------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2017/10/10 12:34.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/10/10 12:34.
  */
 public enum SystemClockUtil {
     INSTANCE;

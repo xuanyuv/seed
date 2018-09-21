@@ -38,7 +38,7 @@ import java.util.List;
  * int offset = pageSize * pageNo;
  * int rows = pageSize;
  * ---------------------------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2016/7/2 17:11.
+ * Created by 玄玉<https://jadyer.cn/> on 2016/7/2 17:11.
  */
 public class Condition<T> implements Specification<T> {
     //标记最后联合所有查询条件构造sql时，采用“and”还是“or”

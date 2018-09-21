@@ -2,7 +2,7 @@ package com.jadyer.seed.comm.constant;
 
 /**
  * 封装接口应答报文
- * Created by 玄玉<http://jadyer.cn/> on 2015/6/3 21:57.
+ * Created by 玄玉<https://jadyer.cn/> on 2015/6/3 21:57.
  */
 public class CommResult<T> {
     private int code = CodeEnum.SUCCESS.getCode();

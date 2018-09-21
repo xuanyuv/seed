@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 /**
  * 服务端用来标注所输出的SpringHttpInvoker服务类包名
- * Created by 玄玉<http://jadyer.cn/> on 2016/11/21 18:23.
+ * Created by 玄玉<https://jadyer.cn/> on 2016/11/21 18:23.
  */
 @Documented
 @Target(ElementType.TYPE)

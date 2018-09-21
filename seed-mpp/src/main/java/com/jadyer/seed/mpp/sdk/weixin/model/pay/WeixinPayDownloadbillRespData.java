@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * 微信支付--公众号支付--下载对账单接口入参
- * Created by 玄玉<http://jadyer.cn/> on 2017/7/10 20:04.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/7/10 20:04.
  */
 public class WeixinPayDownloadbillRespData {
     /** 返回状态码：SUCCESS/FAIL */

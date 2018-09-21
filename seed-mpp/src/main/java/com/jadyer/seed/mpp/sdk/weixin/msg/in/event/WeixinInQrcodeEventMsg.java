@@ -28,7 +28,7 @@ package com.jadyer.seed.mpp.sdk.weixin.msg.in.event;
  * @see </xml>
  * @see -----------------------------------------------------------------------------------------------------------
  * @create Oct 18, 2015 6:42:58 PM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public class WeixinInQrcodeEventMsg extends WeixinInEventMsg {
     /**

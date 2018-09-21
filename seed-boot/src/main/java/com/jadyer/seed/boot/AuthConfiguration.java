@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by 玄玉<http://jadyer.cn/> on 2016/6/26 11:03.
+ * Created by 玄玉<https://jadyer.cn/> on 2016/6/26 11:03.
  */
 //@Configuration
 @ConfigurationProperties(prefix="auth")
@@ -47,7 +47,7 @@ public class AuthConfiguration {
      *     Session超时后，Ajax请求会被"Status Code:302 Found"到超时后的登录页面
      *     此时前台js中收到的Ajax结果是undefined，其实是没有得到应答，所以alert(jsonData.msg)时会弹出undefined
      * </p>
-     * Created by 玄玉<http://jadyer.cn/> on 2014/11/3 10:39.
+     * Created by 玄玉<https://jadyer.cn/> on 2014/11/3 10:39.
      */
     private static class AuthFilter extends OncePerRequestFilter {
         private String unauthUrl;

@@ -25,8 +25,8 @@ import org.springframework.core.io.support.ResourcePropertySource;
  * 下面演示一下Windows中的加解密
  * 根據http://www.jasypt.org/cli.html提示到http://www.jasypt.org/download.html下載到jasypt-1.9.2-dist.zip
  * 解壓jasypt-1.9.2-dist.zip得到文件夾，并進入目錄為C:\Users\Jadyer\Desktop\jasypt-1.9.2\bin的命令行窗口
- * encrypt.bat input=xuanyu password=http://jadyer.cn/ stringOutputType=hexadecimal
- * decrypt.bat input=6D7FAC8372B28C725D2672F6F3AB7A3A password=http://jadyer.cn/ stringOutputType=hexadecimal
+ * encrypt.bat input=xuanyu password=https://jadyer.cn/ stringOutputType=hexadecimal
+ * decrypt.bat input=6D7FAC8372B28C725D2672F6F3AB7A3A password=https://jadyer.cn/ stringOutputType=hexadecimal
  * 注意：每一次生成的密文都是不同的，但都可以解密成xuanyu
  * ----------------------------------------------------------------------------------------------
  * 关于实现EnvironmentAware.java接口
@@ -37,7 +37,7 @@ import org.springframework.core.io.support.ResourcePropertySource;
  * 它可以从配置文件中，读取对应的key-value，然后会放到Environment
  * 它可以读取'键值对'的配置文件，且支持读取多个配置文件中的属性值，读取后会放到Environment中
  * ----------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2016/5/14 13:22.
+ * Created by 玄玉<https://jadyer.cn/> on 2016/5/14 13:22.
  */
 @Configuration
 @ConditionalOnClass(StringEncryptor.class)
@@ -72,7 +72,7 @@ public class JasyptConfiguration implements EnvironmentAware {
         SimpleStringPBEConfig config = new SimpleStringPBEConfig();
 
         //Master Password used for Encryption/Decryption of properties.
-        config.setPassword(this.getProperty(this.environment, "jasypt.encryptor.password", "http://jadyer.cn/"));
+        config.setPassword(this.getProperty(this.environment, "jasypt.encryptor.password", "https://jadyer.cn/"));
 
         //Encryption/Decryption Algorithm to be used by Jasypt.
         //For more info on how to get available algorithms visit: <a href="http://www.jasypt.org/cli.html"/>Jasypt CLI Tools Page</a>.

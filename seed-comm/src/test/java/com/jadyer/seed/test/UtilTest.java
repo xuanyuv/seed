@@ -127,7 +127,7 @@ public class UtilTest {
         String endpoint = "";
         String accessKeyId = "";
         String accessKeySecret = "";
-        String filename = "http://jadyer.cn/img/2015/2015-11-14-childhood-haerbin-07.png";
+        String filename = "https://jadyer.cn/img/2015/2015-11-14-childhood-haerbin-07.png";
         InputStream is = new URL(filename).openStream();
         String key = "ifs/test/" + IDUtil.INSTANCE.nextId() + "." + FilenameUtils.getExtension(filename);
         OSSUtil.upload(bucket, endpoint, key, accessKeyId, accessKeySecret, is);

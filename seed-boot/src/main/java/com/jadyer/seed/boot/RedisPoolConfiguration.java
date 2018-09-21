@@ -26,7 +26,7 @@ import java.util.List;
  *     jedis.publish("seed_channel", jsonData);
  * }
  * --------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2016/11/24 10:46.
+ * Created by 玄玉<https://jadyer.cn/> on 2016/11/24 10:46.
  */
 //@Configuration
 @SuppressWarnings("WeakerAccess")

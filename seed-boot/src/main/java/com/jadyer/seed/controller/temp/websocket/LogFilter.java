@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  * 定义Logfilter拦截输出日志（获取logback的日志，塞入日志队列中）
- * Created by 玄玉<http://jadyer.cn/> on 2018/2/13 17:00.
+ * Created by 玄玉<https://jadyer.cn/> on 2018/2/13 17:00.
  */
 public class LogFilter extends Filter<ILoggingEvent> {
     @Override

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
- * Created by 玄玉<http://jadyer.cn/> on 2017/11/15 15:58.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/11/15 15:58.
  */
 @Component
 public class SeedocHelper {

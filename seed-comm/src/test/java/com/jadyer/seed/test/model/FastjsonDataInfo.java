@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by 玄玉<http://jadyer.cn/> on 2018/6/19 17:48.
+ * Created by 玄玉<https://jadyer.cn/> on 2018/6/19 17:48.
  */
 public class FastjsonDataInfo {
     private String loginname;

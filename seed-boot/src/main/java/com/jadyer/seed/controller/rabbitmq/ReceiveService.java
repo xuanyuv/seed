@@ -12,7 +12,7 @@ import java.io.IOException;
 
 /**
  * 接收从RabbitMQ订阅的消息
- * Created by 玄玉<http://jadyer.cn/> on 2018/3/23 12:11.
+ * Created by 玄玉<https://jadyer.cn/> on 2018/3/23 12:11.
  */
 @Component
 public class ReceiveService {

@@ -2,7 +2,7 @@ package com.jadyer.seed.mpp.sdk.weixin.constant;
 
 /**
  * 微信支付--公众号支付--错误码
- * Created by 玄玉<http://jadyer.cn/> on 2017/7/8 13:52.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/7/8 13:52.
  */
 public enum WeixinPayCodeEnum {
     WEIXIN_PAY_SYSTEMERROR                        ("SYSTEMERROR",           "系统错误或超时，请重新调用"),

@@ -14,7 +14,7 @@ import java.nio.charset.Charset;
  * <p>
  *     用于编码响应给Client的报文
  * </p>
- * Created by 玄玉<http://jadyer.cn/> on 2012/12/21 13:28.
+ * Created by 玄玉<https://jadyer.cn/> on 2012/12/21 13:28.
  */
 @Component
 public class ServerProtocolEncoder implements MessageEncoder<String> {

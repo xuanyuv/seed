@@ -15,7 +15,7 @@ import java.io.PrintWriter;
 
 /**
  * 接收QQ服务器回调以及其它的辅助功能
- * Created by 玄玉<http://jadyer.cn/> on 2015/12/23 23:58.
+ * Created by 玄玉<https://jadyer.cn/> on 2015/12/23 23:58.
  */
 @Controller
 @RequestMapping(value="/qq/helper")

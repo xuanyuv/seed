@@ -7,7 +7,7 @@ import org.junit.Test;
 import java.util.HashSet;
 
 /**
- * Created by 玄玉<http://jadyer.cn/> on 2017/10/9 18:23.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/10/9 18:23.
  */
 public class IDUtilTest {
     static HashSet<Long> idSet = new HashSet<>();

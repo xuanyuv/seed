@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by 玄玉<http://jadyer.cn/> on 2018/4/17 13:39.
+ * Created by 玄玉<https://jadyer.cn/> on 2018/4/17 13:39.
  */
 class LogAspect implements MethodInterceptor {
     private static Logger log = LoggerFactory.getLogger(LogAspect.class);

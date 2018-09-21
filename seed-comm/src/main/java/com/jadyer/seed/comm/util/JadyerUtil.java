@@ -161,7 +161,7 @@ import java.util.Random;
  * @history v1.2-->新增<code>getString()</code>字节数组转为字符串方法
  * @history v1.1-->新增<code>getHexSign()</code>通过指定算法签名字符串方法
  * ---------------------------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2012/12/22 19:00.
+ * Created by 玄玉<https://jadyer.cn/> on 2012/12/22 19:00.
  */
 public final class JadyerUtil {
     private JadyerUtil(){}
@@ -771,11 +771,11 @@ public final class JadyerUtil {
             case "xml":
                 multiCommentPrefix[0] = "<!--";
                 multiCommentSuffix[0] = "-->";
-                singleCommentPrefix = "http://jadyer.cn/";
+                singleCommentPrefix = "https://jadyer.cn/";
                 break;
             case "properties":
-                multiCommentPrefix[0] = "http://jadyer.cn/";
-                multiCommentSuffix[0] = "http://jadyer.cn/";
+                multiCommentPrefix[0] = "https://jadyer.cn/";
+                multiCommentSuffix[0] = "https://jadyer.cn/";
                 singleCommentPrefix = "#";
                 break;
             case "jsp":
@@ -800,9 +800,9 @@ public final class JadyerUtil {
                 singleCommentPrefix = "//";
                 break;
             default:
-                multiCommentPrefix[0] = "http://jadyer.cn/";
-                multiCommentSuffix[0] = "http://jadyer.cn/";
-                singleCommentPrefix = "http://jadyer.cn/";
+                multiCommentPrefix[0] = "https://jadyer.cn/";
+                multiCommentSuffix[0] = "https://jadyer.cn/";
+                singleCommentPrefix = "https://jadyer.cn/";
                 break;
         }
         /*
@@ -825,8 +825,8 @@ public final class JadyerUtil {
                     //css和js标记的起始标签分别有不止一种的写法,故startsWith
                     if(content.startsWith("<style") || content.startsWith("<script")){
                         //这里之所以取下标为0的元素,是因为上面在初始化多行的注释标记时,均将页面中的<!---->注释标记放置在第0个元素
-                        multiCommentPrefix[0] = "http://jadyer.cn/";
-                        multiCommentSuffix[0] = "http://jadyer.cn/";
+                        multiCommentPrefix[0] = "https://jadyer.cn/";
+                        multiCommentSuffix[0] = "https://jadyer.cn/";
                     }
                     if(StringUtils.equalsAny(content, "</style>", "</script>")){
                         multiCommentPrefix[0] = "<!--";

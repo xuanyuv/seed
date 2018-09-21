@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  * @history v1.0-->新建
  * @update 2015-6-9 下午11:24:03
  * @create Dec 16, 2013 1:04:09 PM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public final class RegexUtil {
     private RegexUtil(){}

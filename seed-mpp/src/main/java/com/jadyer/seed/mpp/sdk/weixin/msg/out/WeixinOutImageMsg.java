@@ -5,7 +5,7 @@ import com.jadyer.seed.mpp.sdk.weixin.msg.in.WeixinInMsg;
 /**
  * 回复图片消息
  * @create Oct 18, 2015 2:21:40 PM
- * @author 玄玉<http://jadyer.cn/>
+ * @author 玄玉<https://jadyer.cn/>
  */
 public class WeixinOutImageMsg extends WeixinOutMsg {
     private String mediaId;

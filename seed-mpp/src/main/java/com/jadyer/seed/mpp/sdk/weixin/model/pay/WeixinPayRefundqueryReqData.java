@@ -6,7 +6,7 @@ package com.jadyer.seed.mpp.sdk.weixin.model.pay;
  * <p>
  *     查询的优先级是： refund_id > out_refund_no > transaction_id > out_trade_no
  * </p>
- * Created by 玄玉<http://jadyer.cn/> on 2017/7/10 16:43.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/7/10 16:43.
  */
 public class WeixinPayRefundqueryReqData extends WeixinPayReqData {
     /** 微信订单号 */

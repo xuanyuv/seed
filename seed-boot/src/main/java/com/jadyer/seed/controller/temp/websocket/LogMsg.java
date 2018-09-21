@@ -2,7 +2,7 @@ package com.jadyer.seed.controller.temp.websocket;
 
 /**
  * 日志消息实体
- * Created by 玄玉<http://jadyer.cn/> on 2018/2/13 16:49.
+ * Created by 玄玉<https://jadyer.cn/> on 2018/2/13 16:49.
  */
 public class LogMsg {
     private String body;

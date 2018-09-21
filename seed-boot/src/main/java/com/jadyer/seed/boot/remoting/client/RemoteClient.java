@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  *     <li>它只能用在Field上/li>
  *     <li>它的处理实现为RemoteClientBeanPostProcessor.java</li>
  * </ul>
- * Created by 玄玉<http://jadyer.cn/> on 2016/11/21 18:22.
+ * Created by 玄玉<https://jadyer.cn/> on 2016/11/21 18:22.
  */
 @Documented
 @Target({ElementType.FIELD})

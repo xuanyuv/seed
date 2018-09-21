@@ -19,7 +19,7 @@ package com.jadyer.seed.mpp.sdk.weixin.msg.in.event;
  *     <Precision>65.000000</Precision>
  * </xml>
  * -----------------------------------------------------------------------------------------------------------
- * Created by 玄玉<http://jadyer.cn/> on 2016/5/26 19:17.
+ * Created by 玄玉<https://jadyer.cn/> on 2016/5/26 19:17.
  */
 public class WeixinInLocationEventMsg extends WeixinInEventMsg {
     /**
