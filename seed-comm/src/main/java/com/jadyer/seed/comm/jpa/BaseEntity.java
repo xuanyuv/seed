@@ -34,6 +34,15 @@ public abstract class BaseEntity<ID extends Serializable> implements Persistable
     private static final long serialVersionUID = 5563689039804450746L;
     /**
      * 主键（如果这里不加@GeneratedValue那么Save()时生成的insert就包括id字段）
+     * ----------------------------------------------------------------------------------------------
+     * 这里主键生成策略设置了GenerationType.AUTO
+     * SpringBoot1.0下运行良好，SpringBoot2.0下会报错：Table 'xxx.hibernate_sequence' doesn't exist
+     * 这时有两种解决办法：
+     * 一个是设置GenerationType.IDENTITY
+     * 另外就是在application.yml里设置spring.jpa.properties.hibernate.id.new_generator_mappings=false
+     * 其实在Hibernate4.X里面这个属性默认是true，到了5.X变成false啦
+     * 详见：https://stackoverflow.com/questions/32968527/hibernate-sequence-doesnt-exist
+     * ----------------------------------------------------------------------------------------------
      */
     //@Id
     //@SequenceGenerator(name="SEQUENCE_QUARTZ_NAME", sequenceName="SEQUENCE_QUARTZ", allocationSize=1)

@@ -9,9 +9,9 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@EntityScan(basePackages="${scan.base.packages}")
-@EnableJpaRepositories(basePackages="${scan.base.packages}")
-@SpringBootApplication(scanBasePackages="${scan.base.packages}")
+@EntityScan(basePackages="com.jadyer.seed")
+@EnableJpaRepositories(basePackages="com.jadyer.seed")
+@SpringBootApplication(scanBasePackages="com.jadyer.seed")
 public class MppRun {
     private static final Logger log = LoggerFactory.getLogger(MppRun.class);
 

@@ -45,7 +45,7 @@ public class MppUserService {
 
 
     public MppUserInfo findOne(long id){
-        return mppUserInfoRepository.findOne(id);
+        return mppUserInfoRepository.findById(id).orElse(null);
     }
 
 

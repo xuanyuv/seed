@@ -69,7 +69,7 @@ public class MppReplyService {
         //排序
         Sort sort = new Sort(Sort.Direction.DESC, "id");
         //分页
-        Pageable pageable = new PageRequest(StringUtils.isBlank(pageNo)?0:Integer.parseInt(pageNo), 10, sort);
+        Pageable pageable = PageRequest.of(StringUtils.isBlank(pageNo)?0:Integer.parseInt(pageNo), 10, sort);
         //条件
         Condition<MppReplyInfo> spec = Condition.and();
         spec.eq("uid", uid);
@@ -83,7 +83,7 @@ public class MppReplyService {
      * 查询关键字回复的内容
      */
     public MppReplyInfo getKeyword(long id){
-        return mppReplyInfoRepository.findOne(id);
+        return mppReplyInfoRepository.findById(id).orElse(null);
     }
 
 
@@ -92,7 +92,7 @@ public class MppReplyService {
      */
     @Transactional(rollbackFor=Exception.class)
     public void deleteKeyword(long id){
-        mppReplyInfoRepository.delete(id);
+        mppReplyInfoRepository.deleteById(id);
     }
 
 

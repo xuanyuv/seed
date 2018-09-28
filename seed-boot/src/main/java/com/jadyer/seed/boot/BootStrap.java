@@ -2,7 +2,7 @@ package com.jadyer.seed.boot;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication(scanBasePackages="${scan.base.packages}")
 public class BootStrap extends SpringBootServletInitializer {
@@ -10,7 +10,7 @@ public class BootStrap extends SpringBootServletInitializer {
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         //这里的配置与com.jadyer.seed.boot.BootRun.java中的配置是独立的没有关系的
         //return builder.sources(getClass())
-        //        .listeners(new ApplicationStartedEventListener())
+        //        .listeners(new ApplicationStartingEventListener())
         //        .listeners(new ApplicationEnvironmentPreparedEventListener())
         //        .listeners(new ApplicationPreparedEventListener())
         //        .listeners(new ApplicationFailedEventListener());

@@ -41,7 +41,7 @@ public class ${CLASS_NAME}Controller {
     @ResponseBody
     @GetMapping("/get/{id}")
     public CommResult<${CLASS_NAME}> get(@PathVariable long id){
-        return CommResult.success(${CLASS_NAME_uncapitalize}Service.get(id));
+        return CommResult.success(${CLASS_NAME_uncapitalize}Service.get(id).orElse(null));
     }
 
 

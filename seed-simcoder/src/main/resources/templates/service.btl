@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Optional;
 
 /**
  * ${tablecomment}
@@ -31,12 +32,12 @@ public class ${CLASS_NAME}Service {
 
     @Transactional(rollbackFor=Exception.class)
     public void delete(long id){
-        ${CLASS_NAME_uncapitalize}Repository.delete(id);
+        ${CLASS_NAME_uncapitalize}Repository.deleteById(id);
     }
 
 
-    public ${CLASS_NAME} get(long id){
-        return ${CLASS_NAME_uncapitalize}Repository.findOne(id);
+    public Optional<${CLASS_NAME}> get(long id){
+        return ${CLASS_NAME_uncapitalize}Repository.findById(id);
     }
 
 
@@ -66,7 +67,7 @@ public class ${CLASS_NAME}Service {
         }
         //查询数据
         Sort sort = new Sort(Sort.Direction.DESC, "id");
-        Pageable pageable = new PageRequest(pageNo>0 ? pageNo-1 : 0, pageNo>0 ? 10 : 999, sort);
+        Pageable pageable = PageRequest.of(pageNo>0 ? pageNo-1 : 0, pageNo>0 ? 10 : 999, sort);
         return ${CLASS_NAME_uncapitalize}Repository.findAll(spec, pageable);
     }
 }

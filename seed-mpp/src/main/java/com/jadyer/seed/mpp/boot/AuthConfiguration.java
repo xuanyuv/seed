@@ -48,7 +48,7 @@ public class AuthConfiguration {
      */
     private static class AuthFilter extends OncePerRequestFilter {
         private String unauthUrl;
-        private List<String> anonyList = new ArrayList<>();
+        private List<String> anonyList;
 
         AuthFilter(String unauthUrl, List<String> anonyList){
             this.unauthUrl = unauthUrl;

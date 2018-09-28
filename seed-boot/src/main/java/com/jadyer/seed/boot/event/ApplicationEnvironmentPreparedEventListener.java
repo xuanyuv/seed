@@ -19,10 +19,8 @@ public class ApplicationEnvironmentPreparedEventListener implements ApplicationL
     public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) {
         ConfigurableEnvironment envi = event.getEnvironment();
         MutablePropertySources mps = envi.getPropertySources();
-        if(null != mps){
-            for (PropertySource<?> ps : mps) {
-                System.out.println("SpringBoot对应Enviroment已经准备完毕，但此时上下文Context还没有创建，得到PropertySource-->" + ps);
-            }
+        for (PropertySource<?> ps : mps) {
+            System.out.println("SpringBoot对应Enviroment已经准备完毕，但此时上下文Context还没有创建，得到PropertySource-->" + ps);
         }
     }
 }

@@ -64,7 +64,7 @@ public class FansService {
         //排序
         Sort sort = new Sort(Sort.Direction.DESC, "id");
         //分页
-        Pageable pageable = new PageRequest(StringUtils.isBlank(pageNo)?0:Integer.parseInt(pageNo), 10, sort);
+        Pageable pageable = PageRequest.of(StringUtils.isBlank(pageNo)?0:Integer.parseInt(pageNo), 10, sort);
         //条件
         Condition<MppFansInfo> spec = Condition.<MppFansInfo>and().eq("uid", uid);
         //执行

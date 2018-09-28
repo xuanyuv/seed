@@ -1,8 +1,8 @@
 package com.jadyer.seed.comm.exception;
 
+import com.jadyer.seed.comm.annotation.log.DisableLog;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommResult;
-import com.jadyer.seed.comm.annotation.log.DisableLog;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import org.springframework.web.bind.annotation.ControllerAdvice;

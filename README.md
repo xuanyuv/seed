@@ -10,7 +10,6 @@
 * [x] seed-open：开放平台
 * [x] seed-qss：定时系统（Quartz Scheduler System）
 * [x] seed-scs：脚手架（Sample Code System）
-* [x] seed-seedoc：API接口文档平台
 * [x] seed-server：Mina实现的服务器
 * [x] seed-simcoder：简版的代码生成器
 * [x] seed-simulator：Swing实现的模拟器
@@ -27,8 +26,6 @@
 * ├── seed-qss
 * │   └── seed-comm
 * ├── seed-scs
-* │   └── seed-comm
-* ├── seed-seedoc
 * │   └── seed-comm
 * ├── seed-server
 * │   └── seed-comm

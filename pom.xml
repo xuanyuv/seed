@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.jadyer.seed</groupId>
     <artifactId>seed</artifactId>
-    <version>1.1</version>
+    <version>2.0</version>
     <packaging>pom</packaging>
     <modules>
         <module>seed-boot</module>
@@ -13,7 +13,6 @@
         <module>seed-open</module>
         <module>seed-qss</module>
         <module>seed-scs</module>
-        <module>seed-seedoc</module>
         <module>seed-server</module>
         <module>seed-simcoder</module>
         <module>seed-simulator</module>
@@ -43,7 +42,6 @@
         <jsoup.version>1.11.1</jsoup.version>
         <janino.version>3.0.7</janino.version>
         <jasypt.version>1.9.2</jasypt.version>
-        <quartz.version>2.3.0</quartz.version>
         <bouncycastle.version>1.57</bouncycastle.version>
     </properties>
 
@@ -52,7 +50,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>1.5.8.RELEASE</version>
+                <version>2.0.5.RELEASE</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -88,6 +86,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-batch</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-quartz</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -273,29 +275,6 @@
             <groupId>org.jasypt</groupId>
             <artifactId>jasypt</artifactId>
             <version>${jasypt.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.quartz-scheduler</groupId>
-            <artifactId>quartz</artifactId>
-            <version>${quartz.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.mchange</groupId>
-                    <artifactId>c3p0</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.mchange</groupId>
-                    <artifactId>mchange-commons-java</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.zaxxer</groupId>
-                    <artifactId>HikariCP-java6</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.bouncycastle</groupId>

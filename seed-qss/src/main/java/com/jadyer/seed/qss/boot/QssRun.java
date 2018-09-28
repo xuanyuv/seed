@@ -25,9 +25,9 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by 玄玉<https://jadyer.cn/> on 2017/3/4 18:39.
  */
-@EntityScan(basePackages="${scan.base.packages}")
-@EnableJpaRepositories(basePackages="${scan.base.packages}")
-@SpringBootApplication(scanBasePackages="${scan.base.packages}")
+@EntityScan(basePackages="com.jadyer.seed")
+@EnableJpaRepositories(basePackages="com.jadyer.seed")
+@SpringBootApplication(scanBasePackages="com.jadyer.seed")
 public class QssRun {
     private static final Logger log = LoggerFactory.getLogger(QssRun.class);
     @Resource

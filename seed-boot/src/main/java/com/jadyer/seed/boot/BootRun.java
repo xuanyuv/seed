@@ -3,7 +3,7 @@ package com.jadyer.seed.boot;
 import com.jadyer.seed.boot.event.ApplicationEnvironmentPreparedEventListener;
 import com.jadyer.seed.boot.event.ApplicationFailedEventListener;
 import com.jadyer.seed.boot.event.ApplicationPreparedEventListener;
-import com.jadyer.seed.boot.event.ApplicationStartedEventListener;
+import com.jadyer.seed.boot.event.ApplicationStartingEventListener;
 import com.jadyer.seed.comm.constant.SeedConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,35 +32,6 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
  *   同时根据测试得知：-Dspring.profiles.active=dev的优先级要高于SpringApplicationBuilder.profiles("prod")
  *   另外：@Profile(value="test")的示例使用詳見com.jadyer.seed.boot.H2Configuration.java
  * ---------------------------------------------------------------------------------------------------------------
- * spring-boot-starter-actuator
- * 1.autoconfig---显示SpringBoot自动配置的信息
- *   beans--------显示应用中包含的SpringBean的信息
- *   configprops--显示应用中的配置参数的实际值
- *   dump---------生成一个ThreadDump
- *   env----------显示从ConfigurableEnvironment得到的环境配置信息
- *   health-------显示应用的健康状态信息
- *   info---------显示应用的基本信息
- *   metrics------显示应用的性能指标
- *   mappings-----显示SpringMVC应用中通过@RequestMapping添加的路径映射
- *   trace--------显示应用相关的跟踪信息
- *   loggers------显示日志级别（SpringBoot-1.5.x才开始提供的新功能）
- *   shutdown-----关闭应用
- * 2.http://127.0.0.1/health可以查看应用的健康状态，实现HealthIndicator接口后还可以自定义Health服务
- * 3.http://127.0.0.1/info会将应用中任何以“info.”开头的配置参数暴露出去，详见application.properties写法
- * 4.http://127.0.0.1/shutdown属于敏感操作，故此功能默认是关闭的（其它的actuator都不是敏感操作，所以默认都是开启的）
- *   通过配置endpoints.shutdown.enabled=true即可启用
- *   另外：http://127.0.0.1/shutdown支持POST，但不支持GET（curl -X POST host:port/shutdown）
- *   它在收到请求，关闭应用时，本例中的SpringContextHolder.clearHolder()方法会被调用
- *   并返回该字符串给调用方（含小括号）：{"message":"Shutting down, bye..."}
- *   需要注意的是：该功能需要配置management.security.enabled=false来关闭安全认证校验
- *   其实更好的做法是将应用设置成Unix/Linux的系统服务，这样就能以“service app stop”命令来操作，详见https://www.cnblogs.com/lobo/p/5657684.html
- * 5.http://127.0.0.1/loggers/日志端点/新的日志级别
- *   可以动态修改日志级别，示例代码见{@link com.jadyer.seed.controller.DemoController#loglevel(String, String)}
- *   并且，GET请求“http://127.0.0.1/loggers/日志端点”还可以查看其当前的日志级别
- *   需要注意的是：该功能需要配置management.security.enabled=false来关闭安全认证校验
- * 注意：除了“/health”和”/info”以外，其它actuator监控都需要配置management.security.enabled=false
- * 另外：可以通过spring-boot-admin实现应用监控，相关示例见https://my.oschina.net/u/1266221/blog/805596
- * ---------------------------------------------------------------------------------------------------------------
  * 条件注解
  * 它是Sring-boot封装了Spring4.x开始提供的@Conditional注解实现的新注解，主要分以下几类
  * 1.@ConditionalOnClass            ：classpath中出现指定类的条件下
@@ -87,14 +58,6 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
  * 2、mvn clean install -DskipTests
  * 此时只需要com.jadyer.seed.boot.BootStrap.java，本类就不需要了，也不需要配置spring-boot-maven-plugin
  * ---------------------------------------------------------------------------------------------------------------
- * 关于可执行jar中解析jsp
- * SpringBoot官方称：可执行jar是无法解析jsp的，不过也有人找到一种有理有据的方法，使它能够解析jsp
- * 详细描述见：https://dzone.com/articles/spring-boot-with-jsps-in-executable-jars-1
- * 总结起来就是：将jsp放在/src/main/resources/META-INF/resources/目录下
- * 实际测试发现：执行jar后访问jsp，不好使，还是看到404的那个白板页面
- * 但是在 IntelliJ IDEA（即本地IDE）中测试发现，它是可以访问的，只不过优先级没那么高
- * idea会优先读取/src/main/webapp/下的文件，找不到时才会去找/src/main/resources/META-INF/resources/下的文件
- * ---------------------------------------------------------------------------------------------------------------
  * 发布成可执行jar
  * 1、也可以不设置，因为它默认就是jar：<packaging>jar</packaging>
  * 2、打包（mvn clean install -DskipTests）执行到package阶段时，会触发repackage，于是得到可执行的jar
@@ -116,7 +79,47 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
  *         </plugin>
  *     </plugins>
  *    </build>
- * 3、启动应用：java -jar -Dspring.profiles.active=prod seed-boot-1.1.jar
+ * 3、启动应用：java -jar -Dspring.profiles.active=prod seed-boot-2.0.jar
+ * ---------------------------------------------------------------------------------------------------------------
+ * spring-boot-starter-actuator
+ * 1./auditevents------公开当前应用程序的审核事件信息
+ *   /autoconfig-------查看自动配置的使用情况
+ *   /beans------------查看应用程序中所有SpringBean及其关系列表
+ *   /conditions-------显示在配置和自动配置类上评估的条件以及它们匹配或不匹配的原因
+ *   /configprops------显示所有@ConfigurationProperties的整理列表
+ *   /dump-------------生成一个ThreadDump（即打印线程栈）
+ *   /env--------------查看所有环境变量（即显示从ConfigurableEnvironment得到的环境配置信息）
+ *   /env/{name}-------查看具体变量值
+ *   /flyway-----------显示已应用的任何Flyway数据库迁移
+ *   /health-----------查看应用健康指标（实现HealthIndicator接口后还可以自定义Health服务，另外当使用一个未认证连接访问时显示一个简单的’status’，使用认证连接访问则显示全部信息详情）
+ *   /heapdump---------返回GZip压缩hprof堆转储文件
+ *   /httptrace--------显示HTTP跟踪信息（默认情况下，最后100个HTTP请求 - 响应交换）
+ *   /info-------------查看应用信息（会将应用中任何以“info.”开头的配置参数暴露出去，详见application.yml）
+ *   /jolokia----------通过HTTP公开JMXbean（当Jolokia在类路径上时，不适用于WebFlux）
+ *   /logfile----------返回日志文件的内容（如果已设置logging.file或logging.path属性，支持使用HTTPRange标头来检索部分日志文件的内容）
+ *   /loggers----------显示和修改应用程序中loggers的配置（SpringBoot-1.5.x才开始提供的新功能）
+ *   /liquibase--------显示已应用的任何Liquibase数据库迁移
+ *   /mappings---------查看所有URL映射
+ *   /metrics----------查看应用基本指标
+ *   /metricss/{name}--查看具体指标
+ *   /prometheus-------以可以由Prometheus服务器抓取的格式公开指标
+ *   /scheduledtasks---显示应用程序中的计划任务
+ *   /sessions---------允许从SpringSession支持的会话存储中检索和删除用户会话（使用SpringSession对响应式Web应用程序的支持时不可用）
+ *   /shutdown---------关闭应用（属于敏感操作，故此功能默认是关闭的）
+ *   /threaddump-------显示当前应用线程状态信息
+ *   /trace------------查看应用相关的跟踪信息
+ *   注意：只有当应用程序是Web应用程序（Spring MVC，Spring WebFlux或Jersey），才可以使用这几个端点：heapdump、jolokia、logfile、prometheus
+ * 2.http://127.0.0.1/shutdown
+ *   通过配置management.endpoints.shutdown.enabled=true即可启用
+ *   另外：http://127.0.0.1/shutdown支持POST，但不支持GET（curl -X POST host:port/shutdown）
+ *   它在收到请求，关闭应用时，本例中的SpringContextHolder.clearHolder()方法会被调用
+ *   并返回该字符串给调用方（含小括号）：{"message":"Shutting down, bye..."}
+ *   需要注意的是：该功能需要配置management.security.enabled=false来关闭安全认证校验
+ *   其实更好的做法是将应用设置成Unix/Linux的系统服务，这样就能以“service app stop”命令来操作，详见https://www.cnblogs.com/lobo/p/5657684.html
+ * 3.http://127.0.0.1/loggers/日志端点/新的日志级别
+ *   可以动态修改日志级别，示例代码见{@link com.jadyer.seed.controller.DemoController#loglevel(String, String)}
+ *   并且，GET请求“http://127.0.0.1/loggers/日志端点”还可以查看其当前的日志级别
+ *   需要注意的是：该功能需要配置management.security.enabled=false来关闭安全认证校验
  * ---------------------------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.cn/> on 2015/11/29 15:35.
  */
@@ -149,7 +152,7 @@ public class BootRun {
         //SpringApplication.run(BootRun.class, args);
         //new SpringApplicationBuilder().sources(BootRun.class).profiles(getProfile(new SimpleCommandLinePropertySource(args))).run(args);
         new SpringApplicationBuilder().sources(BootRun.class)
-                .listeners(new ApplicationStartedEventListener())
+                .listeners(new ApplicationStartingEventListener())
                 .listeners(new ApplicationEnvironmentPreparedEventListener())
                 .listeners(new ApplicationPreparedEventListener())
                 .listeners(new ApplicationFailedEventListener())

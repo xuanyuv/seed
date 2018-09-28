@@ -51,8 +51,8 @@ import java.util.Vector;
 public class OpenFilter extends OncePerRequestFilter {
     private static final int TIMESTAMP_VALID_MILLISECONDS = 1000 * 60 * 10; //时间戳验证：服务端允许客户端请求最大时间误差为10分钟
     private String filterURL;
-    private Map<String, String> appsecretMap = new HashMap<>();
-    private Map<String, List<String>> apiGrantMap = new HashMap<>();
+    private Map<String, String> appsecretMap;
+    private Map<String, List<String>> apiGrantMap;
 
     /**
      * @param _filterURL    指定该Filter只拦截哪种请求URL，空表示都不拦截

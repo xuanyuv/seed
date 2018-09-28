@@ -33,7 +33,7 @@ package com.jadyer.seed.boot.remoting.server;
  *     private FileInfoRepository fileInfoRepository;
  *     @Override
  *     public FileInfoVO getById(int id){
- *         return BeanUtil.copyProperties(this.fileInfoRepository.findOne(id), FileInfoVO.class);
+ *         return BeanUtil.copyProperties(this.fileInfoRepository.findById(id).orElse(null), FileInfoVO.class);
  *     }
  * }
  * -------------------------------------------------------------------------------------------------

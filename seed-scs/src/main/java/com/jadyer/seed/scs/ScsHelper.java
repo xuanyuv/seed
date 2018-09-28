@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 class ScsHelper {
-    @Value("${app.upload}")
-    private String appUpload;
+    @Value("${scs.upload}")
+    private String scsUpload;
 
     String getFilePath(boolean isWangEditor){
-        return (appUpload.endsWith("/") ? appUpload : appUpload+"/") + (isWangEditor ? "wangEditor/" : "");
+        return (scsUpload.endsWith("/") ? scsUpload : scsUpload+"/") + (isWangEditor ? "wangEditor/" : "");
     }
 
     /**

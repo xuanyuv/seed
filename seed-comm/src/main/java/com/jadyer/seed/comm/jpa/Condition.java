@@ -1,7 +1,6 @@
 package com.jadyer.seed.comm.jpa;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.domain.Range;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -19,9 +18,9 @@ import java.util.List;
  * Condition<User> spec = Condition.or();
  * Condition<User> spec = Condition.and();
  * spec.eq("uid", uid);
- * spec.between("updateTime", new org.springframework.data.domain.Range<>(new Date(), new Date()));
+ * spec.between("updateTime", new Date(), new Date());
  * Condition<User> spec = Condition.<User>or().eq("id", 8).notIn("name", nameList);
- * userRepository.findAll(spec, new PageRequest(0, 15, new Sort(Sort.Direction.DESC, "id")));
+ * userRepository.findAll(spec, PageRequest.of(0, 15, new Sort(Sort.Direction.DESC, "id")));
  * ---------------------------------------------------------------------------------------------------------------
  * 参考了以下实现
  * https://github.com/wenhao/jpa-spec
@@ -41,8 +40,10 @@ import java.util.List;
  * Created by 玄玉<https://jadyer.cn/> on 2016/7/2 17:11.
  */
 public class Condition<T> implements Specification<T> {
+    private static final long serialVersionUID = -6875336993575396897L;
+
     //标记最后联合所有查询条件构造sql时，采用“and”还是“or”
-    private Predicate.BooleanOperator operatorType = Predicate.BooleanOperator.AND;
+    private Predicate.BooleanOperator operatorType;
 
     //定义目前支持的sql操作
     private enum Operator{
@@ -136,8 +137,10 @@ public class Condition<T> implements Specification<T> {
                         predicateList.add(cb.le(expression, (Number)filter.value));
                         break;
                 case BETWEEN:
-                        Range range = (Range)filter.value;
-                        predicateList.add(cb.between(expression, range.getLowerBound(), range.getUpperBound()));
+                        //https://github.com/wenhao/jpa-spec/blob/master/src/main/java/com/github/wenhao/jpa/specification/BetweenSpecification.java
+                        //https://stackoverflow.com/questions/15610094/jpa-find-entities-where-date-is-between-start-and-end-date-that-can-be-null-usin
+                        Comparable[] comparables = (Comparable[])filter.value;
+                        predicateList.add(cb.between(expression, comparables[0], comparables[1]));
                         break;
                 case IN:
                         predicateList.add(cb.in(expression).value(filter.value));
@@ -166,58 +169,52 @@ public class Condition<T> implements Specification<T> {
             }
         }
         //联合所有条件构造sql
-        Predicate[] predicates = predicateList.toArray(new Predicate[predicateList.size()]);
+        Predicate[] predicates = new Predicate[predicateList.size()];
+        predicateList.toArray(predicates);
         return Predicate.BooleanOperator.AND.equals(operatorType) ? cb.and(predicates) : cb.or(predicates);
     }
 
     public Condition<T> eq(String property, Object value) {
-        this.add(property, Operator.EQ, value);
-        return this;
+        return this.add(property, Operator.EQ, value);
     }
 
     public Condition<T> ne(String property, Object value) {
-        this.add(property, Operator.NE, value);
-        return this;
+        return this.add(property, Operator.NE, value);
     }
 
     public Condition<T> gt(String property, Number number) {
-        this.add(property, Operator.GT, number);
-        return this;
+        return this.add(property, Operator.GT, number);
     }
 
     public Condition<T> lt(String property, Number number) {
-        this.add(property, Operator.LT, number);
-        return this;
+        return this.add(property, Operator.LT, number);
     }
 
     public Condition<T> ge(String property, Number number) {
-        this.add(property, Operator.GE, number);
-        return this;
+        return this.add(property, Operator.GE, number);
     }
 
     public Condition<T> le(String property, Number number) {
-        this.add(property, Operator.LE, number);
-        return this;
+        return this.add(property, Operator.LE, number);
     }
 
-    public Condition<T> between(String property, Range<? extends Comparable<?>> range) {
-        this.add(property, Operator.BETWEEN, range);
-        return this;
+    public Condition<T> between(String property, Comparable<?> lower, Comparable<?> upper) {
+        Comparable[] comparables = new Comparable[2];
+        comparables[0] = lower;
+        comparables[1] = upper;
+        return this.add(property, Operator.BETWEEN, comparables);
     }
 
     public Condition<T> in(String property, List valueList) {
-        this.add(property, Operator.IN, valueList);
-        return this;
+        return this.add(property, Operator.IN, valueList);
     }
 
     public Condition<T> notIn(String property, List valueList) {
-        this.add(property, Operator.NOTIN, valueList);
-        return this;
+        return this.add(property, Operator.NOTIN, valueList);
     }
 
     public Condition<T> like(String property, List<String> valueList) {
-        this.add(property, Operator.LIKE, valueList);
-        return this;
+        return this.add(property, Operator.LIKE, valueList);
     }
 
     public Condition<T> like(String property, String value) {
@@ -229,7 +226,6 @@ public class Condition<T> implements Specification<T> {
     }
 
     public Condition<T> notLike(String property, List<String> valueList) {
-        this.add(property, Operator.NOTLIKE, valueList);
-        return this;
+        return this.add(property, Operator.NOTLIKE, valueList);
     }
 }

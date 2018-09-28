@@ -4,7 +4,7 @@ import com.jadyer.seed.boot.BootStrap;
 import com.jadyer.seed.boot.event.ApplicationEnvironmentPreparedEventListener;
 import com.jadyer.seed.boot.event.ApplicationFailedEventListener;
 import com.jadyer.seed.boot.event.ApplicationPreparedEventListener;
-import com.jadyer.seed.boot.event.ApplicationStartedEventListener;
+import com.jadyer.seed.boot.event.ApplicationStartingEventListener;
 import com.jadyer.seed.comm.constant.SeedConstants;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
@@ -15,7 +15,7 @@ public class BootStartup {
         //SpringApplication.run(BootStarp.class, args);
         //new SpringApplicationBuilder().sources(BootStrap.class).profiles("local").run(args);
         new SpringApplicationBuilder().sources(BootStrap.class)
-                .listeners(new ApplicationStartedEventListener())
+                .listeners(new ApplicationStartingEventListener())
                 .listeners(new ApplicationEnvironmentPreparedEventListener())
                 .listeners(new ApplicationPreparedEventListener())
                 .listeners(new ApplicationFailedEventListener())

@@ -33,6 +33,7 @@ import redis.clients.jedis.JedisPool;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -52,6 +53,8 @@ public class QssService {
      * 如果bean实现了FactoryBean接口，那么BeanFactory将把它作为一个bean工厂，而不是直接作为普通bean
      * 正常情况下，BeanFactory的getBean("bean")返回FactoryBean生产的bean实例，也就是getObject()里面的东西
      * 如果要返回FactoryBean本身的实例，需调用getBean("&bean")
+     * ----------------------------------------------------------------------------------------------------
+     * https://docs.spring.io/spring-boot/docs/2.0.5.RELEASE/reference/htmlsingle/#boot-features-quartz
      * ----------------------------------------------------------------------------------------------------
      */
     @Resource
@@ -99,9 +102,13 @@ public class QssService {
      */
     @Transactional(rollbackFor=Exception.class)
     void deleteTask(long taskId){
-        ScheduleTask task = scheduleTaskRepository.findOne(taskId);
+        Optional<ScheduleTask> taskOptional = scheduleTaskRepository.findById(taskId);
+        if(!taskOptional.isPresent()){
+            throw new RuntimeException("不存在的任务：taskId=[" + taskId + "]");
+        }
+        ScheduleTask task = taskOptional.get();
         task.setStatus(SeedConstants.QSS_STATUS_STOP);
-        scheduleTaskRepository.delete(taskId);
+        scheduleTaskRepository.deleteById(taskId);
         //this.upsertJob(task);
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.publish(SeedConstants.CHANNEL_SUBSCRIBER, JSON.toJSONString(task));
@@ -114,9 +121,13 @@ public class QssService {
      */
     @Transactional(rollbackFor=Exception.class)
     boolean updateStatus(long taskId, int status){
-        ScheduleTask task = scheduleTaskRepository.findOne(taskId);
+        Optional<ScheduleTask> taskOptional = scheduleTaskRepository.findById(taskId);
+        if(!taskOptional.isPresent()){
+            throw new RuntimeException("不存在的任务：taskId=[" + taskId + "]");
+        }
+        ScheduleTask task = taskOptional.get();
         task.setStatus(status);
-        boolean flag = 1==scheduleTaskRepository.updateStatusById(status, taskId);
+        boolean flag = 1 == scheduleTaskRepository.updateStatusById(status, taskId);
         //this.upsertJob(task);
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.publish(SeedConstants.CHANNEL_SUBSCRIBER, JSON.toJSONString(task));
@@ -133,9 +144,13 @@ public class QssService {
         if(!CronExpression.isValidExpression(cron)){
             throw new IllegalArgumentException("CronExpression不正确");
         }
-        ScheduleTask task = scheduleTaskRepository.findOne(taskId);
+        Optional<ScheduleTask> taskOptional = scheduleTaskRepository.findById(taskId);
+        if(!taskOptional.isPresent()){
+            throw new RuntimeException("不存在的任务：taskId=[" + taskId + "]");
+        }
+        ScheduleTask task = taskOptional.get();
         task.setCron(cron);
-        boolean flag = 1==scheduleTaskRepository.updateCronById(cron, taskId);
+        boolean flag = 1 == scheduleTaskRepository.updateCronById(cron, taskId);
         //this.upsertJob(task);
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.publish(SeedConstants.CHANNEL_SUBSCRIBER, JSON.toJSONString(task));
@@ -152,7 +167,11 @@ public class QssService {
      * ----------------------------------------------------------------------------
      */
     void triggerJob(long taskId) {
-        ScheduleTask task = scheduleTaskRepository.findOne(taskId);
+        Optional<ScheduleTask> taskOptional = scheduleTaskRepository.findById(taskId);
+        if(!taskOptional.isPresent()){
+            throw new RuntimeException("不存在的任务：taskId=[" + taskId + "]");
+        }
+        ScheduleTask task = taskOptional.get();
         JobKey jobKey = JobKey.jobKey(task.getJobname());
         try{
             scheduler.triggerJob(jobKey);

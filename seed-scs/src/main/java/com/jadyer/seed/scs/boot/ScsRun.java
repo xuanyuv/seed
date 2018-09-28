@@ -13,9 +13,9 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
 /**
  * Created by 玄玉<https://jadyer.cn/> on 2017/3/10 5:27.
  */
-//@EntityScan(basePackages="${scan.base.packages}")
-//@EnableJpaRepositories(basePackages="${scan.base.packages}")
-@SpringBootApplication(scanBasePackages="${scan.base.packages}", exclude={DataSourceAutoConfiguration.class, DruidDataSourceAutoConfigure.class, HibernateJpaAutoConfiguration.class})
+//@EntityScan(basePackages="com.jadyer.seed")
+//@EnableJpaRepositories(basePackages="com.jadyer.seed")
+@SpringBootApplication(scanBasePackages="com.jadyer.seed", exclude={DataSourceAutoConfiguration.class, DruidDataSourceAutoConfigure.class, HibernateJpaAutoConfiguration.class})
 public class ScsRun {
     private static final Logger log = LoggerFactory.getLogger(ScsRun.class);
 

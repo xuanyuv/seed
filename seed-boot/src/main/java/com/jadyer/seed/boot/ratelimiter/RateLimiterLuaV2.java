@@ -16,8 +16,9 @@ import java.util.Map;
  *     <li>@RateLimiter(limit=2, timeout=5000) @GetMapping("/test") public void get(int id){}</li>
  *     <li>
  *         @Configuration
- *         class WebMvcConfigurer extends WebMvcConfigurerAdapter{
+ *         class MyWebMvcConfigurer implements WebMvcConfigurer {
  *             @Autowired private JedisPool jedisPool;
+ *             @Override
  *             public void addInterceptors(InterceptorRegistry registry) {
  *                 registry.addInterceptor(new HandlerInterceptorAdapter() {
  *                     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

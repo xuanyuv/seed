@@ -1,13 +1,5 @@
 server:
   port: 8008
-  sessionTimeout: 3000
-  tomcat:
-    uriEncoding: UTF-8
-
-
-scan:
-  base:
-    packages: com.jadyer.seed
 
 
 logging:
@@ -48,16 +40,31 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        id:
+          new_generator_mappings: false
+  quartz:
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: qssScheduler
+          threadPool:
+            threadCount: 11
 
 
 redis:
-  password: xuanyu
+  password: 111111
   nodes:
-    - 127.0.0.1:6379
+    - 192.168.20.53:6389
 redisson:
-  password: xuanyu
+  password: 111111
   nodes:
-    - redis://127.0.0.1:6379
+    - redis://192.168.20.53:6389
+
+
+seed:
+  lock:
+    enabled: true
 
 
 ---

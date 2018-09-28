@@ -1,28 +1,22 @@
 server:
   port: 80
-  sessionTimeout: 3000
-  tomcat:
-    uriEncoding: UTF-8
 
-scan:
-  base:
-    packages: com.jadyer.seed
 
 logging:
   path: /home/seed/log/mpp
   config: classpath:config/logback-mpp.xml
 
+
 spring:
-  http:
-    multipart:
-      enabled: true
-      location: /home/data/seed-mpp
-      maxFileSize: 10MB
-      maxRequestSize: 10MB
   async:
     corePoolSize: 100
     maxPoolSize: 500
     queueCapacity: 1000
+  servlet:
+    multipart:
+      enabled: true
+      maxFileSize: 10MB
+      maxRequestSize: 10MB
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/mpp?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
     username: root
@@ -55,6 +49,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        id:
+          new_generator_mappings: false
+
 
 auth:
   unauthUrl: /
@@ -70,6 +67,7 @@ auth:
     - /login
     - /captcha
     - /favicon.ico
+
 
 ---
 spring:
