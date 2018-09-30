@@ -127,8 +127,8 @@ public class SeedLockConfiguration implements EnvironmentAware {
                     LogUtil.getLogger().error("资源[{}]加锁-->失败", key);
                     return null;
                 }
-            } catch (InterruptedException | IllegalArgumentException e) {
-                LogUtil.getLogger().error("资源[{}]加锁-->失败：{}", key, JadyerUtil.extractStackTraceCausedBy(e));
+            } catch (Throwable t) {
+                LogUtil.getLogger().error("资源[{}]加锁-->失败：{}", key, JadyerUtil.extractStackTraceCausedBy(t));
                 return null;
             }
             LogUtil.getLogger().info("资源[{}]加锁-->成功", key);

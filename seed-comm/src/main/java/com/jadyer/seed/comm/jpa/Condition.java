@@ -40,7 +40,7 @@ import java.util.List;
  * Created by 玄玉<https://jadyer.cn/> on 2016/7/2 17:11.
  */
 public class Condition<T> implements Specification<T> {
-    private static final long serialVersionUID = -6875336993575396897L;
+    private static final long serialVersionUID = 7641534766468240944L;
 
     //标记最后联合所有查询条件构造sql时，采用“and”还是“or”
     private Predicate.BooleanOperator operatorType;
