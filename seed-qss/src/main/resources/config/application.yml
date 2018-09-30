@@ -62,11 +62,6 @@ redisson:
     - redis://192.168.20.53:6389
 
 
-seed:
-  lock:
-    enabled: true
-
-
 ---
 spring:
   profiles: local

@@ -1,0 +1,4 @@
+# 若想编写成seed-spring-boot-starter，则只需将该文件放到/src/main/resources/META-INF/下即可
+# org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+# com.jadyer.seed.comm.annotation.qss.SeedQSSRegProcessor,\
+# com.jadyer.seed.comm.annotation.lock.cluster.SeedLockConfiguration
