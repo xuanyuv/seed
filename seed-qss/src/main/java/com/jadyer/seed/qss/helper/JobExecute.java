@@ -77,7 +77,7 @@ class JobExecute {
                 //正式调用
                 LogUtil.getLogger().info("start-->定时任务：[{}]=[{}]", task.getJobname(), task.getUrl());
                 long startTime = System.currentTimeMillis();
-                String respData = HTTPUtil.post(task.getUrl(), null);
+                String respData = HTTPUtil.post(task.getUrl().trim(), null);
                 long durationTime = System.currentTimeMillis() - startTime;
                 LogUtil.getLogger().info("stopp-->定时任务：[{}]=[{}]，return=[{}]", task.getJobname(), task.getUrl(), respData);
                 //服务器时间同步存在误差时的容错处理：最多容错6s，即最多允许服务器之间的时间同步误差为6s
