@@ -72,6 +72,7 @@ public class QssService {
         if(null == scheduleTaskRepository.getByAppnameAndName(task.getAppname(), task.getName())){
             //注册过来的任务自动启动
             task.setStatus(SeedConstants.QSS_STATUS_RUNNING);
+            task.setUrl(task.getUrl().trim());
             task = scheduleTaskRepository.saveAndFlush(task);
             //通过Redis发布订阅来同步到所有QSS节点里面，所以这里注释掉
             //this.upsertJob(task);
@@ -93,6 +94,7 @@ public class QssService {
         if(!CronExpression.isValidExpression(task.getCron())){
             throw new IllegalArgumentException("CronExpression不正确");
         }
+        task.setUrl(task.getUrl().trim());
         return scheduleTaskRepository.saveAndFlush(task);
     }
 
