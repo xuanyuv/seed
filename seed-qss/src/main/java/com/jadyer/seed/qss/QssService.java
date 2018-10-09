@@ -202,6 +202,7 @@ public class QssService {
             CronTrigger trigger = (CronTrigger)scheduler.getTrigger(triggerKey);
             if(null != trigger){
                 if(task.getCron().equals(trigger.getCronExpression())){
+                    LogUtil.getLogger().info("Quartz内存：相同的Cron故无需更新任务[{}]", task.getJobname());
                     return;
                 }
                 //withMisfireHandlingInstructionDoNothing不触发立即执行，等待下次Cron触发时再开始按频率执行
