@@ -70,8 +70,10 @@ public class SeedLockConfiguration implements EnvironmentAware {
 
     @PostConstruct
     public void initRedissonClientList(){
+        LogUtil.getLogger().info("RedissonClientList init beginning...");
         //空判断：防止接入SpringCloud后二次初始化
         if(!redissonClientList.isEmpty()){
+            LogUtil.getLogger().info("RedissonClientList has inited, skip...");
             return;
         }
         for(String node : nodes){
@@ -96,7 +98,9 @@ public class SeedLockConfiguration implements EnvironmentAware {
                 singleConfig.setPassword(password);
             }
             redissonClientList.add(Redisson.create(config));
+            LogUtil.getLogger().info("RedissonClientList init on {}", node);
         }
+        LogUtil.getLogger().info("RedissonClientList init end...");
     }
 
 
@@ -126,7 +130,7 @@ public class SeedLockConfiguration implements EnvironmentAware {
                     return null;
                 }
             } catch (Throwable t) {
-                LogUtil.getLogger().error("资源[{}]加锁-->失败：{}", key, JadyerUtil.extractStackTraceCausedBy(t));
+                LogUtil.getLogger().error("资源[{}]加锁-->失败：{}", key, JadyerUtil.extractStackTraceCausedBy(t), t);
                 return null;
             }
             LogUtil.getLogger().info("资源[{}]加锁-->成功", key);

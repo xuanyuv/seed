@@ -4,25 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.exception.SeedException;
-import com.jadyer.seed.comm.util.LogUtil;
-import com.jadyer.seed.qss.helper.JobAllowConcurrentFactory;
-import com.jadyer.seed.qss.helper.JobDisallowConcurrentFactory;
 import com.jadyer.seed.qss.model.ScheduleTask;
 import com.jadyer.seed.qss.repository.ScheduleTaskRepository;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.quartz.CronExpression;
-import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
-import org.quartz.Job;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
-import org.quartz.TriggerKey;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,27 +54,6 @@ public class QssService {
     private ScheduleTaskRepository scheduleTaskRepository;
 
     /**
-     * 通过注解注册任务
-     */
-    void reg(ScheduleTask task){
-        LogUtil.getLogger().info("收到任务注册请求：{}", ReflectionToStringBuilder.toString(task));
-        if(null == scheduleTaskRepository.getByAppnameAndName(task.getAppname(), task.getName())){
-            //注册过来的任务自动启动
-            task.setStatus(SeedConstants.QSS_STATUS_RUNNING);
-            task = scheduleTaskRepository.saveAndFlush(task);
-            //通过Redis发布订阅来同步到所有QSS节点里面，所以这里注释掉
-            //this.upsertJob(task);
-            try (Jedis jedis = jedisPool.getResource()) {
-                jedis.publish(SeedConstants.CHANNEL_SUBSCRIBER, JSON.toJSONString(task));
-            }
-        }else{
-            LogUtil.getLogger().info("收到任务注册请求：任务已存在：{}#{}，auto ignore...", task.getAppname(), task.getName());
-            throw new RuntimeException("任务已存在：" + task.getAppname() + "#" + task.getName() + "，auto ignore...");
-        }
-    }
-
-
-    /**
      * 新增任务到数据库
      */
     @Transactional(rollbackFor=Exception.class)
@@ -108,7 +77,6 @@ public class QssService {
         ScheduleTask task = taskOptional.get();
         task.setStatus(SeedConstants.QSS_STATUS_STOP);
         scheduleTaskRepository.deleteById(taskId);
-        //this.upsertJob(task);
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.publish(SeedConstants.CHANNEL_SUBSCRIBER, JSON.toJSONString(task));
         }
@@ -127,7 +95,6 @@ public class QssService {
         ScheduleTask task = taskOptional.get();
         task.setStatus(status);
         boolean flag = 1 == scheduleTaskRepository.updateStatusById(status, taskId);
-        //this.upsertJob(task);
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.publish(SeedConstants.CHANNEL_SUBSCRIBER, JSON.toJSONString(task));
         }
@@ -150,7 +117,6 @@ public class QssService {
         ScheduleTask task = taskOptional.get();
         task.setCron(cron);
         boolean flag = 1 == scheduleTaskRepository.updateCronById(cron, taskId);
-        //this.upsertJob(task);
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.publish(SeedConstants.CHANNEL_SUBSCRIBER, JSON.toJSONString(task));
         }
@@ -176,56 +142,6 @@ public class QssService {
             scheduler.triggerJob(jobKey);
         }catch(SchedulerException e){
             throw new SeedException(CodeEnum.SYSTEM_ERROR.getCode(), "立即执行QuartzJob失败：jobname=["+task.getJobname()+"]", e);
-        }
-    }
-
-
-    /**
-     * 添加／更新／删除QuartzJob（目前仅供JobSubscriber.onMessage()调用）
-     */
-    public void upsertJob(ScheduleTask task){
-        if(null == task){
-            return;
-        }
-        try{
-            if(task.getStatus() == SeedConstants.QSS_STATUS_STOP){
-                ////暂停一个QuartzJob
-                //scheduler.pauseJob(jobKey);
-                ////恢复一个QuartzJob
-                //scheduler.resumeJob(jobKey);
-                //删除一个QuartzJob（删除任务后，所对应的Trigger也将被删除）
-                scheduler.deleteJob(JobKey.jobKey(task.getJobname()));
-                LogUtil.getLogger().info("Quartz内存：已移除任务[{}]", task.getJobname());
-                return;
-            }
-            TriggerKey triggerKey = TriggerKey.triggerKey(task.getJobname());
-            CronTrigger trigger = (CronTrigger)scheduler.getTrigger(triggerKey);
-            if(null != trigger){
-                if(task.getCron().equals(trigger.getCronExpression())){
-                    LogUtil.getLogger().info("Quartz内存：相同的Cron故无需更新任务[{}]", task.getJobname());
-                    return;
-                }
-                //withMisfireHandlingInstructionDoNothing不触发立即执行，等待下次Cron触发时再开始按频率执行
-                CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(task.getCron()).withMisfireHandlingInstructionDoNothing();
-                //按新的cronExpression表达式重新构建Trigger
-                trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
-                //按新的Trigger重新设置Job执行
-                scheduler.rescheduleJob(triggerKey, trigger);
-                LogUtil.getLogger().info("Quartz内存：已更新任务[{}]", task.getJobname());
-            }else{
-                //Trigger不存在就创建一个
-                Class<? extends Job> clazz = SeedConstants.QSS_CONCURRENT_YES == task.getConcurrent() ? JobAllowConcurrentFactory.class : JobDisallowConcurrentFactory.class;
-                JobDetail jobDetail = JobBuilder.newJob(clazz).withIdentity(task.getJobname()).build();
-                jobDetail.getJobDataMap().put(SeedConstants.QSS_JOB_DATAMAP_KEY, task);
-                //表达式调度构建器
-                CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(task.getCron()).withMisfireHandlingInstructionDoNothing();
-                //按新的cronExpression表达式构建一个新的Trigger
-                trigger = TriggerBuilder.newTrigger().withIdentity(task.getJobname()).withSchedule(scheduleBuilder).build();
-                scheduler.scheduleJob(jobDetail, trigger);
-                LogUtil.getLogger().info("Quartz内存：已新增任务[{}]", task.getJobname());
-            }
-        }catch(SchedulerException e){
-            throw new SeedException(CodeEnum.SYSTEM_ERROR.getCode(), "UpsertJob失败："+ReflectionToStringBuilder.toString(task), e);
         }
     }
 

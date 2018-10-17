@@ -54,9 +54,6 @@ public class SeedQSSRegProcessor implements BeanPostProcessor, EnvironmentAware 
      */
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        if(!beanName.equals("demoController")){
-            return bean;
-        }
         //class com.jadyer.seed.controller.DemoController
         Class clazz = bean.getClass();
         //class com.jadyer.seed.controller.DemoController$$EnhancerBySpringCGLIB$$38f61a9f
