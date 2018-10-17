@@ -59,8 +59,8 @@ public class SeedLockHelper {
                 LogUtil.getLogger().error("资源[{}]加锁-->失败", key);
                 return false;
             }
-        } catch (InterruptedException | IllegalArgumentException e) {
-            LogUtil.getLogger().error("资源[{}]加锁-->失败：{}", key, JadyerUtil.extractStackTraceCausedBy(e));
+        } catch (Throwable t) {
+            LogUtil.getLogger().error("资源[{}]加锁-->失败：{}", key, JadyerUtil.extractStackTraceCausedBy(t), t);
             return false;
         }
         keyMap.set(key);
