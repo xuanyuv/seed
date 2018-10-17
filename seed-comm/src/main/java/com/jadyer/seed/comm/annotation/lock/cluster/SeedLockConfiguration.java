@@ -113,7 +113,8 @@ public class SeedLockConfiguration implements EnvironmentAware {
             LogUtil.getLogger().error("资源加锁-->失败：空的key");
             return null;
         }
-        String key = LOCK_PREFIX + (StringUtils.isBlank(seedLock.appname())?"":this.getPropertyFromEnv(seedLock.appname())+":") + this.parseSpringEL(seedLock.key(), method, joinPoint.getArgs());
+        Object[] args = joinPoint.getArgs();
+        String key = LOCK_PREFIX + (StringUtils.isBlank(seedLock.appname())?"":this.getPropertyFromEnv(seedLock.appname())+":") + this.parseSpringEL(seedLock.key(), method, args);
         //加锁
         RLock[] rLocks = new RLock[redissonClientList.size()];
         for(int i=0; i<redissonClientList.size(); i++){
@@ -127,10 +128,12 @@ public class SeedLockConfiguration implements EnvironmentAware {
                 redLock = new RedissonRedLock(rLocks);
                 if(!redLock.tryLock(seedLock.waitTime(), seedLock.leaseTime(), seedLock.unit())){
                     LogUtil.getLogger().error("资源[{}]加锁-->失败", key);
+                    this.lockFallback(key, seedLock.fallbackMethod(), joinPoint, method, args);
                     return null;
                 }
             } catch (Throwable t) {
                 LogUtil.getLogger().error("资源[{}]加锁-->失败：{}", key, JadyerUtil.extractStackTraceCausedBy(t), t);
+                this.lockFallback(key, seedLock.fallbackMethod(), joinPoint, method, args);
                 return null;
             }
             LogUtil.getLogger().info("资源[{}]加锁-->成功", key);
@@ -176,6 +179,24 @@ public class SeedLockConfiguration implements EnvironmentAware {
             context.setVariable(params[i], args[i]);
         }
         return parser.parseExpression(key).getValue(context, String.class);
+    }
+
+
+    /**
+     * 加锁失败时的回调
+     */
+    private void lockFallback(String key, String fallbackMethod, ProceedingJoinPoint joinPoint, Method method, Object[] args){
+        if(StringUtils.isBlank(fallbackMethod)){
+            LogUtil.getLogger().error("资源[{}]加锁-->失败，未配置回调方法名，故不回调", key);
+            return;
+        }
+        try {
+            LogUtil.getLogger().error("资源[{}]加锁-->失败，回调开始...", key);
+            joinPoint.getTarget().getClass().getMethod(fallbackMethod, method.getParameterTypes()).invoke(joinPoint.getTarget(), args);
+            LogUtil.getLogger().error("资源[{}]加锁-->失败，回调结束...", key);
+        } catch (Throwable t) {
+            LogUtil.getLogger().error("资源[{}]加锁-->失败，回调失败，堆栈轨迹如下", key, t);
+        }
     }
 
 

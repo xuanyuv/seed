@@ -11,6 +11,7 @@ import com.jadyer.seed.comm.util.HTTPUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.controller.rabbitmq.UserMsg;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
@@ -54,11 +55,16 @@ public class DemoController {
     @Resource
     private BootProperties bootProperties;
 
+    public void propLockFail(int id, UserMsg userMsg){
+        System.out.println("加锁失败，收到回调-->>id=" + id + ", userMsg=" + ReflectionToStringBuilder.toString(userMsg));
+    }
+
+
     /**
      * 读取配置文件中的属性
      */
     @GetMapping("/prop")
-    @SeedLock(key="#userMsg.name", appname="seedboot")
+    @SeedLock(key="#userMsg.name", appname="seedboot", fallbackMethod="propLockFail")
     @SeedLog(action=ActionEnum.LIST, value="读取配置文件中的属性")
     //@SeedQSSReg(qssHost="${qss.host}", appHost="${qss.appHost}", appname="seedboot", name="打印系统属性", cron="${qss.cron}")
     public CommResult<Map<String, Object>> prop(int id, UserMsg userMsg){
