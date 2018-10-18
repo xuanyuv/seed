@@ -68,7 +68,7 @@ public class StepService0001 {
         reader.setLineMapper(new DefaultLineMapper<Person>() {{
             setLineTokenizer(new DelimitedLineTokenizer() {{
                 setDelimiter("|");
-                setNames(new String[]{"realName", "age"});
+                setNames("realName", "age");
             }});
             //setFieldSetMapper(new FieldSetMapper<Person>() {
             //    @Override
