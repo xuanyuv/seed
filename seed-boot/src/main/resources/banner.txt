@@ -23,4 +23,4 @@ ${AnsiColor.BRIGHT_YELLOW}
 ////////////////////////////////////////////////////////////////
 Spring Boot Version: ${spring-boot.version}${spring-boot.formatted-version}
 Application Version: ${application.version}${application.formatted-version}
-${AnsiColor.BRIGHT_RED}
+${AnsiColor.BRIGHT_BLUE}
