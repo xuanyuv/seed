@@ -67,6 +67,7 @@ class JobExecute {
         try {
             if(SeedLockHelper.lock(SeedLockConfiguration.redissonClientList, task.getJobname(), "seedqss")){
                 ScheduleLogRepository repository = SpringContextHolder.getBean(ScheduleLogRepository.class);
+                //ScheduleLog log = ScheduleLog.builder().taskId(task.getId()).appname(task.getAppname()).name(task.getName()).url(task.getUrl()).fireTime(new Date()).build();
                 ScheduleLog log = new ScheduleLog();
                 log.setTaskId(task.getId());
                 log.setAppname(task.getAppname());

@@ -3,12 +3,12 @@ package com.jadyer.seed.qss.model;
 import com.jadyer.seed.comm.jpa.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -103,5 +103,62 @@ public class ScheduleLog extends BaseEntity<Long> {
 
     public void setRespData(String respData) {
         this.respData = respData;
+    }
+
+    public ScheduleLog() {}
+
+    private ScheduleLog(Long taskId, String appname, String name, String url, Date fireTime, Long duration, String respData) {
+        this.taskId = taskId;
+        this.appname = appname;
+        this.name = name;
+        this.url = url;
+        this.fireTime = fireTime;
+        this.duration = duration;
+        this.respData = respData;
+    }
+
+    public static ScheduleLogBuilder builder() {
+        return new ScheduleLogBuilder();
+    }
+
+    public static class ScheduleLogBuilder {
+        private Long taskId;
+        private String appname;
+        private String name;
+        private String url;
+        private Date fireTime;
+        private Long duration;
+        private String respData;
+        public ScheduleLog build(){
+            return new ScheduleLog(this.taskId, this.appname, this.name, this.url, this.fireTime, this.duration, this.respData);
+        }
+        public ScheduleLogBuilder taskId(Long taskId){
+            this.taskId = taskId;
+            return this;
+        }
+        public ScheduleLogBuilder appname(String appname){
+            this.appname = appname;
+            return this;
+        }
+        public ScheduleLogBuilder name(String name){
+            this.name = name;
+            return this;
+        }
+        public ScheduleLogBuilder url(String url){
+            this.url = url;
+            return this;
+        }
+        public ScheduleLogBuilder fireTime(Date fireTime){
+            this.fireTime = fireTime;
+            return this;
+        }
+        public ScheduleLogBuilder duration(Long duration){
+            this.duration = duration;
+            return this;
+        }
+        public ScheduleLogBuilder respData(String respData){
+            this.respData = respData;
+            return this;
+        }
     }
 }
