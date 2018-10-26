@@ -3,15 +3,15 @@ package ${PACKAGE_MODEL};
 import com.jadyer.seed.comm.jpa.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-<%if(hasNotBlankAnnotation){%>
-import org.hibernate.validator.constraints.NotBlank;
-<%}%>
 
 <%if(hasColumnAnnotation){%>
 import javax.persistence.Column;
 <%}%>
 import javax.persistence.Entity;
 import javax.persistence.Table;
+<%if(hasNotBlankAnnotation){%>
+import javax.validation.constraints.NotBlank;
+<%}%>
 <%if(hasNotNullAnnotation){%>
 import javax.validation.constraints.NotNull;
 <%}%>
@@ -37,4 +37,27 @@ public class ${CLASS_NAME} extends BaseEntity<Long> {
     private static final long serialVersionUID = ${serialVersionUID}L;
 ${fields}
 ${methods}
+
+    public ${CLASS_NAME}() {}
+
+    /**
+     * Builder模式
+     */
+    private ${CLASS_NAME}(Builder builder) {
+${fields_BuilderSetValues}
+    }
+    public static Builder builder() {
+        return new Builder();
+    }
+    public static final class Builder {
+${fields_BuilderNoAnnotations}
+        private Builder(){}
+        public ${CLASS_NAME} build() {
+            //if(this.id < 0){
+            //    throw new IllegalArgumentException("ID不能为负数");
+            //}
+            return new ${CLASS_NAME}(this);
+        }
+${methods_Builders}
+    }
 }

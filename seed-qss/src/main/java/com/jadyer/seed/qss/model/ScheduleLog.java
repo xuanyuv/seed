@@ -43,7 +43,7 @@ public class ScheduleLog extends BaseEntity<Long> {
     /** 定时任务触发时间 */
     @Column(name="fire_time")
     private Date fireTime;
-    /** 定时任务所耗时间 */
+    /** 定时任务所耗时间，单位：ms */
     private Long duration;
     /** 定时任务返回结果 */
     @Column(name="resp_data")

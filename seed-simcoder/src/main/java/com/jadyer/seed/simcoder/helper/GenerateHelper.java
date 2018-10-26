@@ -98,7 +98,10 @@ public class GenerateHelper {
         boolean hasNotBlankAnnotation = false;
         boolean hasNotBlankSizeAnnotation = false;
         StringBuilder fields = new StringBuilder();
+        StringBuilder fields_BuilderSetValues = new StringBuilder();
+        StringBuilder fields_BuilderNoAnnotations = new StringBuilder();
         StringBuilder methods = new StringBuilder();
+        StringBuilder methods_Builders = new StringBuilder();
         Map<String, String> fieldnameMap = new HashMap<>();
         List<Column> columnList = DBHelper.getColumnList(tablename);
         for(int i=0; i<columnList.size(); i++){
@@ -146,6 +149,8 @@ public class GenerateHelper {
                 hasBigDecimal = true;
             }
             fields.append("    private ").append(javaType).append(" ").append(fieldname).append(";").append("\n");
+            fields_BuilderSetValues.append("        this.").append(fieldname).append(" = builder.").append(fieldname).append(";");
+            fields_BuilderNoAnnotations.append("        private ").append(javaType).append(" ").append(fieldname).append(";");
             //getter and setter
             methods.append("    public ").append(javaType).append(" get").append(StringUtils.capitalize(fieldname)).append("() {").append("\n");
             methods.append("        return this.").append(fieldname).append(";").append("\n");
@@ -154,9 +159,16 @@ public class GenerateHelper {
             methods.append("    public void set").append(StringUtils.capitalize(fieldname)).append("(").append(javaType).append(" ").append(fieldname).append(") {").append("\n");
             methods.append("        this.").append(fieldname).append(" = ").append(fieldname).append(";").append("\n");
             methods.append("    }");
-            //方法与方法直接都空一行，并且最后一个setter之后就不用换行了
+            methods_Builders.append("        public Builder ").append(fieldname).append("(").append(javaType).append(" ").append(fieldname).append(") {").append("\n");
+            methods_Builders.append("            this.").append(fieldname).append(" = ").append(fieldname).append(";").append("\n");
+            methods_Builders.append("            return this;").append("\n");
+            methods_Builders.append("        }");
+            //方法与方法直接都空一行，并且最后一个setter之后就不用换行了（最后面的创建时间和修改时间两个字段已经跳过了）
             if(i+1 != columnList.size()-2){
                 methods.append("\n\n");
+                methods_Builders.append("\n");
+                fields_BuilderSetValues.append("\n");
+                fields_BuilderNoAnnotations.append("\n");
             }
             //收集属性，供分页查询时作为条件
             fieldnameMap.put(fieldname, javaType);
@@ -184,7 +196,10 @@ public class GenerateHelper {
         sharedVars.put("TABLE_NAME_nounderline", (tablename.startsWith("t_") ? tablename.substring(2) : tablename).replaceAll("_", ""));
         sharedVars.put("TABLE_NAME_convertpoint", (tablename.startsWith("t_") ? tablename.substring(2) : tablename).replaceAll("_", "."));
         sharedVars.put("fields", fields.toString());
+        sharedVars.put("fields_BuilderSetValues", fields_BuilderSetValues.toString());
+        sharedVars.put("fields_BuilderNoAnnotations", fields_BuilderNoAnnotations.toString());
         sharedVars.put("methods", methods.toString());
+        sharedVars.put("methods_Builders", methods_Builders.toString());
         sharedVars.put("tablecomment", tablecomment);
         sharedVars.put("fieldnameMap", fieldnameMap);
         sharedVars.put("hasDate", hasDate);
