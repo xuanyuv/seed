@@ -107,21 +107,22 @@ public class ScheduleLog extends BaseEntity<Long> {
 
     public ScheduleLog() {}
 
-    private ScheduleLog(Long taskId, String appname, String name, String url, Date fireTime, Long duration, String respData) {
-        this.taskId = taskId;
-        this.appname = appname;
-        this.name = name;
-        this.url = url;
-        this.fireTime = fireTime;
-        this.duration = duration;
-        this.respData = respData;
+    /**
+     * Builder模式
+     */
+    private ScheduleLog(Builder builder) {
+        this.taskId = builder.taskId;
+        this.appname = builder.appname;
+        this.name = builder.name;
+        this.url = builder.url;
+        this.fireTime = builder.fireTime;
+        this.duration = builder.duration;
+        this.respData = builder.respData;
     }
-
-    public static ScheduleLogBuilder builder() {
-        return new ScheduleLogBuilder();
+    public static Builder builder() {
+        return new Builder();
     }
-
-    public static class ScheduleLogBuilder {
+    public static final class Builder {
         private Long taskId;
         private String appname;
         private String name;
@@ -129,34 +130,38 @@ public class ScheduleLog extends BaseEntity<Long> {
         private Date fireTime;
         private Long duration;
         private String respData;
+        private Builder(){}
         public ScheduleLog build(){
-            return new ScheduleLog(this.taskId, this.appname, this.name, this.url, this.fireTime, this.duration, this.respData);
+            if(this.taskId < 0){
+                throw new IllegalArgumentException("taskId不能为负数");
+            }
+            return new ScheduleLog(this);
         }
-        public ScheduleLogBuilder taskId(Long taskId){
+        public Builder taskId(Long taskId){
             this.taskId = taskId;
             return this;
         }
-        public ScheduleLogBuilder appname(String appname){
+        public Builder appname(String appname){
             this.appname = appname;
             return this;
         }
-        public ScheduleLogBuilder name(String name){
+        public Builder name(String name){
             this.name = name;
             return this;
         }
-        public ScheduleLogBuilder url(String url){
+        public Builder url(String url){
             this.url = url;
             return this;
         }
-        public ScheduleLogBuilder fireTime(Date fireTime){
+        public Builder fireTime(Date fireTime){
             this.fireTime = fireTime;
             return this;
         }
-        public ScheduleLogBuilder duration(Long duration){
+        public Builder duration(Long duration){
             this.duration = duration;
             return this;
         }
-        public ScheduleLogBuilder respData(String respData){
+        public Builder respData(String respData){
             this.respData = respData;
             return this;
         }
