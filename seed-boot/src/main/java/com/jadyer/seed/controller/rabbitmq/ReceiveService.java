@@ -30,14 +30,14 @@ public class ReceiveService {
             //确认消费成功（第一个参数：消息编号。第二个参数：是否确认多条消息，false为确认当前消息，true为确认deliveryTag编号以前的所有消息）
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         }catch(Exception e){
-            LogUtil.getLogger().error("消息处理异常，消息ID={}, 消息体=[{}]", message.getMessageProperties().getCorrelationIdString(), JSON.toJSONString(userMsg), e);
+            LogUtil.getLogger().error("消息处理异常，消息ID={}, 消息体=[{}]", message.getMessageProperties().getCorrelationId(), JSON.toJSONString(userMsg), e);
             try {
                 //拒绝当前消息，并把消息返回原队列（第三个参数：是否将消息放回队列，true表示放回队列，false表示丢弃消息）
                 channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
                 //basicReject只能拒绝一条消息，而basicNack能够拒绝多条消息
                 //channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
             } catch (IOException e1) {
-                LogUtil.getLogger().error("消息basicNack时发生异常，消息ID={}", message.getMessageProperties().getCorrelationIdString(), e);
+                LogUtil.getLogger().error("消息basicNack时发生异常，消息ID={}", message.getMessageProperties().getCorrelationId(), e);
             }
         }
     }
