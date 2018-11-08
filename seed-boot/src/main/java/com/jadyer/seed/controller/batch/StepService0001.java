@@ -55,6 +55,13 @@ public class StepService0001 {
 
 
     private FlatFileItemReader<Person> reader(){
+        //return new FlatFileItemReaderBuilder<Person>()
+        //        .name("step0001Reader")
+        //        .resource(new FileSystemResource("/data/seedboot-batch.txt"))
+        //        .strict(true)
+        //        .encoding(SeedConstants.DEFAULT_CHARSET)
+        //        .linesToSkip(1)
+        //        .delimited().delimiter("|").names(new String[]{"realName", "age"}).targetType(Person.class).build();
         FlatFileItemReader<Person> reader = new FlatFileItemReader<>();
         //输入文件
         reader.setResource(new FileSystemResource("/data/seedboot-batch.txt"));

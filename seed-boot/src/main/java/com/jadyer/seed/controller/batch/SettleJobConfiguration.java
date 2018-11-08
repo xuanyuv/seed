@@ -26,7 +26,7 @@ import javax.annotation.Resource;
  * 结算批量任务
  * ----------------------------------------------------------------------
  * https://spring.io/guides/gs/batch-processing/
- * https://docs.spring.io/spring-batch/4.0.x/reference/html/index.html
+ * https://docs.spring.io/spring-batch/4.1.x/reference/html/index.html
  * ----------------------------------------------------------------------
  * 远程分区Step：http://www.kailing.pub/article/index/arcid/196.html
  * ----------------------------------------------------------------------
