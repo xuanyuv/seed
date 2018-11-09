@@ -1,6 +1,7 @@
 package com.jadyer.seed.qss;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.constant.SeedConstants;
@@ -70,6 +71,9 @@ public class QssController {
         for(ScheduleSummary obj : scheduleSummaryList){
             System.out.println("22--查询到name=[" + obj.getName() + "]，url=[" + obj.getUrl() +"]");
         }
+        //查询Redis时间
+        Object redisTimeObj = jedisPool.getResource().eval("return redis.call('time')");
+        List<String> redisTimeList = JSON.parseObject(redisTimeObj.toString(), new TypeReference<List<String>>(){});
         return CommResult.success(JSON.toJSONString(new HashMap<String, Object>(){
             private static final long serialVersionUID = 2518882720835440047L;
             {
@@ -77,6 +81,7 @@ public class QssController {
                 put("allRunningJob", qssService.getAllRunningJob());
                 put("taskInfo", scheduleTaskDaoJdbc.getById(Long.parseLong(ids.substring(0,1))));
                 put("taskList", scheduleTaskRepository.findAll(Condition.<ScheduleTask>and().in("id", idList)));
+                put("redisTime", DateFormatUtils.format(new Date(Long.parseLong(redisTimeList.get(0) + redisTimeList.get(1).substring(0, 3))), "yyyy-MM-dd HH:mm:ss.SSS"));
             }
         }));
     }
