@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:batch="http://www.springframework.org/schema/batch"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+    <batch:job id="settleJobXml">
+        <batch:step id="S1001">
+            <batch:tasklet>
+                <batch:chunk reader="R1001" processor="P1001" writer="W1001" commit-interval="2"/>
+            </batch:tasklet>
+        </batch:step>
+    </batch:job>
+
+    <bean id="R1001" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="resource" value="file:/data/seedboot-batch.txt"/>
+        <property name="linesToSkip" value="1"/>
+        <property name="encoding" value="UTF-8"/>
+        <property name="lineMapper">
+            <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+                <property name="lineTokenizer" ref="lineTokenizer"/>
+                <property name="fieldSetMapper" ref="fieldSetMapper"/>
+            </bean>
+        </property>
+    </bean>
+    <bean id="lineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+        <property name="delimiter" value="|"/>
+        <property name="names" value="realName, age"/>
+    </bean>
+    <bean id="fieldSetMapper" class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+        <property name="prototypeBeanName" value="person"/>
+    </bean>
+    <bean id="person" class="com.jadyer.seed.controller.batch.model.Person" scope="prototype"/>
+
+    <bean id="P1001" class="com.jadyer.seed.controller.batch.xml.P1001"/>
+
+    <bean id="W1001" class="com.jadyer.seed.controller.batch.xml.W1001"/>
+</beans>

@@ -18,6 +18,7 @@ import org.springframework.batch.core.job.flow.support.SimpleFlow;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 
 import javax.annotation.Resource;
@@ -34,6 +35,7 @@ import javax.annotation.Resource;
  */
 @Configuration
 @EnableBatchProcessing
+@ImportResource("classpath:config/batch.xml")
 public class SettleJobConfiguration {
     @Resource
     private Step step0001;

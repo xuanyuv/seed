@@ -1,5 +1,6 @@
 package com.jadyer.seed.controller.batch;
 
+import com.jadyer.seed.comm.SpringContextHolder;
 import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.SystemClockUtil;
@@ -10,6 +11,7 @@ import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +27,26 @@ public class SettleQuartzController {
     private Job settleJob;
     @Resource
     private JobLauncher jobLauncher;
+
+    @RequestMapping("/batchxml")
+    CommResult<JobInstance> batchxml(String time) throws Exception {
+        boolean isResume = false;
+        long timeLong;
+        if(StringUtils.isBlank(time)){
+            timeLong = SystemClockUtil.INSTANCE.now();
+        }else{
+            isResume = true;
+            timeLong = Long.parseLong(time);
+        }
+        LogUtil.getLogger().info("结算跑批{}：Starting...time={}", isResume?"：断点续跑":"", time);
+        SimpleJobLauncher jobLauncher = (SimpleJobLauncher) SpringContextHolder.getBean("laucher");
+        Job settleJob = (Job)SpringContextHolder.getBean("settleJobXml");
+        JobParameters jobParameters = new JobParametersBuilder().addLong("time", timeLong).toJobParameters();
+        JobExecution execution = jobLauncher.run(settleJob, jobParameters);
+        LogUtil.getLogger().info("结算跑批{}：Ending......", isResume?"：断点续跑":"");
+        return CommResult.success(execution.getJobInstance());
+    }
+
 
     /**
      * SpringBatch的断点续跑
