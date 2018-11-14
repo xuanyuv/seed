@@ -1,4 +1,4 @@
-package com.jadyer.seed.controller.batch.xml;
+package com.jadyer.seed.controller.batch.xmlconfig;
 
 import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.comm.util.LogUtil;
@@ -13,13 +13,14 @@ import org.springframework.batch.item.ItemProcessor;
  */
 public class P1001 implements ItemProcessor<Person, Person> {
     @Override
-    public Person process(Person item) throws Exception {
+    public Person process(Person item) {
         String validateResult = ValidatorUtil.validate(item);
         if(StringUtils.isNotEmpty(validateResult)){
-            //return null;
             throw new SeedException("数据校验未通过-->" + validateResult);
         }
         LogUtil.getLogger().info("读取到-->{}", ReflectionToStringBuilder.toString(item));
+        item.setAge(item.getAge() + 10);
+        item.setRealName(item.getRealName() + "--00");
         LogUtil.getLogger().info("转换后==>{}", ReflectionToStringBuilder.toString(item));
         return item;
     }

@@ -1,4 +1,4 @@
-package com.jadyer.seed.controller.batch;
+package com.jadyer.seed.controller.batch.javaconfig;
 
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.SystemClockUtil;
@@ -10,7 +10,6 @@ import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.StepExecutionListener;
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.job.builder.FlowBuilder;
 import org.springframework.batch.core.job.flow.Flow;
@@ -18,7 +17,6 @@ import org.springframework.batch.core.job.flow.support.SimpleFlow;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 
 import javax.annotation.Resource;
@@ -34,8 +32,6 @@ import javax.annotation.Resource;
  * Created by 玄玉<https://jadyer.cn/> on 2018/8/15 17:00.
  */
 @Configuration
-@EnableBatchProcessing
-@ImportResource("classpath:config/batch.xml")
 public class SettleJobConfiguration {
     @Resource
     private Step step0001;

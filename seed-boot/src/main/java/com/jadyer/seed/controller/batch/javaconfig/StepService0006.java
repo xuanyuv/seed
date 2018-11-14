@@ -1,8 +1,7 @@
-package com.jadyer.seed.controller.batch;
+package com.jadyer.seed.controller.batch.javaconfig;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.jadyer.seed.comm.constant.SeedConstants;
-import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.controller.batch.model.Person;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -25,10 +24,10 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 并行Step测试使用
- * Created by 玄玉<https://jadyer.cn/> on 2018/9/5 10:59.
+ * Created by 玄玉<https://jadyer.cn/> on 2018/9/5 11:14.
  */
 @Component
-public class StepService0004 {
+public class StepService0006 {
     @Resource
     private DruidDataSource dataSource;
     @Resource
@@ -37,10 +36,10 @@ public class StepService0004 {
     private StepExecutionListener stepExecutionListener;
 
     @Bean
-    public Step step0004(){
-        return stepBuilderFactory.get("step0004")
+    public Step step0006(){
+        return stepBuilderFactory.get("step0006")
                 .listener(stepExecutionListener)
-                .<Person, Person>chunk(1)
+                .<Person, Person>chunk(10)
                 .reader(this.reader())
                 .processor(this.processor())
                 .writer(this.writer())
@@ -82,11 +81,8 @@ public class StepService0004 {
             @Override
             public Person process(Person item) {
                 LogUtil.getLogger().info("读取到-->{}", ReflectionToStringBuilder.toString(item));
-                if(item.getRealName().contains("玄玉")){
-                    throw new SeedException("这是测试断点续跑的异常");
-                }
                 try {
-                    TimeUnit.SECONDS.sleep(4);
+                    TimeUnit.SECONDS.sleep(6);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }

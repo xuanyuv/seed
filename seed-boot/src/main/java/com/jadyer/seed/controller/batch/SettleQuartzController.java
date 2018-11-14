@@ -10,8 +10,10 @@ import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.SimpleJobLauncher;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,31 +24,13 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/quartz")
+@ImportResource("classpath:config/batch/spring-batch.xml")
+@EnableBatchProcessing
 public class SettleQuartzController {
     @Resource
     private Job settleJob;
     @Resource
     private JobLauncher jobLauncher;
-
-    @RequestMapping("/batchxml")
-    CommResult<JobInstance> batchxml(String time) throws Exception {
-        boolean isResume = false;
-        long timeLong;
-        if(StringUtils.isBlank(time)){
-            timeLong = SystemClockUtil.INSTANCE.now();
-        }else{
-            isResume = true;
-            timeLong = Long.parseLong(time);
-        }
-        LogUtil.getLogger().info("结算跑批{}：Starting...time={}", isResume?"：断点续跑":"", time);
-        SimpleJobLauncher jobLauncher = (SimpleJobLauncher) SpringContextHolder.getBean("laucher");
-        Job settleJob = (Job)SpringContextHolder.getBean("settleJobXml");
-        JobParameters jobParameters = new JobParametersBuilder().addLong("time", timeLong).toJobParameters();
-        JobExecution execution = jobLauncher.run(settleJob, jobParameters);
-        LogUtil.getLogger().info("结算跑批{}：Ending......", isResume?"：断点续跑":"");
-        return CommResult.success(execution.getJobInstance());
-    }
-
 
     /**
      * SpringBatch的断点续跑
@@ -71,9 +55,29 @@ public class SettleQuartzController {
             isResume = true;
             timeLong = Long.parseLong(time);
         }
-        LogUtil.getLogger().info("结算跑批{}：Starting...time={}", isResume?"：断点续跑":"", time);
+        LogUtil.getLogger().info("结算跑批{}：Starting...time={}", isResume?"：断点续跑":"", timeLong);
         JobParameters jobParameters = new JobParametersBuilder().addLong("time", timeLong).toJobParameters();
         JobExecution execution = jobLauncher.run(settleJob, jobParameters);
+        LogUtil.getLogger().info("结算跑批{}：Ending......", isResume?"：断点续跑":"");
+        return CommResult.success(execution.getJobInstance());
+    }
+
+
+    @RequestMapping("/xmlBatch")
+    CommResult<JobInstance> xmlBatch(String time) throws Exception {
+        boolean isResume = false;
+        long timeLong;
+        if(StringUtils.isBlank(time)){
+            timeLong = SystemClockUtil.INSTANCE.now();
+        }else{
+            isResume = true;
+            timeLong = Long.parseLong(time);
+        }
+        LogUtil.getLogger().info("结算跑批{}：Starting...time={}", isResume?"：断点续跑":"", timeLong);
+        JobParameters jobParameters = new JobParametersBuilder().addLong("time", timeLong).toJobParameters();
+        SimpleJobLauncher xmlJobLaucher = (SimpleJobLauncher) SpringContextHolder.getBean("xmlJobLaucher");
+        Job xmlSettleJob = (Job)SpringContextHolder.getBean("xmlSettleJob");
+        JobExecution execution = xmlJobLaucher.run(xmlSettleJob, jobParameters);
         LogUtil.getLogger().info("结算跑批{}：Ending......", isResume?"：断点续跑":"");
         return CommResult.success(execution.getJobInstance());
     }

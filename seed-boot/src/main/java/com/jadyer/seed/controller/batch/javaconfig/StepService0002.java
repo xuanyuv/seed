@@ -1,4 +1,4 @@
-package com.jadyer.seed.controller.batch;
+package com.jadyer.seed.controller.batch.javaconfig;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.jadyer.seed.comm.exception.SeedException;
