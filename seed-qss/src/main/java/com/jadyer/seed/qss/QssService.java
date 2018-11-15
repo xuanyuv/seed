@@ -13,14 +13,18 @@ import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
+import org.quartz.TriggerUtils;
 import org.quartz.impl.matchers.GroupMatcher;
+import org.quartz.impl.triggers.CronTriggerImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -144,6 +148,27 @@ public class QssService {
             throw new SeedException(CodeEnum.SYSTEM_ERROR.getCode(), "立即执行QuartzJob失败：jobname=["+task.getJobname()+"]", e);
         }
     }
+
+
+    /**
+     * 根据Cron表达式获取接下来的最近几次触发时间
+     * @param numTimes The number of next fire times to produce
+     * Comment by 玄玉<https://jadyer.cn/> on 2018/11/15 11:02.
+     */
+    List<Date> getNextFireTimes(String cron, int numTimes) {
+        if(!CronExpression.isValidExpression(cron)){
+            throw new IllegalArgumentException("CronExpression不正确");
+        }
+        List<String> list = new ArrayList<>();
+        CronTriggerImpl cronTriggerImpl = new CronTriggerImpl();
+        try {
+            cronTriggerImpl.setCronExpression(cron);
+        } catch (ParseException e) {
+            throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "使用表达式["+cron+"]初始化CronTrigger时出错", e);
+        }
+        return TriggerUtils.computeFireTimes(cronTriggerImpl, null, numTimes);
+    }
+
 
 
     /**

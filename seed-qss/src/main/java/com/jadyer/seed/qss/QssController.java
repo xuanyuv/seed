@@ -82,6 +82,7 @@ public class QssController {
                 put("taskInfo", scheduleTaskDaoJdbc.getById(Long.parseLong(ids.substring(0,1))));
                 put("taskList", scheduleTaskRepository.findAll(Condition.<ScheduleTask>and().in("id", idList)));
                 put("redisTime", DateFormatUtils.format(new Date(Long.parseLong(redisTimeList.get(0) + redisTimeList.get(1).substring(0, 3))), "yyyy-MM-dd HH:mm:ss.SSS"));
+                put("nextFireTimes", qssService.getNextFireTimes("0 */1 * * * ?", 5));
             }
         }));
     }
