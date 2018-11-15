@@ -12,7 +12,6 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -75,9 +74,8 @@ public class SettleQuartzController {
         }
         LogUtil.getLogger().info("结算跑批{}：Starting...time={}", isResume?"：断点续跑":"", timeLong);
         JobParameters jobParameters = new JobParametersBuilder().addLong("time", timeLong).toJobParameters();
-        SimpleJobLauncher xmlJobLaucher = (SimpleJobLauncher) SpringContextHolder.getBean("xmlJobLaucher");
         Job xmlSettleJob = (Job)SpringContextHolder.getBean("xmlSettleJob");
-        JobExecution execution = xmlJobLaucher.run(xmlSettleJob, jobParameters);
+        JobExecution execution = jobLauncher.run(xmlSettleJob, jobParameters);
         LogUtil.getLogger().info("结算跑批{}：Ending......", isResume?"：断点续跑":"");
         return CommResult.success(execution.getJobInstance());
     }
