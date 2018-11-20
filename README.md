@@ -4,6 +4,7 @@
 
 ## 模块列表
 
+* [x] seed-admin：SpringBootAdmin服务端
 * [x] seed-boot：SpringBoot个人实践
 * [x] seed-comm：工具包
 * [x] seed-mpp：公众平台
