@@ -3,7 +3,6 @@ package com.jadyer.seed.boot;
 import com.alibaba.fastjson.JSON;
 import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.LogUtil;
-import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -50,12 +49,8 @@ public class RabbitMQConfiguration {
         //消息发送失败时，返回到队列中（需要spring.rabbitmq.publisherReturns=true）
         template.setMandatory(true);
         //消息成功到达exchange，但没有queue与之绑定时触发的回调（即消息发送不到任何一个队列中）
-        template.setReturnCallback(new RabbitTemplate.ReturnCallback() {
-            @Override
-            public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
-                LogUtil.getLogger().error("消息发送失败，replyCode={}，replyText={}，exchange={}，routingKey={}，消息体=[{}]", replyCode, replyText, exchange, routingKey, JSON.toJSONString(message.getBody()));
-            }
-        });
+        //也可以在生产者发送消息的类上实现org.springframework.amqp.rabbit.core.RabbitTemplate.ConfirmCallback和RabbitTemplate.ReturnCallback两个接口（本例中即为SendController.java）
+        template.setReturnCallback((message, replyCode, replyText, exchange, routingKey) -> LogUtil.getLogger().error("消息发送失败，replyCode={}，replyText={}，exchange={}，routingKey={}，消息体=[{}]", replyCode, replyText, exchange, routingKey, JSON.toJSONString(message.getBody())));
         //消息成功到达exchange后触发的ack回调（需要spring.rabbitmq.publisherConfirms=true）
         template.setConfirmCallback((correlationData, ack, cause) -> {
             if(ack){

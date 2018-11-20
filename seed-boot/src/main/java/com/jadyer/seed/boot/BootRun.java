@@ -121,6 +121,16 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
  *   并且，GET请求“http://127.0.0.1/loggers/日志端点”还可以查看其当前的日志级别
  *   需要注意的是：该功能需要配置management.security.enabled=false来关闭安全认证校验
  * ---------------------------------------------------------------------------------------------------------------
+ * 【Spring Boot Admin 配置之Admin端】
+ * 引入三个包：spring-boot-admin-starter-server、spring-boot-admin-server-ui、spring-boot-starter-web
+ * 然后启动，访问：http://127.0.0.1:8080/即可
+ * 【Spring Boot Admin 配置之Client端】
+ * 引入三个包：spring-boot-admin-starter-client、spring-boot-starter-actuator、spring-boot-starter-web
+ * 增加三以下三个配置后，启动应用即可
+ * 1.spring.application.name=SeedBoot
+ * 2.spring.boot.admin.client.url=http://127.0.0.1:8080
+ * 3.management.endpoints.web.exposure.include=*
+ * ---------------------------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.cn/> on 2015/11/29 15:35.
  */
 @SpringBootApplication(scanBasePackages="${scan.base.packages}")

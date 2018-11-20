@@ -22,8 +22,6 @@ server:
     uriEncoding: UTF-8
   servlet:
     contextPath: /boot
-    session:
-      timeout: 1800
 
 
 # 日志配置这俩属性足矣
@@ -33,15 +31,18 @@ logging:
 
 
 management:
-  # server:
-  #   port: 8800
+#  server:
+#    port: 80
+#    servlet:
+#      context-path: /boot
   security:
       enabled: false
   endpoints:
     web:
+#      base-path: /actuator
       exposure:
-        # include: "*"
-        include: health,info,env,metrics
+        include: "*"
+        #include: health,info,env,metrics
     health:
       show-details: always
     shutdown:
@@ -61,6 +62,12 @@ jasypt:
 
 
 spring:
+#  application:
+#    name: SeedBoot
+#  boot:
+#    admin:
+#      client:
+#        url: http://127.0.0.1:8080
   # org.springframework.boot.autoconfigure.batch.BatchProperties.java
   batch:
     job:
