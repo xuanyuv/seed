@@ -17,6 +17,7 @@
 ## 依赖关系
 
 * .
+* ├── seed-admin
 * ├── seed-boot
 * │   └── seed-comm
 * ├── seed-mpp
