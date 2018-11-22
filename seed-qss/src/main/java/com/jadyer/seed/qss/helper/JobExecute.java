@@ -91,13 +91,10 @@ class JobExecute {
                 }
                 //更新耗时及应答结果
                 ScheduleLog finalLog = log;
-                threadPool.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        finalLog.setDuration(durationTime);
-                        finalLog.setRespData(respData);
-                        repository.saveAndFlush(finalLog);
-                    }
+                threadPool.execute(() -> {
+                    finalLog.setDuration(durationTime);
+                    finalLog.setRespData(respData);
+                    repository.saveAndFlush(finalLog);
                 });
             }
         } finally {
