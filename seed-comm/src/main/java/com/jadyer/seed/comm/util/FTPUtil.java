@@ -887,6 +887,7 @@ class SFTPProcess implements SftpProgressMonitor {
     }
 }
 //http://www.iteye.com/problems/13329
+//https://my.oschina.net/grkj/blog/2907188
 //http://www.oschina.net/code/snippet_2667725_54609
 //http://blog.csdn.net/daizhonghai1314/article/details/7738487
 //import java.io.File;
