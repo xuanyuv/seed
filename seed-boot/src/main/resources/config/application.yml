@@ -37,9 +37,9 @@ logging:
     org.redisson: info
     org.hibernate: warn
     org.thymeleaf: warn
-    com.alibaba.druid: info
+    com.alibaba.druid: warn
     org.springframework: warn
-    org.springframework.boot.web: info
+    org.springframework.boot.web.embedded.tomcat: info
     org.springframework.boot.actuate.endpoint.web.servlet: info
 
 

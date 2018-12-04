@@ -31,7 +31,7 @@
     <property name="LOG_HOME" value="${LOG_PATH}"/>
 
     <!-- 日志输出格式 -->
-    <property name="LOG_PATTERN" value="[%d{yyMMddHHmmss}][%t][%C{0}.%M]%m%n"/>
+    <property name="LOG_PATTERN" value="[%d{yyMMddHHmmss}][%level][%t][%C{0}.%M]%m%n"/>
 
     <!-- 每个logger都关联到logger上下文,默认上下文名称为"default" -->
     <!-- 可以使用<contextName>设置成其他名字，用于区分不同应用程序的记录 -->
