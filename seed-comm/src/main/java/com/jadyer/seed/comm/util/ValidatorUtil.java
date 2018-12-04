@@ -78,7 +78,8 @@ import java.util.Set;
  * 除了以上列出的JSR-303原生支持的限制类型之外，还可以定义自己的限制类型
  * 本工具类最下方的注释部分是一个例子（也可参考此文http://haohaoxuexi.iteye.com/blog/1812584）
  * -------------------------------------------------------------------------------------------
- * @version v1.4
+ * @version v1.5
+ * @history v1.5-->被验证对象若为空对象，由于没什么可验证的，故直接返回验证通过
  * @history v1.4-->简化例外属性的判断方式
  * @history v1.3-->增加一些常用的pojo配置例子
  * @history v1.2-->部分细节优化及增加描述：验证对象若其父类的属性也有验证注解则会一并验证
@@ -95,6 +96,9 @@ public final class ValidatorUtil {
 
     /**
      * 验证对象中的属性的值是否符合注解定义
+     * -------------------------------------------------------------------------------
+     * 注意：被验证对象若为空对象，由于没什么可验证的，故直接返回验证通过
+     * -------------------------------------------------------------------------------
      * @param obj 需要验证的对象，若其父类的属性也有验证注解则会一并验证
      * @return 返回空字符串""表示验证通过，否则返回错误信息
      */
@@ -105,15 +109,18 @@ public final class ValidatorUtil {
 
     /**
      * 验证对象中的属性的值是否符合注解定义
+     * -------------------------------------------------------------------------------
+     * 注意：被验证对象若为空对象，由于没什么可验证的，故直接返回验证通过
+     * -------------------------------------------------------------------------------
      * @param obj             需要验证的对象，若其父类的属性也有验证注解则会一并验证
      * @param exceptFieldName 不需要验证的属性
      * @return 返回空字符串""表示验证通过，否则返回错误信息
      */
     public static String validate(Object obj, String... exceptFieldName){
-        StringBuilder sb = new StringBuilder();
         if(null == obj){
-            return "被验证对象不能为null";
+            return "";
         }
+        StringBuilder sb = new StringBuilder();
         Set<ConstraintViolation<Object>> validateSet = validator.validate(obj);
         for(ConstraintViolation<Object> constraintViolation : validateSet){
             String field = constraintViolation.getPropertyPath().toString();
@@ -133,6 +140,9 @@ public final class ValidatorUtil {
 
     /**
      * 验证对象中的属性的值是否符合注解定义
+     * -------------------------------------------------------------------------------
+     * 注意：被验证对象若为空对象，由于没什么可验证的，故直接返回验证通过
+     * -------------------------------------------------------------------------------
      * @param obj 需要验证的对象，若其父类的属性也有验证注解则会一并验证
      * @return 返回空Map<String, String>(not null)表示验证通过，否则会将各错误字段作为key放入Map,value为错误信息
      */
@@ -143,6 +153,9 @@ public final class ValidatorUtil {
 
     /**
      * 验证对象中的属性的值是否符合注解定义
+     * -------------------------------------------------------------------------------
+     * 注意：被验证对象若为空对象，由于没什么可验证的，故直接返回验证通过
+     * -------------------------------------------------------------------------------
      * @param obj             需要验证的对象，若其父类的属性也有验证注解则会一并验证
      * @param exceptFieldName 不需要验证的属性
      * @return 返回空Map<String, String>(not null)表示验证通过，否则会将各错误字段作为key放入Map,value为错误信息
@@ -150,7 +163,7 @@ public final class ValidatorUtil {
     public static Map<String, String> validateToMap(Object obj, String... exceptFieldName){
         Map<String, String> resultMap = new HashMap<>();
         if(null == obj){
-            throw new NullPointerException("被验证对象不能为null");
+            return resultMap;
         }
         Set<ConstraintViolation<Object>> validateSet = validator.validate(obj);
         for(ConstraintViolation<Object> constraintViolation : validateSet){

@@ -50,7 +50,7 @@ class LogAspect implements MethodInterceptor {
         log.info("{}()被调用，入参为{}", methodInfo, JSON.toJSONStringWithDateFormat(argsList, JSON.DEFFAULT_DATE_FORMAT, serializerFeatures));
         //表单验证
         for(Object obj : objs){
-            if(null!=obj && (obj.getClass().isAnnotationPresent(EnableFormValid.class) || invocation.getMethod().isAnnotationPresent(EnableFormValid.class))){
+            if(null!=obj && ((obj.getClass().isAnnotationPresent(EnableFormValid.class) || invocation.getMethod().isAnnotationPresent(EnableFormValid.class)) || invocation.getThis().getClass().isAnnotationPresent(EnableFormValid.class))){
                 String validateResult = ValidatorUtil.validate(obj);
                 log.info("{}()的表单-->{}", methodInfo, StringUtils.isBlank(validateResult)?"验证通过":"验证未通过");
                 if (StringUtils.isNotBlank(validateResult)) {
@@ -65,12 +65,12 @@ class LogAspect implements MethodInterceptor {
         String returnInfo;
         if(null == respData){
             returnInfo = "<null>";
+        }else if(respData instanceof InputStream) {
+            returnInfo = "<java.io.InputStream>";
         }else if(respData instanceof ServletRequest) {
             returnInfo = "<javax.servlet.ServletRequest>";
         }else if(respData instanceof ServletResponse) {
             returnInfo = "<javax.servlet.ServletResponse>";
-        }else if(respData instanceof InputStream) {
-            returnInfo = "<java.io.InputStream>";
         }else if(respData.getClass().isAssignableFrom(ResponseEntity.class)) {
             returnInfo = "<org.springframework.http.ResponseEntity>";
         }else{

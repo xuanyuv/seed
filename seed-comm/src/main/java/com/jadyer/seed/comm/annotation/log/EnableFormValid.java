@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * 启用JSR303自动验证
  * Created by 玄玉<https://jadyer.cn/> on 2018/4/17 13:24.
  */
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface EnableFormValid {
