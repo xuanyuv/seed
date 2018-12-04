@@ -5,6 +5,19 @@ server:
 logging:
   path: /home/seed/log/scs
   config: classpath:config/logback-scs.xml
+  level:
+    io.netty: info
+    org.jboss: warn
+    org.apache: warn
+    org.apache.catalina.core: info
+    org.quartz: info
+    org.redisson: info
+    org.hibernate: warn
+    org.thymeleaf: warn
+    com.alibaba.druid: info
+    org.springframework: warn
+    org.springframework.boot.web: info
+    org.springframework.boot.actuate.endpoint.web.servlet: info
 
 
 spring:
