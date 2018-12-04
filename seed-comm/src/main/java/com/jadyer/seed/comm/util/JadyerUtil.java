@@ -682,11 +682,13 @@ public final class JadyerUtil {
      */
     public static String extractStackTraceCausedBy(Throwable cause){
         String allMsg = extractStackTrace(cause);
-        String causeMsg = allMsg.substring(allMsg.lastIndexOf("Caused by: ") + 11);
-        if(causeMsg.contains(": ")){
-            return causeMsg.substring(causeMsg.indexOf(": ")+2, causeMsg.indexOf("\r\n"));
+        if(allMsg.contains("Caused by: ")){
+            allMsg = allMsg.substring(allMsg.lastIndexOf("Caused by: ") + 11);
+        }
+        if(allMsg.contains(": ")){
+            return allMsg.substring(allMsg.indexOf(": ")+2, allMsg.indexOf("\r\n"));
         }else{
-            return causeMsg.substring(0, causeMsg.indexOf("\n"));
+            return allMsg.substring(0, allMsg.indexOf("\n"));
         }
     }
 

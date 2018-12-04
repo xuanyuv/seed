@@ -33,10 +33,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Throwable.class)
     public CommResult process(Throwable cause, HttpServletRequest request){
         LogUtil.getLogger().info("Exception Occured URL=" + request.getRequestURL() + "，堆栈轨迹如下", cause);
-        int code = CodeEnum.SYSTEM_ERROR.getCode();
+        int code;
+        String msg = cause.getMessage();
         if(cause instanceof SeedException){
             code = ((SeedException)cause).getCode();
+        }else{
+            code = CodeEnum.SYSTEM_ERROR.getCode();
+            msg = JadyerUtil.extractStackTraceCausedBy(cause);
         }
-        return CommResult.fail(code, JadyerUtil.extractStackTraceCausedBy(cause));
+        return CommResult.fail(code, msg);
     }
 }
