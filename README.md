@@ -49,7 +49,7 @@
 >> * 微信后台增加防伪标记，只有绑定到平台的公众号才提供服务，避免开发者URL被破译后盗用服务
 >> * 缓存微信和网页授权access_token等生命周期较长的数据信息，到Weixin和QQ各自的TokenHolder中
 >> * TokenHolder引入java.util.concurrent.atomic.AtomicBoolean，保证更新Token过程中，旧的Token可用
->> * 增加QQ公众平台SDK（2015.11.26），实现基本的收发文本消息、自定义菜单监听、关注与取消关注等功能
+>> * 增加QQ公众平台SDK（2015.11.26），实现基本的收发文本消息、自定义菜单监听、关注与取关等功能
 >
 > ### version 1.3.RELEASE
 >> * 花了周日和周一共2天时间开发完微信SDK，含以下功能（2015.10.19）：
