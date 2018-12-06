@@ -38,17 +38,28 @@
 
 ## 版本迭代
 
-> ### version 2.6.2.RELEASE
->> * 新增自定义启动Banner示例
->> * 重新梳理com.jadyer.demo.boot包结构
->> * 升级到fastjson-1.2.23、druid-1.0.27、spring-boot-1.4.3.RELEASE
+> ### version 2.0.RELEASE
+>> * upgrade springboot to 2.0.5
 >
-> ### version 2.6.1.RELEASE
->> * 新增网站建设中页面
->> * 新增wangEditor的使用例子
->> * 新增封装SpringHttpInvoker的注解
+> ### version 1.4.RELEASE
+>> * 修复前一版中走了弯路导致的若干BUG
+>> * 增加后台管理模块，用于管理和发布微信功能
+>> * 引入jssdk并编写了一个调用手机相机而不调用相册的例子
+>> * 增加QQ公众平台SDK，实现基本的收发文本消息、自定义菜单监听、关注与取消关注等功能
+>> * 优化WeixinFilter静默方式网页授权获取用户信息的流程，使得前端只需Filter不需引入SDK
+>> * 微信后台增加防伪标记，只有绑定到平台的公众号才提供服务，避免开发者URL被破译后盗用服务
+>> * 缓存微信access_token和网页授权access_token等生命周期较长的数据信息到TokenHolder中
+>> * TokenHolder引入java.util.concurrent.atomic.AtomicBoolean，保证更新Token过程中，旧Token可用
 >
-> ### version 2.6.0.RELEASE
+> ### version 1.3.RELEASE
+>> * 花了一个礼拜天和一个周一共2天时间开发完微信SDK，含以下功能：
+>> * 处理接收到的文本消息、图片消息、地址位置消息、链接消息、关注/取消关注事件
+>> * 处理自定义菜单拉取消息/跳转链接事件、多客服接入会话/关闭会话/转接会话事件
+>> * 可自定义回复图片、多图文、纯文本、带表情的文本，或将消息转发给多客服客户端
+>> * 可主动拉去指定的粉丝信息、推消息给粉丝（48小时内有过交互）、创建自定义菜单
+>> * 可通过网页授权静默获取粉丝openid（web.xml配置一个Filter即可，不需要其它代码）
+>
+> ### version 1.2.RELEASE
 >> * 打包工具增加打包后重命名文件并自动上传FTP的功能（deploy.bat）
 >> * 升级依赖包版本至spring-boot-1.3.8、jedis-2.9.0、druid-1.0.26、fastjson-1.2.21、commons-lang3-3.5
 >> * 添加**md5.js**和**ajaxfileupload.js**实现前端加密字符串以及异步文件上传
@@ -62,30 +73,8 @@
 >> * 修复从RedisCluster中读取会话数据时，由于无会话导致反序列化失败的问题
 >> * 修复JPA条件查询工具Condition.java在处理**NE**条件后，没有**break**导致查询失败的问题
 >
-> ### version 2.5.2.RELEASE
->> * SpringBoot升級至1.3.6
->> * 增加自定義404和500頁面
->> * 增加JSP自定義標籤以及配置
->> * 增加Redis實現的分佈式鎖工具類
->
-> ### version 2.5.1.RELEASE
+> ### version 1.1.RELEASE
 >> * 通过参照SpringSide实现的Condition.java优化JPA分页条件查询的实现方式
 >
-> ### version 2.5.0.RELEASE
->> * 增加会话共享到RedisCluster以及简洁的管理系统权限校验
->
-> ### version 2.4.1.RELEASE
->> * 开放平台增加RSA加解密报文的支持
->
-> ### version 2.4.0.RELEASE
->> * 增加H2用法並修復部分細節
->
-> ### version 2.3.1.RELEASE
->> * 增加Jasypt實現配置文件屬性加解密讀取
->> * 升級SprinBoot至最新版1.3.5.RELEASE
->
-> ### version 2.3.0.RELEASE
->> * 增加开放平台接口/router/rest及接口文档
->
-> ### version 2.2.0.RELEASE
+> ### version 1.0.RELEASE
 >> * tag for publish first
