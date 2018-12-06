@@ -46,9 +46,9 @@
 >> * 增加后台管理模块，用于管理和发布微信功能
 >> * 引入jssdk并编写了一个调用手机相机而不调用相册的例子
 >> * 增加QQ公众平台SDK，实现基本的收发文本消息、自定义菜单监听、关注与取消关注等功能
->> * 优化WeixinFilter静默方式网页授权获取用户信息的流程，使得前端只需Filter不需引入SDK
+>> * 优化WeixinFilter静默方式网页授权获取用户信息的流程，使得前端只需一个Filter不需引入SDK
 >> * 微信后台增加防伪标记，只有绑定到平台的公众号才提供服务，避免开发者URL被破译后盗用服务
->> * 缓存微信access_token和网页授权access_token等生命周期较长的数据信息到TokenHolder中
+>> * 缓存微信和网页授权的access_token等生命周期较长的数据信息，到Weixin和QQ各自的TokenHolder中
 >> * TokenHolder引入java.util.concurrent.atomic.AtomicBoolean，保证更新Token过程中，旧Token可用
 >
 > ### version 1.3.RELEASE
