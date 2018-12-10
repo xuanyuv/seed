@@ -105,7 +105,7 @@ public class GenerateHelper {
         Map<String, String> fieldnameMap = new HashMap<>();
         List<Column> columnList = DBHelper.getColumnList(tablename);
         for(int i=0; i<columnList.size(); i++){
-            if(StringUtils.equalsAnyIgnoreCase(columnList.get(i).getName(), "id", "create_time", "update_time")){
+            if(StringUtils.equalsAnyIgnoreCase(columnList.get(i).getName(), "id", "createtime", "updatetime")){
                 continue;
             }
             ///** 属性注释 */
