@@ -137,7 +137,8 @@ import java.util.concurrent.Executors;
  *  --toc-l7-indentation*     <num>    Set indentation on level of the toc (default)
  *  --toc-no-dots*                     Do not use dots, in the toc
  * ------------------------------------------------------------------------------------------------------------
- * @version v1.2
+ * @version v1.3
+ * @version v1.3-->简化描述以及Windows下调用时也传命令完整目录
  * @version v1.2-->支持自定义wkhtmltopdf命令目录
  * @history v1.1-->适配Linux：注意要设置工作目录，以及命令要写其所在的完整目录
  * @history v1.0-->新建
@@ -150,7 +151,7 @@ public final class WkhtmltopdfUtil {
     public static boolean convert(String headerHtmlPath, String htmlPath, String pdfPath){
         String commandPath;
         if(System.getProperty("os.name").contains("Windows")){
-            commandPath = "wkhtmltopdf";
+            commandPath = "D:/Develop/wkhtmltopdf/bin/wkhtmltopdf";
         }else{
             commandPath = "/opt/wkhtmltox/bin/wkhtmltopdf";
         }
@@ -160,12 +161,6 @@ public final class WkhtmltopdfUtil {
 
     /**
      * HTML文件转为PDF文件
-     * -------------------------------------------------------------------------------------------------------
-     * Linux环境下，即使环境变量已加入wkhtmltopdf命令，也要传该命令完整目录，否则出现下面的提示
-     * java.io.IOException: Cannot run program "wkhtmltopdf": error=2, 没有那个文件或目录
-     * java.io.IOException: Cannot run program "wkhtmltopdf" (in directory "/app/ifs/tmp/20180521"): error=2, 没有那个文件或目录
-     * 所以Linux下既要传完整命令目录，不过Windows下直接传"wkhtmltopdf"就行（前提是已经加到环境变量）
-     * -------------------------------------------------------------------------------------------------------
      * @param commandPath    wkhtmltopdf命令完整目录
      * @param headerHtmlPath 页眉html文件（其源码必须是以＜!DOCTYPE html>打头的html字符串）
      * @param htmlPath       html文件路径（比如：/app/ifs/contract.html，可以是本地或网络完整路径，本地文件则需含文件名和后缀）
