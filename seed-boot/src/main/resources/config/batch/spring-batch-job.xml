@@ -4,20 +4,34 @@
        xmlns:batch="http://www.springframework.org/schema/batch"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
-
     <batch:job id="xmlSettleJob">
-        <batch:step id="s1001">
+        <batch:listeners>
+            <batch:listener ref="settleJobListeners"/>
+        </batch:listeners>
+        <batch:step id="s100" next="s200">
             <batch:tasklet>
-                <batch:chunk reader="r1001" processor="p1001" writer="w1001" commit-interval="2"/>
+                <batch:listeners>
+                    <batch:listener ref="settleJobListeners"/>
+                </batch:listeners>
+                <batch:chunk commit-interval="2" reader="r101" processor="p101" writer="w101"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="s200">
+            <batch:tasklet>
+                <batch:listeners>
+                    <batch:listener ref="settleJobListeners"/>
+                </batch:listeners>
+                <batch:chunk commit-interval="2" reader="r201" processor="p201" writer="w201"/>
             </batch:tasklet>
         </batch:step>
     </batch:job>
 
-    <bean id="w1001" class="com.jadyer.seed.controller.batch.xmlconfig.W1001"/>
+    <bean id="p101" class="com.jadyer.seed.controller.batch.xmlconfig.P101"/>
+    <bean id="w101" class="com.jadyer.seed.controller.batch.xmlconfig.W101"/>
+    <bean id="p201" class="com.jadyer.seed.controller.batch.xmlconfig.P201"/>
+    <bean id="w201" class="com.jadyer.seed.controller.batch.xmlconfig.W201"/>
 
-    <bean id="p1001" class="com.jadyer.seed.controller.batch.xmlconfig.P1001"/>
-
-    <bean id="r1001" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <bean id="r101" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="resource" value="file:/data/seedboot-batch.txt"/>
         <property name="linesToSkip" value="1"/>
         <property name="encoding" value="UTF-8"/>
@@ -31,11 +45,28 @@
                 </property>
                 <property name="fieldSetMapper">
                     <bean class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
-                        <property name="prototypeBeanName" value="person"/>
+                        <property name="targetType" value="com.jadyer.seed.controller.batch.model.Person"/>
                     </bean>
                 </property>
             </bean>
         </property>
     </bean>
-    <bean id="person" class="com.jadyer.seed.controller.batch.model.Person" scope="prototype"/>
+
+    <bean id="r201" class="org.springframework.batch.item.database.JdbcPagingItemReader">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="fetchSize" value="10"/>
+        <property name="queryProvider">
+            <bean class="org.springframework.batch.item.database.support.SqlPagingQueryProviderFactoryBean">
+                <property name="dataSource" ref="dataSource"/>
+                <property name="selectClause" value="SELECT *"/>
+                <property name="fromClause" value="FROM t_person"/>
+                <property name="sortKey" value="id"/>
+            </bean>
+        </property>
+        <property name="rowMapper">
+            <bean class="org.springframework.jdbc.core.BeanPropertyRowMapper">
+                <property name="mappedClass" value="com.jadyer.seed.controller.batch.model.Person"/>
+            </bean>
+        </property>
+    </bean>
 </beans>

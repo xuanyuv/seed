@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by 玄玉<https://jadyer.cn/> on 2018/11/13 10:40.
  */
-public class W1001 implements ItemWriter<Person> {
+public class W101 implements ItemWriter<Person> {
     @Resource
     private PersonRepository personRepository;
 

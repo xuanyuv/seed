@@ -1,15 +1,8 @@
 package com.jadyer.seed.controller.batch.javaconfig;
 
-import com.jadyer.seed.comm.util.LogUtil;
-import com.jadyer.seed.comm.util.SystemClockUtil;
-import org.springframework.batch.core.BatchStatus;
-import org.springframework.batch.core.ExitStatus;
+import com.jadyer.seed.controller.batch.SettleJobListeners;
 import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.StepExecution;
-import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.job.builder.FlowBuilder;
 import org.springframework.batch.core.job.flow.Flow;
@@ -47,13 +40,15 @@ public class SettleJobConfiguration {
     private Step step0006;
     @Resource
     private JobBuilderFactory jobBuilderFactory;
+    @Resource
+    private SettleJobListeners settleJobListeners;
 
     @Bean
     public Job settleJob() {
         return jobBuilderFactory.get("settleJob")
                 //使每个Job的运行ID都唯一
                 .incrementer(new RunIdIncrementer())
-                .listener(this.jobExecutionListener())
+                .listener(this.settleJobListeners)
                 //.flow(step0001).split(new SimpleAsyncTaskExecutor("springbatch_seedboot")).add(flow04, flow05, flow06)
                 //.start(step0001).split(new SimpleAsyncTaskExecutor("springbatch_seedboot")).add(flow04, flow05, flow06)
                 //先执行step0001（注意：上面注释的这两种写法都不会step0001先执行然后再执行step0004...，他们都会使得step0001和step0004...同时执行）
@@ -78,43 +73,5 @@ public class SettleJobConfiguration {
                 .split(new SimpleAsyncTaskExecutor("springbatch_seedboot"))
                 .add(flow04, flow05, flow06)
                 .build();
-    }
-
-
-    private JobExecutionListener jobExecutionListener() {
-        return new JobExecutionListener() {
-            @Override
-            public void beforeJob(JobExecution jobExecution) {
-                LogUtil.getLogger().info("=======================================================================");
-                LogUtil.getLogger().info("批量任务-->[{}-{}]-->開始处理，JobParameters=[{}]", jobExecution.getJobId(), "step0000", jobExecution.getJobParameters());
-            }
-            @Override
-            public void afterJob(JobExecution jobExecution) {
-                if(jobExecution.getStatus() == BatchStatus.COMPLETED){
-                    LogUtil.getLogger().info("批量任务-->[{}-{}]-->处理完成，TotalDuration[{}]ms", jobExecution.getJobId(), "step0000", SystemClockUtil.INSTANCE.now()-jobExecution.getStartTime().getTime());
-                    LogUtil.getLogger().info("=======================================================================");
-                }
-            }
-        };
-    }
-
-
-    @Bean
-    public StepExecutionListener stepExecutionListener() {
-        return new StepExecutionListener() {
-            @Override
-            public void beforeStep(StepExecution stepExecution) {
-                LogUtil.getLogger().info("-----------------------------------------------------------------------");
-                LogUtil.getLogger().info("批量任务-->[{}-{}]-->開始处理", stepExecution.getJobExecutionId(), stepExecution.getStepName());
-            }
-            @Override
-            public ExitStatus afterStep(StepExecution stepExecution) {
-                if(stepExecution.getStatus() == BatchStatus.COMPLETED){
-                    LogUtil.getLogger().info("批量任务-->[{}-{}]-->处理完成，ReadCount=[{}]，WriteCount=[{}]，CommitCount==[{}]，Duration[{}]ms", stepExecution.getJobExecutionId(), stepExecution.getStepName(), stepExecution.getReadCount(), stepExecution.getWriteCount(), stepExecution.getCommitCount(), SystemClockUtil.INSTANCE.now()-stepExecution.getStartTime().getTime());
-                    LogUtil.getLogger().info("-----------------------------------------------------------------------");
-                }
-                return null;
-            }
-        };
     }
 }

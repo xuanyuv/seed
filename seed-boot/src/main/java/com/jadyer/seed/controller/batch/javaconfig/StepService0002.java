@@ -4,12 +4,12 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.ValidatorUtil;
+import com.jadyer.seed.controller.batch.SettleJobListeners;
 import com.jadyer.seed.controller.batch.model.Person;
 import com.jadyer.seed.controller.batch.model.PersonRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
@@ -38,12 +38,12 @@ public class StepService0002 {
     @Resource
     private StepBuilderFactory stepBuilderFactory;
     @Resource
-    private StepExecutionListener stepExecutionListener;
+    private SettleJobListeners settleJobListeners;
 
     @Bean
     public Step step0002(){
         return stepBuilderFactory.get("step0002")
-                .listener(stepExecutionListener)
+                .listener(this.settleJobListeners)
                 .<Person, Person>chunk(10)
                 .reader(this.reader())
                 .processor(this.processor())

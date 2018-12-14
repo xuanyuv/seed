@@ -2,10 +2,10 @@ package com.jadyer.seed.controller.batch.javaconfig;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.jadyer.seed.comm.util.LogUtil;
+import com.jadyer.seed.controller.batch.SettleJobListeners;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepContribution;
-import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
@@ -27,12 +27,12 @@ public class StepService0005 {
     @Resource
     private StepBuilderFactory stepBuilderFactory;
     @Resource
-    private StepExecutionListener stepExecutionListener;
+    private SettleJobListeners settleJobListeners;
 
     @Bean
     public Step step0005(){
         return stepBuilderFactory.get("step0005")
-                .listener(stepExecutionListener)
+                .listener(this.settleJobListeners)
                 .tasklet(this.nextBizDateTasklet())
                 .build();
     }

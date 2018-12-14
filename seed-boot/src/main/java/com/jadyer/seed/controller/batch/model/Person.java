@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @Table(name="t_person")
 public class Person extends BaseEntity<Long> {
     private static final long serialVersionUID = 6978021496961670970L;
-    @Size(min=2, max=6)
+    @Size(min=2, max=16)
     private String realName;
     private int age;
 
