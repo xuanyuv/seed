@@ -10,7 +10,6 @@
 * [x] seed-mpp：公众平台
 * [x] seed-open：开放平台
 * [x] seed-qss：定时系统（Quartz Scheduler System）
-* [x] seed-scs：脚手架（Sample Code System）
 * [x] seed-server：Mina实现的服务器
 * [x] seed-simcoder：简版的代码生成器
 * [x] seed-simulator：Swing实现的模拟器
@@ -27,8 +26,6 @@
 * │   └── seed-comm
 * ├── seed-qss
 * │   └── seed-comm
-* ├── seed-scs
-* │   └── seed-comm
 * ├── seed-server
 * │   └── seed-comm
 * ├── seed-simcoder
@@ -38,8 +35,14 @@
 
 ## 版本迭代
 
-> ### version 2.0.RELEASE
->> * upgrade springboot to 2.0.5
+> ### version 2.1.RELEASE
+>> * upgrade to beetl-2.9.7
+>> * upgrade to fastjson-1.2.54
+>> * upgrade to fredisson-3.10.0
+>> * upgrade to fspringboot-2.1.2
+>> * upgrade to fspringbootadmin-2.1.2
+>> * upgrade to fcommons-fileupload-1.4
+>> * 删除seed-scs（Sample Code System）脚手架模块
 >
 > ### version 1.4.RELEASE
 >> * 修复前一版中走了弯路导致的若干BUG

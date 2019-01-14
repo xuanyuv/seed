@@ -33,6 +33,24 @@ public class ViewController {
     }
 
 
+    @GetMapping("/404")
+    String notfound(){
+        return "/404";
+    }
+
+
+    @GetMapping("/500")
+    String servererr(){
+        return "/500";
+    }
+
+
+    @GetMapping("/building")
+    String building(){
+        return "/building";
+    }
+
+
     @ResponseBody
     @PostMapping("/login")
     public CommResult login(String username, String password, String captcha, HttpSession session){

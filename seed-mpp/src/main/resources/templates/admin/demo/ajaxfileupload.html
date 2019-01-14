@@ -59,7 +59,7 @@ function uploadIcons(){
     //执行上传文件操作的函数
     $.ajaxFileUpload({
         //处理文件上传操作的服务器端地址（可以传参数，比如/sample/uploadImg?username=jadyer，已亲测可用）
-        url:'${ctxPath}/scs/uploadImg/1024',
+        url:'${ctxPath}/uploadImg/1024',
         secureuri:false,                          //是否启用安全提交，默认为false
         fileElementId:'id_imgData',               //文件选择框的id属性
         dataType:'text',                          //服务器返回的格式，可以是json或xml等
@@ -75,7 +75,7 @@ function uploadIcons(){
             data = data.replace("</pre>", '');    //本例中设定上传文件完毕后，服务端会返回给前台[0`filepath]
             if(data.substring(0, 1) == 0){        //0表示上传成功（后跟上传后的文件路径），1表示失败（后跟失败描述）
                 $('#icons').val(data.substring(2));
-                $('#id_img').attr('src', '${ctxPath}/scs/file/get?path='+data.substring(2));
+                $('#id_img').attr('src', '${ctxPath}/file/get?path='+data.substring(2));
                 alert('图片上传成功-->[' + data.substring(2) + ']');
             }else{
                 alert(data.substring(2));
@@ -155,3 +155,69 @@ function submit(){
 <!--/Content-->
 
 <% include("/admin/comm/footer.html"){} %>
+
+<!--
+/**
+ * 文件下载
+ */
+@RequestMapping(value="/file/get")
+public void fileGet(String path, HttpServletRequest request, HttpServletResponse response) throws Exception{
+    InputStream is;
+    String filename;
+    if(path.endsWith("qrcode.jpg")){
+        filename = "qrcode.jpg";
+        //这里不能使用URI来创建File，因为URI认的是这个协议：file:///D:/qrcode.jpg
+        //filedata = new File(URI.create(JadyerUtil.getFullContextPath(request) + "/img/qrcode.jpg"));
+        is = new URL(RequestUtil.getFullContextPath(request) + "/img/qrcode.jpg").openStream();
+    }else{
+        filename = FilenameUtils.getName(path);
+        is = FileUtils.openInputStream(new File(scsHelper.getFilePath(FilenameUtils.getBaseName(path).endsWith("w"))+path));
+    }
+    /*
+    //也有人像下面这样返回文件流，但大文件会内存溢出
+    HttpStatus status = HttpStatus.CREATED;
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentDispositionFormData("attachment", FilenameUtils.getName(filePath));
+    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+    return new ResponseEntity<>(FileUtils.readFileToByteArray(new File("")), headers, status);
+    */
+    response.setContentType("application/octet-stream");
+    response.setHeader("Content-disposition", "attachment; filename=" + new String(filename.getBytes(StandardCharsets.UTF_8), "ISO8859-1"));
+    OutputStream os = new BufferedOutputStream(response.getOutputStream());
+    byte[] buff = new byte[1024];
+    int len;
+    while((len=is.read(buff)) > -1){
+        os.write(buff, 0, len);
+    }
+    os.flush();
+    is.close();
+    os.close();
+}
+
+
+/**
+ * 前台页面通过ajaxfileupload.js实现图片上传
+ */
+@CrossOrigin(maxAge=600)
+@RequestMapping("/uploadImg/{userId}")
+void uploadImg(@PathVariable int userId, MultipartFile imgData, HttpServletResponse response) throws IOException {
+    response.setContentType("text/plain; charset=UTF-8");
+    PrintWriter out = response.getWriter();
+    if(null==imgData || 0==imgData.getSize()){
+        out.print("1`请选择文件后上传");
+        out.flush();
+        out.close();
+        return;
+    }
+    String filePath = scsHelper.buildUploadFilePath(imgData.getOriginalFilename(), false);
+    //这样写也可以实现文件的保存：imgData.transferTo(new File(""));
+    FileUtils.copyInputStreamToFile(imgData.getInputStream(), new File(filePath));
+    out.print("0`" + FilenameUtils.getName(filePath));
+    out.flush();
+    out.close();
+}
+-->
+
+<!--
+scsHelper.java见本目录下的wangeditor.html尾部
+-->

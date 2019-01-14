@@ -74,7 +74,7 @@ editor.config.menus = [
 //隐藏掉插入网络图片功能（该配置仅在配置了图片上传功能后才可用）
 //editor.config.hideLinkImg = true;
 //上传图片的配置（支持自定义参数）
-editor.config.uploadImgUrl = '${ctxPath}/scs/wangEditor/uploadImg';
+editor.config.uploadImgUrl = '${ctxPath}/wangEditor/uploadImg';
 editor.config.uploadImgFileName = 'minefile';
 editor.config.uploadParams = {
     username: 'jadyer',
@@ -90,7 +90,7 @@ function submit(){
     var html = editor.$txt.html();
     //赋值（使用富文本编辑器时，就不能再用传统的$("mpname").val("赋值的内容")赋值了）
     //editor.$txt.html("赋值的内容");
-    $.post("${ctxPath}/scs/wangEditor/submit",
+    $.post("${ctxPath}/wangEditor/submit",
         {mpno:$('#mpno').val(), mpname:html},
         function(data){
             alert(data.msg);
@@ -98,3 +98,72 @@ function submit(){
     );
 }
 </script>
+
+<!--
+/**
+ * 前台页面通过wangEditor上传图片
+ */
+@CrossOrigin(maxAge=600)
+@RequestMapping("/wangEditor/uploadImg")
+void wangEditorUploadImg(String username, MultipartFile minefile, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    response.setContentType("text/plain; charset=UTF-8");
+    PrintWriter out = response.getWriter();
+    if(null==minefile || 0==minefile.getSize()){
+        //此时前台wangEditor会自动alert('未上传文件');
+        out.print("error|未上传文件");
+        out.flush();
+        out.close();
+        return;
+    }
+    //文件的名字会被wangEditor重命名为一个长度为16的数字，所以getOriginalFilename得到的并非真实原文件名
+    String filePath = scsHelper.buildUploadFilePath(minefile.getOriginalFilename(), true);
+    FileUtils.copyInputStreamToFile(minefile.getInputStream(), new File(filePath));
+    out.write(request.getContextPath() + "/sample/file/get?filePath=" + FilenameUtils.getName(filePath));
+    out.flush();
+    out.close();
+}
+
+
+/**
+ * 前台页面通过wangEditor提交内容
+ */
+@ResponseBody
+@RequestMapping("/wangEditor/submit")
+CommResult wangEditorSubmit(String mpno, String mpname) {
+    System.out.println("收到wangEditor的内容，mpno=["+mpno+"]，mpname=["+mpname+"]");
+    return CommResult.success();
+}
+-->
+
+<!--
+package com.jadyer.seed.scs;
+
+import com.jadyer.seed.comm.util.IDUtil;
+import com.jadyer.seed.comm.util.LogUtil;
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+/**
+ * Created by 玄玉<https://jadyer.cn/> on 2017/3/10 5:35.
+ */
+@Component
+class ScsHelper {
+    @Value("${scs.upload}")
+    private String scsUpload;
+
+    String getFilePath(boolean isWangEditor){
+        return (scsUpload.endsWith("/") ? scsUpload : scsUpload+"/") + (isWangEditor ? "wangEditor/" : "");
+    }
+
+    /**
+     * 构建上传文件的存储路径
+     */
+    String buildUploadFilePath(String originalFilename, boolean isWangEditor){
+        String fileExtension = FilenameUtils.getExtension(originalFilename);
+        String filePath = this.getFilePath(isWangEditor) + IDUtil.INSTANCE.nextId() + (isWangEditor?"w":"") + "." + fileExtension;
+        LogUtil.getLogger().info("originalFilename=[{}]，filePath=[{}]", originalFilename, filePath);
+        return filePath;
+    }
+}
+-->

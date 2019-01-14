@@ -79,7 +79,10 @@ auth:
     - /health
     - /login
     - /captcha
+    - /building
     - /favicon.ico
+    - /404
+    - /500
 
 
 ---

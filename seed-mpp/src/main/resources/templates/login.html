@@ -36,6 +36,7 @@
 $(function(){
     //已登录状态下自动跳转默认首页
     if(${isNotEmpty(user)}){
+        //window.location.href = "${ctxPath}/view?url=/admin/wangeditor";
         window.location.href = "${ctxPath}/fans/list";
     }
     $("#username").focus();
@@ -96,6 +97,7 @@ function login(){
         {username:username, password:MD5(password), captcha:captcha},
         function(data){
             if(0 == data.code){
+                //window.location.href = "${ctxPath}/view?url=/admin/wangeditor";
                 window.location.href = "${ctxPath}/fans/list";
             }else{
                 o.attr("disabled", false).text("登录").css({"background":"#5bb75b", "cursor":"auto"});
@@ -121,6 +123,7 @@ function login(){
             </li>
         </ul>
         <div class="d">
+            <p class="p1"><a href="${ctxPath}/building" target="_blank">注册</a><span></span><a href="javascript:alert('暂未开放');" title="忘记密码">忘记密码</a></p>
             <p class="p2"><button id="loginSubmit" onclick="login();" class="btn trans" type="button">登&nbsp;&nbsp;录</button></p>
             <div class="clear"></div>
         </div>
