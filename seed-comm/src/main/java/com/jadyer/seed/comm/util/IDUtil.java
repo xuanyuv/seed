@@ -109,24 +109,16 @@ public enum IDUtil {
 
 
     /**
-     * 手工设置datacenterId（设置之后其它线程获取到的对象的datacenterId值就是这里设置的值，它是全局的）
+     * 手工设置数据中心ID和机器ID（设置之后其它线程获取到的对象的datacenterId和workerId值就是这里设置的值，它是全局的）
      */
-    public IDUtil setDatacenterId(long datacenterId){
-        if(datacenterId > maxDatacenterId){
-            throw new RuntimeException(String.format("数据中心ID %d 超过最大值 %d", datacenterId, maxDatacenterId));
+    public IDUtil setDatacenterWorkerId(long datacenterId, long workerId){
+        if(datacenterId>maxDatacenterId || datacenterId<0){
+            throw new RuntimeException(String.format("datacenterId can't be greater than %d or less than 0", maxDatacenterId));
+        }
+        if(workerId>maxWorkerId || workerId<0){
+            throw new RuntimeException(String.format("workerId can't be greater than %d or less than 0", maxWorkerId));
         }
         this.datacenterId = datacenterId;
-        return INSTANCE;
-    }
-
-
-    /**
-     * 手工设置workerId（设置之后其它线程获取到的对象的workerId值就是这里设置的值，它是全局的）
-     */
-    public IDUtil setWorkerId(long workerId){
-        if(workerId > maxWorkerId){
-            throw new RuntimeException(String.format("机器ID %d 超过最大值 %d", workerId, maxWorkerId));
-        }
         this.workerId = workerId;
         return INSTANCE;
     }
@@ -173,10 +165,10 @@ public enum IDUtil {
         //上次生成ID的时间截
         lastTimestamp = timestamp;
         //移位，并通过，或运算，拼到一起组成64位的ID
-        return ((timestamp - twepoch) << timestampLeftShift)
-                | (datacenterId << datacenterIdShift)
-                | (workerId << workerIdShift)
-                | sequence;
+        return ((timestamp - twepoch) << timestampLeftShift) //时间戳部分
+                | (datacenterId << datacenterIdShift)        //数据中心部分
+                | (workerId << workerIdShift)                //机器标识部分
+                | sequence;                                  //序列号部分
     }
 
 
