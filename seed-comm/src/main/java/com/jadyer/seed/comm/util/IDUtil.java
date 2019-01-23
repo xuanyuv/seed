@@ -11,8 +11,8 @@ import java.net.NetworkInterface;
  * ----------------------------------------------------------------------------------------------------------------
  * 用法如下
  * 第一种：IDUtil.INSTANCE.nextId()
- * 第二种：IDUtil.INSTANCE.setWorkerId(6).nextId()
- * 注意：调用setWorkerId()之后，下一次可直接调用IDUtil.INSTANCE.nextId()，它会使用setWorkerId()的值，因为它是全局的
+ * 第二种：IDUtil.INSTANCE.setDatacenterWorkerId(1, 6).nextId()
+ * 注意：调用setDatacenterWorkerId()之后，下一次可直接调用IDUtil.INSTANCE.nextId()，它会使用setDatacenterWorkerId()的值，因为它是全局的
  * ----------------------------------------------------------------------------------------------------------------
  * 这里生成ID使用的是syncronized进行同步的，syncronized使用在非静态方法上时，锁住的是当前对象，故本类采用单例模式
  * 因为多个线程使用该工具类时，只有让它们都锁的同一个对象，才能保证生成的ID不重复（否则每个线程取时间戳可以同时进行）
@@ -28,7 +28,8 @@ import java.net.NetworkInterface;
  * SnowFlake的优点是：整体上按照时间自增排序，并且整个分布式系统内不会产生ID碰撞（由数据中心ID和机器ID作区分）
  * 并且效率较高，根据IDUtilTest.java测试，最高每秒能产生两百万左右个ID（linux的话，应该会更高）
  * ----------------------------------------------------------------------------------------------------------------
- * @version v1.0
+ * @version v1.1
+ * @history v1.1-->合并setWorkerId()和setDatacenterId()两个方法到setDatacenterWorkerId()
  * @history v1.0-->新建
  * ----------------------------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.cn/> on 2017/10/9 17:26.
