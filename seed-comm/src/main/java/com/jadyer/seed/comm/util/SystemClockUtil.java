@@ -3,7 +3,6 @@ package com.jadyer.seed.comm.util;
 import java.sql.Timestamp;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -30,22 +29,13 @@ public enum SystemClockUtil {
 
     private void scheduleClockUpdating() {
         //守护线程
-        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(new ThreadFactory() {
-            @SuppressWarnings("NullableProblems")
-            @Override
-            public Thread newThread(Runnable runnable) {
-                Thread thread = new Thread(runnable, "thread-daemon-system-clock-util");
-                thread.setDaemon(true);
-                return thread;
-            }
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(runnable -> {
+            Thread thread = new Thread(runnable, "thread-daemon-system-clock-util");
+            thread.setDaemon(true);
+            return thread;
         });
         // 1 秒后首次执行，之后每 1 秒均自动执行一次
-        scheduler.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                now.set(System.currentTimeMillis());
-            }
-        }, 1, 1, TimeUnit.MILLISECONDS);
+        scheduler.scheduleAtFixedRate(() -> now.set(System.currentTimeMillis()), 1, 1, TimeUnit.MILLISECONDS);
     }
 
 
@@ -61,6 +51,6 @@ public enum SystemClockUtil {
      * @return 2017-10-10 12:44:00.351
      */
     public String nowDate(){
-        return new Timestamp(now.get()).toString();
+        return new Timestamp(this.now()).toString();
     }
 }

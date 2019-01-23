@@ -43,18 +43,18 @@ public enum IDUtil {
     private final long twepoch = 1507564800000L;
     //机器ID所占的位数
     private final long workerIdBits = 5L;
-    //数据标识ID所占的位数
+    //数据中心ID所占的位数
     private final long datacenterIdBits = 5L;
     //支持的最大机器ID，结果是31（这个移位算法可以很快的计算出几位二进制数所能表示的最大十进制数）
     //private final long maxWorkerId = -1L ^ (-1L << workerIdBits);
     private final long maxWorkerId = ~(-1L << workerIdBits);
-    //支持的最大数据标识ID，结果是31
+    //支持的最大数据中心ID，结果是31
     private final long maxDatacenterId = ~(-1L << datacenterIdBits);
     //序列在ID中占的位数
     private final long sequenceBits = 12L;
     //机器ID向左移12位
     private final long workerIdShift = sequenceBits;
-    //数据标识ID向左移17位（12+5）
+    //数据中心ID向左移17位（12+5）
     private final long datacenterIdShift = sequenceBits + workerIdBits;
     //时间截向左移22位（5+5+12）
     private final long timestampLeftShift = sequenceBits + workerIdBits + datacenterIdBits;
@@ -112,6 +112,9 @@ public enum IDUtil {
      * 手工设置datacenterId（设置之后其它线程获取到的对象的datacenterId值就是这里设置的值，它是全局的）
      */
     public IDUtil setDatacenterId(long datacenterId){
+        if(datacenterId > maxDatacenterId){
+            throw new RuntimeException(String.format("数据中心ID %d 超过最大值 %d", datacenterId, maxDatacenterId));
+        }
         this.datacenterId = datacenterId;
         return INSTANCE;
     }
@@ -121,6 +124,9 @@ public enum IDUtil {
      * 手工设置workerId（设置之后其它线程获取到的对象的workerId值就是这里设置的值，它是全局的）
      */
     public IDUtil setWorkerId(long workerId){
+        if(workerId > maxWorkerId){
+            throw new RuntimeException(String.format("机器ID %d 超过最大值 %d", workerId, maxWorkerId));
+        }
         this.workerId = workerId;
         return INSTANCE;
     }
@@ -166,7 +172,7 @@ public enum IDUtil {
         }
         //上次生成ID的时间截
         lastTimestamp = timestamp;
-        //移位，并通过或运算，拼到一起，组成64位的ID
+        //移位，并通过，或运算，拼到一起组成64位的ID
         return ((timestamp - twepoch) << timestampLeftShift)
                 | (datacenterId << datacenterIdShift)
                 | (workerId << workerIdShift)
