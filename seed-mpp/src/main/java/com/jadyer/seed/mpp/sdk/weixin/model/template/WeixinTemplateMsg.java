@@ -12,7 +12,7 @@ public class WeixinTemplateMsg {
     private String template_id;
     private String url;
     /**
-     * 201605241640使用微信接口測試號mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login发現此屬性不支持
+     * 201605241640使用微信接口測試號https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login发現此屬性不支持
      */
     //private String topcolor;
     private DataItem data;

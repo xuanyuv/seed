@@ -40,7 +40,7 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
  * 4.@ConditionalOnMissingBean      ：容器中没有出现指定Bean的条件下
  * 7.@ConditionalOnWebApplication   ：当前应用是Web应用的条件下
  * 8.@ConditionalOnNotWebApplication：当前应用不是Web应用的条件下（指的是SpringWebApplicationContext）
- * 6.@ConditionalOnResource         ：根据资源是否存在作为判断条件（可使用Spring约定命名，比如file:/home/test.dat）
+ * 6.@ConditionalOnResource         ：根据资源是否存在作为判断条件（可使用Spring约定命名，比如file:/app/date/test.dat）
  * 5.@ConditionalOnProperty         ：根据SpringEnvironment属性的值作为判断条件
  * 9.@ConditionalOnExpression       ：基于SpEL表达式作为判断条件
  * 10.@ConditionalOnJava            ：基于JVM版本作为判断条件

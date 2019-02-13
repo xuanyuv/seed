@@ -3,7 +3,7 @@ server:
 
 
 logging:
-  path: /home/seed/log/mpp
+  path: /app/seed/log/mpp
   config: classpath:config/logback-mpp.xml
   level:
     io.netty: info
@@ -30,6 +30,7 @@ spring:
       enabled: true
       maxFileSize: 10MB
       maxRequestSize: 10MB
+      location: /app/seed/tmp/mpp
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/mpp?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
     username: root

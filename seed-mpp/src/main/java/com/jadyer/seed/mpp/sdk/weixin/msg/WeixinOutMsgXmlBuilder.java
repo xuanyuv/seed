@@ -43,7 +43,7 @@ public class WeixinOutMsgXmlBuilder {
         if("transfer_customer_service".equals(outMsg.getMsgType())){
             return buildOutCustomServiceMsg((WeixinOutCustomServiceMsg)outMsg);
         }
-        throw new RuntimeException("未知的消息类型" + outMsg.getMsgType() + ", 请查阅微信公众平台开发者文档http://mp.weixin.qq.com/wiki/home/index.html.");
+        throw new RuntimeException("未知的消息类型" + outMsg.getMsgType() + ", 请查阅微信公众平台开发者文档https://mp.weixin.qq.com/wiki");
     }
 
 

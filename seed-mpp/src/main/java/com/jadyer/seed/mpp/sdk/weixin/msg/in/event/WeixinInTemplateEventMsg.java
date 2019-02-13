@@ -38,7 +38,7 @@ package com.jadyer.seed.mpp.sdk.weixin.msg.in.event;
  * -----------------------------------------------------------------------------------------------------------
  * 阅读回执事件之阅读状态为成功时，推送的XML如下
  * <p>
- *     201605241613通過微信接口測試號mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login驗證<br/>
+ *     201605241613通過微信接口測試號https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login驗證<br/>
  *     發現微信服務器不會推送此事件，即我們無法清楚用戶是否閱讀了模板消息
  * </p>
  * <xml>

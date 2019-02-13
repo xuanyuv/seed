@@ -3,7 +3,7 @@ server:
 
 
 logging:
-  path: /home/seed/log/qss
+  path: /app/seed/log/qss
   config: classpath:config/logback-qss.xml
   level:
     io.netty: info

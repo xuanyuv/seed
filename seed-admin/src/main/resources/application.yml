@@ -3,7 +3,7 @@ server:
 
 
 logging:
-  path: /home/seed/log/admin
+  path: /app/seed/log/admin
   config: classpath:logback-admin.xml
   level:
     io.netty: info

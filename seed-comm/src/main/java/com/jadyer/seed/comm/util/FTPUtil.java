@@ -1029,7 +1029,7 @@ class SFTPProcess implements SftpProgressMonitor {
 //    /**
 //     * 上传文件到FTP服务器，支持断点续传
 //     * @param local 本地文件名称，绝对路径
-//     * @param remote 远程文件路径，使用/home/directory1/subdirectory/file.ext
+//     * @param remote 远程文件路径，使用/app/directory1/subdirectory/file.ext
 //     *               按照Linux上的路径指定方式，支持多级目录嵌套，支持递归创建不存在的目录结构
 //     * @return 上传结果
 //     */

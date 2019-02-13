@@ -62,7 +62,7 @@ public class WeixinInMsgParser{
         if("event".equals(msgType)){
             return parseInEventMsg(root, toUserName, fromUserName, createTime, msgType);
         }
-        throw new RuntimeException("未知的消息类型" + msgType + ", 请查阅微信公众平台开发者文档http://mp.weixin.qq.com/wiki/home/index.html.");
+        throw new RuntimeException("未知的消息类型" + msgType + ", 请查阅微信公众平台开发者文档https://mp.weixin.qq.com/wiki");
     }
 
 
@@ -171,6 +171,6 @@ public class WeixinInMsgParser{
             e.setPrecision(root.elementText("Precision"));
             return e;
         }
-        throw new RuntimeException("未知的事件类型" + event + ", 请查阅微信公众平台开发者文档http://mp.weixin.qq.com/wiki/home/index.html.");
+        throw new RuntimeException("未知的事件类型" + event + ", 请查阅微信公众平台开发者文档https://mp.weixin.qq.com/wiki");
     }
 }

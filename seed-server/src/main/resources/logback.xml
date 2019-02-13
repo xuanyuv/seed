@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
 <configuration>
     <property name="PROJECT_NAME" value="seed-server"/>
-    <property name="LOG_HOME" value="/home/seed/log/server"/>
+    <property name="LOG_HOME" value="/app/seed/log/server"/>
     <property name="LOG_PATTERN" value="%d{yyMMddHHmmss}[%t][%C{0}.%M]%m%n"/>
     <contextName>${PROJECT_NAME}</contextName>
 
