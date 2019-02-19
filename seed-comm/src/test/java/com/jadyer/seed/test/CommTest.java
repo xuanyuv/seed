@@ -23,6 +23,45 @@ public class CommTest {
 
 
     /**
+     * 信用卡卡号生成规则
+     * --------------------------------------
+     * Luhn算法，也称为“模10”（Mod 10）算法
+     * --------------------------------------
+     * Comment by 玄玉<https://jadyer.cn/> on 2019/2/19 14:57.
+     */
+    @Test
+    public void buildCreditCardNo(){
+        //这里以625247012888xxxx举例
+        //倒数第四位数字
+        for(int i=0; i<10; i++){
+            //倒数第三位数字
+            for(int j=0; j<10; j++){
+                //倒数第二位数字
+                for(int k=0; k<10; k++){
+                    //倒数第一位数字
+                    for(int m=0; m<10; m++){
+                        int sum_I = 0;
+                        int sum_K = 0;
+                        for(char aa : String.valueOf(i * 2).toCharArray()){
+                            sum_I = sum_I + Integer.parseInt(aa + "");
+                        }
+                        for(char bb : String.valueOf(k * 2).toCharArray()){
+                            sum_K = sum_K + Integer.parseInt(bb + "");
+                        }
+                        //前12位算出来的相加之和是51
+                        if((sum_I+j+sum_K+m+51) % 10 == 0){
+                            //if(i!=4 && m!=4 && i==j){
+                                System.out.println(i + "" + j + "" + k + "" + m);
+                            //}
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
      * return和try{}finally{}的先后执行测试
      * 目前控制台输出：11执行了---22执行了---aa11...22
      */
