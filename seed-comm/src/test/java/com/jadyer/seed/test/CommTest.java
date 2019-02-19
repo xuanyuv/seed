@@ -40,16 +40,16 @@ public class CommTest {
                 for(int k=0; k<10; k++){
                     //倒数第一位数字
                     for(int m=0; m<10; m++){
-                        int sum_I = 0;
-                        int sum_K = 0;
+                        int sum_i = 0;
+                        int sum_k = 0;
                         for(char aa : String.valueOf(i * 2).toCharArray()){
-                            sum_I = sum_I + Integer.parseInt(aa + "");
+                            sum_i = sum_i + Integer.parseInt(aa + "");
                         }
-                        for(char bb : String.valueOf(k * 2).toCharArray()){
-                            sum_K = sum_K + Integer.parseInt(bb + "");
+                        for(char cc : String.valueOf(k * 2).toCharArray()){
+                            sum_k = sum_k + Integer.parseInt(cc + "");
                         }
                         //前12位算出来的相加之和是51
-                        if((sum_I+j+sum_K+m+51) % 10 == 0){
+                        if((sum_i + sum_k + j + m + 51) % 10 == 0){
                             //if(i!=4 && m!=4 && i==j){
                                 System.out.println(i + "" + j + "" + k + "" + m);
                             //}
