@@ -20,7 +20,7 @@ public class QuartzDemo {
         LogUtil.getLogger().info("定时任务：xxxx-->启动--------------------------------------------------->");
         List<String> dataList = Arrays.asList("1", "2", "3", "4", "5", "6");
         for(int i=0, len=dataList.size(); i<len; i++){
-            String idx = JadyerUtil.leftPadUseZero(i+"", (len+"").length());
+            String idx = JadyerUtil.leftPadUseZero(i+1+"", (len+"").length());
             LogUtil.getLogger().info("定时任务：xxxx-->[{}-{}]-->開始处理，读到数据={}", len, idx, ReflectionToStringBuilder.toString(dataList.get(i)));
             LogUtil.getLogger().info("读到数据：{}", dataList.get(i));
             LogUtil.getLogger().info("定时任务：xxxx-->[{}-{}]-->处理完毕", len, idx);
