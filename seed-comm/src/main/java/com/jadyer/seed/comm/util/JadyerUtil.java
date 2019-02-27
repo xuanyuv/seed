@@ -491,28 +491,28 @@ public final class JadyerUtil {
      *     <li>若想自己指定所补字节,可以使用{@link #leftPadUseByte(String, int, int, String)}</li>
      * </ul>
      */
-    public static String leftPadUseByte(String str, int size, String charset){
-        return leftPadUseByte(str, size, 0, "UTF-8");
+    public static String leftPadUseByte(String str, int length, String charset){
+        return leftPadUseByte(str, length, 0, "UTF-8");
     }
 
 
     /**
      * 字符串左补字节
      * <ul>
-     *     <li>若str对应的byte[]长度不小于size，则按照size截取str对应的byte[]，而非原样返回str</li>
-     *     <li>所以size参数很关键...事实上之所以这么处理，是由于支付处理系统接口文档规定了字段的最大长度</li>
+     *     <li>若str对应的byte[]长度不小于length，则按照length截取str对应的byte[]，而非原样返回str</li>
+     *     <li>所以length参数很关键...事实上之所以这么处理，是由于支付处理系统接口文档规定了字段的最大长度</li>
      * </ul>
      * @param padStrByASCII 该值为所补字节的ASCII码，如32表示空格，48表示0，64表示@
      * @param charset       由左补字节后的字节数组生成新字符串时所采用的字符集
      */
-    public static String leftPadUseByte(String str, int size, int padStrByASCII, String charset){
+    public static String leftPadUseByte(String str, int length, int padStrByASCII, String charset){
         byte[] srcByte = str.getBytes();
-        byte[] destByte = new byte[size];
+        byte[] destByte = new byte[length];
         Arrays.fill(destByte, (byte)padStrByASCII);
-        if(srcByte.length >= size){
-            System.arraycopy(srcByte, 0, destByte, 0, size);
+        if(srcByte.length >= length){
+            System.arraycopy(srcByte, 0, destByte, 0, length);
         }else{
-            System.arraycopy(srcByte, 0, destByte, size-srcByte.length, srcByte.length);
+            System.arraycopy(srcByte, 0, destByte, length-srcByte.length, srcByte.length);
         }
         return StringUtils.toEncodedString(destByte, Charset.forName(charset));
     }
@@ -520,18 +520,18 @@ public final class JadyerUtil {
 
     /**
      * 字符串左补零
-     * @param str  待补零的字符串
-     * @param size 补零后的总长度
+     * @param str    待补零的字符串
+     * @param length 补零后的总长度
      * @return 假设str=3，size=4，则返回0003
      */
-    public static String leftPadUseZero(String str, int size){
+    public static String leftPadUseZero(String str, int length){
         char[] srcArray = str.toCharArray();
-        char[] destArray = new char[size];
+        char[] destArray = new char[length];
         Arrays.fill(destArray, '0');
-        if(srcArray.length >= size){
-            System.arraycopy(srcArray, 0, destArray, 0, size);
+        if(srcArray.length >= length){
+            System.arraycopy(srcArray, 0, destArray, 0, length);
         }else{
-            System.arraycopy(srcArray, 0, destArray, size-srcArray.length, srcArray.length);
+            System.arraycopy(srcArray, 0, destArray, length-srcArray.length, srcArray.length);
         }
         return String.valueOf(destArray);
     }
