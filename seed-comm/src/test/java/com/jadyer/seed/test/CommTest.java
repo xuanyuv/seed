@@ -98,6 +98,8 @@ public class CommTest {
         List<Java8StreamInfo> dataList = Arrays.asList(info03, info01, info02);
         System.out.println("-----------------------------------------------------------------------------------------");
         //过滤
+        Java8StreamInfo newData = dataList.stream().filter(x -> new BigDecimal("22").compareTo(x.getLoanAmt())>0).findFirst().orElseThrow(RuntimeException::new);
+        System.out.println("过滤后得到对象：" + JSON.toJSONString(newData));
         List<Java8StreamInfo> newDataList = dataList.stream().filter(x -> new BigDecimal("30").compareTo(x.getLoanAmt())>0).collect(Collectors.toList());
         newDataList.forEach(info -> System.out.println("过滤后得到数据：" + JSON.toJSONString(info)));
         newDataList.forEach(info -> {
