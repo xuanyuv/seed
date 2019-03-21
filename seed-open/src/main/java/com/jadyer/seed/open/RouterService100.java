@@ -67,7 +67,7 @@ public class RouterService100 {
             return CommResult.fail(CodeEnum.SYSTEM_BUSY.getCode(), "文件流获取失败-->"+e.getMessage());
         }
         LogUtil.getLogger().info("文档类型：" + fileData.getContentType());
-        LogUtil.getLogger().info("文件大小：" + fileData.getSize()); // 2667993=2,667,993字节=2.54MB
+        LogUtil.getLogger().info("文件大小：" + fileData.getSize()); //2667993=2,667,993字节=2.54MB
         LogUtil.getLogger().info("文件原名：" + fileData.getOriginalFilename()); //含后缀
         try {
             String desktop = FileSystemView.getFileSystemView().getHomeDirectory().getPath() + System.getProperty("file.separator");
