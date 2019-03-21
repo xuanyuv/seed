@@ -72,7 +72,7 @@ public class RouterService100 {
         try {
             String desktop = FileSystemView.getFileSystemView().getHomeDirectory().getPath() + System.getProperty("file.separator");
             String separator = System.getProperty("file.separator");
-            FileUtils.copyInputStreamToFile(is, new File(desktop + separator +fileData.getOriginalFilename()));
+            FileUtils.copyInputStreamToFile(is, new File(desktop + separator + fileData.getOriginalFilename()));
         } catch (IOException e) {
             throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "文件流保存失败-->"+e.getMessage(), e);
         }
