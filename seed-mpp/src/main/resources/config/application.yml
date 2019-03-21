@@ -27,10 +27,8 @@ spring:
     queueCapacity: 1000
   servlet:
     multipart:
-      enabled: true
       maxFileSize: 10MB
       maxRequestSize: 10MB
-      location: /app/seed/tmp/mpp
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/mpp?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
     username: root
