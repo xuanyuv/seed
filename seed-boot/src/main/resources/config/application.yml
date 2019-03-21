@@ -90,14 +90,11 @@ spring:
     encoding:
       force: true
       charset: UTF-8
-  # org.springframework.boot.autoconfigure.web.servlet.MultipartProperties.java
-  # Caused by: org.apache.tomcat.util.http.fileupload.FileUploadBase$SizeLimitExceededException: the request was rejected because its size (39140170) exceeds the configured maximum (10485760)
+  # org.springframework.boot.autoconfigure.web.servlet.MultipartProperties.java（The field fileData exceeds its maximum permitted size of 1048576 bytes.）
   servlet:
     multipart:
-      enabled: true
       maxFileSize: 10MB
       maxRequestSize: 10MB
-      location: /app/seed/tmp/boot
   h2:
     # 啟用H2控制台並自定義訪問地址
     console:
