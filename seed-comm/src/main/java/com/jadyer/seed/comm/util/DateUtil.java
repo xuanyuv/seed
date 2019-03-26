@@ -2,6 +2,7 @@ package com.jadyer.seed.comm.util;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,10 +26,18 @@ public final class DateUtil {
     private DateUtil(){}
 
     /**
-     * 判断是否本月第一天
+     * 判断是否月初
      */
-    public static boolean isFirstDayOfMonth(){
-        return "01".equals(DateFormatUtils.format(new Date(), "dd"));
+    public static boolean isFirstDayOfMonth(Date date){
+        return "01".equals(DateFormatUtils.format(date, "dd"));
+    }
+
+
+    /**
+     * 判断是否月末
+     */
+    public static boolean isEndDayOfMonth(Date date){
+        return isFirstDayOfMonth(DateUtils.addDays(new Date(), 1));
     }
 
 
@@ -130,6 +139,11 @@ public final class DateUtil {
 
     /**
      * 计算两个日期的相差时间
+     * ---------------------------------------------------------------------------------------------------------------
+     * 等价于以下两个方法
+     * org.apache.commons.lang3.time.DurationFormatUtils.formatDuration(time, "dd HH:mm:ss.SSS")
+     * org.apache.commons.lang3.time.DurationFormatUtils.formatDuration(time, "dd'天'HH'小时'mm'分钟'ss'秒'SSS'毫秒'")
+     * ---------------------------------------------------------------------------------------------------------------
      * @param begin 起始日期
      * @param end   终止日期
      * @return xx天xx小时xx分xx秒
@@ -145,13 +159,15 @@ public final class DateUtil {
 
 
     /**
-     * 计算两个日期的相隔的天數
-     * <ul>
-     *     關於相隔和相差（getDistanceTime()）
-     *     <li>开始日期20170824235959，结束日期20170825000000，差一秒，但其相差天數==0，相隔天數==1</li>
-     *     <li>开始日期20170824110000，结束日期20170825105959，差一秒，但其相差天數==0，相隔天數==1</li>
-     *     <li>开始日期20170824110000，结束日期20170825110000，相同，但其相差天數==1，相隔天數==1</li>
-     * </ul>
+     * 计算两个日期相隔的天数
+     * -----------------------------------------------------------------------------------
+     * 等价于下面的方法
+     * org.apache.commons.lang3.time.DurationFormatUtils.formatPeriod(time, "d")
+     * 關於相隔和相差（getDistanceTime()）
+     * 1、开始日期20170824235959，结束日期20170825000000，差一秒，但其相差天數==0，相隔天數==1
+     * 2、开始日期20170824110000，结束日期20170825105959，差一秒，但其相差天數==0，相隔天數==1
+     * 3、开始日期20170824110000，结束日期20170825110000，相 同，但其相差天數==1，相隔天數==1
+     * -----------------------------------------------------------------------------------
      * @param begin 起始日期
      * @param end   终止日期
      * @return 相隔的天數
@@ -166,6 +182,35 @@ public final class DateUtil {
         }
         long time = end.getTime() - begin.getTime();
         return time / (24 * 60 * 60 * 1000);
+    }
+
+
+    /**
+     * 计算两个日期相隔的月数
+     * -----------------------------------------------------------------------------------
+     * org.apache.commons.lang3.time.DurationFormatUtils.formatPeriod(time, "M")
+     * 20190218 10:20 - 20190318 ： return 0
+     * 20190218 10:20 - 20190319 ： return 1
+     * 20190218 - 20190316       ： return 0
+     * 20190218 - 20190318       ： return 1
+     * 20190218 - 20190515       ： return 2
+     * 20190218 - 20190519       ： return 3
+     * 20190131 - 20190228       ： return 0
+     * 20190131 - 20190430       ： return 2
+     * 如果是算两个日期相隔的月数，那就把第二个参数format传小写的"y"
+     * 若传的format="y-M-d"，那么formatPeriod()返回的字符串就是"0-0-0"格式的，split截取即可
+     * 但此时要注意，比如计算20190218到20190318，算出来的就是0-1-0，所以第二个参数format很重要
+     * -----------------------------------------------------------------------------------
+     * Comment by 玄玉<https://jadyer.cn/> on 2019/3/26 16:58.
+     */
+    public static long getDistanceMonth(Date begin, Date end) {
+        String period = DurationFormatUtils.formatPeriod(begin.getTime(), end.getTime(), "M");
+        //处理 [20190131 - 20190228] 的情况
+        if(isEndDayOfMonth(end) && Integer.parseInt(DateFormatUtils.format(begin, "dd"))>Integer.parseInt(DateFormatUtils.format(end, "dd"))){
+            return Long.parseLong(period) + 1;
+        }else{
+            return Long.parseLong(period);
+        }
     }
 
 
