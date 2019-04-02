@@ -97,6 +97,10 @@ public class CommTest {
         Java8StreamInfo info03 = new Java8StreamInfo(3, new BigDecimal("38.88"));
         List<Java8StreamInfo> dataList = Arrays.asList(info03, info01, info02);
         System.out.println("-----------------------------------------------------------------------------------------");
+        //排序
+        dataList.sort(Comparator.comparingInt(Java8StreamInfo::getLoanTerm));
+        System.out.println("排序后得到数据：" + JSON.toJSONString(dataList));
+        System.out.println("-----------------------------------------------------------------------------------------");
         //过滤
         Java8StreamInfo newData = dataList.stream().filter(x -> new BigDecimal("22").compareTo(x.getLoanAmt())>0).findFirst().orElseThrow(RuntimeException::new);
         System.out.println("过滤后得到对象：" + JSON.toJSONString(newData));
