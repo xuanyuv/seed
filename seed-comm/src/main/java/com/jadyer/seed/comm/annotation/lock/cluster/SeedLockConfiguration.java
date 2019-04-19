@@ -127,7 +127,7 @@ public class SeedLockConfiguration implements EnvironmentAware {
                 //Caused by: java.lang.IllegalArgumentException: Lock objects are not defined
                 redLock = new RedissonRedLock(rLocks);
                 if(!redLock.tryLock(seedLock.waitTime(), seedLock.leaseTime(), seedLock.unit())){
-                    LogUtil.getLogger().error("资源[{}]加锁-->失败", key);
+                    LogUtil.getLogger().warn("资源[{}]加锁-->失败", key);
                     this.lockFallback(key, seedLock.fallbackMethod(), joinPoint, method, args);
                     return null;
                 }
@@ -136,13 +136,13 @@ public class SeedLockConfiguration implements EnvironmentAware {
                 this.lockFallback(key, seedLock.fallbackMethod(), joinPoint, method, args);
                 return null;
             }
-            LogUtil.getLogger().info("资源[{}]加锁-->成功", key);
+            LogUtil.getLogger().debug("资源[{}]加锁-->成功", key);
             return joinPoint.proceed();
         }finally{
             if(null != redLock){
                 redLock.unlock();
             }
-            LogUtil.getLogger().info("资源[{}]解锁-->完毕", key);
+            LogUtil.getLogger().debug("资源[{}]解锁-->完毕", key);
         }
     }
 
@@ -187,13 +187,13 @@ public class SeedLockConfiguration implements EnvironmentAware {
      */
     private void lockFallback(String key, String fallbackMethod, ProceedingJoinPoint joinPoint, Method method, Object[] args){
         if(StringUtils.isBlank(fallbackMethod)){
-            LogUtil.getLogger().error("资源[{}]加锁-->失败，未配置回调方法名，故不回调", key);
+            LogUtil.getLogger().debug("资源[{}]加锁-->失败，未配置回调方法名，故不回调", key);
             return;
         }
         try {
-            LogUtil.getLogger().error("资源[{}]加锁-->失败，回调开始...", key);
+            LogUtil.getLogger().debug("资源[{}]加锁-->失败，回调开始...", key);
             joinPoint.getTarget().getClass().getMethod(fallbackMethod, method.getParameterTypes()).invoke(joinPoint.getTarget(), args);
-            LogUtil.getLogger().error("资源[{}]加锁-->失败，回调结束...", key);
+            LogUtil.getLogger().debug("资源[{}]加锁-->失败，回调结束...", key);
         } catch (Throwable t) {
             LogUtil.getLogger().error("资源[{}]加锁-->失败，回调失败，堆栈轨迹如下", key, t);
         }
