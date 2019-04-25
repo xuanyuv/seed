@@ -53,9 +53,9 @@ ${fields_BuilderSetValues}
 ${fields_BuilderNoAnnotations}
         private Builder(){}
         public ${CLASS_NAME} build() {
-            if(this.id < 0){
-                throw new IllegalArgumentException("ID不能为负数");
-            }
+            //if(this.id < 0){
+            //    throw new IllegalArgumentException("ID不能为负数");
+            //}
             return new ${CLASS_NAME}(this);
         }
 ${methods_Builders}
