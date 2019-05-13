@@ -19,8 +19,9 @@ import java.util.Date;
 /**
  * 阿里云对象存储服务（OSS：Object Storage Service）工具类
  * ----------------------------------------------------------------------------------------------------------------
- * @version v1.3
- * @version v1.3-->获取图片的临时地址的方法升级为：获取文件的临时地址
+ * @version v1.4
+ * @version v1.4-->获取文件的临时地址方法修改为：若获取到的地址为http协议，则改为https后返回
+ * @version v1.3-->获取图片的临时地址方法升级为：获取文件的临时地址
  * @version v1.2-->下载文件：文件不存在时返回字符串OSSUtil.NO_FILE
  * @history v1.1-->获取图片临时URL接口支持自定义x-oss-process参数
  * @history v1.0-->新建
@@ -53,6 +54,7 @@ public class OSSUtil {
                 req.setProcess(StringUtils.isNotBlank(process) ? process : "image/resize,p_100");
             }
             String imgURL = ossClient.generatePresignedUrl(req).toString();
+            imgURL = imgURL.startsWith("http://") ? imgURL.replace("http://", "https://") : imgURL;
             LogUtil.getLogger().info("获取文件临时URL，请求ossKey=[{}]，应答fileUrl=[{}]", key, imgURL);
             return imgURL;
         } catch (OSSException oe) {
