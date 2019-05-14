@@ -11,13 +11,13 @@ import com.jadyer.seed.simcoder.helper.GenerateHelper;
  */
 public class SimcoderRun {
     public static final String PACKGET_PREFIX = "com.jadyer.seed.qss";
-    public static final String DB_ADDRESS = "192.168.20.66:3306";
-    public static final String DB_NAME = "ccs_acct";
+    public static final String DB_ADDRESS = "127.0.0.1:3306";
+    public static final String DB_NAME = "qss";
     public static final String DB_USERNAME = "root";
-    public static final String DB_PASSWORD = "111111";
+    public static final String DB_PASSWORD = "xuanyu";
 
     public static void main(String[] args){
         //GenerateHelper.generate(DB_NAME);
-        GenerateHelper.generate(DB_NAME, "credit_plan_templt_conf");
+        GenerateHelper.generate(DB_NAME, "t_qss");
     }
 }
