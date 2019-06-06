@@ -83,7 +83,7 @@ public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Lon
      * 5. 可以使用OrderBy对结果进行升序或降序排序
      * 6. 可以查询属性的属性，直接将几个属性连着写即可，如果可能出现歧义属性，可以使用下划线分隔多个属性
      * 7. 返回值为ScheduleTask时，若查询不到数据，则返回的ScheduleTask==null
-     * 8. 返回值为List<ScheduleTask>时，若查询不到数据，则返回的List<ScheduleTask>!=null，只是List<ScheduleTask>.size()=0
+     * 8. 返回值为List<ScheduleTask>时，若查询不到数据，则返回的List<ScheduleTask>!=null，而是List<ScheduleTask>.size()=0
      */
     //根据 name 来获取对应的 ScheduleTask
     ScheduleTask getByName(String name);
@@ -127,7 +127,7 @@ public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Lon
     //避免歧义可以这样
     //List<Person> findByAddress_ZipCode(ZipCode zipCode);
 
-    //限制查询结果
+    //限制查询结果（注意这里不能写成findFirstOrderByIdAsc，即First和Top后面要跟上By，哪怕没有查询条件）
     ScheduleTask findFirstByOrderByIdAsc();
     ScheduleTask findTopByOrderByNameDesc();
     Slice<ScheduleTask> findTop3ByStatus(Integer status, Pageable pageable);
