@@ -10,6 +10,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * Seed分布式锁（采用Redisson实现的RedLock算法）
  * ---------------------------------------------------------------------------------------------------
+ * 注：被注解方法不能private，其余三种均可
+ * ---------------------------------------------------------------------------------------------------
  * 1、@SpringBootApplication(scanBasePackages="com.jadyer.seed")
  * 2、org.redisson:redisson:3.7.1
  * 3、redisson:
