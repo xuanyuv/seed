@@ -10,15 +10,15 @@ import org.springframework.stereotype.Component;
 
 /**
  * ApplicationContext持有器
- * <p>
- *     用法举例：FansInfoDao fansInfoDao = (FansInfoDao)SpringContextHolder.getBean("fansInfoDao");
- * </p>
- * --------------------------------------------------------------------------------------------------
+ * ------------------------------------------------------------------------------------------------------------------
+ * 用法举例：FansInfoDao fansInfoDao = (FansInfoDao)SpringContextHolder.getBean("fansInfoDao");
+ * 注：使用时无需注入SpringContextHolder，直接调用静态方法即可，但要保证SpringContextHolder能被Spring扫描到
+ * ------------------------------------------------------------------------------------------------------------------
  * Spring提供了一些Aware接口，比如BeanFactoryAware、ApplicationContextAware、ResourceLoaderAware、ServletContextAware
  * 实现了这些接口的Bean在被初始化之后，便拥有了取得相关资源的能力
  * 比如实现BeanFactoryAware的Bean在被初始化之后，Spring容器会注入BeanFactory的实例
  * 而实现了ApplicationContextAware的Bean在被初始化之后，会被注入ApplicationContext的实例
- * --------------------------------------------------------------------------------------------------
+ * ------------------------------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.cn/> on 2015/2/27 10:01.
  */
 @Component
@@ -64,7 +64,7 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
      * 实现DisposableBean接口，在Context关闭时清理静态变量
      */
     @Override
-    public void destroy() throws Exception {
+    public void destroy() {
         SpringContextHolder.clearHolder();
     }
 
