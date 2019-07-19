@@ -6,7 +6,6 @@ import com.rabbitmq.client.Channel;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
@@ -14,7 +13,7 @@ import java.io.IOException;
  * 接收从RabbitMQ订阅的消息
  * Created by 玄玉<https://jadyer.cn/> on 2018/3/23 12:11.
  */
-@Component
+//@Component
 public class ReceiveService {
     @RabbitListener(queues="myapi.get.apply.status02", containerFactory="jadyerRabbitListenerContainerFactory")
     public void receive02(UserMsg userMsg){

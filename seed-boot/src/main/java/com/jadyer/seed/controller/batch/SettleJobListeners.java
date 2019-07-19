@@ -1,5 +1,6 @@
 package com.jadyer.seed.controller.batch;
 
+import com.alibaba.fastjson.JSON;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.SystemClockUtil;
 import org.springframework.batch.core.BatchStatus;
@@ -18,13 +19,14 @@ public class SettleJobListeners implements JobExecutionListener, StepExecutionLi
     @Override
     public void beforeJob(JobExecution jobExecution) {
         LogUtil.getLogger().info("=======================================================================");
-        LogUtil.getLogger().info("批量任务-->[{}-{}]-->開始处理，JobParameters=[{}]", jobExecution.getJobId(), "step0000", jobExecution.getJobParameters());
+        System.out.println(JSON.toJSONString(jobExecution));
+        LogUtil.getLogger().info("批量任务Job-->[{}-{}]-->開始处理，JobParameters=[{}]", jobExecution.getJobId(), jobExecution.getJobInstance().getJobName(), jobExecution.getJobParameters());
     }
 
     @Override
     public void afterJob(JobExecution jobExecution) {
         if(jobExecution.getStatus() == BatchStatus.COMPLETED){
-            LogUtil.getLogger().info("批量任务-->[{}-{}]-->处理完成，TotalDuration[{}]ms", jobExecution.getJobId(), "step0000", SystemClockUtil.INSTANCE.now()-jobExecution.getStartTime().getTime());
+            LogUtil.getLogger().info("批量任务Job-->[{}-{}]-->处理完成，TotalDuration[{}]ms", jobExecution.getJobId(), jobExecution.getJobInstance().getJobName(), SystemClockUtil.INSTANCE.now()-jobExecution.getStartTime().getTime());
             LogUtil.getLogger().info("=======================================================================");
         }
     }
@@ -32,13 +34,13 @@ public class SettleJobListeners implements JobExecutionListener, StepExecutionLi
     @Override
     public void beforeStep(StepExecution stepExecution) {
         LogUtil.getLogger().info("-----------------------------------------------------------------------");
-        LogUtil.getLogger().info("批量任务-->[{}-{}]-->開始处理", stepExecution.getJobExecutionId(), stepExecution.getStepName());
+        LogUtil.getLogger().info("批量任务Step-->[{}-{}]-->開始处理", stepExecution.getJobExecutionId(), stepExecution.getStepName());
     }
 
     @Override
     public ExitStatus afterStep(StepExecution stepExecution) {
         if(stepExecution.getStatus() == BatchStatus.COMPLETED){
-            LogUtil.getLogger().info("批量任务-->[{}-{}]-->处理完成，ReadCount=[{}]，WriteCount=[{}]，CommitCount==[{}]，Duration[{}]ms", stepExecution.getJobExecutionId(), stepExecution.getStepName(), stepExecution.getReadCount(), stepExecution.getWriteCount(), stepExecution.getCommitCount(), SystemClockUtil.INSTANCE.now()-stepExecution.getStartTime().getTime());
+            LogUtil.getLogger().info("批量任务Step-->[{}-{}]-->处理完成，ReadCount=[{}]，WriteCount=[{}]，CommitCount==[{}]，Duration[{}]ms", stepExecution.getJobExecutionId(), stepExecution.getStepName(), stepExecution.getReadCount(), stepExecution.getWriteCount(), stepExecution.getCommitCount(), SystemClockUtil.INSTANCE.now()-stepExecution.getStartTime().getTime());
             LogUtil.getLogger().info("-----------------------------------------------------------------------");
         }
         return null;

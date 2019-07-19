@@ -12,8 +12,8 @@ public class P201 implements ItemProcessor<Person, Person> {
     @Override
     public Person process(Person item) {
         LogUtil.getLogger().info("读取到-->{}", ReflectionToStringBuilder.toString(item));
-        item.setAge(item.getAge() + 10);
-        item.setRealName(item.getRealName() + "--00");
+        item.setAge(item.getAge() - 2);
+        item.setRealName(item.getRealName().replaceAll("00", "22"));
         LogUtil.getLogger().info("转换后==>{}", ReflectionToStringBuilder.toString(item));
         return item;
     }
