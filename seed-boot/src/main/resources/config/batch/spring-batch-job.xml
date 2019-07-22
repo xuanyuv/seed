@@ -2,27 +2,28 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:batch="http://www.springframework.org/schema/batch"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd">
     <batch:job id="xmlSettleJob">
         <batch:listeners>
             <batch:listener ref="settleJobListeners"/>
         </batch:listeners>
         <batch:step id="s100" next="s200">
             <batch:tasklet>
-                <batch:listeners>
-                    <batch:listener ref="settleJobListeners"/>
-                </batch:listeners>
                 <batch:chunk commit-interval="2" reader="r101" processor="p101" writer="w101"/>
             </batch:tasklet>
+            <!-- 若想监听step，那么这里也要配置 -->
+            <batch:listeners>
+                <batch:listener ref="settleJobListeners"/>
+            </batch:listeners>
         </batch:step>
         <batch:step id="s200">
             <batch:tasklet>
-                <batch:listeners>
-                    <batch:listener ref="settleJobListeners"/>
-                </batch:listeners>
                 <batch:chunk commit-interval="2" reader="r201" processor="p201" writer="w201"/>
             </batch:tasklet>
+            <batch:listeners>
+                <batch:listener ref="settleJobListeners"/>
+            </batch:listeners>
         </batch:step>
     </batch:job>
 

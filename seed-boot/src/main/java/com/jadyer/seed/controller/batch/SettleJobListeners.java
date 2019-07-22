@@ -1,6 +1,5 @@
 package com.jadyer.seed.controller.batch;
 
-import com.alibaba.fastjson.JSON;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.SystemClockUtil;
 import org.springframework.batch.core.BatchStatus;
@@ -19,7 +18,6 @@ public class SettleJobListeners implements JobExecutionListener, StepExecutionLi
     @Override
     public void beforeJob(JobExecution jobExecution) {
         LogUtil.getLogger().info("=======================================================================");
-        System.out.println(JSON.toJSONString(jobExecution));
         LogUtil.getLogger().info("批量任务Job-->[{}-{}]-->開始处理，JobParameters=[{}]", jobExecution.getJobId(), jobExecution.getJobInstance().getJobName(), jobExecution.getJobParameters());
     }
 
