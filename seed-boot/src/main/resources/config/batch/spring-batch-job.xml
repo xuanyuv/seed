@@ -7,7 +7,7 @@
     <bean id="writer101" class="com.jadyer.seed.controller.batch.xmlconfig.Writer101"/>
     <bean id="writer201" class="com.jadyer.seed.controller.batch.xmlconfig.Writer201"/>
     <bean id="writer202" class="com.jadyer.seed.controller.batch.xmlconfig.Writer202"/>
-    <bean id="writerNull" class="com.jadyer.seed.controller.batch.xmlconfig.WriterNull"/>
+    <bean id="writerVoid" class="com.jadyer.seed.controller.batch.xmlconfig.WriterVoid"/>
     <bean id="processor101" class="com.jadyer.seed.controller.batch.xmlconfig.Processor101"/>
     <bean id="processor201" class="com.jadyer.seed.controller.batch.xmlconfig.Processor201"/>
     <bean id="processor202" class="com.jadyer.seed.controller.batch.xmlconfig.Processor202"/>
@@ -57,7 +57,7 @@
                         虽然ItemReader逻辑相同，但这里不能使用reader201，这是由于201和203是并行执行的，而一个ItemReader是不能被同时使用的
                         否则会报告：org.springframework.batch.item.ItemStreamException: Failed to initialize the reader
                         Caused by: java.lang.IllegalStateException: Cannot open an already opened ItemReader, call close first -->
-                        <batch:chunk commit-interval="2" reader="reader203" processor="processor203" writer="writerNull"/>
+                        <batch:chunk commit-interval="2" reader="reader203" processor="processor203" writer="writerVoid"/>
                     </batch:tasklet>
                 </batch:step>
             </batch:flow>
