@@ -67,7 +67,23 @@
                 <bean class="com.jadyer.seed.controller.batch.xmlconfig.Tasklet301"/>
             </batch:tasklet>
         </batch:step>
+        <!-- Step400：读取数据库内容，处理后，落库 -->
+        <!--<batch:step id="step400" parent="parentStep">-->
+            <!--<batch:tasklet>-->
+                <!--<batch:chunk commit-interval="2" reader="reader201" processor="processor400" writer="writer101"/>-->
+            <!--</batch:tasklet>-->
+        <!--</batch:step>-->
     </batch:job>
+
+    <!--<bean id="processor400" class="org.springframework.batch.item.support.CompositeItemProcessor">-->
+        <!--<property name="delegates">-->
+            <!--<list>-->
+                <!--<bean class="com.jadyer.seed.controller.batch.xmlconfig.Processor401"/>-->
+                <!--<bean class="com.jadyer.seed.controller.batch.xmlconfig.Processor402"/>-->
+                <!--<bean class="com.jadyer.seed.controller.batch.xmlconfig.Processor403"/>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
 
     <bean id="reader101" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="resource" value="file:/data/seedboot-batch.txt"/>
