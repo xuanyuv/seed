@@ -5,7 +5,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
         http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd">
     <bean id="writer101" class="com.jadyer.seed.controller.batch.xmlconfig.Writer101"/>
-    <bean id="writer201" class="com.jadyer.seed.controller.batch.xmlconfig.Writer201"/>
     <bean id="writer202" class="com.jadyer.seed.controller.batch.xmlconfig.Writer202"/>
     <bean id="writerVoid" class="com.jadyer.seed.controller.batch.xmlconfig.WriterVoid"/>
     <bean id="processor101" class="com.jadyer.seed.controller.batch.xmlconfig.Processor101"/>
@@ -39,7 +38,7 @@
                 <!-- 读取数据库内容，处理后，落库 -->
                 <batch:step id="step201" next="step202" parent="parentStep">
                     <batch:tasklet>
-                        <batch:chunk commit-interval="2" reader="reader201" processor="processor201" writer="writer201"/>
+                        <batch:chunk commit-interval="2" reader="reader201" processor="processor201" writer="writer101"/>
                     </batch:tasklet>
                 </batch:step>
                 <!-- 读取数据库内容，处理后，打印出来 -->

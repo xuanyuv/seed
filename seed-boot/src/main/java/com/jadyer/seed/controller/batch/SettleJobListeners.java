@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 public class SettleJobListeners implements JobExecutionListener, StepExecutionListener {
     @Override
     public void beforeJob(JobExecution jobExecution) {
-        LogUtil.getLogger().info("=======================================================================");
         LogUtil.getLogger().info("批量任务Job-->[{}-{}]-->開始处理，JobParameters=[{}]", jobExecution.getJobId(), jobExecution.getJobInstance().getJobName(), jobExecution.getJobParameters());
     }
 
@@ -31,7 +30,6 @@ public class SettleJobListeners implements JobExecutionListener, StepExecutionLi
 
     @Override
     public void beforeStep(StepExecution stepExecution) {
-        LogUtil.getLogger().info("-----------------------------------------------------------------------");
         LogUtil.getLogger().info("批量任务Step-->[{}-{}]-->開始处理", stepExecution.getJobExecutionId(), stepExecution.getStepName());
     }
 
