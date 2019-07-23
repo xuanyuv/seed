@@ -8,12 +8,12 @@ import org.springframework.batch.item.ItemProcessor;
 /**
  * Created by 玄玉<https://jadyer.cn/> on 2018/12/14 19:02.
  */
-public class P201 implements ItemProcessor<Person, Person> {
+public class Processor201 implements ItemProcessor<Person, Person> {
     @Override
     public Person process(Person item) {
         LogUtil.getLogger().info("读取到-->{}", ReflectionToStringBuilder.toString(item));
-        item.setAge(item.getAge() - 2);
-        item.setRealName(item.getRealName().replaceAll("00", "22"));
+        item.setAge(item.getAge() - 201);
+        item.setRealName(item.getRealName().replaceAll("101", "201"));
         LogUtil.getLogger().info("转换后==>{}", ReflectionToStringBuilder.toString(item));
         return item;
     }

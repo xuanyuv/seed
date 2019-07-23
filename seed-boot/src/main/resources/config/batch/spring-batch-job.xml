@@ -4,35 +4,73 @@
        xmlns:batch="http://www.springframework.org/schema/batch"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
         http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd">
-    <batch:job id="xmlSettleJob">
+    <bean id="writer101" class="com.jadyer.seed.controller.batch.xmlconfig.Writer101"/>
+    <bean id="writer201" class="com.jadyer.seed.controller.batch.xmlconfig.Writer201"/>
+    <bean id="writer202" class="com.jadyer.seed.controller.batch.xmlconfig.Writer202"/>
+    <bean id="writerNull" class="com.jadyer.seed.controller.batch.xmlconfig.WriterNull"/>
+    <bean id="processor101" class="com.jadyer.seed.controller.batch.xmlconfig.Processor101"/>
+    <bean id="processor201" class="com.jadyer.seed.controller.batch.xmlconfig.Processor201"/>
+    <bean id="processor202" class="com.jadyer.seed.controller.batch.xmlconfig.Processor202"/>
+    <bean id="processor203" class="com.jadyer.seed.controller.batch.xmlconfig.Processor203"/>
+    <bean id="simpleAsyncTaskExecutor" class="org.springframework.core.task.SimpleAsyncTaskExecutor"/>
+
+    <!-- 定义公共的Job和Step配置：监听并打印日志 -->
+    <batch:job id="parentJob" abstract="true">
         <batch:listeners>
             <batch:listener ref="settleJobListeners"/>
         </batch:listeners>
-        <batch:step id="s100" next="s200">
+    </batch:job>
+    <batch:step id="parentStep" abstract="true">
+        <batch:listeners>
+            <batch:listener ref="settleJobListeners"/>
+        </batch:listeners>
+    </batch:step>
+
+    <batch:job id="xmlSettleJob" parent="parentJob">
+        <!-- Step101：读取本地文件内容，处理后，落库 -->
+        <batch:step id="step101" next="splitFlow200" parent="parentStep">
             <batch:tasklet>
-                <batch:chunk commit-interval="2" reader="r101" processor="p101" writer="w101"/>
+                <batch:chunk commit-interval="2" reader="reader101" processor="processor101" writer="writer101"/>
             </batch:tasklet>
-            <!-- 若想监听step，那么这里也要配置 -->
-            <batch:listeners>
-                <batch:listener ref="settleJobListeners"/>
-            </batch:listeners>
         </batch:step>
-        <batch:step id="s200">
+        <!-- 并行的Step：201与202顺序执行，同时它们与203并行执行（注：必须配置task-executor，否则仍会串行） -->
+        <batch:split id="splitFlow200" next="step301" task-executor="simpleAsyncTaskExecutor">
+            <batch:flow>
+                <!-- 读取数据库内容，处理后，落库 -->
+                <batch:step id="step201" next="step202" parent="parentStep">
+                    <batch:tasklet>
+                        <batch:chunk commit-interval="2" reader="reader201" processor="processor201" writer="writer201"/>
+                    </batch:tasklet>
+                </batch:step>
+                <!-- 读取数据库内容，处理后，打印出来 -->
+                <batch:step id="step202" parent="parentStep">
+                    <batch:tasklet>
+                        <batch:chunk commit-interval="2" reader="reader201" processor="processor202" writer="writer202"/>
+                    </batch:tasklet>
+                </batch:step>
+            </batch:flow>
+            <batch:flow>
+                <!-- 读取数据库内容，处理后，啥都不做 -->
+                <batch:step id="step203" parent="parentStep">
+                    <batch:tasklet>
+                        <!--
+                        虽然ItemReader逻辑相同，但这里不能使用reader201，这是由于201和203是并行执行的，而一个ItemReader是不能被同时使用的
+                        否则会报告：org.springframework.batch.item.ItemStreamException: Failed to initialize the reader
+                        Caused by: java.lang.IllegalStateException: Cannot open an already opened ItemReader, call close first -->
+                        <batch:chunk commit-interval="2" reader="reader203" processor="processor203" writer="writerNull"/>
+                    </batch:tasklet>
+                </batch:step>
+            </batch:flow>
+        </batch:split>
+        <!-- Step301：读取数据库内容，处理后，输出到本地文件 -->
+        <batch:step id="step301" parent="parentStep">
             <batch:tasklet>
-                <batch:chunk commit-interval="2" reader="r201" processor="p201" writer="w201"/>
+                <bean class="com.jadyer.seed.controller.batch.xmlconfig.Tasklet301"/>
             </batch:tasklet>
-            <batch:listeners>
-                <batch:listener ref="settleJobListeners"/>
-            </batch:listeners>
         </batch:step>
     </batch:job>
 
-    <bean id="p101" class="com.jadyer.seed.controller.batch.xmlconfig.P101"/>
-    <bean id="w101" class="com.jadyer.seed.controller.batch.xmlconfig.W101"/>
-    <bean id="p201" class="com.jadyer.seed.controller.batch.xmlconfig.P201"/>
-    <bean id="w201" class="com.jadyer.seed.controller.batch.xmlconfig.W201"/>
-
-    <bean id="r101" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <bean id="reader101" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="resource" value="file:/data/seedboot-batch.txt"/>
         <property name="linesToSkip" value="1"/>
         <property name="encoding" value="UTF-8"/>
@@ -53,7 +91,25 @@
         </property>
     </bean>
 
-    <bean id="r201" class="org.springframework.batch.item.database.JdbcPagingItemReader">
+    <bean id="reader201" class="org.springframework.batch.item.database.JdbcPagingItemReader">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="fetchSize" value="10"/>
+        <property name="queryProvider">
+            <bean class="org.springframework.batch.item.database.support.SqlPagingQueryProviderFactoryBean">
+                <property name="dataSource" ref="dataSource"/>
+                <property name="selectClause" value="SELECT *"/>
+                <property name="fromClause" value="FROM t_person"/>
+                <property name="sortKey" value="id"/>
+            </bean>
+        </property>
+        <property name="rowMapper">
+            <bean class="org.springframework.jdbc.core.BeanPropertyRowMapper">
+                <property name="mappedClass" value="com.jadyer.seed.controller.batch.model.Person"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="reader203" class="org.springframework.batch.item.database.JdbcPagingItemReader">
         <property name="dataSource" ref="dataSource"/>
         <property name="fetchSize" value="10"/>
         <property name="queryProvider">

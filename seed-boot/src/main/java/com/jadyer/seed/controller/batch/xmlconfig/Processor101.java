@@ -11,7 +11,7 @@ import org.springframework.batch.item.ItemProcessor;
 /**
  * Created by 玄玉<https://jadyer.cn/> on 2018/11/13 10:39.
  */
-public class P101 implements ItemProcessor<Person, Person> {
+public class Processor101 implements ItemProcessor<Person, Person> {
     @Override
     public Person process(Person item) {
         String validateResult = ValidatorUtil.validate(item);
@@ -19,8 +19,8 @@ public class P101 implements ItemProcessor<Person, Person> {
             throw new SeedException("数据校验未通过-->" + validateResult);
         }
         LogUtil.getLogger().info("读取到-->{}", ReflectionToStringBuilder.toString(item));
-        item.setAge(item.getAge() + 10);
-        item.setRealName(item.getRealName() + "--00");
+        item.setAge(item.getAge() + 101);
+        item.setRealName(item.getRealName() + "-101");
         LogUtil.getLogger().info("转换后==>{}", ReflectionToStringBuilder.toString(item));
         return item;
     }

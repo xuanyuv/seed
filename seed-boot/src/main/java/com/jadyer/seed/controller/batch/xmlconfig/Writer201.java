@@ -10,9 +10,9 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * Created by 玄玉<https://jadyer.cn/> on 2018/11/13 10:40.
+ * Created by 玄玉<https://jadyer.cn/> on 2018/12/14 19:02.
  */
-public class W101 implements ItemWriter<Person> {
+public class Writer201 implements ItemWriter<Person> {
     @Resource
     private PersonRepository personRepository;
 
