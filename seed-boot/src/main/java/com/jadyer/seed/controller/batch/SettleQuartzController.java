@@ -73,7 +73,7 @@ public class SettleQuartzController {
             timeLong = Long.parseLong(time);
         }
         LogUtil.getLogger().info("结算跑批{}：Starting...time={}", isResume?"：断点续跑":"", timeLong);
-        JobParameters jobParameters = new JobParametersBuilder().addLong("time", timeLong).addString("filePath", "/data/seedboot-batch.txt").toJobParameters();
+        JobParameters jobParameters = new JobParametersBuilder().addLong("time", timeLong).addString("filePath", "/data/seedboot-batch.txt", false).toJobParameters();
         Job xmlSettleJob = (Job)SpringContextHolder.getBean("xmlSettleJob");
         JobExecution execution = jobLauncher.run(xmlSettleJob, jobParameters);
         LogUtil.getLogger().info("结算跑批{}：Ending......", isResume?"：断点续跑":"");
