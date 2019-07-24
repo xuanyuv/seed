@@ -85,6 +85,8 @@ spring:
   batch:
     job:
       enabled: false  # SpringBatch加载时默认会执行所有Job，这里取消掉
+  main:
+    allow-bean-definition-overriding: true #SpringBatch-StepScope要用到
   # SpringWeb项目需要添加CharacterEncodingFilter：org.springframework.boot.autoconfigure.http.HttpProperties.java
   http:
     encoding:

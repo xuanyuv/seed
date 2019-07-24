@@ -2,6 +2,17 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-
+    <!--
+    https://stackoverflow.com/questions/28457107/spring-batch-scope-issue-while-using-spring-boot
+    注意：需要配置spring.main.allow-bean-definition-overriding=true，否则启动时会报告如下错误
+    ***************************
+    APPLICATION FAILED TO START
+    ***************************
+    Description: The bean 'reader101', defined in BeanDefinition defined in class path resource [config/batch/spring-batch-job.xml], could not be registered. A bean with that name has already been defined in class path resource [config/batch/spring-batch-job.xml] and overriding is disabled.
+    Action: Consider renaming one of the beans or enabling overriding by setting spring.main.allow-bean-definition-overriding=true
+    -->
+    <bean id="stepScope" class="org.springframework.batch.core.scope.StepScope">
+        <property name="autoProxy" value="true"/>
+    </bean>
     <import resource="spring-batch-job.xml"/>
 </beans>

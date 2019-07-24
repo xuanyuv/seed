@@ -87,8 +87,9 @@
         </property>
     </bean>
 
-    <bean id="reader101" class="org.springframework.batch.item.file.FlatFileItemReader">
-        <property name="resource" value="file:/data/seedboot-batch.txt"/>
+    <bean id="reader101" class="org.springframework.batch.item.file.FlatFileItemReader" scope="step">
+        <!--<property name="resource" value="file:/data/seedboot-batch.txt"/>-->
+        <property name="resource" value="file:#{jobParameters['filePath']}"/>
         <property name="linesToSkip" value="1"/>
         <property name="encoding" value="UTF-8"/>
         <property name="lineMapper">

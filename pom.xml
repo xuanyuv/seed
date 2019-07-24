@@ -31,9 +31,9 @@
         <apache.httpclient.version>4.5.3</apache.httpclient.version>
         <google.zxing.version>2.2</google.zxing.version>
         <alibaba.oss.version>3.4.2</alibaba.oss.version>
-        <alibaba.druid.version>1.1.16</alibaba.druid.version>
-        <alibaba.fastjson.version>1.2.56</alibaba.fastjson.version>
-        <beetl.version>2.9.9</beetl.version>
+        <alibaba.druid.version>1.1.18</alibaba.druid.version>
+        <alibaba.fastjson.version>1.2.58</alibaba.fastjson.version>
+        <beetl.version>2.9.10</beetl.version>
         <jsch.version>0.1.55</jsch.version>
         <hutool.version>4.5.4</hutool.version>
         <jedis.version>2.9.0</jedis.version>
@@ -43,8 +43,8 @@
         <jasypt.version>1.9.2</jasypt.version>
         <janino.version>3.0.12</janino.version>
         <bouncycastle.version>1.57</bouncycastle.version>
-        <spring-boot.version>2.1.4.RELEASE</spring-boot.version>
-        <spring-boot-admin.version>2.1.4</spring-boot-admin.version>
+        <spring-boot.version>2.1.6.RELEASE</spring-boot.version>
+        <spring-boot-admin.version>2.1.6</spring-boot-admin.version>
     </properties>
 
     <dependencyManagement>
