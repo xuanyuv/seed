@@ -1,4 +1,4 @@
-package com.jadyer.seed.comm.util.tmp;
+package com.jadyer.seed.comm.tmp;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;

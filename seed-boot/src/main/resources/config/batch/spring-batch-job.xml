@@ -4,8 +4,10 @@
        xmlns:batch="http://www.springframework.org/schema/batch"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
         http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd">
+    <bean id="reader400" class="com.jadyer.seed.controller.batch.xmlconfig.Reader400"/>
     <bean id="writer101" class="com.jadyer.seed.controller.batch.xmlconfig.Writer101"/>
     <bean id="writer202" class="com.jadyer.seed.controller.batch.xmlconfig.Writer202"/>
+    <bean id="writer400" class="com.jadyer.seed.controller.batch.xmlconfig.Writer400"/>
     <bean id="writerVoid" class="com.jadyer.seed.controller.batch.xmlconfig.WriterVoid"/>
     <bean id="processor101" class="com.jadyer.seed.controller.batch.xmlconfig.Processor101"/>
     <bean id="processor201" class="com.jadyer.seed.controller.batch.xmlconfig.Processor201"/>
@@ -62,28 +64,28 @@
             </batch:flow>
         </batch:split>
         <!-- Step301：读取数据库内容，处理后，输出到本地文件 -->
-        <batch:step id="step301" parent="parentStep">
+        <batch:step id="step301" next="step400" parent="parentStep">
             <batch:tasklet>
                 <bean class="com.jadyer.seed.controller.batch.xmlconfig.Tasklet301"/>
             </batch:tasklet>
         </batch:step>
-        <!-- Step400：读取数据库内容，处理后，落库 -->
-        <!--<batch:step id="step400" parent="parentStep">-->
-            <!--<batch:tasklet>-->
-                <!--<batch:chunk commit-interval="2" reader="reader201" processor="processor400" writer="writer101"/>-->
-            <!--</batch:tasklet>-->
-        <!--</batch:step>-->
+        <!-- Step400：啥都不做，处理中读取数据库内容并处理后，落库 -->
+        <batch:step id="step400" parent="parentStep">
+            <batch:tasklet>
+                <batch:chunk commit-interval="1" reader="reader400" processor="processor400" writer="writer400"/>
+            </batch:tasklet>
+        </batch:step>
     </batch:job>
 
-    <!--<bean id="processor400" class="org.springframework.batch.item.support.CompositeItemProcessor">-->
-        <!--<property name="delegates">-->
-            <!--<list>-->
-                <!--<bean class="com.jadyer.seed.controller.batch.xmlconfig.Processor401"/>-->
-                <!--<bean class="com.jadyer.seed.controller.batch.xmlconfig.Processor402"/>-->
-                <!--<bean class="com.jadyer.seed.controller.batch.xmlconfig.Processor403"/>-->
-            <!--</list>-->
-        <!--</property>-->
-    <!--</bean>-->
+    <bean id="processor400" class="org.springframework.batch.item.support.CompositeItemProcessor">
+        <property name="delegates">
+            <list>
+                <bean class="com.jadyer.seed.controller.batch.xmlconfig.Processor401"/>
+                <bean class="com.jadyer.seed.controller.batch.xmlconfig.Processor402"/>
+                <bean class="com.jadyer.seed.controller.batch.xmlconfig.Processor403"/>
+            </list>
+        </property>
+    </bean>
 
     <bean id="reader101" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="resource" value="file:/data/seedboot-batch.txt"/>

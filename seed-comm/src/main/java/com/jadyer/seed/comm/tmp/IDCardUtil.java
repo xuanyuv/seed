@@ -1,4 +1,4 @@
-package com.jadyer.seed.comm.util.tmp;
+package com.jadyer.seed.comm.tmp;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
