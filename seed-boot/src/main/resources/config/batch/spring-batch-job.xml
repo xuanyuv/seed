@@ -4,7 +4,6 @@
        xmlns:batch="http://www.springframework.org/schema/batch"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
         http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd">
-    <bean id="reader400" class="com.jadyer.seed.controller.batch.xmlconfig.Reader400"/>
     <bean id="writer101" class="com.jadyer.seed.controller.batch.xmlconfig.Writer101"/>
     <bean id="writer202" class="com.jadyer.seed.controller.batch.xmlconfig.Writer202"/>
     <bean id="writer400" class="com.jadyer.seed.controller.batch.xmlconfig.Writer400"/>
@@ -72,7 +71,7 @@
         <!-- Step400：啥都不做，处理中读取数据库内容并处理后，落库 -->
         <batch:step id="step400" parent="parentStep">
             <batch:tasklet>
-                <batch:chunk commit-interval="1" reader="reader400" processor="processor400" writer="writer400"/>
+                <batch:chunk commit-interval="2" reader="reader201" processor="processor400" writer="writer400"/>
             </batch:tasklet>
         </batch:step>
     </batch:job>

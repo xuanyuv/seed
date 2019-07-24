@@ -14,13 +14,13 @@ import java.util.Optional;
 /**
  * Created by 玄玉<https://jadyer.cn/> on 2019/7/23 20:38.
  */
-public class Processor401 implements ItemProcessor<Long, GlobalData> {
+public class Processor401 implements ItemProcessor<Person, GlobalData> {
     @Resource
     private PersonRepository personRepository;
 
     @Override
-    public GlobalData process(Long item) {
-        Optional<Person> personOptional = personRepository.findById(item);
+    public GlobalData process(Person item) {
+        Optional<Person> personOptional = personRepository.findById(item.getId());
         if(!personOptional.isPresent()){
             throw new RuntimeException("不存在的数据：personId=[" + item + "]");
         }
