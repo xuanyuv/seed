@@ -33,7 +33,7 @@
         <alibaba.oss.version>3.4.2</alibaba.oss.version>
         <alibaba.druid.version>1.1.18</alibaba.druid.version>
         <alibaba.fastjson.version>1.2.58</alibaba.fastjson.version>
-        <beetl.version>2.9.10</beetl.version>
+        <beetl.version>2.9.0</beetl.version>
         <jsch.version>0.1.55</jsch.version>
         <hutool.version>4.5.4</hutool.version>
         <jedis.version>2.9.0</jedis.version>

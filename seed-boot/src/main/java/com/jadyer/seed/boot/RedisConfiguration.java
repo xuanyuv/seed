@@ -18,6 +18,9 @@ import java.util.Set;
 /**
  * 这是Redis3.0的集成方法
  * 另经测试：当应用正常运行过程中，RedisCluster突然宕掉后过一段时间又恢复，这里会自动重连
+ * 注意：Jedis-2.9.1、2.10.0、3.0.0请勿使用，高并发环境中会出现资源泄露，可100%重现
+ * 注意：目前能用的最新版还是2016年的2.9.0，详见https://v2ex.com/t/518987
+ * https://v2ex.com/t/518987
  * Created by 玄玉<https://jadyer.cn/> on 2016/11/24 10:46.
  */
 //@Configuration
