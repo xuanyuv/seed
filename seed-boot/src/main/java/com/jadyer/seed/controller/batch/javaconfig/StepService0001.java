@@ -44,6 +44,7 @@ public class StepService0001 {
 
     @Bean
     public Step step0001(){
+        //https://my.oschina.net/chkui/blog/3070081
         return stepBuilderFactory.get("step0001")
                 .listener(this.settleJobListeners)
                 .<Person, Person>chunk(10) //批处理每次提交10条数据
