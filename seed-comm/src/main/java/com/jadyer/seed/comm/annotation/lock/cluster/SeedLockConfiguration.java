@@ -16,7 +16,6 @@ import org.redisson.config.SingleServerConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.EnvironmentAware;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.env.Environment;
 import org.springframework.expression.EvaluationContext;
@@ -38,7 +37,7 @@ import java.util.List;
  * Created by 玄玉<https://jadyer.cn/> on 2018/6/5 10:00.
  */
 @Aspect
-@Configuration
+//@Configuration
 @ConditionalOnClass({RedissonClient.class})
 @ConfigurationProperties(prefix="redisson")
 public class SeedLockConfiguration implements EnvironmentAware {
