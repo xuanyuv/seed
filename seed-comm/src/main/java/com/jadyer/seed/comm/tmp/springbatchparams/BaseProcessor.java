@@ -8,23 +8,22 @@ import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemProcessor;
 
 public abstract class BaseProcessor<I, O> implements ItemProcessor<I, O> {
-    private StepExecution stepExecution ;
+    private StepExecution stepExecution;
 
     @BeforeStep
-    public void beforStep(StepExecution stepExecution) {
-        if(null==this.stepExecution) {
+    public void beforeStep(StepExecution stepExecution){
+        if(null == this.stepExecution){
             this.stepExecution = stepExecution;
-            LogUtil.getLogger().info("****************初始化Step信息完成****************");
+            LogUtil.getLogger().info("===>>>Step信息初始化完成");
         }
     }
 
     @Override
-    final public O process(I input) throws Exception {
-
-        JobParameters params = stepExecution.getJobParameters();
-        ExecutionContext stepContext = stepExecution.getExecutionContext();
-        return doProcess(input, params, stepContext);
+    public O process(I item) throws Exception {
+        JobParameters jobParameters = stepExecution.getJobParameters();
+        ExecutionContext executionContext = stepExecution.getExecutionContext();
+        return this.doProcess(item, jobParameters, executionContext);
     }
 
-    public abstract O doProcess(I input, JobParameters params, ExecutionContext stepContext) throws Exception;
+    public abstract O doProcess(I item, JobParameters jobParameters, ExecutionContext executionContext) throws Exception;
 }
