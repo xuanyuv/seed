@@ -13,6 +13,25 @@
     <bean id="processor202" class="com.jadyer.seed.controller.batch.xmlconfig.Processor202"/>
     <bean id="processor203" class="com.jadyer.seed.controller.batch.xmlconfig.Processor203"/>
     <bean id="simpleAsyncTaskExecutor" class="org.springframework.core.task.SimpleAsyncTaskExecutor"/>
+    <!-- 定义日期类型的解析器（针对数据文件中存在日期类型的属性，比如2019-08-05以及2019-08-05 20:33:00） -->
+    <!--
+    <bean id="customDateEditor" class="org.springframework.beans.propertyeditors.CustomDateEditor">
+        <constructor-arg>
+            <bean class="java.text.SimpleDateFormat">
+                <constructor-arg value="yyyy-MM-dd"/>
+            </bean>
+        </constructor-arg>
+        <constructor-arg value="true"/>
+    </bean>
+    <bean id="customDateEditorFull" class="org.springframework.beans.propertyeditors.CustomDateEditor">
+        <constructor-arg>
+            <bean class="java.text.SimpleDateFormat">
+                <constructor-arg value="yyyy-MM-dd HH:mm:ss"/>
+            </bean>
+        </constructor-arg>
+        <constructor-arg value="true"/>
+    </bean>
+    -->
 
     <!-- 定义公共的Job和Step配置：监听并打印日志 -->
     <batch:job id="parentJob" abstract="true">
@@ -106,6 +125,15 @@
                 <property name="fieldSetMapper">
                     <bean class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
                         <property name="targetType" value="com.jadyer.seed.controller.batch.model.Person"/>
+                        <!-- 如果实体中接收属性是java.util.Date类型（即文件中有日期类型的属性），那么需要注册日期解析器，并且可以注册多种类型的 -->
+                        <!--
+                        <property name="customEditors">
+                            <map>
+                                <entry key="java.util.Date" value-ref="customDateEditor"/>
+                                <entry key="java.util.Date" value-ref="customDateEditorFull"/>
+                            </map>
+                        </property>
+                        -->
                     </bean>
                 </property>
             </bean>
