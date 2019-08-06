@@ -13,17 +13,9 @@
     <bean id="processor202" class="com.jadyer.seed.controller.batch.xmlconfig.Processor202"/>
     <bean id="processor203" class="com.jadyer.seed.controller.batch.xmlconfig.Processor203"/>
     <bean id="simpleAsyncTaskExecutor" class="org.springframework.core.task.SimpleAsyncTaskExecutor"/>
-    <!-- 定义日期类型的解析器（针对数据文件中存在日期类型的属性，比如2019-08-05以及2019-08-05 20:33:00） -->
-    <!--
+
+    <!-- 日期类型的解析器：针对数据文件中存在日期类型的属性，而接收实体是java.util.Date（String接收就不用） -->
     <bean id="customDateEditor" class="org.springframework.beans.propertyeditors.CustomDateEditor">
-        <constructor-arg>
-            <bean class="java.text.SimpleDateFormat">
-                <constructor-arg value="yyyy-MM-dd"/>
-            </bean>
-        </constructor-arg>
-        <constructor-arg value="true"/>
-    </bean>
-    <bean id="customDateEditorFull" class="org.springframework.beans.propertyeditors.CustomDateEditor">
         <constructor-arg>
             <bean class="java.text.SimpleDateFormat">
                 <constructor-arg value="yyyy-MM-dd HH:mm:ss"/>
@@ -31,7 +23,6 @@
         </constructor-arg>
         <constructor-arg value="true"/>
     </bean>
-    -->
 
     <!-- 定义公共的Job和Step配置：监听并打印日志 -->
     <batch:job id="parentJob" abstract="true">
@@ -109,7 +100,10 @@
     scope="step"表示告诉Spring加载配置信息时不用创建该Bean，等到生成Step时再初始化（此时jobParameters才传过来）
     注：该功能还依赖配置<bean class="org.springframework.batch.core.scope.StepScope">，详见spring-batch.xml
     -->
+    <!--
     <bean id="reader101" class="org.springframework.batch.item.file.FlatFileItemReader" scope="step">
+    -->
+    <bean id="reader101" class="com.jadyer.seed.controller.batch.xmlconfig.SeedFlatFileItemReader" scope="step">
         <!--<property name="resource" value="file:/data/seedboot-batch.txt"/>-->
         <property name="resource" value="file:#{jobParameters['filePath']}"/>
         <property name="linesToSkip" value="1"/>
@@ -119,21 +113,19 @@
                 <property name="lineTokenizer">
                     <bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
                         <property name="delimiter" value="|"/>
-                        <property name="names" value="realName, age"/>
+                        <property name="names" value="realName, age, birthDay"/>
                     </bean>
                 </property>
                 <property name="fieldSetMapper">
                     <bean class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
                         <property name="targetType" value="com.jadyer.seed.controller.batch.model.Person"/>
-                        <!-- 如果实体中接收属性是java.util.Date类型（即文件中有日期类型的属性），那么需要注册日期解析器，并且可以注册多种类型的 -->
-                        <!--
+                        <!-- 如果实体中接收属性是java.util.Date（即文件中有日期类型的属性），则要注册日期解析器 -->
+                        <!-- 注：若文件中有多个日期类型属性，且彼此格式不同，那么即便这里把格式都注册进去，也是没用的，它只认一个 -->
                         <property name="customEditors">
                             <map>
                                 <entry key="java.util.Date" value-ref="customDateEditor"/>
-                                <entry key="java.util.Date" value-ref="customDateEditorFull"/>
                             </map>
                         </property>
-                        -->
                     </bean>
                 </property>
             </bean>

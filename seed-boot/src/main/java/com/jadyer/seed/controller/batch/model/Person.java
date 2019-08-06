@@ -7,6 +7,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 @Entity
 @DynamicInsert
@@ -17,6 +18,7 @@ public class Person extends BaseEntity<Long> {
     @Size(min=2, max=16)
     private String realName;
     private int age;
+    private Date birthDay;
 
     public String getRealName() {
         return realName;
@@ -32,5 +34,13 @@ public class Person extends BaseEntity<Long> {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public Date getBirthDay() {
+        return birthDay;
+    }
+
+    public void setBirthDay(Date birthDay) {
+        this.birthDay = birthDay;
     }
 }
