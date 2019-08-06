@@ -9,7 +9,6 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
-import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -48,6 +47,7 @@ public class SettleQuartzController {
     @RequestMapping("/batch")
     //@SeedQSSReg(qssHost="${qss.host}", appHost="${qss.appHost}", appname="${qss.appname}", name="${qss.name}", cron="${qss.cron}")
     CommResult<JobInstance> batch(String bizDate) throws Exception {
+        //判断是否断点续跑
         boolean isResume = false;
         if(StringUtils.isBlank(bizDate)){
             bizDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
@@ -55,8 +55,11 @@ public class SettleQuartzController {
             isResume = true;
         }
         LogUtil.getLogger().info("结算跑批{}：Starting...bizDate={}", isResume?"：断点续跑":"", bizDate);
-        JobParameters jobParameters = new JobParametersBuilder().addString("bizDate", bizDate).toJobParameters();
-        JobExecution execution = jobLauncher.run(settleJob, jobParameters);
+        //构造JobParameters
+        JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
+        jobParametersBuilder.addString("bizDate", bizDate);
+        //执行job
+        JobExecution execution = jobLauncher.run(settleJob, jobParametersBuilder.toJobParameters());
         LogUtil.getLogger().info("结算跑批{}：Ending......", isResume?"：断点续跑":"");
         return CommResult.success(execution.getJobInstance());
     }
@@ -64,6 +67,7 @@ public class SettleQuartzController {
 
     @RequestMapping("/xmlBatch")
     CommResult<JobInstance> xmlBatch(String time) throws Exception {
+        //判断是否断点续跑
         boolean isResume = false;
         long timeLong;
         if(StringUtils.isBlank(time)){
@@ -73,9 +77,13 @@ public class SettleQuartzController {
             timeLong = Long.parseLong(time);
         }
         LogUtil.getLogger().info("结算跑批{}：Starting...time={}", isResume?"：断点续跑":"", timeLong);
-        JobParameters jobParameters = new JobParametersBuilder().addLong("time", timeLong).addString("filePath", "/data/seedboot-batch.txt", false).toJobParameters();
+        //构造JobParameters
+        JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
+        jobParametersBuilder.addLong("time", timeLong);
+        jobParametersBuilder.addString("filePath", "/data/seedboot-batch.txt", false);
+        //执行job
         Job xmlSettleJob = (Job)SpringContextHolder.getBean("xmlSettleJob");
-        JobExecution execution = jobLauncher.run(xmlSettleJob, jobParameters);
+        JobExecution execution = jobLauncher.run(xmlSettleJob, jobParametersBuilder.toJobParameters());
         LogUtil.getLogger().info("结算跑批{}：Ending......", isResume?"：断点续跑":"");
         return CommResult.success(execution.getJobInstance());
     }
