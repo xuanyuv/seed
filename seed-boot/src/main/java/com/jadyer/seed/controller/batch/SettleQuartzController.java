@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by 玄玉<https://jadyer.cn/> on 2018/8/13 20:01.
@@ -67,6 +69,21 @@ public class SettleQuartzController {
 
     @RequestMapping("/xmlBatch")
     CommResult<JobInstance> xmlBatch(String time) throws Exception {
+        Map<String, String> parameterMap = new HashMap<>();
+        parameterMap.put("filePath", "/data/seedboot-batch.txt");
+        JobExecution execution = this.runJob("xmlSettleJob", "结算跑批", time, parameterMap);
+        return CommResult.success(execution.getJobInstance());
+    }
+
+
+    /**
+     * @param jobNameStr   任务名字符串
+     * @param jobNameDesc  任务名描述
+     * @param time         随机数：批量的唯一标志（非断点续跑可直接传null）
+     * @param parameterMap 其它参数：不会作为批量的唯一标志（无参可传null）
+     * Comment by 玄玉<https://jadyer.cn/> on 2019/8/12 18:25.
+     */
+    private JobExecution runJob(String jobNameStr, String jobNameDesc, String time, Map<String, String> parameterMap) throws Exception {
         //判断是否断点续跑
         boolean isResume = false;
         long timeLong;
@@ -76,15 +93,19 @@ public class SettleQuartzController {
             isResume = true;
             timeLong = Long.parseLong(time);
         }
-        LogUtil.getLogger().info("结算跑批{}：Starting...time={}", isResume?"：断点续跑":"", timeLong);
+        LogUtil.getLogger().info("{}==>{}：Starting...time={}", jobNameDesc, isResume?"：断点续跑":"", timeLong);
         //构造JobParameters
         JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
         jobParametersBuilder.addLong("time", timeLong);
-        jobParametersBuilder.addString("filePath", "/data/seedboot-batch.txt", false);
+        if(null!=parameterMap && !parameterMap.isEmpty()){
+            for(Map.Entry<String,String> entry : parameterMap.entrySet()){
+                jobParametersBuilder.addString(entry.getKey(), entry.getValue(), false);
+            }
+        }
         //执行job
-        Job xmlSettleJob = (Job)SpringContextHolder.getBean("xmlSettleJob");
+        Job xmlSettleJob = (Job)SpringContextHolder.getBean(jobNameStr);
         JobExecution execution = jobLauncher.run(xmlSettleJob, jobParametersBuilder.toJobParameters());
-        LogUtil.getLogger().info("结算跑批{}：Ending......", isResume?"：断点续跑":"");
-        return CommResult.success(execution.getJobInstance());
+        LogUtil.getLogger().info("{}==>{}：Ending......jobInstance={}", jobNameDesc, isResume?"：断点续跑":"", execution.getJobInstance());
+        return execution;
     }
 }
