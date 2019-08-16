@@ -141,6 +141,7 @@ spring:
           new_generator_mappings: false
   # org.springframework.boot.autoconfigure.quartz.QuartzProperties.java
   quartz:
+    # spring-boot-starter-quartz默认使用的就是MEMORY
     job-store-type: MEMORY
     # org.quartz.quartz.properties
     properties:
