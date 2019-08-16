@@ -9,6 +9,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 /**
  * RabbitMQ之TopicExchange发送和接收的演示
@@ -40,6 +41,7 @@ import org.springframework.context.annotation.Configuration;
  * Created by 玄玉<https://jadyer.github.io/> on 2017/6/5 15:19.
  */
 @Configuration
+@Profile("test")
 public class RabbitMQConfiguration {
     @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory){

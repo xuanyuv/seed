@@ -34,25 +34,21 @@ spring:
     username: root
     password: xuanyu
     druid:
+      initial-size: 2
+      max-active: 1000
+      validation-query: SELECT 1
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
       filters: wall,mergeStat
-      initialSize: 5
-      minIdle: 5
-      maxActive: 100
-      maxWait: 60000
-      validationQuery: SELECT 1
-      minEvictableIdleTimeMillis: 300000
-      timeBetweenEvictionRunsMillis: 60000
-      poolPreparedStatements: true
-      maxPoolPreparedStatementPerConnectionSize: 20
-      WebStatFilter:
+      web-stat-filter:
         enabled: true
-        profileEnable: true
-        urlPattern: /*
-      StatViewServlet:
+        profile-enable: true
+        url-pattern: /*
+      stat-view-servlet:
         enabled: true
-        urlPattern: /druid/*
-        loginUsername: druid
-        loginPassword: https://jadyer.cn/
+        url-pattern: /druid/*
+        login-username: druid
+        login-password: https://jadyer.cn/
   jpa:
     showSql: false
     database: MYSQL

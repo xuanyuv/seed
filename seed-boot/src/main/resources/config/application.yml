@@ -97,39 +97,37 @@ spring:
     multipart:
       maxFileSize: 10MB
       maxRequestSize: 10MB
-  h2:
-    # 啟用H2控制台並自定義訪問地址
-    console:
-      path: /myh2
-      enabled: true
   datasource:
-    #url: jdbc:h2:mem:jadyer;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     url: jdbc:mysql://${db.address}/${db.name}?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
     username: ${db.username}
     password: ${db.password}
-    # 更多属性：https://github.com/alibaba/druid/issues/1344
-    # 另经测试：应用正常运行中，数据库突然宕掉后过一段时间又恢复，druid会自动重连
+    # com.alibaba.druid.pool.DruidDataSource.java（另经测试：应用正常运行中，数据库突然宕掉后过一段时间又恢复，druid会自动重连）
     druid:
+      async-init: true                              # 默认false：如果initialSize数量较多，打开它会加快应用启动时间
+      initial-size: 2                               # 默认为0：初始化的数量
+      max-active: 1000                              # 默认为8：最大连接池数量
+      max-wait: 6000                                # 默认为-1：获取连接时最大等待时间：https://github.com/alibaba/druid/wiki/Druid锁的公平模式问题
+      validation-query: SELECT 1                   # 默认为null：用来检测连接是否有效的sql，要求是一个查询语句（若该值为null，则testOnBorrow、testOnReturn、testWhileIdle都不会起作用）
+      validation-query-timeout: 60                # 默认为-1：单位为秒：检测连接是否有效的超时时间（底层调用jdbc Statement对象的setQueryTimeout(int seconds)方法）
+      test-while-idle: true                        # 默认为true：申请连接时检测，若空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效（建议配置为true，不影响性能，并且保证安全性）
+      test-on-borrow: false                        # 默认为false：申请连接时执行validationQuery检测连接是否有效，该配置会降低性能
+      test-on-return: false                        # 默认为false：归还连接时执行validationQuery检测连接是否有效，该配置会降低性能
+      min-evictable-idle-time-millis: 300000     # 默认为30分钟：配置一个连接在池中最小生存的时间
+      max-evictable-idle-time-millis: 300000     # 默认为7小时：配置一个连接在池中最大生存的时间
+      time-between-eviction-runs-millis: 60000   # 默认为60秒：配置间隔多久才进行一次检测，检测需要关闭的空闲连接
+      pool-prepared-statements: true              # 默认值false：打开PSCache（即缓存preparedStatement：http://www.infoq.com/cn/news/2017/03/Analysis-errors-MySQL-JDBC）
+      max-pool-prepared-statement-per-connection-size: 20  # 默认值10：并且指定每个连接上PSCache的大小
       filters: wall,mergeStat
-      initialSize: 5               # 配置初始化大小、最小、最大
-      minIdle: 5                   # 配置初始化大小、最小、最大
-      maxActive: 100              # 配置初始化大小、最小、最大
-      maxWait: 60000              # 配置获取连接等待超时的时间
-      validationQuery: SELECT 1  # 默认的testWhileIdle=true、testOnBorrow=false、testOnReturn=false
-      minEvictableIdleTimeMillis: 300000     # 配置一个连接在池中最小生存的时间，单位是毫秒
-      timeBetweenEvictionRunsMillis: 60000  # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
-      poolPreparedStatements: true                     # 打开PSCache(preparedStatement)，并且指定每个连接上PSCache的大小
-      maxPoolPreparedStatementPerConnectionSize: 20  # http://www.infoq.com/cn/news/2017/03/Analysis-errors-MySQL-JDBC
-      WebStatFilter:
+      web-stat-filter:
         enabled: true
-        profileEnable: true
-        urlPattern: /*
+        profile-enable: true
+        url-pattern: /*
         #exclusions: *.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*
-      StatViewServlet:
+      stat-view-servlet:
         enabled: true
-        urlPattern: /druid/*
-        loginUsername: druid
-        loginPassword: https://jadyer.cn/
+        url-pattern: /druid/*
+        login-username: druid
+        login-password: https://jadyer.cn/
   # org.springframework.boot.autoconfigure.orm.jpa.JpaProperties.java
   jpa:
     showSql: true

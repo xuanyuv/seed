@@ -30,7 +30,7 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
  * 4.SpringProfile的优先级
  *   若服务启动参数包含spring.profiles.active，那么Spring会自动读取并根据参数值加载application-{profile}.yml
  *   同时根据测试得知：-Dspring.profiles.active=dev的优先级要高于SpringApplicationBuilder.profiles("prod")
- *   另外：@Profile(value="test")的示例使用詳見com.jadyer.seed.boot.H2Configuration.java
+ *   另外：@Profile(value="test")的示例使用詳見com.jadyer.seed.boot.RabbitMQConfiguration.java
  * ---------------------------------------------------------------------------------------------------------------
  * 条件注解
  * 它是Sring-boot封装了Spring4.x开始提供的@Conditional注解实现的新注解，主要分以下几类
