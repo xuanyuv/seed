@@ -24,7 +24,7 @@ function submit(){
                 $("#userBindForm").serialize(),
                 function(data){
                     if(0 == data.code){
-                        alert("操作成功！！\r\n请于公众号内回复\“${@com.jadyer.seed.comm.constant.Constants.MPP_BIND_TEXT}\”完成绑定");
+                        alert("操作成功！！\r\n请于公众号内回复\“${@com.jadyer.seed.comm.constant.SeedConstants.MPP_BIND_TEXT}\”完成绑定");
                     }else{
                         $.promptBox(data.msg, "#ffb848");
                     }
