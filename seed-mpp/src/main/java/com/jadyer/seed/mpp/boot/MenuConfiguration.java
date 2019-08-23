@@ -35,8 +35,8 @@ public class MenuConfiguration {
                 request.setAttribute(SeedConstants.WEB_CURRENT_MENU, currentSubMenu.substring(0, currentSubMenu.length()-3));
                 request.setAttribute(SeedConstants.WEB_CURRENT_SUB_MENU, currentSubMenu);
             }else{
-                request.setAttribute(SeedConstants.WEB_CURRENT_MENU, "menu_sys");
-                request.setAttribute(SeedConstants.WEB_CURRENT_SUB_MENU, "menu_sys_01");
+                request.setAttribute(SeedConstants.WEB_CURRENT_MENU, "menu_mpp");
+                request.setAttribute(SeedConstants.WEB_CURRENT_SUB_MENU, "menu_mpp_02");
             }
             filterChain.doFilter(request, response);
         }

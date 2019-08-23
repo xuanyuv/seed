@@ -122,7 +122,7 @@ CREATE TABLE t_mpp_menu_info(
 )ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4 COMMENT='mpplus平台自定义菜单表';
 
 
-INSERT INTO t_mpp_reply_info(uid, category, type) VALUES(2, 0, 4);
-INSERT INTO t_mpp_user_info(id, pid, username, password, uuid, mptype, bind_status) VALUES(1, 0, 'admin', '244ca7eaa4d894f0ff1bb2e29d757f16', REPLACE(UUID(),'-',''), 0, 0);
-INSERT INTO t_mpp_user_info(id, pid, username, password, uuid, mptype, bind_status) VALUES(2, 1, 'wx', 'eda216c502d55171ec6f64c4c954c261', REPLACE(UUID(),'-',''), 1, 0);
-INSERT INTO t_mpp_user_info(id, pid, username, password, uuid, mptype, bind_status) VALUES(3, 1, 'qq', '381147fb3da748e06b1e3286e9d2666b', REPLACE(UUID(),'-',''), 2, 0);
+INSERT INTO t_mpp_reply_info(uid, category, type, plugin_id) VALUES(2, 0, 4, 0);
+INSERT INTO t_mpp_user_info(id, pid, username, password, uuid, mptype, bind_status) VALUES(1, 0, 'admin', 'feba89f75e801bbdf8c85605fdef0f69', REPLACE(UUID(),'-',''), 0, 0);
+INSERT INTO t_mpp_user_info(id, pid, username, password, uuid, mptype, bind_status) VALUES(2, 1, 'wx', '09e560f99c12e37965869a625ceaf759', REPLACE(UUID(),'-',''), 1, 0);
+INSERT INTO t_mpp_user_info(id, pid, username, password, uuid, mptype, bind_status) VALUES(3, 1, 'qq', 'd0c2e092230b18fc3f2082aba9fd4d14', REPLACE(UUID(),'-',''), 2, 0);
