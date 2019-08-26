@@ -1,15 +1,22 @@
 package com.jadyer.seed.comm.util;
 
+import com.github.liaochong.myexcel.core.DefaultExcelBuilder;
 import com.github.liaochong.myexcel.core.SaxExcelReader;
+import com.github.liaochong.myexcel.utils.FileExportUtil;
+import com.jadyer.seed.comm.constant.CodeEnum;
+import com.jadyer.seed.comm.exception.SeedException;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * 封装MyExcel：https://github.com/liaochong/myexcel/wiki/Excel-Csv导入
+ * 封装MyExcel：https://github.com/liaochong/myexcel/wiki
  * -------------------------------------------------------------------------------
- * @version v1.1
+ * @version v1.2
+ * @history v1.2-->简单封装一个写文件的方法
  * @history v1.1-->读取文件失败时，增加逻辑：修改文件后缀名再重读一次
  * @history v1.0-->初建，并添加读取Excel的方法
  *  * -------------------------------------------------------------------------------
@@ -50,5 +57,21 @@ public class MyExcelUtil {
             dataList = saxExcelReader.read(newFile);
         }
         return dataList;
+    }
+
+
+    /**
+     * @param dataList   Excel数据
+     * @param modelClass 承载Excel数据的实体类
+     * @param pathname   Excel文件保存地址（含路径和文件名及后缀的完整地址）
+     * Comment by 玄玉<https://jadyer.cn/> on 2019/8/26 12:03.
+     */
+    public static <T> void write(List<T> dataList, Class<T> modelClass, String pathname){
+        Workbook workbook = DefaultExcelBuilder.of(modelClass).build(dataList);
+        try {
+            FileExportUtil.export(workbook, new File(pathname));
+        } catch (IOException e) {
+            throw new SeedException(CodeEnum.SYSTEM_BUSY, e);
+        }
     }
 }
