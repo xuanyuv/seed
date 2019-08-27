@@ -36,7 +36,7 @@ public class SettleJobConfiguration {
     static final Map<Class<?>, PropertyEditor> customEditors = new HashMap<Class<?>, PropertyEditor>(){
         private static final long serialVersionUID = -8943129541317025696L;
         {
-            put(Date .class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"), true));
+            put(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"), true));
         }
     };
     @Resource
