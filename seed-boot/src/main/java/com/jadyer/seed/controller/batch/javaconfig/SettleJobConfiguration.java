@@ -8,11 +8,17 @@ import org.springframework.batch.core.job.builder.FlowBuilder;
 import org.springframework.batch.core.job.flow.Flow;
 import org.springframework.batch.core.job.flow.support.SimpleFlow;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 
 import javax.annotation.Resource;
+import java.beans.PropertyEditor;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 结算批量任务
@@ -26,6 +32,13 @@ import javax.annotation.Resource;
  */
 @Configuration
 public class SettleJobConfiguration {
+    //全局转换器（读文件时使用）
+    static final Map<Class<?>, PropertyEditor> customEditors = new HashMap<Class<?>, PropertyEditor>(){
+        private static final long serialVersionUID = -8943129541317025696L;
+        {
+            put(Date .class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"), true));
+        }
+    };
     @Resource
     private Step step0001;
     @Resource

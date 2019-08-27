@@ -11,9 +11,7 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
-import org.springframework.batch.item.file.mapping.DefaultLineMapper;
-import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
@@ -48,21 +46,16 @@ public class StepService0006 {
 
 
     private FlatFileItemReader<Person> reader(){
-        FlatFileItemReader<Person> reader = new FlatFileItemReader<>();
-        reader.setResource(new FileSystemResource("/data/seedboot-batch.txt"));
-        reader.setStrict(true);
-        reader.setEncoding(SeedConstants.DEFAULT_CHARSET);
-        reader.setLinesToSkip(1);
-        reader.setLineMapper(new DefaultLineMapper<Person>() {{
-            setLineTokenizer(new DelimitedLineTokenizer() {{
-                setDelimiter("|");
-                setNames("realName", "age");
-            }});
-            setFieldSetMapper(new BeanWrapperFieldSetMapper<Person>() {{
-                setTargetType(Person.class);
-            }});
-        }});
-        return reader;
+        return new FlatFileItemReaderBuilder<Person>()
+                .name("step0001Reader")
+                .resource(new FileSystemResource("/data/seedboot-batch.txt"))
+                .strict(true)
+                .encoding(SeedConstants.DEFAULT_CHARSET)
+                .linesToSkip(1)
+                .delimited().delimiter("|")
+                .names(new String[]{"realName", "age", "birthDay"})
+                .targetType(Person.class).customEditors(SettleJobConfiguration.customEditors)
+                .build();
     }
 
 

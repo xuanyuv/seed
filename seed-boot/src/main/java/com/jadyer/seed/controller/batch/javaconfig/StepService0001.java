@@ -62,7 +62,10 @@ public class StepService0001 {
         //        .strict(true)
         //        .encoding(SeedConstants.DEFAULT_CHARSET)
         //        .linesToSkip(1)
-        //        .delimited().delimiter("|").names(new String[]{"realName", "age"}).targetType(Person.class).build();
+        //        .delimited().delimiter("|")
+        //        .names(new String[]{"realName", "age", "birthDay"})
+        //        .targetType(Person.class).customEditors(SettleJobConfiguration.customEditors)
+        //        .build();
         FlatFileItemReader<Person> reader = new FlatFileItemReader<>();
         //输入文件
         reader.setResource(new FileSystemResource("/data/seedboot-batch.txt"));
@@ -76,7 +79,7 @@ public class StepService0001 {
         reader.setLineMapper(new DefaultLineMapper<Person>() {{
             setLineTokenizer(new DelimitedLineTokenizer() {{
                 setDelimiter("|");
-                setNames("realName", "age");
+                setNames("realName", "age", "birthDay");
             }});
             //setFieldSetMapper(new FieldSetMapper<Person>() {
             //    @Override
@@ -89,6 +92,7 @@ public class StepService0001 {
             //});
             setFieldSetMapper(new BeanWrapperFieldSetMapper<Person>() {{
                 setTargetType(Person.class);
+                setCustomEditors(SettleJobConfiguration.customEditors);
             }});
         }});
         return reader;
@@ -99,7 +103,7 @@ public class StepService0001 {
         //写到数据库
         JdbcBatchItemWriter<Person> writer = new JdbcBatchItemWriter<>();
         writer.setDataSource(dataSource);
-        writer.setSql("INSERT INTO t_person(real_name, age) VALUES(:realName, :age)");
+        writer.setSql("INSERT INTO t_person(real_name, age, birth_day) VALUES(:realName, :age, :birthDay)");
         writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>());
         //这里如果报以下异常，则需要设置一下afterPropertiesSet
         //java.lang.NullPointerException: null
