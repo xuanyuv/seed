@@ -51,21 +51,8 @@ public enum CodeEnum {
     }
 
     /**
-     * 通过枚举code获取对应的msg
-     * @return 取不到时返回null
-     */
-    public static String getMsgByCode(int code){
-        for(CodeEnum codeEnum : values()){
-            if(codeEnum.getCode() == code){
-                return codeEnum.getMsg();
-            }
-        }
-        return null;
-    }
-
-    /**
      * 通过枚举code获取枚举对象
-     * @return 取不到时返回null
+     * @return 取不到时，返回null
      */
     public static CodeEnum getByCode(int code){
         for(CodeEnum codeEnum : values()){
@@ -76,25 +63,41 @@ public enum CodeEnum {
         return null;
     }
 
+
+    /**
+     * 通过枚举code获取对应的msg
+     * @return 取不到时，返回空字符串，而非null
+     */
+    public static String getMsgByCode(int code){
+        for(CodeEnum codeEnum : values()){
+            if(codeEnum.getCode() == code){
+                return codeEnum.getMsg();
+            }
+        }
+        return "";
+    }
+
+
     /**
      * 获取全部枚举
-     * @return 取不到时返回空List=new ArrayList<>()
+     * @return 取不到时，返回空List，而非null
      */
     public List<CodeEnum> getAllEnum(){
-        List<CodeEnum> list = new ArrayList<>();
-        Collections.addAll(list, values());
-        return list;
+        List<CodeEnum> dataList = new ArrayList<>();
+        Collections.addAll(dataList, values());
+        return dataList;
     }
+
 
     /**
      * 获取全部枚举code
-     * @return 取不到时返回空List=new ArrayList<Integer>()
+     * @return 取不到时，返回空List，而非null
      */
     public List<Integer> getAllEnumCode(){
-        List<Integer> list = new ArrayList<>();
+        List<Integer> dataList = new ArrayList<>();
         for(CodeEnum codeEnum : values()){
-            list.add(codeEnum.getCode());
+            dataList.add(codeEnum.getCode());
         }
-        return list;
+        return dataList;
     }
 }
