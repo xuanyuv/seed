@@ -63,6 +63,10 @@ public class MyExcelUtil {
 
 
     /**
+     * --------------------------------------------------------------------------------------
+     * myexcel-2.8.5测试发现：参数中的dataList可以传入通过该方式实例化的List：new ArrayList<>()
+     * 但不能是通过这两种方式实例化的List：Arrays.asList()、Collections.singletonList()
+     * --------------------------------------------------------------------------------------
      * @param dataList   Excel数据
      * @param modelClass 承载Excel数据的实体类
      * @param pathname   Excel文件保存地址（含路径和文件名及后缀的完整地址）
