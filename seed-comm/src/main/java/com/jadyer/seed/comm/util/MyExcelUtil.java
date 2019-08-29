@@ -5,6 +5,7 @@ import com.github.liaochong.myexcel.core.SaxExcelReader;
 import com.github.liaochong.myexcel.utils.FileExportUtil;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.exception.SeedException;
+import org.apache.commons.io.FileUtils;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.apache.poi.ss.usermodel.Workbook;
 
@@ -69,10 +70,15 @@ public class MyExcelUtil {
      * --------------------------------------------------------------------------------------
      * @param dataList   Excel数据
      * @param modelClass 承载Excel数据的实体类
-     * @param pathname   Excel文件保存地址（含路径和文件名及后缀的完整地址）
+     * @param pathname   Excel文件保存地址（含路径和文件名及后缀的完整地址，目录可以不存在，方法内部会自动判断并创建）
      * Comment by 玄玉<https://jadyer.cn/> on 2019/8/26 12:03.
      */
     public static <T> void write(List<T> dataList, Class<T> modelClass, String pathname){
+        try {
+            FileUtils.forceMkdirParent(new File(pathname));
+        } catch (IOException e) {
+            throw new RuntimeException("目录创建失败："+JadyerUtil.extractStackTraceCausedBy(e), e);
+        }
         Workbook workbook = DefaultExcelBuilder.of(modelClass).build(dataList);
         try {
             FileExportUtil.export(workbook, new File(pathname));
