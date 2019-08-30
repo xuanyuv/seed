@@ -685,11 +685,11 @@ public final class JadyerUtil {
         if(allMsg.contains("Caused by: ")){
             allMsg = allMsg.substring(allMsg.lastIndexOf("Caused by: ") + 11);
         }
-        int beginIndex = 0;
         if(allMsg.contains(": ")){
-            beginIndex = allMsg.indexOf(": ") + 2;
+            return allMsg.substring(allMsg.indexOf(": ")+2, allMsg.indexOf("\n"));
+        }else{
+            return allMsg.substring(0, allMsg.indexOf("\n"));
         }
-        return allMsg.substring(beginIndex, allMsg.indexOf("\n"));
     }
 
 
