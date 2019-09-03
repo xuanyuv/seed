@@ -76,7 +76,7 @@ public class MyExcelUtil {
      */
     public static <T> void write(List<T> dataList, Class<T> modelClass, String pathname){
         if(CollectionUtils.isEmpty(dataList)){
-            return;
+            throw new RuntimeException("空数据，无法创建Excel");
         }
         try {
             FileUtils.forceMkdirParent(new File(pathname));
