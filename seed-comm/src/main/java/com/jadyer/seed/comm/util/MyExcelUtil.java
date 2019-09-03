@@ -5,6 +5,7 @@ import com.github.liaochong.myexcel.core.SaxExcelReader;
 import com.github.liaochong.myexcel.utils.FileExportUtil;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.exception.SeedException;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -74,6 +75,9 @@ public class MyExcelUtil {
      * Comment by 玄玉<https://jadyer.cn/> on 2019/8/26 12:03.
      */
     public static <T> void write(List<T> dataList, Class<T> modelClass, String pathname){
+        if(CollectionUtils.isEmpty(dataList)){
+            return;
+        }
         try {
             FileUtils.forceMkdirParent(new File(pathname));
         } catch (IOException e) {
