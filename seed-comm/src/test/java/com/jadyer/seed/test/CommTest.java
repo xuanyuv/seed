@@ -105,7 +105,7 @@ public class CommTest {
         System.out.println("升序排序后得到数据：" + JSON.toJSONString(dataList));
         System.out.println("-----------------------------------------------------------------------------------------");
         //过滤（注：过滤后得到List时，若空值，那么得到的会是空List，不是null）
-        Java8StreamInfo newData = dataList.stream().filter(x -> new BigDecimal("22").compareTo(x.getLoanAmt())>0).findFirst().orElseThrow(RuntimeException::new);
+        Java8StreamInfo newData = dataList.stream().filter(x -> new BigDecimal("22").compareTo(x.getLoanAmt())>0).findFirst().orElseThrow(NullPointerException::new);
         System.out.println("过滤后得到对象：" + JSON.toJSONString(newData));
         List<Java8StreamInfo> newDataList = dataList.stream().filter(x -> new BigDecimal("3").compareTo(x.getLoanAmt())>0).collect(Collectors.toList());
         newDataList.forEach(info -> System.out.println("过滤后得到数据：" + JSON.toJSONString(info)));
