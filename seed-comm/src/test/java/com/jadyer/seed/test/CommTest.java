@@ -119,9 +119,12 @@ public class CommTest {
         Map<Integer, List<Java8StreamInfo>> dataMap = dataList.stream().collect(Collectors.groupingBy(Java8StreamInfo::getLoanTerm));
         dataMap.forEach((key, value) -> System.out.println("分组后得到数据：key=" + key + "，value=" + JSON.toJSONString(value)));
         System.out.println("-----------------------------------------------------------------------------------------");
-        //获取某个字段的列表（未去重）
+        //获取某个字段的列表
         List<Integer> loanTermList = dataList.stream().map(Java8StreamInfo::getLoanTerm).collect(Collectors.toList());
-        loanTermList.forEach(loanTerm -> System.out.println("期数列表的数据：" + loanTerm));
+        loanTermList.forEach(loanTerm -> System.out.println("期数列表的数据（未去重）：" + loanTerm));
+        System.out.println("-----------------------------------------------------------------------------------------");
+        List<Integer> loanTermDistinctList = dataList.stream().map(Java8StreamInfo::getLoanTerm).distinct().collect(Collectors.toList());
+        loanTermDistinctList.forEach(loanTerm -> System.out.println("期数列表的数据（去重后）：" + loanTerm));
         System.out.println("-----------------------------------------------------------------------------------------");
         //求和
         BigDecimal allAmt = dataList.stream().map(Java8StreamInfo::getLoanAmt).reduce(BigDecimal.ZERO, BigDecimal::add);
