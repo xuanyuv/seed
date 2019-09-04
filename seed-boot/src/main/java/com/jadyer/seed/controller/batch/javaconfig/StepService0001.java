@@ -27,9 +27,14 @@ import javax.annotation.Resource;
 /**
  * 结算批量任务：读取文件数据后录库
  * ---------------------------------------------------------------------------
- * 1.process()用于数据的转换与处理（比如写数据前，判断其是否已入库）
- * 2.ItemReader读到了多少个item，process()方法就会被调用多少次
- * 3.process()返回null时，SpringBatch将会忽略这个item，不将其发给ItemWriter
+ * 对于Processor的执行：
+ * 1、它主要用于数据的转换与处理：比如写数据前，判断其是否已入库等等处理逻辑
+ * 2、它的被调用次数与chunk无关：即ItemReader读到了多少条数据，它就会被调用多少次
+ * 3、它返回null时，SpringBatch将会忽略该item，不将其发给ItemWriter
+ * 4、对于CompositeItemProcessor：如果processor列表中的某个processor返回null
+ *    那么它后面的processor都不会被执行，即整个CompositeItemProcessor执行完毕
+ * ---------------------------------------------------------------------------
+ * 对于ItemWriter的执行：执行次数与chunk有关
  * ---------------------------------------------------------------------------
  * Comment by 玄玉<https://jadyer.cn/> on 2017/11/24 16:55.
  */
