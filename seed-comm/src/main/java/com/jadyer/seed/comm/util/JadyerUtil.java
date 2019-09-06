@@ -100,8 +100,11 @@ import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -122,44 +125,45 @@ import java.util.Random;
 /**
  * 玄玉的开发工具类
  * ---------------------------------------------------------------------------------------------------------------
- * @version v3.21
- * @history v3.21-->增加extractStackTraceCausedBy()方法用于提取堆栈轨迹中，表示真正错误提示的的[Caused by: ]部分
- * @history v3.20-->移动若干网络请求的相关方法至RequestUtil.java
- * @history v3.19-->移除buildSequenceNo()，可用IDUtil.java代替
- * @history v3.18-->增加escapeXSS()用来XSS过滤的方法
- * @history v3.17-->增加randomNumeric()和randomAlphabetic()方法来生成随机字符串，以替代已不推荐使用的RandomStringUtils
- * @history v3.16-->增加leftPadUseZero()字符串左补零的方法
- * @history v3.15-->增加getFullContextPath()用于获取应用的完整根地址并移除两个XML方法至{@link XmlUtil}
- * @history v3.14-->移动requestToBean()和beanCopyProperties()至BeanUtil.java，并移除若干重复造轮子的方法
+ * @version v3.22
+ * @history v3.22-->增加mergeFile()：多文件合并为单文件
+ * @history v3.21-->增加extractStackTraceCausedBy()：提取堆栈轨迹中表示真正错误提示的的Caused by: 部分
+ * @history v3.20-->移动若干网络请求的相关方法至{@link RequestUtil}
+ * @history v3.19-->移除buildSequenceNo()，可用{@link IDUtil}代替
+ * @history v3.18-->增加escapeXSS()：XSS过滤
+ * @history v3.17-->增加randomNumeric()、randomAlphabetic()：生成随机字符串，以替代已不推荐使用的RandomStringUtils
+ * @history v3.16-->增加leftPadUseZero()：字符串左补零
+ * @history v3.15-->增加getFullContextPath()：获取应用的完整根地址，并移动两个XML方法至{@link XmlUtil}
+ * @history v3.14-->移动requestToBean()、beanCopyProperties()至{@link BeanUtil}，并移除若干重复造轮子的方法
  * @history v3.13-->增加获取本周第一天、判断是否本周第一天、判断是否本月第一天的三个方法
- * @history v3.12-->增加获取应用运行进程的PID的方法getPID()
- * @history v3.11-->增加十六进制字符串转为byte[]的方法hexToBytes()
- * @history v3.10-->增加通过反射实现的JavaBean之间属性拷贝的方法beanCopyProperties()
+ * @history v3.12-->增加getPID()：获取应用运行进程的PID
+ * @history v3.11-->增加hexToBytes():十六进制字符串转为byte[]
+ * @history v3.10-->增加beanCopyProperties()：通过反射实现的JavaBean之间属性拷贝
  * @history v3.9-->修正打印入参为java.util.Map时可能引发的NullPointerException
- * @history v3.8-->修正部分细节并增加<code>getDetailDate(dateStr)</code>方法
- * @history v3.7-->add method of <code>escapeEmoji()</code> for escape Emoji to *
- * @history v3.6-->add method of <code>bytesToHex()</code> for convert byte to hex
- * @history v3.5-->增加requestToBean()用于将HttpServletRequest参数值转为JavaBean的方法
- * @history v3.4-->增加extractHttpServletRequestMessage用于提取HTTP请求完整报文的两个方法
- * @history v3.3-->增加isAjaxRequest()用于判断是否为Ajax请求的方法
- * @history v3.2-->增加getCurrentWeekStartDate()和getCurrentWeekEndDate()用于获取本周开始和结束的时间
- * @history v3.1-->修改<code>captureScreen()</code>方法增加是否自动打开生成的抓屏图片的功能
- * @history v3.0-->修改<code>htmlEscape()</code>方法名为<code>escapeHtml()</code>,并新增<code>escapeXml</code>方法
- * @history v2.9-->新增<code>getIncreaseDate()</code>用于计算指定日期相隔一定天数后的日期
- * @history v2.8-->移除加解密相关方法到CodecUtil类中,增加了模拟OracleSequence、抓屏、格式化XML字符串、统计代码行数等方法
- * @history v2.7-->新增<code>extractStackTrace()</code>用于提取堆栈信息的方法
- * @history v2.6-->重命名了若干方法,使之更形象,通俗易懂,并删除了getStringSimple()、getStringForInt()等方法
- * @history v2.5-->新增<code> getStringForInt()</code>用于将阿拉伯字节数组转为整型数值的方法
- * @history v2.4-->新增<code>genAESEncrypt()和genAESDecrypt()</code>用于AES加解密的方法
- * @history v2.3-->修改<code>rightPadForByte(),leftPadForByte()</code>方法左右填充的字符为0x00
- * @history v2.2-->新增<code>isNotEmpty()</code>用于判断输入的字符串或字节数组是否为非空的方法
- * @history v2.1-->新增<code>formatToHexStringWithASCII()</code>用于格式化字节数组为十六进制字符串的方法
- * @history v2.0-->局部的StringBuffer一律StringBuilder之(本思路提示自坦克<captmjc@gmail.com>)
- * @history v1.5-->新增<code>getStringSimple()</code>获取一个字符串的简明效果,返回的字符串格式类似于"abcd***hijk"
- * @history v1.4-->新增<code>getHexSign()</code>根据指定的签名密钥和算法签名Map<String,String>
- * @history v1.3-->修改<code>getSysJournalNo()</code>实现细节为<code>java.util.UUID.randomUUID()</code>
- * @history v1.2-->新增<code>getString()</code>字节数组转为字符串方法
- * @history v1.1-->新增<code>getHexSign()</code>通过指定算法签名字符串方法
+ * @history v3.8-->增加：getDetailDate()，并修正部分细节
+ * @history v3.7-->add method of escapeEmoji() for escape Emoji to *
+ * @history v3.6-->add method of bytesToHex() for convert byte to hex
+ * @history v3.5-->增加requestToBean()：将HttpServletRequest参数值转为JavaBean
+ * @history v3.4-->增加extractHttpServletRequestMessage()：提取HTTP请求完整报文
+ * @history v3.3-->增加isAjaxRequest()：判断是否为Ajax请求
+ * @history v3.2-->增加getCurrentWeekStartDate()、getCurrentWeekEndDate()：获取本周开始和结束的时间
+ * @history v3.1-->修改captureScreen()：增加是否自动打开生成的抓屏图片的功能
+ * @history v3.0-->重命名htmlEscape()为escapeHtml()，并新增：escapeXml()
+ * @history v2.9-->新增getIncreaseDate()：计算指定日期相隔一定天数后的日期
+ * @history v2.8-->移除加解密相关方法到CodecUtil类中，增加了模拟OracleSequence、抓屏、格式化XML字符串、统计代码行数等方法
+ * @history v2.7-->新增extractStackTrace()：提取堆栈信息
+ * @history v2.6-->重命名了若干方法：使之更形象，并删除了：getStringSimple()、getStringForInt()
+ * @history v2.5-->新增getStringForInt()：将阿拉伯字节数组转为整型数值
+ * @history v2.4-->新增genAESEncrypt()、genAESDecrypt()：AES加解密
+ * @history v2.3-->修改rightPadForByte()、leftPadForByte()：左右填充的字符为0x00
+ * @history v2.2-->新增isNotEmpty()：判断输入的字符串或字节数组是否为非空
+ * @history v2.1-->新增formatToHexStringWithASCII()：格式化字节数组为十六进制字符串
+ * @history v2.0-->局部的StringBuffer一律StringBuilder之（本思路提示自坦克<captmjc@gmail.com>）
+ * @history v1.5-->新增getStringSimple()：获取一个字符串的简明效果，返回的字符串格式类似于：abcd***hijk
+ * @history v1.4-->新增getHexSign()：根据指定的签名密钥和算法签名Map<String, String>
+ * @history v1.3-->修改getSysJournalNo()实现细节为：java.util.UUID.randomUUID()
+ * @history v1.2-->新增getString()：字节数组转为字符串
+ * @history v1.1-->新增getHexSign()：通过指定算法签名字符串
  * ---------------------------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.cn/> on 2012/12/22 19:00.
  */
@@ -198,6 +202,28 @@ public final class JadyerUtil {
     public static long buildSerialVersionUID(){
         long serialVersionUID = new Random().nextLong();
         return serialVersionUID>0 ? serialVersionUID : -serialVersionUID;
+    }
+
+
+    /**
+     * 多文件合并为单文件
+     * @param destPath 合并后的单文件完整路径（含后缀）
+     */
+    public static void mergeFile(List<File> fileList, String destPath){
+        try{
+            BufferedWriter bw = new BufferedWriter(new FileWriter(destPath));
+            for(File obj : fileList){
+                BufferedReader br = new BufferedReader(new FileReader(obj));
+                for(String line; (line=br.readLine())!=null;){
+                    bw.write(line);
+                    bw.newLine();
+                }
+                br.close();
+            }
+            bw.close();
+        }catch(IOException e){
+            throw new RuntimeException("多文件合并时出错", e);
+        }
     }
 
 
