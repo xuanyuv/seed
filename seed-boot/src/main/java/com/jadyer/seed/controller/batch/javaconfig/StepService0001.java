@@ -83,6 +83,7 @@ public class StepService0001 {
         //行映射（将每行映射为一个对象）
         reader.setLineMapper(new DefaultLineMapper<Person>() {{
             setLineTokenizer(new DelimitedLineTokenizer() {{
+                //注意：如果文件中某个字段为空，假设某行内容为[卢云||2019-08-06 12:13:14]，那么会正常读取且读取到的age是空的字符串（不是null）
                 setDelimiter("|");
                 setNames("realName", "age", "birthDay");
             }});
