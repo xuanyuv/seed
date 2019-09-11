@@ -133,7 +133,7 @@
         </property>
     </bean>
 
-    <bean id="reader201" class="org.springframework.batch.item.database.JdbcPagingItemReader">
+    <bean id="reader201" class="org.springframework.batch.item.database.JdbcPagingItemReader" scope="step">
         <property name="dataSource" ref="dataSource"/>
         <property name="fetchSize" value="10"/>
         <property name="queryProvider">
@@ -141,8 +141,15 @@
                 <property name="dataSource" ref="dataSource"/>
                 <property name="selectClause" value="SELECT *"/>
                 <property name="fromClause" value="FROM t_person"/>
+                <property name="whereClause" value="WHERE DATEDIFF(:birthDay, birth_day)=0"/>
                 <property name="sortKey" value="id"/>
             </bean>
+        </property>
+        <!-- 注意：这种动态传参是通过jobParameters，那么需要配置scope="step" -->
+        <property name="parameterValues">
+            <map>
+                <entry key="birthDay" value="#{jobParameters['birthDay']}"/>
+            </map>
         </property>
         <property name="rowMapper">
             <bean class="org.springframework.jdbc.core.BeanPropertyRowMapper">

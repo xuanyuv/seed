@@ -75,6 +75,7 @@ public class SettleQuartzController {
     CommResult<JobInstance> xmlBatch(String time) throws Exception {
         Map<String, String> parameterMap = new HashMap<>();
         parameterMap.put("filePath", "/data/seedboot-batch.txt");
+        parameterMap.put("birthDay", "20190911");
         JobExecution execution = this.runJob("xmlSettleJob", "结算跑批", time, parameterMap);
         return CommResult.success(execution.getJobInstance());
     }
