@@ -53,8 +53,11 @@ public class SeedMultiResourceItemReader<T> extends AbstractItemStreamItemReader
     // signals there are no resources to read -> just return null on first read
     private boolean noInput;
 
-    //新增：资源路径通配符
+    //新增：资源路径通配符及其对应的Setter
     private String resourcesLocationPattern;
+    public void setResourcesLocationPattern(String resourcesLocationPattern) {
+        this.resourcesLocationPattern = resourcesLocationPattern;
+    }
 
     private boolean strict = false;
 
@@ -154,14 +157,6 @@ public class SeedMultiResourceItemReader<T> extends AbstractItemStreamItemReader
         noInput = false;
     }
 
-    public String getResourcesLocationPattern() {
-        return resourcesLocationPattern;
-    }
-
-    public void setResourcesLocationPattern(String resourcesLocationPattern) {
-        this.resourcesLocationPattern = resourcesLocationPattern;
-    }
-
     /**
      * Figure out which resource to start with in case of restart, open the delegate and restore delegate's position in
      * the resource.
@@ -173,7 +168,7 @@ public class SeedMultiResourceItemReader<T> extends AbstractItemStreamItemReader
 
         PathMatchingResourcePatternResolver patternResolver = new PathMatchingResourcePatternResolver();
         try {
-            //动态读取资源列表
+            //新增：动态读取资源文件列表
             resources = patternResolver.getResources(resourcesLocationPattern);
         } catch (IOException e) {
             e.printStackTrace();
