@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 /**
+ * 此类目的：读取时找不到文件，改为不抛异常（如此便不会影响到其它Step的执行）
  * Created by 玄玉<https://jadyer.cn/> on 2019/8/6 10:29.
  */
 public class SeedFlatFileItemReader<T> extends FlatFileItemReader<T> {

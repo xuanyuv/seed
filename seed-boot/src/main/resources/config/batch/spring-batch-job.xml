@@ -138,8 +138,9 @@
         </property>
     </bean>
 
-    <bean id="reader102" class="org.springframework.batch.item.file.MultiResourceItemReader">
-        <property name="resources" value="file:/data/seedboot-batch-2-*.txt"/>
+    <bean id="reader102" class="com.jadyer.seed.controller.batch.xmlconfig.SeedMultiResourceItemReader">
+        <!--<property name="resources" value="file:/data/seedboot-batch-2-*.txt"/>-->
+        <property name="resourcesLocationPattern" value="file:/data/seedboot-batch-2-*.txt"/>
         <property name="delegate">
             <bean class="org.springframework.batch.item.file.FlatFileItemReader">
                 <property name="linesToSkip" value="1"/>
