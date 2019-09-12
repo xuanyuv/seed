@@ -38,9 +38,15 @@
 
     <batch:job id="xmlSettleJob" parent="parentJob">
         <!-- Step101：读取本地文件内容，处理后，落库 -->
-        <batch:step id="step101" next="splitFlow200" parent="parentStep">
+        <batch:step id="step101" next="step102" parent="parentStep">
             <batch:tasklet>
                 <batch:chunk commit-interval="2" reader="reader101" processor="processor101" writer="writer101"/>
+            </batch:tasklet>
+        </batch:step>
+        <!-- Step102：读取本地多个文件内容，处理后，合并成一个文件输出到本地 -->
+        <batch:step id="step102" next="splitFlow200" parent="parentStep">
+            <batch:tasklet>
+                <batch:chunk commit-interval="1" reader="reader102" writer="writer102"/>
             </batch:tasklet>
         </batch:step>
         <!-- 并行的Step：201与202顺序执行，同时它们与203并行执行（注：必须配置task-executor，否则仍会串行） -->
@@ -103,7 +109,6 @@
     <!--
     <bean id="reader101" class="org.springframework.batch.item.file.FlatFileItemReader" scope="step">
     -->
-    <!-- 待测试：org.springframework.batch.item.file.MultiResourceItemReader -->
     <bean id="reader101" class="com.jadyer.seed.controller.batch.xmlconfig.SeedFlatFileItemReader" scope="step">
         <!--<property name="resource" value="file:/data/seedboot-batch.txt"/>-->
         <property name="resource" value="file:#{jobParameters['filePath']}"/>
@@ -127,6 +132,50 @@
                                 <entry key="java.util.Date" value-ref="customDateEditor"/>
                             </map>
                         </property>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="reader102" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="file:/data/seedboot-batch-2-*.txt"/>
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="linesToSkip" value="1"/>
+                <property name="encoding" value="UTF-8"/>
+                <property name="lineMapper">
+                    <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+                        <property name="lineTokenizer">
+                            <bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+                                <property name="delimiter" value="|"/>
+                                <property name="names" value="realName, age, birthDay"/>
+                            </bean>
+                        </property>
+                        <property name="fieldSetMapper">
+                            <bean class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+                                <property name="targetType" value="com.jadyer.seed.controller.batch.model.Person"/>
+                                <property name="customEditors">
+                                    <map>
+                                        <entry key="java.util.Date" value-ref="customDateEditor"/>
+                                    </map>
+                                </property>
+                            </bean>
+                        </property>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+    <bean id="writer102" class="org.springframework.batch.item.file.FlatFileItemWriter">
+        <property name="resource" value="file:/data/seedboot-batch-2.txt"/>
+        <property name="appendAllowed" value="true"/>
+        <property name="lineAggregator">
+            <bean class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
+                <property name="delimiter" value=","/>
+                <property name="fieldExtractor">
+                    <bean class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
+                        <property name="names" value="realName, age, birthDay" />
                     </bean>
                 </property>
             </bean>
