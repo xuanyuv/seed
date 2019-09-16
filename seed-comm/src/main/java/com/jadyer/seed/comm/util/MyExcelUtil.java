@@ -21,7 +21,7 @@ import java.util.List;
  * 封装自：https://github.com/liaochong/myexcel/wiki
  * -------------------------------------------------------------------------------
  * @version v1.3
- * @history v1.3-->写文件的方法增加对文件后缀名的判断
+ * @history v1.3-->写文件的方法增加对文件后缀名.xls的判断
  * @history v1.2-->简单封装一个写文件的方法
  * @history v1.1-->读取文件失败时，增加逻辑：修改文件后缀名再重读一次
  * @history v1.0-->初建，并添加读取Excel的方法
