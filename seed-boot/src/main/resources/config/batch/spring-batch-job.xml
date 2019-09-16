@@ -106,12 +106,10 @@
     scope="step"表示告诉Spring加载配置信息时不用创建该Bean，等到生成Step时再初始化（此时jobParameters才传过来）
     注：该功能还依赖配置<bean class="org.springframework.batch.core.scope.StepScope">，详见spring-batch.xml
     -->
-    <!--
     <bean id="reader101" class="org.springframework.batch.item.file.FlatFileItemReader" scope="step">
-    -->
-    <bean id="reader101" class="com.jadyer.seed.controller.batch.xmlconfig.SeedFlatFileItemReader" scope="step">
         <!--<property name="resource" value="file:/data/seedboot-batch.txt"/>-->
         <property name="resource" value="file:#{jobParameters['filePath']}"/>
+        <property name="strict" value="false"/>
         <property name="linesToSkip" value="1"/>
         <property name="encoding" value="UTF-8"/>
         <property name="lineMapper">
