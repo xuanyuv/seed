@@ -7,6 +7,7 @@ import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.exception.SeedException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.apache.poi.ss.usermodel.Workbook;
 
@@ -19,7 +20,8 @@ import java.util.List;
  * -------------------------------------------------------------------------------
  * 封装自：https://github.com/liaochong/myexcel/wiki
  * -------------------------------------------------------------------------------
- * @version v1.2
+ * @version v1.3
+ * @history v1.3-->写文件的方法增加对文件后缀名的判断
  * @history v1.2-->简单封装一个写文件的方法
  * @history v1.1-->读取文件失败时，增加逻辑：修改文件后缀名再重读一次
  * @history v1.0-->初建，并添加读取Excel的方法
@@ -69,6 +71,11 @@ public class MyExcelUtil {
      * myexcel-2.8.5测试发现：参数中的dataList可以传入通过该方式实例化的List：new ArrayList<>()
      * 但不能是通过这两种方式实例化的List：Arrays.asList()、Collections.singletonList()
      * --------------------------------------------------------------------------------------
+     * 补充：HSSFWorkbook 和 XSSFWorkbook 的Sheet导出条数上限，如下所示
+     *      <=2003版是65535行、256列
+     *      >=2007版是1048576行、16384列
+     *      若数据量超过此上限，则可以使用SXSSFWorkbook来做导出（其实上千条数据就可以用它了）
+     * --------------------------------------------------------------------------------------
      * @param dataList   Excel数据
      * @param modelClass 承载Excel数据的实体类
      * @param pathname   Excel文件保存地址（含路径和文件名及后缀的完整地址，目录可以不存在，方法内部会自动判断并创建）
@@ -83,7 +90,13 @@ public class MyExcelUtil {
         } catch (IOException e) {
             throw new RuntimeException("目录创建失败："+JadyerUtil.extractStackTraceCausedBy(e), e);
         }
-        Workbook workbook = DefaultExcelBuilder.of(modelClass).build(dataList);
+        //创建工作对象
+        Workbook workbook;
+        if(pathname.endsWith(".xls")){
+            workbook = DefaultExcelBuilder.of(modelClass, new HSSFWorkbook()).build(dataList);
+        }else{
+            workbook = DefaultExcelBuilder.of(modelClass).build(dataList);
+        }
         try {
             FileExportUtil.export(workbook, new File(pathname));
         } catch (IOException e) {
