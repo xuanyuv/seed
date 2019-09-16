@@ -166,6 +166,15 @@
             </bean>
         </property>
     </bean>
+    <!--
+    <bean id="writer102" class="org.springframework.batch.item.database.JdbcBatchItemWriter">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="itemSqlParameterSourceProvider">
+            <bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"/>
+        </property>
+        <property name="sql" value="INSERT INTO t_person(real_name, age, birth_day) VALUES(:realName, :age, :birthDay)"/>
+    </bean>
+    -->
     <bean id="writer102" class="org.springframework.batch.item.file.FlatFileItemWriter">
         <property name="resource" value="file:/data/seedboot-batch-2.txt"/>
         <property name="appendAllowed" value="true"/>
