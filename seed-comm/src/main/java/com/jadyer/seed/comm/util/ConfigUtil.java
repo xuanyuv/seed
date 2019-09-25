@@ -28,7 +28,8 @@ public enum ConfigUtil {
         config = new Properties();
         try {
             //config.load(ConfigUtil.class.getResourceAsStream("/config-"+System.getProperty("appenv.active")+".properties"));
-            config.load(ConfigUtil.class.getResourceAsStream("/config.properties"));
+            //注意：对于springboot应用，若要读取excel模板，要这么写this.getClass().getResourceAsStream("/templates/se.xls")
+            config.load(this.getClass().getResourceAsStream("/config.properties"));
             LogUtil.getLogger().info("Load /config.properties SUCCESS...");
         } catch (IOException e) {
             LogUtil.getLogger().error("Load /config.properties Error...", e);
