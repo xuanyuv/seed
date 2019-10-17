@@ -31,7 +31,12 @@ public class CommTest {
      */
     @Test
     public void buildCreditCardNo(){
-        //这里以625247012888xxxx举例
+        //这里以625247012888xxxx举例（前12位算出来的相加之和是51）
+        int preSum = 51;
+        //每行最多打印的个数
+        int printCountMax = 17;
+        //标记每行已打印的个数
+        int printCountFlag = 0;
         //倒数第四位数字
         for(int i=0; i<10; i++){
             //倒数第三位数字
@@ -48,10 +53,14 @@ public class CommTest {
                         for(char cc : String.valueOf(k * 2).toCharArray()){
                             sum_k = sum_k + Integer.parseInt(cc + "");
                         }
-                        //前12位算出来的相加之和是51
-                        if((sum_i + sum_k + j + m + 51) % 10 == 0){
-                            //if(i!=4 && m!=4 && i==j){
-                                System.out.println(i + "" + j + "" + k + "" + m);
+                        if((sum_i + sum_k + j + m + preSum) % 10 == 0){
+                            //if(i==j && i!=4 && m!=4){
+                                System.out.print("  " + i + "" + j + "" + k + "" + m);
+                                printCountFlag++;
+                                if(printCountFlag > printCountMax - 1){
+                                    System.out.println();
+                                    printCountFlag = 0;
+                                }
                             //}
                         }
                     }
