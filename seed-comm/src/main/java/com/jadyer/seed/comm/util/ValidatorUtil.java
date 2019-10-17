@@ -30,20 +30,25 @@ import java.util.Set;
  * validation-api-1.1.0.Final.jar
  * jboss-logging-3.1.3.GA.jar
  * -------------------------------------------------------------------------------------------------
- * 以下为BeanValidation规范内嵌的约束注解定义
+ * 以下为BeanValidation规范内嵌的约束注解定义（constraint）
  * @Null         限制只能为null
  * @NotNull      限制必须不为null
- * @AssertTrue  限制必须为true
- * @AssertFalse 限制必须为false
- * @Min          限制必须为一个不小于指定值的数字
- * @Max          限制必须为一个不大于指定值的数字
- * @DecimalMin  限制必须为一个不小于指定值的数字
- * @DecimalMax  限制必须为一个不大于指定值的数字
+ * @AssertTrue   限制必须为true
+ * @AssertFalse  限制必须为false
+ * @Min           限制必须为一个不小于指定值的数字
+ * @Max           限制必须为一个不大于指定值的数字
+ * @DecimalMin   限制必须为一个不小于指定值的数字
+ * @DecimalMax   限制必须为一个不大于指定值的数字
  * @Size         限制字符长度必须在min到max之间
  * @Digits      限制必须为一个小数,且整数部分的位数不能超过integer,小数部分的位数不能超过fraction
  * @Past        限制必须是一个过去的日期
- * @Future      限制必须是一个将来的日期
- * @Pattern     限制必须符合指定的正则表达式
+ * @Future     限制必须是一个将来的日期
+ * @Pattern   限制必须符合指定的正则表达式
+ * 以下为HibernateValidator附加的constraint
+ * @Email      被注释的元素必须是电子邮箱地址
+ * @Length    被注释的字符串的长度必须在指定的范围
+ * @NotEmpty 被注释的字符串必须非空
+ * @Range    被注释的元素必须在合适的范围内
  * -------------------------------------------------------------------------------------------
  * 常用的pojo配置例子
  * @Min(value=3)
