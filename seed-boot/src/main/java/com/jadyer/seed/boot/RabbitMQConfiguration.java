@@ -38,6 +38,29 @@ import org.springframework.context.annotation.Profile;
  *    2.2、第二种就是消费者显式的发送basic.ack消息给rabbitmq，示例见本demo
  * 更详细介绍可参考：https://my.oschina.net/dengfuwei/blog/1595047
  * ----------------------------------------------------------------------------------------------------
+ * 原生写法（exchange.type=fanout）
+ * //获取连接对象
+ * com.rabbitmq.client.ConnectionFactory factory = new ConnectionFactory();
+ * factory.setHost("127.0.0.1");
+ * factory.setPort("5672");
+ * factory.setUsername("dev");
+ * factory.setPassword("dev");
+ * factory.setVirtualHost("dev");
+ * com.rabbitmq.client.Connection conn = factory.newConnection();
+ * //创建通道
+ * com.rabbitmq.client.Channel channel = conn.createChannel();
+ * //创建队列声明
+ * channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+ * channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+ * channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, "routingkey.data");
+ * //发送
+ * com.rabbitmq.client.AMQP.BasicProperties properties = new AMQP.BasicProperties().builder()
+ *                                                                                 .contentType("text/plain")
+ *                                                                                 .deliveryMode(JmsProperties.DeliveryMode.PERSISTENT.getValue())
+ *                                                                                 .priority(0)
+ *                                                                                 .build();
+ * channel.basicPublish(EXCHANGE_NAME, "routingkey.data", false, false, properties, "success".getBytes(StandardCharsets.UTF_8.name()));
+ * ----------------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.github.io/> on 2017/6/5 15:19.
  */
 @Configuration
