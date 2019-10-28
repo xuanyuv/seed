@@ -104,6 +104,7 @@
 
     <!--
     scope="step"表示告诉Spring加载配置信息时不用创建该Bean，等到生成Step时再初始化（此时jobParameters才传过来）
+    这就是所谓的SpringBatch的后绑定技术，对应到JavaConfig中的注解就是@StepScope
     注：该功能还依赖配置<bean class="org.springframework.batch.core.scope.StepScope">，详见spring-batch.xml
     -->
     <bean id="reader101" class="org.springframework.batch.item.file.FlatFileItemReader" scope="step">
