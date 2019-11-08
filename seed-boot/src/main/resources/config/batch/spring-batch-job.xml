@@ -176,8 +176,8 @@
         <property name="sql" value="INSERT INTO t_person(real_name, age, birth_day) VALUES(:realName, :age, :birthDay)"/>
     </bean>
     -->
-    <bean id="writer102" class="org.springframework.batch.item.file.FlatFileItemWriter">
-        <property name="resource" value="file:/data/seedboot-batch-2.txt"/>
+    <bean id="writer102" class="org.springframework.batch.item.file.FlatFileItemWriter" scope="step">
+        <property name="resource" value="file:#{jobParameters['filePath']}all"/>
         <property name="appendAllowed" value="true"/>
         <property name="lineAggregator">
             <bean class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
