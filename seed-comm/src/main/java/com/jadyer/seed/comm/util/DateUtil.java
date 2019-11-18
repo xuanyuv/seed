@@ -188,8 +188,8 @@ public final class DateUtil {
 
     /**
      * 计算两个日期相隔的月数
-     * -----------------------------------------------------------------------------------
-     * org.apache.commons.lang3.time.DurationFormatUtils.formatPeriod(time, "M")
+     * ----------------------------------------------------------------------------------------
+     * org.apache.commons.lang3.time.DurationFormatUtils.formatPeriod(timeStart, timeEnd, "M")
      * 20190218 10:20 - 20190318 ： return 0
      * 20190218 10:20 - 20190319 ： return 1
      * 20190218 - 20190316       ： return 0
@@ -201,7 +201,7 @@ public final class DateUtil {
      * 如果是算两个日期相隔的月数，那就把第二个参数format传小写的"y"
      * 若传的format="y-M-d"，那么formatPeriod()返回的字符串就是"0-0-0"格式的，split截取即可
      * 但此时要注意，比如计算20190218到20190318，算出来的就是0-1-0，所以第二个参数format很重要
-     * -----------------------------------------------------------------------------------
+     * ----------------------------------------------------------------------------------------
      * Comment by 玄玉<https://jadyer.cn/> on 2019/3/26 16:58.
      */
     public static long getDistanceMonth(Date begin, Date end) {
