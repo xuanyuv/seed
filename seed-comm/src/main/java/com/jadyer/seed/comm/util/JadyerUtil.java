@@ -447,10 +447,10 @@ public final class JadyerUtil {
 
     /**
      * 判断一个整数是否为奇数
-     * @see 1.本方法中0/-0/-2/2都不是奇数,-1/1/-3/3都是奇数
-     * @see 2.算术运算和逻辑运行要比乘除运算更高效,计算的结果也会更快
-     * @see 3.如果使用num % 2 == 1作为判断条件,那么负奇数的话就不适用了
-     * @return true--是奇数,false--不是奇数
+     * @see 1.本方法中 0/-0/-2/2 都不是奇数，-1/1/-3/3 都是奇数
+     * @see 2.算术运算和逻辑运行要比乘除运算更高效，计算的结果也会更快
+     * @see 3.如果使用 num%2 == 1 作为判断条件，那么负奇数的话就不适用了
+     * @return true--是奇数，false--不是奇数
      */
     public static boolean isOddNumber(int num){
         return (num & 1) != 0;

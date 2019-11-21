@@ -1,6 +1,7 @@
 package com.jadyer.seed.test;
 
 import com.alibaba.fastjson.JSON;
+import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.test.model.Java8StreamInfo;
 import org.junit.Test;
 
@@ -31,8 +32,21 @@ public class CommTest {
      */
     @Test
     public void buildCreditCardNo(){
-        //这里以625247012888xxxx举例（前12位算出来的相加之和是51）
-        int preSum = 51;
+        //信用卡卡号前12位
+        String preNo = "625247012888";
+        char[] preNos = preNo.toCharArray();
+        //信用卡卡号前12位算出来的相加之和（625247012888 = 51）
+        int preSum = 0;
+        for(int i=0,len=preNos.length; i<len; i++){
+            int digit = Integer.parseInt(String.valueOf(preNos[i]));
+            if(!JadyerUtil.isOddNumber(i)){
+                digit = digit * 2;
+                if(digit > 9){
+                    digit = digit - 9;
+                }
+            }
+            preSum = preSum + digit;
+        }
         //每行最多打印的个数
         int printCountMax = 17;
         //标记每行已打印的个数
