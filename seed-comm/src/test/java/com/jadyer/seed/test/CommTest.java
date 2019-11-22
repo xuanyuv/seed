@@ -33,7 +33,7 @@ public class CommTest {
     @Test
     public void buildCreditCardNo(){
         //信用卡卡号前12位
-        String preNo = "625247012888";
+        String preNo = "625247018888";
         char[] preNos = preNo.toCharArray();
         //信用卡卡号前12位算出来的相加之和（625247012888 = 51）
         int preSum = 0;
