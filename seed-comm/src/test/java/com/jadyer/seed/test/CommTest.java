@@ -35,7 +35,7 @@ public class CommTest {
         //信用卡卡号前12位
         String preNo = "625247018888";
         char[] preNos = preNo.toCharArray();
-        //信用卡卡号前12位算出来的相加之和（625247012888 = 51）
+        //信用卡卡号前12位算出来的相加之和
         int preSum = 0;
         for(int i=0,len=preNos.length; i<len; i++){
             int digit = Integer.parseInt(preNos[i] + "");
