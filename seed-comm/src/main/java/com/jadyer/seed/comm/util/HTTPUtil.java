@@ -3,6 +3,7 @@ package com.jadyer.seed.comm.util;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.exception.SeedException;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
@@ -404,27 +405,31 @@ public final class HTTPUtil {
      * @see 5)请求参数含中文等特殊字符时,可直接传入本方法,方法内部会使用本工具类设置的全局SeedConstants.DEFAULT_CHARSET对其转码
      * @see 6)该方法在解码响应报文时所采用的编码,取自响应消息头中的[Content-Type:text/html; charset=GBK]的charset值
      * @see   若响应头中无Content-Type或charset属性，则会使用SeedConstants.DEFAULT_CHARSET作为响应报文的解码字符集，否则以charset的值为准
-     * @param reqURL 请求地址
-     * @param params 请求参数,无参数时传null即可
+     * @param reqURL   请求地址
+     * @param paramMap 请求参数,无参数时传null即可
      * @return 远程主机响应正文
      */
-    public static String post(String reqURL, Map<String, String> params){
-        LogUtil.getLogger().info("请求{}的报文为-->>{}", reqURL, JadyerUtil.buildStringFromMap(params));
+    public static String post(String reqURL, Map<String, String> paramMap){
+        LogUtil.getLogger().info("请求{}的报文为-->>{}", reqURL, JadyerUtil.buildStringFromMap(paramMap));
         String respData = "";
         HttpClient httpClient = new DefaultHttpClient();
         httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, DEFAULT_CONNECTION_TIMEOUT);
         httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, DEFAULT_SO_TIMEOUT);
         try {
             HttpPost httpPost = new HttpPost(reqURL);
-            //由于下面使用的是new UrlEncodedFormEntity(....),所以这里不需要手工指定CONTENT_TYPE为application/x-www-form-urlencoded
-            //因为在查看了HttpClient的源码后发现,UrlEncodedFormEntity所采用的默认CONTENT_TYPE就是application/x-www-form-urlencoded
-            //httpPost.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded; charset=" + encodeCharset);
-            if(null != params){
-                List<NameValuePair> formParams = new ArrayList<>();
-                for(Map.Entry<String,String> entry : params.entrySet()){
-                    formParams.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
-                }
-                httpPost.setEntity(new UrlEncodedFormEntity(formParams, SeedConstants.DEFAULT_CHARSET));
+            // 由于下面使用的是new UrlEncodedFormEntity(....),所以这里不需要手工指定CONTENT_TYPE为application/x-www-form-urlencoded
+            // 因为在查看了HttpClient的源码后发现,UrlEncodedFormEntity所采用的默认CONTENT_TYPE就是application/x-www-form-urlencoded
+            // httpPost.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded; charset=" + encodeCharset);
+            if (MapUtils.isNotEmpty(paramMap)) {
+                List<NameValuePair> formParamList = new ArrayList<>();
+                // for(Map.Entry<String,String> entry : paramMap.entrySet()){
+                //    formParams.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+                // }
+                // JDK8开始推荐这么迭代
+                paramMap.forEach((key, value) -> {
+                    formParamList.add(new BasicNameValuePair(key, value));
+                });
+                httpPost.setEntity(new UrlEncodedFormEntity(formParamList, SeedConstants.DEFAULT_CHARSET));
             }
             httpClient = addTLSSupport(httpClient);
             HttpResponse response = httpClient.execute(httpPost);
