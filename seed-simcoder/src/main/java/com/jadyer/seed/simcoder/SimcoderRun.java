@@ -17,7 +17,7 @@ public class SimcoderRun {
     public static final String DB_PASSWORD = "xuanyu";
 
     public static void main(String[] args){
-        //GenerateHelper.generate(DB_NAME);
-        GenerateHelper.generate(DB_NAME, "t_qss");
+        // GenerateHelper.generate(DB_NAME);
+        GenerateHelper.generate(DB_NAME, "t_schedule_log");
     }
 }

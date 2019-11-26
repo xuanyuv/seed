@@ -95,6 +95,15 @@ public abstract class BaseEntity<ID extends Serializable> implements Persistable
         return id;
     }
 
+    @Override
+    public String toString() {
+        return "BaseEntity{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
+    }
+
     public void setId(ID id) {
         this.id = id;
     }

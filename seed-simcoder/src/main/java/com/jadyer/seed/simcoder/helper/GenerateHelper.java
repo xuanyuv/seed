@@ -98,6 +98,7 @@ public class GenerateHelper {
         boolean hasNotBlankAnnotation = false;
         boolean hasNotBlankSizeAnnotation = false;
         StringBuilder fields = new StringBuilder();
+        StringBuilder fields_toString = new StringBuilder();
         StringBuilder fields_BuilderSetValues = new StringBuilder();
         StringBuilder fields_BuilderNoAnnotations = new StringBuilder();
         StringBuilder methods = new StringBuilder();
@@ -163,10 +164,26 @@ public class GenerateHelper {
             methods_Builders.append("            this.").append(fieldname).append(" = ").append(fieldname).append(";").append("\n");
             methods_Builders.append("            return this;").append("\n");
             methods_Builders.append("        }");
-            //方法与方法直接都空一行，并且最后一个setter之后就不用换行了（最后面的创建时间和修改时间两个字段已经跳过了）
+            //toString()
+            if (StringUtils.isNotBlank(fields_toString.toString())) {
+                fields_toString.append("                \", ");
+            } else {
+                fields_toString.append("\"");
+            }
+            fields_toString.append(fieldname).append("=");
+            if ("String".equals(javaType)) {
+                fields_toString.append("\'");
+            }
+            fields_toString.append("\" + ").append(fieldname).append(" ");
+            if ("String".equals(javaType)) {
+                fields_toString.append("+ \'\\\'\' ");
+            }
+            fields_toString.append("+");
+            // 方法与方法直接都空一行，并且最后一个setter之后就不用换行了（最后面的创建时间和修改时间两个字段已经跳过了）
             if(i+1 != columnList.size()-2){
                 methods.append("\n\n");
                 methods_Builders.append("\n");
+                fields_toString.append("\n");
                 fields_BuilderSetValues.append("\n");
                 fields_BuilderNoAnnotations.append("\n");
             }
@@ -196,6 +213,7 @@ public class GenerateHelper {
         sharedVars.put("TABLE_NAME_nounderline", (tablename.startsWith("t_") ? tablename.substring(2) : tablename).replaceAll("_", ""));
         sharedVars.put("TABLE_NAME_convertpoint", (tablename.startsWith("t_") ? tablename.substring(2) : tablename).replaceAll("_", "."));
         sharedVars.put("fields", fields.toString());
+        sharedVars.put("fields_toString", fields_toString.toString());
         sharedVars.put("fields_BuilderSetValues", fields_BuilderSetValues.toString());
         sharedVars.put("fields_BuilderNoAnnotations", fields_BuilderNoAnnotations.toString());
         sharedVars.put("methods", methods.toString());

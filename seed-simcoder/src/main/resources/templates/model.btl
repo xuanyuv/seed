@@ -36,9 +36,17 @@ import java.util.Date;
 public class ${CLASS_NAME} extends BaseEntity<Long> {
     private static final long serialVersionUID = ${serialVersionUID}L;
 ${fields}
+    public ${CLASS_NAME}() {}
+
 ${methods}
 
-    public ${CLASS_NAME}() {}
+    @Override
+    public String toString() {
+        return super.toString() + " => " +
+                "${CLASS_NAME}{" +
+                ${fields_toString}
+                '}';
+    }
 
     /**
      * Builder模式
