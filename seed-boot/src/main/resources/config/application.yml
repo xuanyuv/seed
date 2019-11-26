@@ -81,6 +81,8 @@ spring:
 #    admin:
 #      client:
 #        url: http://127.0.0.1:8080
+  pid:
+    file: /data/seed-boot.pid
   # org.springframework.boot.autoconfigure.batch.BatchProperties.java
   batch:
     job:

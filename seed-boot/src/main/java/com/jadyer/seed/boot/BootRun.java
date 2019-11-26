@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.ApplicationPidFileWriter;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 
 /**
@@ -131,6 +132,14 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
  * 2.spring.boot.admin.client.url=http://127.0.0.1:8080
  * 3.management.endpoints.web.exposure.include=*
  * ---------------------------------------------------------------------------------------------------------------
+ * 记录应用进程号到本地文件
+ * 除了{@link com.jadyer.seed.comm.util.RequestUtil#getPID()}方法外，也可以在应用启动时把pid写到本地文件中
+ * 方法为启动时注册监听器ApplicationPidFileWriter，然后在yml配置spring.pid.file=/data/myboot.pid即可
+ * 注意以下几点：
+ * 1、默认ApplicationPidFileWriter没有自动配置，所以只有显式配置后，才会把pid写入到本地文件
+ * 2、pid写入的文件名，默认为：application.pid，默认路径也是当期路径，只有配置了spring.pid.file之后才会根据配置写入目标文件
+ * 3、若写入文件失败，则会将pid值写入系统环境变量PID_FAIL_ON_WRITE_ERROR（不区分大小写），或写入Spring 境变量spring.pid.fail-on-write-error
+ * ---------------------------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.cn/> on 2015/11/29 15:35.
  */
 @SpringBootApplication(scanBasePackages="${scan.base.packages}")
@@ -166,6 +175,7 @@ public class BootRun {
                 .listeners(new ApplicationEnvironmentPreparedEventListener())
                 .listeners(new ApplicationPreparedEventListener())
                 .listeners(new ApplicationFailedEventListener())
+                .listeners(new ApplicationPidFileWriter())
                 .profiles(getProfile(new SimpleCommandLinePropertySource(args)))
                 .run(args);
     }
