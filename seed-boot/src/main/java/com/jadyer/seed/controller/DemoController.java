@@ -3,13 +3,13 @@ package com.jadyer.seed.controller;
 import com.alibaba.fastjson.JSON;
 import com.jadyer.seed.boot.BootProperties;
 import com.jadyer.seed.comm.annotation.ActionEnum;
-import com.jadyer.seed.comm.annotation.lock.cluster.SeedLock;
 import com.jadyer.seed.comm.annotation.SeedLog;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.util.HTTPUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
+import com.jadyer.seed.comm.util.RequestUtil;
 import com.jadyer.seed.controller.rabbitmq.UserMsg;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,13 +37,13 @@ public class DemoController {
     @Value("${user.blog:https://jadyer.cn/}")
     private String blog;
     @Value("${user.weight}")
-    private long weight;
+    private Long weight;
     @Value("${user.height}")
-    private int height;
+    private Integer height;
     @Value("${user.sex}")
-    private int sex;
+    private Integer sex;
     @Value("${user.age}")
-    private int age;
+    private Integer age;
     @Value("${encrypt.username:Jasypt未启用}")
     private String encryptUsername;
     @Value("${encrypt.password:Jasypt未启用}")
@@ -55,7 +55,7 @@ public class DemoController {
     @Resource
     private BootProperties bootProperties;
 
-    public void propLockFail(int id, UserMsg userMsg){
+    public void propLockFail(Integer id, UserMsg userMsg){
         System.out.println("加锁失败，收到回调-->>id=" + id + ", userMsg=" + ReflectionToStringBuilder.toString(userMsg));
     }
 
@@ -64,10 +64,10 @@ public class DemoController {
      * 读取配置文件中的属性
      */
     @GetMapping("/prop")
-    @SeedLock(key="#userMsg.name", appname="seedboot", fallbackMethod="propLockFail")
-    @SeedLog(action=ActionEnum.LIST, value="读取配置文件中的属性")
+    //@SeedLock(key="#userMsg.name", appname="seedboot", fallbackMethod="propLockFail")
+    @SeedLog(action= ActionEnum.LIST, value="读取配置文件中的属性")
     //@SeedQSSReg(qssHost="${qss.host}", appHost="${qss.appHost}", appname="seedboot", name="打印系统属性", cron="${qss.cron}")
-    public CommResult<Map<String, Object>> prop(int id, UserMsg userMsg){
+    public CommResult<Map<String, Object>> prop(Integer id, UserMsg userMsg){
         Map<String, Object> map = new HashMap<>();
         map.put("weight", this.weight);
         map.put("height", this.height);
@@ -75,6 +75,7 @@ public class DemoController {
         map.put("age", this.age);
         map.put("blog", this.blog);
         map.put("hello", "Hello Boot");
+        map.put("PID", RequestUtil.getPID());
         map.put("encryptUsername", this.encryptUsername);
         map.put("encryptPassword", this.encryptPassword);
         map.put("packages", this.bootProperties.getPackages());
