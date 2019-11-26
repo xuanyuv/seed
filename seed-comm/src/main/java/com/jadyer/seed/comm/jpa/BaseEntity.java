@@ -44,9 +44,9 @@ public abstract class BaseEntity<ID extends Serializable> implements Persistable
      * 详见：https://stackoverflow.com/questions/32968527/hibernate-sequence-doesnt-exist
      * ----------------------------------------------------------------------------------------------
      */
-    //@Id
-    //@SequenceGenerator(name="SEQUENCE_QUARTZ_NAME", sequenceName="SEQUENCE_QUARTZ", allocationSize=1)
-    //@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQUENCE_QUARTZ_NAME")
+    // @Id
+    // @SequenceGenerator(name="SEQUENCE_QUARTZ_NAME", sequenceName="SEQUENCE_QUARTZ", allocationSize=1)
+    // @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQUENCE_QUARTZ_NAME")
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private ID id;
@@ -60,12 +60,12 @@ public abstract class BaseEntity<ID extends Serializable> implements Persistable
      */
     @Column(name="create_time", updatable=false)
     @Basic(fetch= FetchType.LAZY)
-    //@org.springframework.data.annotation.CreatedDate
+    // @org.springframework.data.annotation.CreatedDate
     private Date createTime = new Date();
 
     @Column(name="update_time", updatable=false, insertable=false)
     @Basic(fetch=FetchType.LAZY)
-    //@org.springframework.data.annotation.LastModifiedDate
+    // @org.springframework.data.annotation.LastModifiedDate
     private Date updateTime;
 
     @Override

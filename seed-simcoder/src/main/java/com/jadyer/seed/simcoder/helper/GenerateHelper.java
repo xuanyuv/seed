@@ -119,8 +119,8 @@ public class GenerateHelper {
                 if("Integer".equals(javaType) || "Long".equals(javaType)){
                     hasNotNullAnnotation = true;
                     fields.append("    @NotNull").append("\n");
-                    fields.append("    //@Min(1)").append("\n");
-                    fields.append("    //@Max(3)").append("\n");
+                    fields.append("    // @Min(1)").append("\n");
+                    fields.append("    // @Max(3)").append("\n");
                 }
                 if("String".equals(javaType)){
                     hasNotBlankAnnotation = true;
