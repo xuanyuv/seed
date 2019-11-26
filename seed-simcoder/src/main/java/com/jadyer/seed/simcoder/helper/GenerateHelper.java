@@ -171,7 +171,7 @@ public class GenerateHelper {
                 fields_toString.append("                \", ");
             }
             if ("String".equals(javaType)) {
-                fields_toString.append(fieldname).append("=").append("\'").append("\" + ").append(fieldname).append(" + ").append("\'\\\'\'");
+                fields_toString.append(fieldname).append("=").append("\'\" + ").append(fieldname).append(" + ").append("\'\\\'\'");
             } else {
                 fields_toString.append(fieldname).append("=").append("\" + ").append(fieldname);
             }
