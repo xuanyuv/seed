@@ -165,20 +165,17 @@ public class GenerateHelper {
             methods_Builders.append("            return this;").append("\n");
             methods_Builders.append("        }");
             //toString()
-            if (StringUtils.isNotBlank(fields_toString.toString())) {
-                fields_toString.append("                \", ");
-            } else {
+            if (StringUtils.isBlank(fields_toString.toString())) {
                 fields_toString.append("\"");
+            } else {
+                fields_toString.append("                \", ");
             }
-            fields_toString.append(fieldname).append("=");
             if ("String".equals(javaType)) {
-                fields_toString.append("\'");
+                fields_toString.append(fieldname).append("=").append("\'").append("\" + ").append(fieldname).append(" + ").append("\'\\\'\'");
+            } else {
+                fields_toString.append(fieldname).append("=").append("\" + ").append(fieldname);
             }
-            fields_toString.append("\" + ").append(fieldname).append(" ");
-            if ("String".equals(javaType)) {
-                fields_toString.append("+ \'\\\'\' ");
-            }
-            fields_toString.append("+");
+            fields_toString.append(" +");
             // 方法与方法直接都空一行，并且最后一个setter之后就不用换行了（最后面的创建时间和修改时间两个字段已经跳过了）
             if(i+1 != columnList.size()-2){
                 methods.append("\n\n");
