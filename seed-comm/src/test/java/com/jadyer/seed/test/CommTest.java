@@ -142,7 +142,7 @@ public class CommTest {
         Map<Integer, List<Java8StreamInfo>> dataMap = dataList.stream().collect(Collectors.groupingBy(Java8StreamInfo::getLoanTerm));
         dataMap.forEach((key, value) -> System.out.println("分组后得到数据：key=" + key + "，value=" + JSON.toJSONString(value)));
         System.out.println("-----------------------------------------------------------------------------------------");
-        //获取某个字段的列表
+        //获取某个字段的列表（注：若源List是一个空List，那么得到的也是空List，不是null）
         List<Integer> loanTermList = dataList.stream().map(Java8StreamInfo::getLoanTerm).collect(Collectors.toList());
         loanTermList.forEach(loanTerm -> System.out.println("期数列表的数据（未去重）：" + loanTerm));
         System.out.println("-----------------------------------------------------------------------------------------");
