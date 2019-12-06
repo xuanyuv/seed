@@ -76,17 +76,17 @@ public class AsyncConfiguration extends AsyncConfigurerSupport {
         executor.setQueueCapacity(this.queueCapacity); //队列大小（最小的线程数被占满后，新任务会放进queue）
         executor.setAwaitTerminationSeconds(60 * 15);
         executor.setWaitForTasksToCompleteOnShutdown(true);
-        ////拒绝策略：自定义
+        ////饱和策略：自定义
         //executor.setRejectedExecutionHandler(new RejectedExecutionHandler() {
         //    @Override
         //    public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
         //        //---------
         //    }
         //});
-        //拒绝策略：队列满时，使用预定义的异常处理类
+        //饱和策略：队列满时，使用预定义的异常处理类
         //ABORT（缺省）  ：不执行，并抛TaskRejectedException异常
-        //DISCARD       ：不执行，也不抛异常
-        //DISCARD_OLDEST：丢弃queue中最旧的那个任务
+        //DISCARD       ：不执行，也不抛异常，直接丢弃任务
+        //DISCARD_OLDEST：丢弃queue中最旧的那个任务，并执行当期任务
         //CALLER_RUNS   ：不在新线程中执行任务，而是由调用者所在的线程来执行
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         executor.initialize();
