@@ -1,5 +1,6 @@
 package com.jadyer.seed.controller.batch;
 
+import com.alibaba.fastjson.JSON;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.SystemClockUtil;
 import org.springframework.batch.core.BatchStatus;
@@ -82,6 +83,11 @@ public class SettleJobListeners implements JobExecutionListener, StepExecutionLi
     }
 
 
+    /**
+     * 假如chunkSize=2，那么调用顺序如下
+     * beforeRead--afterRead--beforeRead--afterRead--beforeProcess...
+     * Comment by 玄玉<https://jadyer.cn/> on 2019/12/16 16:45.
+     */
     @Override
     public void beforeRead() {
         LogUtil.getLogger().info("beforeRead() is invoked");
@@ -120,18 +126,18 @@ public class SettleJobListeners implements JobExecutionListener, StepExecutionLi
 
     @Override
     public void beforeWrite(List items) {
-        LogUtil.getLogger().info("beforeWrite() is invoked");
+        LogUtil.getLogger().error("批量任务Step-->[{}-{}]-->beforeWrite() is invoked, the items is {}", stepExecution.getJobExecutionId(), stepExecution.getStepName(), JSON.toJSONString(items));
     }
 
 
     @Override
     public void afterWrite(List items) {
-        LogUtil.getLogger().info("afterWrite() is invoked");
+        LogUtil.getLogger().error("批量任务Step-->[{}-{}]-->afterWrite() is invoked, the items is {}", stepExecution.getJobExecutionId(), stepExecution.getStepName(), JSON.toJSONString(items));
     }
 
 
     @Override
     public void onWriteError(Exception exception, List items) {
-        LogUtil.getLogger().error("批量任务Step-->[{}-{}]-->写失败，失败原因为：{}", stepExecution.getJobExecutionId(), stepExecution.getStepName(), exception.getMessage());
+        LogUtil.getLogger().error("批量任务Step-->[{}-{}]-->write error, because {}", stepExecution.getJobExecutionId(), stepExecution.getStepName(), exception.getMessage());
     }
 }
