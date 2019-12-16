@@ -12,29 +12,6 @@
     <bean id="processor201" class="com.jadyer.seed.controller.batch.xmlconfig.Processor201"/>
     <bean id="processor202" class="com.jadyer.seed.controller.batch.xmlconfig.Processor202"/>
     <bean id="processor203" class="com.jadyer.seed.controller.batch.xmlconfig.Processor203"/>
-    <bean id="simpleAsyncTaskExecutor" class="org.springframework.core.task.SimpleAsyncTaskExecutor"/>
-
-    <!-- 日期类型的解析器：针对数据文件中存在日期类型的属性，而接收实体是java.util.Date（String接收就不用） -->
-    <bean id="customDateEditor" class="org.springframework.beans.propertyeditors.CustomDateEditor">
-        <constructor-arg>
-            <bean class="java.text.SimpleDateFormat">
-                <constructor-arg value="yyyy-MM-dd HH:mm:ss"/>
-            </bean>
-        </constructor-arg>
-        <constructor-arg value="true"/>
-    </bean>
-
-    <!-- 定义公共的Job和Step配置：监听并打印日志 -->
-    <batch:job id="parentJob" abstract="true">
-        <batch:listeners>
-            <batch:listener ref="settleJobListeners"/>
-        </batch:listeners>
-    </batch:job>
-    <batch:step id="parentStep" abstract="true">
-        <batch:listeners>
-            <batch:listener ref="settleJobListeners"/>
-        </batch:listeners>
-    </batch:step>
 
     <batch:job id="xmlSettleJob" parent="parentJob">
         <!-- Step101：读取本地文件内容，处理后，落库 -->
