@@ -4,8 +4,24 @@
        xmlns:batch="http://www.springframework.org/schema/batch"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
         http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd">
-
+    <!--
     <bean id="simpleAsyncTaskExecutor" class="org.springframework.core.task.SimpleAsyncTaskExecutor"/>
+    -->
+    <bean id="threadPoolTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="threadNamePrefix" value="SeedBatchExecutor-"/>
+        <!-- 线程池最小数量 -->
+        <property name="corePoolSize" value="5"/>
+        <!-- 线程池最大数量 -->
+        <property name="maxPoolSize" value="100"/>
+        <!-- 允许的空闲时间（单位：秒） -->
+        <property name="keepAliveSeconds" value="120"/>
+        <!-- 队列大小（最小的线程数被占满后，新任务会放进queue） -->
+        <property name="queueCapacity" value="20"/>
+        <!-- 饱和策略（队列满时，使用预定义的异常处理类） -->
+        <property name="rejectedExecutionHandler">
+            <bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy"/>
+        </property>
+    </bean>
 
 
     <!-- 日期类型的解析器：针对数据文件中存在日期类型的属性，而接收实体是java.util.Date（String接收就不用） -->

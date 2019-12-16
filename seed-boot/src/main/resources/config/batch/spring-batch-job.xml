@@ -27,7 +27,7 @@
             </batch:tasklet>
         </batch:step>
         <!-- 并行的Step：201与202顺序执行，同时它们与203并行执行（注：必须配置task-executor，否则仍会串行） -->
-        <batch:split id="splitFlow200" next="step301" task-executor="simpleAsyncTaskExecutor">
+        <batch:split id="splitFlow200" next="step301" task-executor="threadPoolTaskExecutor">
             <batch:flow>
                 <!-- 读取数据库内容，处理后，落库 -->
                 <batch:step id="step201" next="step202" parent="parentStep">
