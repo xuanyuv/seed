@@ -156,6 +156,10 @@
     <bean id="writer102" class="org.springframework.batch.item.file.FlatFileItemWriter" scope="step">
         <property name="resource" value="file:#{jobParameters['filePath']}all"/>
         <property name="appendAllowed" value="true"/>
+        <!--
+        <property name="shouldDeleteIfEmpty" value="true"/>
+        <property name="shouldDeleteIfExists" value="true"/>
+        -->
         <property name="lineAggregator">
             <bean class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
                 <property name="delimiter" value=","/>
