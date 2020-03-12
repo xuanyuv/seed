@@ -334,7 +334,7 @@
         <password>admin123</password>
     </server>
     1.将工具包编译发布到私服的命令：[call mvn clean deploy -DskipTests]
-    2.将jar包发布到本地仓库的命令是：mvn install:install-file -DgroupId=com.jadyer -DartifactId=Jadyer-tag -Dversion=1.0 -Dpackaging=jar -Dfile=D:/mytaglib/Jadyer-tag-1.0.jar -Dsources=Jadyer-tag-1.0-sources.jar
+    2.将jar包发布到本地仓库的命令是：mvn install:install-file -DgroupId=com.jadyer -DartifactId=Jadyer-tag -Dversion=1.0 -Dpackaging=jar -Dfile=D:/mytaglib/Jadyer-tag-1.0.jar -Dsources=Jadyer-tag-1.0-sources.jar -DpomFile=Jadyer-tag-1.0-pom.xml
     3.将第三方jar发布到私服的命令是：mvn deploy:deploy-file -Dversion=11.2.0.4 -Dfile=ojdbc6-11.2.0.4.jar -Dsources=ojdbc6-11.2.0.4-sources.jar -DgroupId=com.jadyer.oracle -DartifactId=ojdbc6 -Dpackaging=jar -DrepositoryId=jadyer-nexus-release -Durl=http://192.168.2.41:8081/nexus/content/repositories/releases
     4.在私服手工发布第三方jar的操作：Repositories===Releases===Artifact Upload===GAV Definition===GAV Parameters===Select Artifact(s) to Upload===Upload Artifact(s)
      -->
