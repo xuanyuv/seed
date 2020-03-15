@@ -102,16 +102,19 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <!--
-        spring-boot-devtools是一个为开发者服务的模块,其最重要的功能是发现应用代码更改后,它会自动重启应用
-        其原理是使用两个ClassLoader,一个加载不会改变的类(第三方jar),另一个(RestartClassLoader)加载会更改的类
-        这样在发现代码更改的时候,原RestartClassLoader会被丢弃,    并重建一个RestartClassLoader
-        由于需要加载的类相对较少,所以实现了较快的重启时间(5秒以内)
-        注意:它会自动重启应用,这和Eclipse的DEBUG模式下修改应用代码后刷新查看效果,是不同的
+        spring-boot-devtools是一个为开发者服务的模块，其最重要的功能是发现应用代码更改后，它会自动重启应用
+        其原理是使用两个ClassLoader：一个加载不会改变的类(第三方jar)，另一个(RestartClassLoader)加载会更改的类
+        这样在发现（即手动Ctrl+F9重新编译后）代码更改时，原RestartClassLoader会被丢弃，并重建一个RestartClassLoader
+        由于需要加载的类相对较少，所以实现了较快的重启时间(5秒以内)
+        注意：它会自动重启应用，这和Eclipse的DEBUG模式下修改应用代码后刷新查看效果，是不同的
+        注意：配置optional=true是说该依赖（spring-boot-devtools）不会被传递
+             比如moduleA依赖此module，那么该依赖就不会被moduleA依赖到，除非moduleA在pom里显式的依赖它（spring-boot-devtools）
         -->
         <!--
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
         </dependency>
         -->
         <dependency>
