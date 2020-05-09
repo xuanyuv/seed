@@ -116,7 +116,8 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
  *   它在收到请求，关闭应用时，本例中的SpringContextHolder.clearHolder()方法会被调用
  *   并返回该字符串给调用方（含小括号）：{"message":"Shutting down, bye..."}
  *   需要注意的是：该功能需要配置management.security.enabled=false来关闭安全认证校验
- *   其实更好的做法是将应用设置成Unix/Linux的系统服务，这样就能以“service app stop”命令来操作，详见https://www.cnblogs.com/lobo/p/5657684.html
+ *   其实更好的做法是将应用设置成Unix/Linux的系统服务，这样就能以“service app stop”命令来操作
+ *   详见https://www.cnblogs.com/lobo/p/5657684.html & https://my.oschina.net/u/4292220/blog/3236949
  * 3.http://127.0.0.1/loggers/日志端点/新的日志级别
  *   可以动态修改日志级别，示例代码见{@link com.jadyer.seed.controller.DemoController#loglevel(String, String)}
  *   并且，GET请求“http://127.0.0.1/loggers/日志端点”还可以查看其当前的日志级别
