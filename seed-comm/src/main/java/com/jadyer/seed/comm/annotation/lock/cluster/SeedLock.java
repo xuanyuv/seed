@@ -30,6 +30,8 @@ import java.util.concurrent.TimeUnit;
  * 4、@SeedLock(key="#userMsg.name", appname="seedboot")
  *    public CommResult<Map<String, Object>> prop(int id, UserMsg userMsg){ // do business... }
  * ---------------------------------------------------------------------------------------------------
+ * 补充：Spring官方也提供了分布式锁实现，例子见http://itmuch.com/spring-boot/global-lock/
+ * ---------------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.cn/> on 2018/6/5 9:53.
  */
 @Target(ElementType.METHOD)
