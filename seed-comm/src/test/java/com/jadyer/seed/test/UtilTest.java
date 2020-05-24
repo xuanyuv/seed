@@ -177,7 +177,7 @@ public class UtilTest {
         String bizDate = "20170115";
         String username = "yangguang01";
         String password = "yangguang01@#$";
-        String host = "ftp.msxf.test";
+        String host = "ftp.jadyer.test";
         String filename = "/vc_cash/yyyyMMdd/CashTransList_005103.data";
         List<String> withdrawDataList = FTPUtil.readFileData(bizDate, filename, host, username, password);
         for(String obj : withdrawDataList){
@@ -209,7 +209,7 @@ public class UtilTest {
      */
     @Test
     public void FTPUtilForDownloadTest() throws IOException {
-        String host = "ftp.msxf.test";
+        String host = "ftp.jadyer.test";
         String username = "yangguang01";
         String password = "yangguang01@#$";
         String remoteURL = "/vc_cash/20170115/CashTransList_005103.data";

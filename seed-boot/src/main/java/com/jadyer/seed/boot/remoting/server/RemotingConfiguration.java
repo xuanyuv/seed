@@ -39,7 +39,7 @@ package com.jadyer.seed.boot.remoting.server;
  * -------------------------------------------------------------------------------------------------
  * 给客户端打包SDK的时候，只需要把FileInfoVO.java以及IFSService.java打包进去，就可以了
  * 所以可以把VO类和接口类放到一个单独的maven-module里面，这样会编译成一个独立jar，再使用下面的命令打包即可
- * mvn deploy:deploy-file -Dversion=1.2 -Dfile=sdk-1.2.jar -Dsources=sdk-1.2-sources.jar -DgroupId=com.jadyer.seed -DartifactId=seed-sdk -Dpackaging=jar -DrepositoryId=msxf-nexus-release -Durl=http://nexus.jadyer.cn/nexus/content/repositories/releases/
+ * mvn deploy:deploy-file -Dversion=1.2 -Dfile=sdk-1.2.jar -Dsources=sdk-1.2-sources.jar -DgroupId=com.jadyer.seed -DartifactId=seed-sdk -Dpackaging=jar -DrepositoryId=jadyer-nexus-release -Durl=http://nexus.jadyer.cn/nexus/content/repositories/releases/
  * <dependency>
  *     <groupId>com.jadyer.seed</groupId>
  *     <artifactId>seed-sdk</artifactId>
@@ -48,12 +48,12 @@ package com.jadyer.seed.boot.remoting.server;
  * 打包之前要先配置私服用户密码：D:\Develop\Code\mvnrepo\settings.xml
  * <servers>
  *     <server>
- *         <id>msxf-nexus-release</id>
+ *         <id>jadyer-nexus-release</id>
  *         <username>jadyer</username>
  *         <password>111111</password>
  *     </server>
  *     <server>
- *         <id>msxf-nexus-snapshot</id>
+ *         <id>jadyer-nexus-snapshot</id>
  *         <username>jadyer</username>
  *         <password>111111</password>
  *     </server>

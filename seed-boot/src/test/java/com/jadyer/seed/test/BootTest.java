@@ -98,7 +98,7 @@ public class BootTest {
      */
     @Test
     public void ratelimiterTest() throws InterruptedException {
-        String identity = "msxf.apply.get";
+        String identity = "jadyer.apply.get";
         RateLimiterLua rateLimiterLua = new RateLimiterLua(jedisCluster, 3, 10000);
         for(int i=0; i<3; i++){
             System.out.println(rateLimiterLua.access(identity));
@@ -118,7 +118,7 @@ public class BootTest {
      */
     @Test
     public void ratelimiterV2Test() throws InterruptedException {
-        String identity = "msxf.apply.submit";
+        String identity = "jadyer.apply.submit";
         rateLimiterLuaV2.setLimitRule(identity, 3, 10000);
         for(int i=0; i<3; i++){
             System.out.println(rateLimiterLuaV2.access(identity));
