@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <title>微信支付</title>
 <%--
-<script src="<%=request.getContextPath()%>/js/jquery-1.11.3.min.js"></script>
+<script src="//cdn.bootcdn.net/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="//res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 --%>
 <script>
