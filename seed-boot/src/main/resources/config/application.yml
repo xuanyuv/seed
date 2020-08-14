@@ -100,6 +100,7 @@ spring:
       maxFileSize: 10MB
       maxRequestSize: 10MB
   datasource:
+    # https://www.cnblogs.com/sonng/p/11294609.html
     url: jdbc:mysql://${db.address}/${db.name}?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
     username: ${db.username}
     password: ${db.password}
