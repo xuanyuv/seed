@@ -30,7 +30,7 @@ import java.util.Objects;
  * Created by 玄玉<https://jadyer.cn/> on 2017/2/28 18:36.
  */
 @MappedSuperclass
-public abstract class BaseEntity<ID extends Serializable> implements Persistable<ID> {
+public abstract class BaseEntity<ID extends Serializable> implements Serializable, Persistable<ID> {
     private static final long serialVersionUID = 5563689039804450746L;
     /**
      * 主键（如果这里不加@GeneratedValue那么Save()时生成的insert就包括id字段）
