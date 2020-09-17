@@ -35,7 +35,7 @@
         <beetl.version>2.9.10</beetl.version>
         <jsch.version>0.1.55</jsch.version>
         <hutool.version>4.6.1</hutool.version>
-        <myexcel.version>2.8.5</myexcel.version>
+        <myexcel.version>3.9.5</myexcel.version>
         <jedis.version>2.9.0</jedis.version>
         <redisson.version>3.11.2</redisson.version>
         <jcifs.version>1.3.3</jcifs.version>
