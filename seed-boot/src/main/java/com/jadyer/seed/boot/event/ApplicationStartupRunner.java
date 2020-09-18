@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApplicationStartupRunner implements ApplicationRunner {
     @Override
-    public void run(ApplicationArguments args) throws Exception {
-        LogUtil.getLogger().info("应用启动成功..." + JSON.toJSONString(args));
+    public void run(ApplicationArguments args) {
+        LogUtil.getLogger().info("应用启动成功...{}", JSON.toJSONString(args));
     }
 }

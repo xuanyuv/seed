@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApplicationStartupCommandRunner implements CommandLineRunner {
     @Override
-    public void run(String... args) throws Exception {
-        LogUtil.getLogger().info("应用启动成功......" + JSON.toJSONString(args));
+    public void run(String... args) {
+        LogUtil.getLogger().info("应用启动成功...{}", JSON.toJSONString(args));
     }
 }
