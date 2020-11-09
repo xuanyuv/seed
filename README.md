@@ -1,9 +1,8 @@
-# seed [![License](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/jadyer/seed/blob/master/LICENSE)
+# seed
 玄玉的个人总结<br/><br/>
 
 
 ## 模块列表
-
 * [x] seed-admin：SpringBootAdmin服务端
 * [x] seed-boot：SpringBoot个人实践
 * [x] seed-comm：工具包
@@ -15,7 +14,6 @@
 * [x] seed-simulator：Swing实现的模拟器
 
 ## 依赖关系
-
 * .
 * ├── seed-admin
 * ├── seed-boot
@@ -34,7 +32,6 @@
 *  　　└── seed-comm
 
 ## 版本迭代
-
 > ### version 2.1.RELEASE
 >> * upgrade to beetl-2.9.7
 >> * upgrade to fastjson-1.2.54
