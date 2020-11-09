@@ -3,6 +3,7 @@ package com.jadyer.seed.test;
 import com.alibaba.fastjson.JSON;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.test.model.Java8StreamInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -145,19 +146,23 @@ public class CommTest {
         //获取某个字段的列表（注：若源List是一个空List，那么得到的也是空List，不是null）
         List<Integer> loanTermList = dataList.stream().map(Java8StreamInfo::getLoanTerm).collect(Collectors.toList());
         loanTermList.forEach(loanTerm -> System.out.println("期数列表的数据（未去重）：" + loanTerm));
-        System.out.println("-----------------------------------------------------------------------------------------");
         List<Integer> loanTermDistinctList = dataList.stream().map(Java8StreamInfo::getLoanTerm).distinct().collect(Collectors.toList());
-        loanTermDistinctList.forEach(loanTerm -> System.out.println("期数列表的数据（去重后）：" + loanTerm));
+        System.out.println("期数列表的数据（去重后）：" + JSON.toJSONString(loanTermDistinctList));
+        List<String> loanTermStringDistinctList = dataList.stream().map(Java8StreamInfo::getLoanTerm).map(String::valueOf).filter(StringUtils::isNotBlank).distinct().collect(Collectors.toList());
+        System.out.println("期数列表的数据（去重后）（转String）：" + JSON.toJSONString(loanTermStringDistinctList));
         System.out.println("-----------------------------------------------------------------------------------------");
         //求和
-        BigDecimal allAmt = dataList.stream().map(Java8StreamInfo::getLoanAmt).reduce(BigDecimal.ZERO, BigDecimal::add);
-        System.out.println("所有金额之和为：" + allAmt);
-        BigDecimal sameTermAmt = dataList.stream().filter(x -> x.getLoanTerm()==3).map(Java8StreamInfo::getLoanAmt).reduce(BigDecimal.ZERO, BigDecimal::add);
-        System.out.println("同期金额之和为：" + sameTermAmt);
+        System.out.println("所有期数之和为：" + dataList.stream().mapToInt(Java8StreamInfo::getLoanTerm).sum());
+        System.out.println("所有金额之和为：" + dataList.stream().map(Java8StreamInfo::getLoanAmt).reduce(BigDecimal.ZERO, BigDecimal::add));
+        System.out.println("同期金额之和为：" + dataList.stream().filter(x -> x.getLoanTerm()==3).map(Java8StreamInfo::getLoanAmt).reduce(BigDecimal.ZERO, BigDecimal::add));
         System.out.println("-----------------------------------------------------------------------------------------");
         //最大值
         Optional<Java8StreamInfo> infoOptional = dataList.stream().max(Comparator.comparing(Java8StreamInfo::getLoanAmt));
         System.out.println("金额最大的数据：" + JSON.toJSONString(infoOptional.orElseThrow(RuntimeException::new)));
         System.out.println("-----------------------------------------------------------------------------------------");
+
+
+        // long userCount = shopUserList.stream().mapToLong(ManageByMonthAndShopDto::getUserCount).sum();
+
     }
 }
