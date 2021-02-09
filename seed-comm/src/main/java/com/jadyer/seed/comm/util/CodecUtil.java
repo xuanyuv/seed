@@ -154,8 +154,8 @@ public final class CodecUtil {
         //初始化密钥生成器:AES要求密钥长度为128,192,256位
         if(ALGORITHM_AES.equals(algorithm)){
             kg.init(128);
-        }else if(ALGORITHM_AES_PKCS7.equals(algorithm)){
-            kg.init(128);
+        // }else if(ALGORITHM_AES_PKCS7.equals(algorithm)){
+        //     kg.init(128);
         }else if(ALGORITHM_DES.equals(algorithm)){
             kg.init(56);
         }else if(ALGORITHM_DES_EDE.equals(algorithm)){

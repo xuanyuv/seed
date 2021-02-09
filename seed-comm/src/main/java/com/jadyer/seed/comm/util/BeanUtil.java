@@ -57,7 +57,6 @@ public final class BeanUtil {
         } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException("copyProperties时发生异常：目标类非public（内部类则应static），堆栈轨迹如下", e);
         }
-        assert target != null;
         ////采用Cglib实现（实际使用时可以在Service类中全局缓存BeanCopier对象）
         //net.sf.cglib.beans.BeanCopier beanCopier = BeanCopier.create(source.getClass(), target.getClass(), false);
         //beanCopier.copy(source, target, null);
