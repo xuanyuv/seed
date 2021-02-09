@@ -90,6 +90,7 @@ public class GenerateHelper {
     /**
      * 生成某张表的
      */
+    @SuppressWarnings("DuplicateExpressions")
     private static void generateFromTable(String tablename, String tablecomment){
         boolean hasDate = false;
         boolean hasBigDecimal = false;
@@ -171,7 +172,7 @@ public class GenerateHelper {
                 fields_toString.append("                \", ");
             }
             if ("String".equals(javaType)) {
-                fields_toString.append(fieldname).append("=").append("\'\" + ").append(fieldname).append(" + ").append("\'\\\'\'");
+                fields_toString.append(fieldname).append("=").append("'\" + ").append(fieldname).append(" + ").append("'\\''");
             } else {
                 fields_toString.append(fieldname).append("=").append("\" + ").append(fieldname);
             }
