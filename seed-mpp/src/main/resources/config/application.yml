@@ -21,14 +21,17 @@ logging:
 
 
 spring:
-  async:
-    corePoolSize: 100
-    maxPoolSize: 500
-    queueCapacity: 1000
   servlet:
     multipart:
       maxFileSize: 10MB
       maxRequestSize: 10MB
+  task:
+    execution:
+      thread-name-prefix: MppTaskExecutor-
+      pool:
+        max-size: 50
+        core-size: 2
+        queue-capacity: 5
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/mpp?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
     username: root

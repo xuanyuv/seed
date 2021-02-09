@@ -286,6 +286,7 @@ public final class HTTPUtil {
         }
         httpPost.setEntity(new StringEntity(null==reqData?"":reqData, SeedConstants.DEFAULT_CHARSET));
         try{
+            //noinspection ConstantConditions
             httpClient = addTLSSupport(httpClient, filepath, password);
             HttpResponse response = httpClient.execute(httpPost);
             HttpEntity entity = response.getEntity();
@@ -426,9 +427,7 @@ public final class HTTPUtil {
                 //    formParams.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
                 // }
                 // JDK8开始推荐这么迭代
-                paramMap.forEach((key, value) -> {
-                    formParamList.add(new BasicNameValuePair(key, value));
-                });
+                paramMap.forEach((key, value) -> formParamList.add(new BasicNameValuePair(key, value)));
                 httpPost.setEntity(new UrlEncodedFormEntity(formParamList, SeedConstants.DEFAULT_CHARSET));
             }
             httpClient = addTLSSupport(httpClient);
@@ -974,6 +973,7 @@ public final class HTTPUtil {
                     //既然匹配到了Content-Type，那就一定不会匹配到我们想到的\r\n，所以就直接跳到下一次循环中喽...
                     continue;
                 }
+                //noinspection ConstantConditions
                 if(from>0 && to==0 && respBuffer[i]==13 && respBuffer[i+1]==10){
                     //一定要加to==0限制，因为可能存在Content-Type后面还有其它的头信息
                     to = i;
@@ -1098,6 +1098,7 @@ public final class HTTPUtil {
     /**
      * HTTPS协议支持
      */
+    @SuppressWarnings("RedundantThrows")
     private static HttpClient addTLSSupport(HttpClient httpClient) throws Exception {
         //创建TrustManager(),用于解决javax.net.ssl.SSLPeerUnverifiedException: peer not authenticated
         X509TrustManager trustManager = new X509TrustManager(){

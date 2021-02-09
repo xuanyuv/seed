@@ -1,14 +1,18 @@
 package com.jadyer.seed.boot;
 
+import com.alibaba.fastjson.JSON;
 import com.jadyer.seed.comm.util.LogUtil;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.task.TaskExecutionProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurerSupport;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import javax.annotation.Resource;
 import java.lang.reflect.Method;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -41,13 +45,10 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 @Configuration
 @EnableAsync
+@EnableConfigurationProperties(TaskExecutionProperties.class)
 public class AsyncConfiguration extends AsyncConfigurerSupport {
-    @Value("${spring.async.corePoolSize}")
-    private int corePoolSize;
-    @Value("${spring.async.maxPoolSize}")
-    private int maxPoolSize;
-    @Value("${spring.async.queueCapacity}")
-    private int queueCapacity;
+    @Resource
+    private TaskExecutionProperties taskExecutionProperties;
 
     @Bean
     public Executor seedSimpleExecutor(){
@@ -58,7 +59,7 @@ public class AsyncConfiguration extends AsyncConfigurerSupport {
         //scheduler.initialize();
         //return scheduler;
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setThreadNamePrefix("SeedSimpleExecutor-");
+        executor.setThreadNamePrefix("BootSimpleExecutor-");
         executor.setCorePoolSize(10); //线程池最小数量
         executor.setMaxPoolSize(200); //线程池最大数量
         executor.setQueueCapacity(5); //队列大小（最小的线程数被占满后，新任务会放进queue）
@@ -70,10 +71,10 @@ public class AsyncConfiguration extends AsyncConfigurerSupport {
     @Override
     public Executor getAsyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setThreadNamePrefix("SeedExecutor-");
-        executor.setMaxPoolSize(this.maxPoolSize);     //线程池最大数量
-        executor.setCorePoolSize(this.corePoolSize);   //线程池最小数量
-        executor.setQueueCapacity(this.queueCapacity); //队列大小（最小的线程数被占满后，新任务会放进queue）
+        executor.setThreadNamePrefix(taskExecutionProperties.getThreadNamePrefix());     // 线程名称前缀
+        executor.setMaxPoolSize(taskExecutionProperties.getPool().getMaxSize());         // 线程池最大数量
+        executor.setCorePoolSize(taskExecutionProperties.getPool().getCoreSize());       // 线程池最小数量
+        executor.setQueueCapacity(taskExecutionProperties.getPool().getQueueCapacity()); // 队列大小（最小的线程数被占满后，新任务会放进queue）
         executor.setAwaitTerminationSeconds(60 * 15);
         executor.setWaitForTasksToCompleteOnShutdown(true);
         ////饱和策略：自定义
@@ -114,10 +115,9 @@ public class AsyncConfiguration extends AsyncConfigurerSupport {
         return new AsyncUncaughtExceptionHandler(){
             @Override
             public void handleUncaughtException(Throwable ex, Method method, Object... params) {
-                LogUtil.getLogger().info("异步执行"+method.getName()+"()方法时发生异常，堆栈轨迹如下", ex);
-                for(Object obj : params){
-                    LogUtil.getLogger().info("方法参数值为：[{}]", obj);
-                }
+                LogUtil.getLogger().info("异步执行" + method.getDeclaringClass().getSimpleName() + "." + method.getName() + "()方法时发生异常\n" +
+                        "方法参数=" + JSON.toJSONString(params) + "\n" +
+                        "堆栈轨迹如下", ex);
             }
         };
     }

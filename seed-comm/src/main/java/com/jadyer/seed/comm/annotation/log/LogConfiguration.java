@@ -21,7 +21,7 @@ public class LogConfiguration {
         return new LogAdvisor();
     }
 
-    class LogAdvisor extends AbstractPointcutAdvisor {
+    static class LogAdvisor extends AbstractPointcutAdvisor {
         private static final long serialVersionUID = 2375671248486443144L;
         @Override
         public Advice getAdvice() {

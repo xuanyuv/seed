@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
      */
     @ResponseBody
     @ExceptionHandler(Throwable.class)
-    public CommResult process(Throwable cause, HttpServletRequest request){
+    public CommResult<Void> process(Throwable cause, HttpServletRequest request){
         LogUtil.getLogger().info("Exception Occured URL=" + request.getRequestURL() + "，堆栈轨迹如下", cause);
         int code;
         String msg = cause.getMessage();

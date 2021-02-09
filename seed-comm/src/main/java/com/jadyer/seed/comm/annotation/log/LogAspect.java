@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -42,7 +43,7 @@ class LogAspect implements MethodInterceptor {
         Object[] objs = invocation.getArguments();
         List<Object> argsList = new ArrayList<>();
         for(Object obj : objs){
-            if(obj instanceof ServletRequest || obj instanceof ServletResponse){
+            if(obj instanceof ServletRequest || obj instanceof ServletResponse || obj instanceof MultipartFile){
                 continue;
             }
             argsList.add(obj);

@@ -6,11 +6,6 @@ import org.slf4j.LoggerFactory;
 /**
  * 日志工具类
  * -----------------------------------------------------------------------------------------------------------
- * 【遗留问题（来自Alibaba Java Coding Guidelines的提示）】
- * 没有回收自定义的ThreadLocal变量
- * 尤其在线程池场景下，线程经常会被复用，如果不清理自定义的ThreadLocal变量
- * 可能会影响后续业务逻辑和造成内存泄露等问题。尽量在代理中使用try-finally块进行回收
- * -----------------------------------------------------------------------------------------------------------
  * http://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-log4j2
  * Log4j2.x升级的详细流程---http://tech.lede.com/2017/08/28/rd/server/Log4j2Update/
  * Log4j2.x比Logback好----http://donlianli.iteye.com/blog/1921735
@@ -78,17 +73,16 @@ public final class LogUtil {
     private static final String LOGGER_NAME_DEFAULT = "defaultLogger";
     private static final String LOGGER_NAME_WEB = "webLogger";
     private static final String LOGGER_NAME_WAP = "wapLogger";
-
-    private LogUtil(){}
+    //定义日志记录器
+    private static Logger defaultLogger = LoggerFactory.getLogger(LOGGER_NAME_DEFAULT);
+    private static Logger webLogger = LoggerFactory.getLogger(LOGGER_NAME_WEB);
+    private static Logger wapLogger = LoggerFactory.getLogger(LOGGER_NAME_WAP);
 
     //自定义线程范围内共享的对象
     //即它会针对不同线程分别创建独立的对象，此时每个线程得到的将是自己的实例，各线程间得到的实例没有任何关联
     private static ThreadLocal<Logger> currentLoggerMap = new ThreadLocal<>();
 
-    //定义日志记录器
-    private static Logger defaultLogger = LoggerFactory.getLogger(LOGGER_NAME_DEFAULT);
-    private static Logger webLogger = LoggerFactory.getLogger(LOGGER_NAME_WEB);
-    private static Logger wapLogger = LoggerFactory.getLogger(LOGGER_NAME_WAP);
+    private LogUtil(){}
 
     /**
      * 获取当前线程中的日志记录器

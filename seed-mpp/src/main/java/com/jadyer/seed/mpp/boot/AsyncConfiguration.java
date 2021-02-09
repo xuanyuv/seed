@@ -1,38 +1,50 @@
 package com.jadyer.seed.mpp.boot;
 
+import com.alibaba.fastjson.JSON;
+import com.jadyer.seed.comm.util.LogUtil;
+import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.task.TaskExecutionProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.AsyncConfigurerSupport;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import javax.annotation.Resource;
+import java.lang.reflect.Method;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 
 @Configuration
 @EnableAsync
-public class AsyncConfiguration {
-    @Value("${spring.async.corePoolSize}")
-    private int corePoolSize;
-    @Value("${spring.async.maxPoolSize}")
-    private int maxPoolSize;
-    @Value("${spring.async.queueCapacity}")
-    private int queueCapacity;
+@EnableConfigurationProperties(TaskExecutionProperties.class)
+public class AsyncConfiguration extends AsyncConfigurerSupport {
+    @Resource
+    private TaskExecutionProperties taskExecutionProperties;
 
-    @Bean
-    public Executor mppExecutor(){
+    @Override
+    public Executor getAsyncExecutor(){
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setThreadNamePrefix("MppExecutor-");
-        executor.setCorePoolSize(this.corePoolSize);
-        executor.setMaxPoolSize(this.maxPoolSize);
-        executor.setQueueCapacity(this.queueCapacity);
-        //队列满的时候，使用的拒绝策略
-        //ABORT（缺省）  ：不执行，并抛TaskRejectedException异常
-        //DISCARD       ：不执行，也不抛异常
-        //DISCARD_OLDEST：丢弃queue中最旧的那个任务
-        //CALLER_RUNS   ：不在新线程中执行任务，而是由调用者所在的线程来执行
+        executor.setThreadNamePrefix(taskExecutionProperties.getThreadNamePrefix());     // 线程名称前缀
+        executor.setMaxPoolSize(taskExecutionProperties.getPool().getMaxSize());         // 线程池最大数量
+        executor.setCorePoolSize(taskExecutionProperties.getPool().getCoreSize());       // 线程池最小数量
+        executor.setQueueCapacity(taskExecutionProperties.getPool().getQueueCapacity()); // 队列大小（最小的线程数被占满后，新任务会放进queue）
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         executor.initialize();
         return executor;
+    }
+
+    @Override
+    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+        return new AsyncUncaughtExceptionHandler(){
+            @Override
+            public void handleUncaughtException(Throwable ex, Method method, Object... params) {
+                LogUtil.getLogger().info("异步执行" + method.getDeclaringClass().getSimpleName() + "." + method.getName() + "()方法时发生异常\n" +
+                        "方法参数=" + JSON.toJSONString(params) + "\n" +
+                        "堆栈轨迹如下", ex);
+            }
+        };
     }
 }

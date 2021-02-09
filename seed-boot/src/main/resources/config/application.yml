@@ -131,6 +131,14 @@ spring:
         url-pattern: /druid/*
         login-username: druid
         login-password: https://jadyer.cn/
+  # org.springframework.boot.autoconfigure.task.TaskExecutionProperties.java
+  task:
+    execution:
+      thread-name-prefix: BootTaskExecutor-
+      pool:
+        max-size: 50
+        core-size: 2
+        queue-capacity: 5
   # org.springframework.boot.autoconfigure.orm.jpa.JpaProperties.java
   jpa:
     showSql: true

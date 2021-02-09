@@ -1,7 +1,7 @@
 -- 实际应用中，这里的表要先建起来，否则批处理录库的时候会找不到表
 DROP TABLE IF EXISTS t_person;
 CREATE TABLE t_person(
-    id INT PRIMARY KEY AUTO_INCREMENT COMMENT '主键',
+    id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '主键',
     real_name VARCHAR(32) NOT NULL,
     age       INT         NOT NULL,
     birth_day DATETIME    NOT NULL,

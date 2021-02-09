@@ -132,7 +132,6 @@ public final class RequestUtil {
      * @param domain 域名，可传入[oschina.net][www.oschina.net][http://www.oschina.net][https://www.oschina.net]
      */
     public static String whois(String domain){
-        String reginfo;
         domain = domain.toLowerCase();
         domain = domain.replace("https://", "");
         domain = domain.replace("http://", "");
@@ -144,13 +143,11 @@ public final class RequestUtil {
             if(StringUtils.endsWithAny(domain, ".com", ".net", ".edu")){
                 //连接whois查询服务器（默认whois.internic.net端口43）
                 whois.connect(WhoisClient.DEFAULT_HOST);
-                reginfo = whois.query(domain);
             }else{
                 //使用国家域名whois服务器
                 whois.connect("whois.cnnic.cn");
-                reginfo = whois.query(domain);
             }
-            return reginfo;
+            return whois.query(domain);
         }catch(Exception e){
             throw new RuntimeException(e);
         }finally{
@@ -175,6 +172,7 @@ public final class RequestUtil {
 
     /**
      * 获取当前方法的名字
+     * 注意：有的场景下获取到的是代理的名字
      */
     public static String getCurrentMethodName(){
         return Thread.currentThread().getStackTrace()[1].getMethodName();
@@ -284,7 +282,7 @@ public final class RequestUtil {
      */
     public static boolean isQQBrowser(HttpServletRequest request) {
         String userAgent = request.getHeader("User-Agent");
-        return null!=userAgent && userAgent.toLowerCase().contains("QQ") && userAgent.contains("iPhone") && userAgent.contains("Android");
+        return null!=userAgent && userAgent.contains("QQ") && userAgent.contains("iPhone") && userAgent.contains("Android");
     }
 
 
@@ -293,7 +291,7 @@ public final class RequestUtil {
      */
     public static boolean isWechatBrowser(HttpServletRequest request) {
         String userAgent = request.getHeader("User-Agent");
-        return null!=userAgent && userAgent.toLowerCase().contains("MicroMessenger");
+        return null!=userAgent && userAgent.contains("MicroMessenger");
     }
 
 
@@ -302,7 +300,7 @@ public final class RequestUtil {
      */
     public static boolean isWechatPCBrowser(HttpServletRequest request) {
         String userAgent = request.getHeader("User-Agent");
-        return null!=userAgent && userAgent.toLowerCase().contains("WindowsWechat");
+        return null!=userAgent && userAgent.contains("WindowsWechat");
     }
 
 
