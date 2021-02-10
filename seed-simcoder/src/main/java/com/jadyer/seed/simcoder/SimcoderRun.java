@@ -10,9 +10,13 @@ import com.jadyer.seed.simcoder.helper.GenerateHelper;
  * ----------------------------------------------------------------------------------------------------------------
  */
 public class SimcoderRun {
-    public static final String PACKGET_PREFIX = "com.jadyer.seed.qss";
-    public static final String DB_ADDRESS = "127.0.0.1:3306";
-    public static final String DB_NAME = "qss";
+    private static final String PACKGET_PREFIX    = "com.jadyer.seed.qss";
+    public static final String PACKGET_REPOSITORY = PACKGET_PREFIX + ".repository";
+    public static final String PACKGET_MODEL      = PACKGET_PREFIX + ".repository.model";
+    public static final String PACKGET_SERVICE    = PACKGET_PREFIX + ".service";
+    public static final String PACKGET_CONTROLLER = PACKGET_PREFIX + ".web.controller";
+    public static final String DB_ADDRESS  = "127.0.0.1:3306";
+    public static final String DB_NAME     = "qss";
     public static final String DB_USERNAME = "root";
     public static final String DB_PASSWORD = "xuanyu";
 

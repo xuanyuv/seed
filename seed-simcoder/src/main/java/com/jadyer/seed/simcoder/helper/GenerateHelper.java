@@ -28,10 +28,10 @@ public class GenerateHelper {
             groupTemplate.setSharedVars(new HashMap<String, Object>(){
                 private static final long serialVersionUID = -7774932094711543319L;
                 {
-                    put("PACKAGE_MODEL", SimcoderRun.PACKGET_PREFIX + ".web.model");
-                    put("PACKAGE_SERVICE", SimcoderRun.PACKGET_PREFIX + ".web.service");
-                    put("PACKAGE_CONTROLLER", SimcoderRun.PACKGET_PREFIX + ".web.controller");
-                    put("PACKAGE_REPOSITORY", SimcoderRun.PACKGET_PREFIX + ".web.repository");
+                    put("PACKAGE_MODEL", SimcoderRun.PACKGET_MODEL);
+                    put("PACKAGE_SERVICE", SimcoderRun.PACKGET_SERVICE);
+                    put("PACKAGE_CONTROLLER", SimcoderRun.PACKGET_CONTROLLER);
+                    put("PACKAGE_REPOSITORY", SimcoderRun.PACKGET_REPOSITORY);
                 }
             });
         } catch (IOException e) {

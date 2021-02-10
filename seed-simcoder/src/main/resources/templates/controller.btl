@@ -32,7 +32,7 @@ public class ${CLASS_NAME}Controller {
 
     @ResponseBody
     @PostMapping("/delete/{id}")
-    public CommResult delete(@PathVariable long id){
+    public CommResult<Void> delete(@PathVariable long id){
         ${CLASS_NAME_uncapitalize}Service.delete(id);
         return CommResult.success();
     }
