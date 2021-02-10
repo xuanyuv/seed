@@ -3,7 +3,10 @@ package com.jadyer.seed.comm.annotation.log;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.jadyer.seed.comm.constant.CodeEnum;
+import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.exception.SeedException;
+import com.jadyer.seed.comm.util.JadyerUtil;
+import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.ValidatorUtil;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -11,6 +14,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletRequest;
@@ -37,9 +42,9 @@ class LogAspect implements MethodInterceptor {
     public Object invoke(MethodInvocation invocation) throws Throwable {
         Object respData;
         long startTime = System.currentTimeMillis();
-        //类名.方法名（不含类的包名），举例：MppController.bind
+        // 类名.方法名（不含类的包名），举例：MppController.bind
         String methodInfo = invocation.getThis().getClass().getSimpleName() + "." + invocation.getMethod().getName();
-        //打印入参（对于入参为MultipartFile类型等，可以在实体类使用@com.alibaba.fastjson.annotation.JSONField(serialize=false)标识不序列化）
+        // 打印入参（对于入参为MultipartFile类型等，可以在实体类使用@com.alibaba.fastjson.annotation.JSONField(serialize=false)标识不序列化）
         Object[] objs = invocation.getArguments();
         List<Object> argsList = new ArrayList<>();
         for(Object obj : objs){
@@ -49,7 +54,7 @@ class LogAspect implements MethodInterceptor {
             argsList.add(obj);
         }
         log.info("{}()被调用，入参为{}", methodInfo, JSON.toJSONStringWithDateFormat(argsList, JSON.DEFFAULT_DATE_FORMAT, serializerFeatures));
-        //表单验证
+        // 表单验证
         for(Object obj : objs){
             if(null!=obj && ((obj.getClass().isAnnotationPresent(EnableFormValid.class) || invocation.getMethod().isAnnotationPresent(EnableFormValid.class)) || invocation.getThis().getClass().isAnnotationPresent(EnableFormValid.class))){
                 String validateResult = ValidatorUtil.validate(obj);
@@ -59,9 +64,27 @@ class LogAspect implements MethodInterceptor {
                 }
             }
         }
-        //执行方法
-        respData = invocation.proceed();
-        //打印出参
+        try{
+            // 执行方法
+            respData = invocation.proceed();
+        }catch(Throwable cause){
+            // 异常处理
+            ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            if(null == attributes){
+                return invocation.proceed();
+            }
+            LogUtil.getLogger().info("Exception Occured URL=" + attributes.getRequest().getRequestURL() + "，堆栈轨迹如下", cause);
+            int code;
+            String msg = cause.getMessage();
+            if(cause instanceof SeedException){
+                code = ((SeedException)cause).getCode();
+            }else{
+                code = CodeEnum.SYSTEM_ERROR.getCode();
+                msg = JadyerUtil.extractStackTraceCausedBy(cause);
+            }
+            respData = CommResult.fail(code, msg);
+        }
+        // 打印出参并返回
         long endTime = System.currentTimeMillis();
         String returnInfo;
         if(null == respData){

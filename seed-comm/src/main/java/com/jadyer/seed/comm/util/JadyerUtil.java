@@ -712,10 +712,14 @@ public final class JadyerUtil {
             allMsg = allMsg.substring(allMsg.lastIndexOf("Caused by: ") + 11);
         }
         if(allMsg.contains(": ")){
-            return allMsg.substring(allMsg.indexOf(": ")+2, allMsg.indexOf("\n"));
+            allMsg = allMsg.substring(allMsg.indexOf(": ")+2, allMsg.indexOf("\n"));
         }else{
-            return allMsg.substring(0, allMsg.indexOf("\n"));
+            allMsg = allMsg.substring(0, allMsg.indexOf("\n"));
         }
+        if(allMsg.endsWith("\r")){
+            allMsg = allMsg.substring(0, allMsg.length()-1);
+        }
+        return allMsg;
     }
 
 
