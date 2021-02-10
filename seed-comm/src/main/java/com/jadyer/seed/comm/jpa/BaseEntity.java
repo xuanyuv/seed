@@ -47,6 +47,12 @@ public abstract class BaseEntity<ID extends Serializable> implements Serializabl
     // @Id
     // @SequenceGenerator(name="SEQUENCE_QUARTZ_NAME", sequenceName="SEQUENCE_QUARTZ", allocationSize=1)
     // @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQUENCE_QUARTZ_NAME")
+    /**
+     * 自定义ID生成策略
+     */
+    // @Id
+    // @GeneratedValue(generator="baseEntitySnowflakeId")
+    // @GenericGenerator(name="baseEntitySnowflakeId", strategy="com.jadyer.seed.comm.jpa.BaseEntitySnowflakeId")
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private ID id;
