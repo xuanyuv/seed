@@ -51,6 +51,9 @@ public final class BeanUtil {
      * -------------------------------------------------------------------------------------
      */
     public static <E, T> T copyProperties(E source, Class<T> targetClass) {
+        if(null == source){
+            return null;
+        }
         T target;
         try {
             target = targetClass.newInstance();
