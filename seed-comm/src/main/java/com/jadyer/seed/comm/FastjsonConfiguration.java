@@ -3,30 +3,52 @@ package com.jadyer.seed.comm;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 /**
  * https://stackoverflow.com/questions/44121648/controlleradvice-responsebodyadvice-failed-to-enclose-a-string-response
  */
 @Configuration
-public class FastjsonConfiguration implements WebMvcConfigurer {
+public class FastjsonConfiguration /*implements WebMvcConfigurer*/ {
+    // /**
+    //  * 用Fastjson替换掉Jackson
+    //  */
+    // @Override
+    // public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+    //     //新加的fastjson会在转换器List的尾部，为防止先匹配到jackson转换器，就先删掉它
+    //     for(int i=converters.size()-1; i>=0; i--){
+    //         if(converters.get(i) instanceof MappingJackson2HttpMessageConverter){
+    //             converters.remove(i);
+    //         }
+    //     }
+    //     FastJsonHttpMessageConverter fastjson = new FastJsonHttpMessageConverter();
+    //     fastjson.setFastJsonConfig(new FastJsonConfig(){
+    //         {
+    //             setCharset(StandardCharsets.UTF_8);             // 默认就是com.alibaba.fastjson.util.IOUtils.UTF8
+    //             setDateFormat("yyyy-MM-dd HH:mm:ss");           // 默认就是[yyyy-MM-dd HH:mm:ss]
+    //             setSerializerFeatures(getSerializerFeatures()); // 设置序列化输出时的一些额外属性
+    //         }
+    //     });
+    //     // fastjson放在转换器List的首位
+    //     converters.add(0, fastjson);
+    // }
+
     /**
-     * 用Fastjson替换掉Jackson
+     * 注册成全局的消息转换器
+     * ----------------------------------------------------------------------------------------
+     * 通过实现WebMvcConfigurer来注册，只会将其注册到SpringMVC的消息转换器链中
+     * 而Feign并不共用SpringMVC的消息转换器链（Feign默认使用Jackson来解码报文的）
+     * 但通过Bean来注册，它会被注册到SringMVC和Feign各自的消息转换器链的list[0]的位置
+     * org.springframework.cloud.openfeign.support.SpringDecoder#decode()方法断点就看到了
+     * ----------------------------------------------------------------------------------------
+     * Comment by 玄玉<https://jadyer.cn/> on 2021/2/15 21:25.
      */
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        //新加的fastjson会在转换器List的尾部，为防止先匹配到jackson转换器，就先删掉它
-        for(int i=converters.size()-1; i>=0; i--){
-            if(converters.get(i) instanceof MappingJackson2HttpMessageConverter){
-                converters.remove(i);
-            }
-        }
+    @Bean
+    public HttpMessageConverters fastJsonHttpMessageConverter(){
         FastJsonHttpMessageConverter fastjson = new FastJsonHttpMessageConverter();
         fastjson.setFastJsonConfig(new FastJsonConfig(){
             {
@@ -35,8 +57,7 @@ public class FastjsonConfiguration implements WebMvcConfigurer {
                 setSerializerFeatures(getSerializerFeatures()); // 设置序列化输出时的一些额外属性
             }
         });
-        // fastjson放在转换器List的首位
-        converters.add(0, fastjson);
+        return new HttpMessageConverters(fastjson);
     }
 
     public static SerializerFeature[] getSerializerFeatures(){
