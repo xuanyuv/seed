@@ -1,7 +1,7 @@
 package com.jadyer.seed.comm.annotation.log;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.jadyer.seed.comm.FastjsonConfiguration;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.exception.SeedException;
@@ -29,18 +29,10 @@ import java.util.List;
  */
 class LogAspect implements MethodInterceptor {
     private static Logger log = LoggerFactory.getLogger(LogAspect.class);
-    private static SerializerFeature[] serializerFeatures = new SerializerFeature[5];
-    static {
-        serializerFeatures[0] = SerializerFeature.WriteMapNullValue;
-        serializerFeatures[1] = SerializerFeature.WriteNullListAsEmpty;
-        serializerFeatures[2] = SerializerFeature.WriteNullNumberAsZero;
-        serializerFeatures[3] = SerializerFeature.WriteNullStringAsEmpty;
-        serializerFeatures[4] = SerializerFeature.WriteNullBooleanAsFalse;
-    }
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
-        Object respData;
+        Object respData = null;
         long startTime = System.currentTimeMillis();
         // 类名.方法名（不含类的包名），举例：MppController.bind
         String methodInfo = invocation.getThis().getClass().getSimpleName() + "." + invocation.getMethod().getName();
@@ -53,36 +45,38 @@ class LogAspect implements MethodInterceptor {
             }
             argsList.add(obj);
         }
-        log.info("{}()被调用，入参为{}", methodInfo, JSON.toJSONStringWithDateFormat(argsList, JSON.DEFFAULT_DATE_FORMAT, serializerFeatures));
+        log.info("{}()被调用，入参为{}", methodInfo, JSON.toJSONStringWithDateFormat(argsList, JSON.DEFFAULT_DATE_FORMAT));
         // 表单验证
         for(Object obj : objs){
             if(null!=obj && ((obj.getClass().isAnnotationPresent(EnableFormValid.class) || invocation.getMethod().isAnnotationPresent(EnableFormValid.class)) || invocation.getThis().getClass().isAnnotationPresent(EnableFormValid.class))){
                 String validateResult = ValidatorUtil.validate(obj);
                 log.info("{}()的表单-->{}", methodInfo, StringUtils.isBlank(validateResult)?"验证通过":"验证未通过");
                 if (StringUtils.isNotBlank(validateResult)) {
-                    throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), validateResult);
+                    respData = CommResult.fail(CodeEnum.SYSTEM_BUSY.getCode(), validateResult);
                 }
             }
         }
-        try{
-            // 执行方法
-            respData = invocation.proceed();
-        }catch(Throwable cause){
-            // 异常处理
-            ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-            if(null == attributes){
-                return invocation.proceed();
+        if(null == respData){
+            try{
+                // 执行方法
+                respData = invocation.proceed();
+            }catch(Throwable cause){
+                // 异常处理
+                ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+                if(null == attributes){
+                    return invocation.proceed();
+                }
+                LogUtil.getLogger().info("Exception Occured URL=" + attributes.getRequest().getRequestURL() + "，堆栈轨迹如下", cause);
+                int code;
+                String msg = cause.getMessage();
+                if(cause instanceof SeedException){
+                    code = ((SeedException)cause).getCode();
+                }else{
+                    code = CodeEnum.SYSTEM_ERROR.getCode();
+                    msg = JadyerUtil.extractStackTraceCausedBy(cause);
+                }
+                respData = CommResult.fail(code, msg);
             }
-            LogUtil.getLogger().info("Exception Occured URL=" + attributes.getRequest().getRequestURL() + "，堆栈轨迹如下", cause);
-            int code;
-            String msg = cause.getMessage();
-            if(cause instanceof SeedException){
-                code = ((SeedException)cause).getCode();
-            }else{
-                code = CodeEnum.SYSTEM_ERROR.getCode();
-                msg = JadyerUtil.extractStackTraceCausedBy(cause);
-            }
-            respData = CommResult.fail(code, msg);
         }
         // 打印出参并返回
         long endTime = System.currentTimeMillis();
@@ -98,7 +92,7 @@ class LogAspect implements MethodInterceptor {
         }else if(respData.getClass().isAssignableFrom(ResponseEntity.class)) {
             returnInfo = "<org.springframework.http.ResponseEntity>";
         }else{
-            returnInfo = JSON.toJSONStringWithDateFormat(respData, JSON.DEFFAULT_DATE_FORMAT, serializerFeatures);
+            returnInfo = JSON.toJSONStringWithDateFormat(respData, JSON.DEFFAULT_DATE_FORMAT, FastjsonConfiguration.getSerializerFeatures());
         }
         log.info("{}()被调用，出参为{}，Duration[{}]ms", methodInfo, returnInfo, endTime-startTime);
         log.info("---------------------------------------------------------------------------------------------");
