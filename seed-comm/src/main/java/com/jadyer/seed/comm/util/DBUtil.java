@@ -16,7 +16,8 @@ import java.sql.SQLException;
 public enum DBUtil {
     INSTANCE;
 
-    private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
+    // private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
+    private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DB_URL_MYSQL = "jdbc:mysql://127.0.0.1:3306/xuanyu?useUnicode=true&characterEncoding=UTF8&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull";
     private static final String DB_URL_ORACLE = "jdbc:oracle:thin:@127.0.0.1:1521:xuanyu";
     private static final String DB_USERNAME = "scott";

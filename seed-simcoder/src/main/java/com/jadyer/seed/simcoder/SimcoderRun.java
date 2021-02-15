@@ -10,11 +10,21 @@ import com.jadyer.seed.simcoder.helper.GenerateHelper;
  * ----------------------------------------------------------------------------------------------------------------
  */
 public class SimcoderRun {
+    /**
+     * 参数配置
+     */
+    // 实体类是否生成Builder
+    public static final Boolean isGenerateModelBuilder = Boolean.TRUE;
+    // 包名（基础）
     private static final String PACKGET_PREFIX    = "com.jadyer.seed.qss";
+    // 包名（各模块）
     public static final String PACKGET_REPOSITORY = PACKGET_PREFIX + ".repository";
     public static final String PACKGET_MODEL      = PACKGET_PREFIX + ".repository.model";
     public static final String PACKGET_SERVICE    = PACKGET_PREFIX + ".service";
     public static final String PACKGET_CONTROLLER = PACKGET_PREFIX + ".web.controller";
+    /**
+     * 数据库配置
+     */
     public static final String DB_ADDRESS  = "127.0.0.1:3306";
     public static final String DB_NAME     = "qss";
     public static final String DB_USERNAME = "root";
@@ -22,6 +32,6 @@ public class SimcoderRun {
 
     public static void main(String[] args){
         // GenerateHelper.generate(DB_NAME);
-        GenerateHelper.generate(DB_NAME, "t_schedule_log");
+        GenerateHelper.generate(DB_NAME, "t_");
     }
 }

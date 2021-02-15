@@ -28,10 +28,11 @@ public class GenerateHelper {
             groupTemplate.setSharedVars(new HashMap<String, Object>(){
                 private static final long serialVersionUID = -7774932094711543319L;
                 {
-                    put("PACKAGE_MODEL", SimcoderRun.PACKGET_MODEL);
-                    put("PACKAGE_SERVICE", SimcoderRun.PACKGET_SERVICE);
-                    put("PACKAGE_CONTROLLER", SimcoderRun.PACKGET_CONTROLLER);
-                    put("PACKAGE_REPOSITORY", SimcoderRun.PACKGET_REPOSITORY);
+                    put("isGenerateModelBuilder", SimcoderRun.isGenerateModelBuilder);
+                    put("PACKAGE_MODEL",          SimcoderRun.PACKGET_MODEL);
+                    put("PACKAGE_SERVICE",        SimcoderRun.PACKGET_SERVICE);
+                    put("PACKAGE_CONTROLLER",     SimcoderRun.PACKGET_CONTROLLER);
+                    put("PACKAGE_REPOSITORY",     SimcoderRun.PACKGET_REPOSITORY);
                 }
             });
         } catch (IOException e) {
@@ -120,8 +121,8 @@ public class GenerateHelper {
                 if("Integer".equals(javaType) || "Long".equals(javaType)){
                     hasNotNullAnnotation = true;
                     fields.append("    @NotNull").append("\n");
-                    fields.append("    // @Min(1)").append("\n");
-                    fields.append("    // @Max(3)").append("\n");
+                    // fields.append("    // @Min(1)").append("\n");
+                    // fields.append("    // @Max(3)").append("\n");
                 }
                 if("String".equals(javaType)){
                     hasNotBlankAnnotation = true;
@@ -151,8 +152,10 @@ public class GenerateHelper {
                 hasBigDecimal = true;
             }
             fields.append("    private ").append(javaType).append(" ").append(fieldname).append(";").append("\n");
-            fields_BuilderSetValues.append("        this.").append(fieldname).append(" = builder.").append(fieldname).append(";");
-            fields_BuilderNoAnnotations.append("        private ").append(javaType).append(" ").append(fieldname).append(";");
+            if(SimcoderRun.isGenerateModelBuilder){
+                fields_BuilderSetValues.append("        this.").append(fieldname).append(" = builder.").append(fieldname).append(";");
+                fields_BuilderNoAnnotations.append("        private ").append(javaType).append(" ").append(fieldname).append(";");
+            }
             //getter and setter
             methods.append("    public ").append(javaType).append(" get").append(StringUtils.capitalize(fieldname)).append("() {").append("\n");
             methods.append("        return this.").append(fieldname).append(";").append("\n");
@@ -161,10 +164,12 @@ public class GenerateHelper {
             methods.append("    public void set").append(StringUtils.capitalize(fieldname)).append("(").append(javaType).append(" ").append(fieldname).append(") {").append("\n");
             methods.append("        this.").append(fieldname).append(" = ").append(fieldname).append(";").append("\n");
             methods.append("    }");
-            methods_Builders.append("        public Builder ").append(fieldname).append("(").append(javaType).append(" ").append(fieldname).append(") {").append("\n");
-            methods_Builders.append("            this.").append(fieldname).append(" = ").append(fieldname).append(";").append("\n");
-            methods_Builders.append("            return this;").append("\n");
-            methods_Builders.append("        }");
+            if(SimcoderRun.isGenerateModelBuilder){
+                methods_Builders.append("        public Builder ").append(fieldname).append("(").append(javaType).append(" ").append(fieldname).append(") {").append("\n");
+                methods_Builders.append("            this.").append(fieldname).append(" = ").append(fieldname).append(";").append("\n");
+                methods_Builders.append("            return this;").append("\n");
+                methods_Builders.append("        }");
+            }
             //toString()
             if (StringUtils.isBlank(fields_toString.toString())) {
                 fields_toString.append("\"");
@@ -179,11 +184,13 @@ public class GenerateHelper {
             fields_toString.append(" +");
             // 方法与方法直接都空一行，并且最后一个setter之后就不用换行了（最后面的创建时间和修改时间两个字段已经跳过了）
             if(i+1 != columnList.size()-2){
-                methods.append("\n\n");
-                methods_Builders.append("\n");
                 fields_toString.append("\n");
-                fields_BuilderSetValues.append("\n");
-                fields_BuilderNoAnnotations.append("\n");
+                methods.append("\n\n");
+                if(SimcoderRun.isGenerateModelBuilder){
+                    fields_BuilderSetValues.append("\n");
+                    fields_BuilderNoAnnotations.append("\n");
+                    methods_Builders.append("\n");
+                }
             }
             //收集属性，供分页查询时作为条件
             fieldnameMap.put(fieldname, javaType);
@@ -212,10 +219,12 @@ public class GenerateHelper {
         sharedVars.put("TABLE_NAME_convertpoint", (tablename.startsWith("t_") ? tablename.substring(2) : tablename).replaceAll("_", "."));
         sharedVars.put("fields", fields.toString());
         sharedVars.put("fields_toString", fields_toString.toString());
-        sharedVars.put("fields_BuilderSetValues", fields_BuilderSetValues.toString());
-        sharedVars.put("fields_BuilderNoAnnotations", fields_BuilderNoAnnotations.toString());
         sharedVars.put("methods", methods.toString());
-        sharedVars.put("methods_Builders", methods_Builders.toString());
+        if(SimcoderRun.isGenerateModelBuilder){
+            sharedVars.put("fields_BuilderSetValues", fields_BuilderSetValues.toString());
+            sharedVars.put("fields_BuilderNoAnnotations", fields_BuilderNoAnnotations.toString());
+            sharedVars.put("methods_Builders", methods_Builders.toString());
+        }
         sharedVars.put("tablecomment", tablecomment);
         sharedVars.put("fieldnameMap", fieldnameMap);
         sharedVars.put("hasDate", hasDate);

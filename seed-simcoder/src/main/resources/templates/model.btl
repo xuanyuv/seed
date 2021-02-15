@@ -47,6 +47,7 @@ ${methods}
                 ${fields_toString}
                 '}';
     }
+<%if(isGenerateModelBuilder){%>
 
     /**
      * Builder模式
@@ -68,4 +69,5 @@ ${fields_BuilderNoAnnotations}
         }
 ${methods_Builders}
     }
+<%}%>
 }
