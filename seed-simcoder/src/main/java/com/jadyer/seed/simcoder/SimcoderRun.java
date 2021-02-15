@@ -14,7 +14,7 @@ public class SimcoderRun {
      * 参数配置
      */
     // 实体类是否生成Builder
-    public static final Boolean isGenerateModelBuilder = Boolean.TRUE;
+    public static final Boolean isGenerateModelBuilder = Boolean.FALSE;
     // 包名（基础）
     private static final String PACKGET_PREFIX    = "com.jadyer.seed.qss";
     // 包名（各模块）
