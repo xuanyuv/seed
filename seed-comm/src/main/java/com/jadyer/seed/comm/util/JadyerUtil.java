@@ -40,7 +40,7 @@
  *    |                                                |      *
  *    '-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-='      *
  *                                                            *
- *           LASCIATE OGNI SPERANZA, VOI CH'ENTRATE           *
+ *          LASCIATE OGNI SPERANZA, VOI CH'ENTRATE            *
  **************************************************************
  *
  *
