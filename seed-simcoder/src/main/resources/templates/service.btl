@@ -41,10 +41,11 @@ public class ${CLASS_NAME}Service {
 
 
     /**
-     * @param pageNo 页码从“1”开始，传“0”表示不分页
      * @param ${CLASS_NAME_uncapitalize} null或空对象表示查询所有
+     * @param pageNo   页码：从“1”开始，不传或传“0”则表示不分页
+     * @param pageSize 页长：从“1”开始，不传或传“0”则默认为999
      */
-    public Page<${CLASS_NAME}> list(int pageNo, ${CLASS_NAME} ${CLASS_NAME_uncapitalize}){
+    public Page<${CLASS_NAME}> list(${CLASS_NAME} ${CLASS_NAME_uncapitalize}, String pageNo, String pageSize){
         //按条件查询
         Condition<${CLASS_NAME}> spec = Condition.and();
         if(null != ${CLASS_NAME_uncapitalize}){
@@ -66,7 +67,7 @@ public class ${CLASS_NAME}Service {
         }
         //查询数据
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
-        Pageable pageable = PageRequest.of(pageNo>0 ? pageNo-1 : 0, pageNo>0 ? 10 : 999, sort);
+        Pageable pageable = PageRequest.of(StringUtils.isBlank(pageNo)?0:Integer.parseInt(pageNo)-1, StringUtils.isBlank(pageSize)||"0".equals(pageSize) ? 999 : Integer.parseInt(pageSize), sort);
         return ${CLASS_NAME_uncapitalize}Repository.findAll(spec, pageable);
     }
 }

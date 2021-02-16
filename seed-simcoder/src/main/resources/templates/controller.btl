@@ -51,13 +51,14 @@ public class ${CLASS_NAME}Controller implements ${CLASS_NAME}Api {
 
 
     /**
-     * @param pageNo 页码从“1”开始，传“0”表示不分页
      * @param ${CLASS_NAME_uncapitalize} null或空对象表示查询所有
+     * @param pageNo   页码：从“1”开始，不传或传“0”则表示不分页
+     * @param pageSize 页长：从“1”开始，不传或传“0”则默认为999
      */
     @ApiIgnore
     @GetMapping("/list")
-    public String list(int pageNo, ${CLASS_NAME} ${CLASS_NAME_uncapitalize}, HttpServletRequest request){
-        request.setAttribute("page", ${CLASS_NAME_uncapitalize}Service.list(pageNo, ${CLASS_NAME_uncapitalize}));
+    public String list(${CLASS_NAME} ${CLASS_NAME_uncapitalize}, String pageNo, String pageSize, HttpServletRequest request){
+        request.setAttribute("page", ${CLASS_NAME_uncapitalize}Service.list(${CLASS_NAME_uncapitalize}, pageNo, pageSize));
         return "${TABLE_NAME_convertpoint}.list";
     }
 }

@@ -36,7 +36,7 @@ public class SimcoderRun {
      * 数据库配置
      */
     public static final String DB_ADDRESS  = "127.0.0.1:3306";
-    public static final String DB_NAME     = "ability_pcs";
+    public static final String DB_NAME     = "qss";
     public static final String DB_USERNAME = "root";
     public static final String DB_PASSWORD = "xuanyu";
 
