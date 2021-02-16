@@ -108,43 +108,42 @@ public class GenerateHelper {
         Map<String, String> fieldnameMap = new HashMap<>();
         List<Column> columnList = DBHelper.getColumnList(tablename);
         for(int i=0; i<columnList.size(); i++){
-            if(StringUtils.equalsAnyIgnoreCase(columnList.get(i).getName(), "id", "create_time", "update_time")){
+            Column column = columnList.get(i);
+            if(StringUtils.equalsAnyIgnoreCase(column.getName(), "id", "create_time", "update_time")){
                 continue;
             }
-            ///** 属性注释 */
-            if(StringUtils.isNotBlank(columnList.get(i).getComment())){
-                fields.append("    /** ").append(columnList.get(i).getComment()).append(" */").append("\n");
+            // /** 属性注释 */
+            if(StringUtils.isNotBlank(column.getComment())){
+                fields.append("    /** ").append(column.getComment()).append(" */").append("\n");
             }
-            //暂时只对Integer、Long、String三种类型增加校验注解：@NotNull @NotBlank @Size(max=16)
-            String javaType = DBHelper.buildJavatypeFromDbtype(columnList.get(i).getType());
-            if(!columnList.get(i).isNullable()){
+            // 暂时只对Integer、Long、String三种类型增加校验注解：@NotNull @NotBlank @Size(max=16)
+            String javaType = DBHelper.buildJavatypeFromDbtype(column.getType());
+            if(!column.isNullable()){
                 if("Integer".equals(javaType) || "Long".equals(javaType)){
                     hasNotNullAnnotation = true;
                     fields.append("    @NotNull").append("\n");
-                    // fields.append("    // @Min(1)").append("\n");
-                    // fields.append("    // @Max(3)").append("\n");
                 }
                 if("String".equals(javaType)){
                     hasNotBlankAnnotation = true;
                     fields.append("    @NotBlank").append("\n");
-                    if(columnList.get(i).getLength() > 0){
+                    if(column.getLength() > 0){
                         hasNotBlankSizeAnnotation = true;
                         fields.append("    @Size(");
-                        //对于CHAR(6)类型的数据库字段，增加最小长度注解配置
-                        if(columnList.get(i).getType().equals("char")){
-                            fields.append("min=").append(columnList.get(i).getLength()).append(", ");
+                        /* 对于CHAR(6)类型的数据库字段，增加最小长度注解配置 */
+                        if(column.getType().equals("char")){
+                            fields.append("min=").append(column.getLength()).append(", ");
                         }
-                        fields.append("max=").append(columnList.get(i).getLength()).append(")").append("\n");
+                        fields.append("max=").append(column.getLength()).append(")").append("\n");
                     }
                 }
             }
-            //@Column(name="bind_status")
-            String fieldname = DBHelper.buildFieldnameFromColumnname(columnList.get(i).getName());
-            if(!fieldname.equals(columnList.get(i).getName())){
+            // @Column(name="bind_status")
+            String fieldname = DBHelper.buildFieldnameFromColumnname(column.getName());
+            if(!fieldname.equals(column.getName())){
                 hasColumnAnnotation = true;
-                fields.append("    @Column(name=\"").append(columnList.get(i).getName()).append("\")").append("\n");
+                fields.append("    @Column(name=\"").append(column.getName()).append("\")").append("\n");
             }
-            //private int bindStatus;
+            // private int bindStatus;
             if("Date".equals(javaType)){
                 hasDate = true;
             }
@@ -156,7 +155,7 @@ public class GenerateHelper {
                 fields_BuilderSetValues.append("        this.").append(fieldname).append(" = builder.").append(fieldname).append(";");
                 fields_BuilderNoAnnotations.append("        private ").append(javaType).append(" ").append(fieldname).append(";");
             }
-            //getter and setter
+            // getter and setter
             methods.append("    public ").append(javaType).append(" get").append(StringUtils.capitalize(fieldname)).append("() {").append("\n");
             methods.append("        return this.").append(fieldname).append(";").append("\n");
             methods.append("    }").append("\n");
@@ -170,7 +169,7 @@ public class GenerateHelper {
                 methods_Builders.append("            return this;").append("\n");
                 methods_Builders.append("        }");
             }
-            //toString()
+            // toString()
             if (StringUtils.isBlank(fields_toString.toString())) {
                 fields_toString.append("\"");
             } else {
@@ -182,7 +181,7 @@ public class GenerateHelper {
                 fields_toString.append(fieldname).append("=").append("\" + ").append(fieldname);
             }
             fields_toString.append(" +");
-            // 方法与方法直接都空一行，并且最后一个setter之后就不用换行了（最后面的创建时间和修改时间两个字段已经跳过了）
+            /* 方法与方法直接都空一行，并且最后一个setter之后就不用换行了（最后面的创建时间和修改时间两个字段已经跳过了） */
             if(i+1 != columnList.size()-2){
                 fields_toString.append("\n");
                 methods.append("\n\n");
@@ -192,7 +191,7 @@ public class GenerateHelper {
                     methods_Builders.append("\n");
                 }
             }
-            //收集属性，供分页查询时作为条件
+            /* 收集属性，供分页查询时作为条件 */
             fieldnameMap.put(fieldname, javaType);
         }
         /*
