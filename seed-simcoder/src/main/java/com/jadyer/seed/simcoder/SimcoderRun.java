@@ -16,9 +16,9 @@ public class SimcoderRun {
     // 是否生成实体类Builder（Model和DTO）
     public static final Boolean IS_GENERATE_BUILDER = Boolean.FALSE;
     // 公共类
+    public static final String IMPORT_COMMRESULT         = "com.jadyer.seed.api.constant.CommResult";
+    public static final String IMPORT_CONSTANTS          = "com.jadyer.seed.api.constant.SeedConstants";
     public static final String IMPORT_ENABLEFORMVALID    = "com.jadyer.seed.comm.annotation.log.EnableFormValid";
-    public static final String IMPORT_COMMRESULT         = "com.jadyer.seed.comm.constant.CommResult";
-    public static final String IMPORT_CONSTANTS          = "com.jadyer.seed.comm.constant.SeedConstants";
     public static final String IMPORT_JPA_BASEENTITY     = "com.jadyer.seed.comm.jpa.BaseEntity";
     public static final String IMPORT_JPA_BASEREPOSITORY = "com.jadyer.seed.comm.jpa.BaseRepository";
     public static final String IMPORT_JPA_CONDITION      = "com.jadyer.seed.comm.jpa.Condition";
@@ -27,7 +27,7 @@ public class SimcoderRun {
     private static final String PACKAGE_PREFIX    = "com.jadyer.seed.qss";
     // 包名（各模块）
     public static final String PACKAGE_API        = PACKAGE_PREFIX + ".api";
-    public static final String PACKAGE_DTO        = PACKAGE_PREFIX + ".dto";
+    public static final String PACKAGE_DTO        = PACKAGE_PREFIX + ".api.dto";
     public static final String PACKAGE_REPOSITORY = PACKAGE_PREFIX + ".repository";
     public static final String PACKAGE_MODEL      = PACKAGE_PREFIX + ".repository.model";
     public static final String PACKAGE_SERVICE    = PACKAGE_PREFIX + ".service";

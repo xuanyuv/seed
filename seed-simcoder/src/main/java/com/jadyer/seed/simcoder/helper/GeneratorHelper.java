@@ -29,9 +29,9 @@ public class GeneratorHelper {
                 private static final long serialVersionUID = -7774932094711543319L;
                 {
                     put("IS_GENERATE_BUILDER",       SimcoderRun.IS_GENERATE_BUILDER);
-                    put("IMPORT_ENABLEFORMVALID",    SimcoderRun.IMPORT_ENABLEFORMVALID);
                     put("IMPORT_COMMRESULT",         SimcoderRun.IMPORT_COMMRESULT);
                     put("IMPORT_CONSTANTS",          SimcoderRun.IMPORT_CONSTANTS);
+                    put("IMPORT_ENABLEFORMVALID",    SimcoderRun.IMPORT_ENABLEFORMVALID);
                     put("IMPORT_JPA_BASEENTITY",     SimcoderRun.IMPORT_JPA_BASEENTITY);
                     put("IMPORT_JPA_BASEREPOSITORY", SimcoderRun.IMPORT_JPA_BASEREPOSITORY);
                     put("IMPORT_JPA_CONDITION",      SimcoderRun.IMPORT_JPA_CONDITION);

@@ -1,10 +1,10 @@
 package ${PACKAGE_CONTROLLER};
 
-import ${IMPORT_ENABLEFORMVALID};
-import ${IMPORT_COMMRESULT};
-import ${IMPORT_BEANUTIL};
 import ${PACKAGE_API}.${CLASS_NAME}Api;
+import ${IMPORT_COMMRESULT};
 import ${PACKAGE_DTO}.${CLASS_NAME}DTO;
+import ${IMPORT_ENABLEFORMVALID};
+import ${IMPORT_BEANUTIL};
 import ${PACKAGE_MODEL}.${CLASS_NAME};
 import ${PACKAGE_SERVICE}.${CLASS_NAME}Service;
 import org.springframework.stereotype.Controller;
