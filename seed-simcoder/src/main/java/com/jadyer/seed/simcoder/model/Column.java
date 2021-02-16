@@ -14,7 +14,7 @@ public class Column {
     /** 列的最大长度（比如TINYINT(1)类型，其最大值为127，故此时length=3，另：当type=longtext时该值固定为999999999） */
     private int length;
     /** 列是否可空（true为可空，false为不可空） */
-    private boolean nullable;
+    private boolean isNullable;
     /** 是否主键 */
     private boolean isPrikey;
     /** 是否自增长 */
@@ -44,20 +44,20 @@ public class Column {
         this.type = type;
     }
 
-    public boolean isNullable() {
-        return nullable;
-    }
-
-    public void setNullable(boolean nullable) {
-        this.nullable = nullable;
-    }
-
     public int getLength() {
         return length;
     }
 
     public void setLength(int length) {
         this.length = length;
+    }
+
+    public boolean isNullable() {
+        return isNullable;
+    }
+
+    public void setNullable(boolean nullable) {
+        isNullable = nullable;
     }
 
     public boolean isPrikey() {
