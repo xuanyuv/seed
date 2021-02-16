@@ -1,6 +1,6 @@
 package com.jadyer.seed.simcoder;
 
-import com.jadyer.seed.simcoder.helper.GenerateHelper;
+import com.jadyer.seed.simcoder.helper.GeneratorHelper;
 
 /**
  * Seed代码生成器
@@ -31,7 +31,7 @@ public class SimcoderRun {
     public static final String DB_PASSWORD = "xuanyu";
 
     public static void main(String[] args){
-        // GenerateHelper.generate(DB_NAME);
-        GenerateHelper.generate(DB_NAME, "t_");
+        // GeneratorHelper.generate(DB_NAME, "t_");
+        GeneratorHelper.generate(DB_NAME);
     }
 }

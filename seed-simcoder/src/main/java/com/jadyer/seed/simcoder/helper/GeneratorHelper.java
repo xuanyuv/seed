@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * Created by 玄玉<https://jadyer.cn/> on 2017/9/8 23:22.
  */
-public class GenerateHelper {
+public class GeneratorHelper {
     private static GroupTemplate groupTemplate = null;
     static {
         try {
