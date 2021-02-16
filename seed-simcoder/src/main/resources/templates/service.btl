@@ -1,6 +1,6 @@
 package ${PACKAGE_SERVICE};
 
-import com.jadyer.seed.comm.jpa.Condition;
+import ${IMPORT_JPA_CONDITION};
 import ${PACKAGE_REPOSITORY}.${CLASS_NAME}Repository;
 import ${PACKAGE_MODEL}.${CLASS_NAME};
 import org.apache.commons.lang3.StringUtils;

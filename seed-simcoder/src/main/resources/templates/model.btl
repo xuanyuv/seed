@@ -1,6 +1,6 @@
 package ${PACKAGE_MODEL};
 
-import com.jadyer.seed.comm.jpa.BaseEntity;
+import ${IMPORT_JPA_BASEENTITY};
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -9,15 +9,6 @@ import javax.persistence.Column;
 <%}%>
 import javax.persistence.Entity;
 import javax.persistence.Table;
-<%if(hasNotBlankAnnotation){%>
-import javax.validation.constraints.NotBlank;
-<%}%>
-<%if(hasNotNullAnnotation){%>
-import javax.validation.constraints.NotNull;
-<%}%>
-<%if(hasNotBlankSizeAnnotation){%>
-import javax.validation.constraints.Size;
-<%}%>
 <%if(hasBigDecimal){%>
 import java.math.BigDecimal;
 <%}%>
@@ -47,7 +38,7 @@ ${methods}
                 ${fields_toString}
                 '}';
     }
-<%if(isGenerateModelBuilder){%>
+<%if(IS_GENERATE_BUILDER){%>
 
     /**
      * Builder模式

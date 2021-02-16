@@ -28,11 +28,20 @@ public class GeneratorHelper {
             groupTemplate.setSharedVars(new HashMap<String, Object>(){
                 private static final long serialVersionUID = -7774932094711543319L;
                 {
-                    put("isGenerateModelBuilder", SimcoderRun.isGenerateModelBuilder);
-                    put("PACKAGE_MODEL",          SimcoderRun.PACKGET_MODEL);
-                    put("PACKAGE_SERVICE",        SimcoderRun.PACKGET_SERVICE);
-                    put("PACKAGE_CONTROLLER",     SimcoderRun.PACKGET_CONTROLLER);
-                    put("PACKAGE_REPOSITORY",     SimcoderRun.PACKGET_REPOSITORY);
+                    put("IS_GENERATE_BUILDER",       SimcoderRun.IS_GENERATE_BUILDER);
+                    put("IMPORT_ENABLEFORMVALID",    SimcoderRun.IMPORT_ENABLEFORMVALID);
+                    put("IMPORT_COMMRESULT",         SimcoderRun.IMPORT_COMMRESULT);
+                    put("IMPORT_CONSTANTS",          SimcoderRun.IMPORT_CONSTANTS);
+                    put("IMPORT_JPA_BASEENTITY",     SimcoderRun.IMPORT_JPA_BASEENTITY);
+                    put("IMPORT_JPA_BASEREPOSITORY", SimcoderRun.IMPORT_JPA_BASEREPOSITORY);
+                    put("IMPORT_JPA_CONDITION",      SimcoderRun.IMPORT_JPA_CONDITION);
+                    put("IMPORT_BEANUTIL",           SimcoderRun.IMPORT_BEANUTIL);
+                    put("PACKAGE_API",               SimcoderRun.PACKAGE_API);
+                    put("PACKAGE_DTO",               SimcoderRun.PACKAGE_DTO);
+                    put("PACKAGE_REPOSITORY",        SimcoderRun.PACKAGE_REPOSITORY);
+                    put("PACKAGE_MODEL",             SimcoderRun.PACKAGE_MODEL);
+                    put("PACKAGE_SERVICE",           SimcoderRun.PACKAGE_SERVICE);
+                    put("PACKAGE_CONTROLLER",        SimcoderRun.PACKAGE_CONTROLLER);
                 }
             });
         } catch (IOException e) {
@@ -91,7 +100,6 @@ public class GeneratorHelper {
     /**
      * 生成某张表的
      */
-    @SuppressWarnings("DuplicateExpressions")
     private static void generateFromTable(String tablename, String tablecomment){
         boolean hasDate = false;
         boolean hasBigDecimal = false;
@@ -100,6 +108,7 @@ public class GeneratorHelper {
         boolean hasNotBlankAnnotation = false;
         boolean hasNotBlankSizeAnnotation = false;
         StringBuilder fields = new StringBuilder();
+        StringBuilder fields_dto = new StringBuilder();
         StringBuilder fields_toString = new StringBuilder();
         StringBuilder fields_BuilderSetValues = new StringBuilder();
         StringBuilder fields_BuilderNoAnnotations = new StringBuilder();
@@ -112,29 +121,35 @@ public class GeneratorHelper {
             if(StringUtils.equalsAnyIgnoreCase(column.getName(), "id", "create_time", "update_time")){
                 continue;
             }
-            // /** 属性注释 */
-            if(StringUtils.isNotBlank(column.getComment())){
-                fields.append("    /** ").append(column.getComment()).append(" */").append("\n");
-            }
             // 暂时只对Integer、Long、String三种类型增加校验注解：@NotNull @NotBlank @Size(max=16)
             String javaType = DBHelper.buildJavatypeFromDbtype(column.getType());
             if(!column.isNullable()){
                 if("Integer".equals(javaType) || "Long".equals(javaType)){
                     hasNotNullAnnotation = true;
-                    fields.append("    @NotNull").append("\n");
+                    fields_dto.append("    @NotNull").append("\n");
                 }
                 if("String".equals(javaType)){
                     hasNotBlankAnnotation = true;
-                    fields.append("    @NotBlank").append("\n");
+                    fields_dto.append("    @NotBlank").append("\n");
                     if(column.getLength() > 0){
                         hasNotBlankSizeAnnotation = true;
-                        fields.append("    @Size(");
+                        fields_dto.append("    @Size(");
                         /* 对于CHAR(6)类型的数据库字段，增加最小长度注解配置 */
                         if(column.getType().equals("char")){
-                            fields.append("min=").append(column.getLength()).append(", ");
+                            fields_dto.append("min=").append(column.getLength()).append(", ");
                         }
-                        fields.append("max=").append(column.getLength()).append(")").append("\n");
+                        fields_dto.append("max=").append(column.getLength()).append(")").append("\n");
                     }
+                }
+            }
+            // /** 属性注释 */
+            // @ApiModelProperty(value="定时任务的应用名称", required=true)
+            if(StringUtils.isNotBlank(column.getComment())){
+                fields.append("    /** ").append(column.getComment()).append(" */").append("\n");
+                if(!column.isNullable()){
+                    fields_dto.append("    @ApiModelProperty(value=\"").append(column.getComment()).append("\", required=true)").append("\n");
+                }else{
+                    fields_dto.append("    @ApiModelProperty(value=\"").append(column.getComment()).append("\")").append("\n");
                 }
             }
             // @Column(name="bind_status")
@@ -151,7 +166,8 @@ public class GeneratorHelper {
                 hasBigDecimal = true;
             }
             fields.append("    private ").append(javaType).append(" ").append(fieldname).append(";").append("\n");
-            if(SimcoderRun.isGenerateModelBuilder){
+            fields_dto.append("    private ").append(javaType).append(" ").append(fieldname).append(";").append("\n");
+            if(SimcoderRun.IS_GENERATE_BUILDER){
                 fields_BuilderSetValues.append("        this.").append(fieldname).append(" = builder.").append(fieldname).append(";");
                 fields_BuilderNoAnnotations.append("        private ").append(javaType).append(" ").append(fieldname).append(";");
             }
@@ -163,7 +179,7 @@ public class GeneratorHelper {
             methods.append("    public void set").append(StringUtils.capitalize(fieldname)).append("(").append(javaType).append(" ").append(fieldname).append(") {").append("\n");
             methods.append("        this.").append(fieldname).append(" = ").append(fieldname).append(";").append("\n");
             methods.append("    }");
-            if(SimcoderRun.isGenerateModelBuilder){
+            if(SimcoderRun.IS_GENERATE_BUILDER){
                 methods_Builders.append("        public Builder ").append(fieldname).append("(").append(javaType).append(" ").append(fieldname).append(") {").append("\n");
                 methods_Builders.append("            this.").append(fieldname).append(" = ").append(fieldname).append(";").append("\n");
                 methods_Builders.append("            return this;").append("\n");
@@ -185,7 +201,7 @@ public class GeneratorHelper {
             if(i+1 != columnList.size()-2){
                 fields_toString.append("\n");
                 methods.append("\n\n");
-                if(SimcoderRun.isGenerateModelBuilder){
+                if(SimcoderRun.IS_GENERATE_BUILDER){
                     fields_BuilderSetValues.append("\n");
                     fields_BuilderNoAnnotations.append("\n");
                     methods_Builders.append("\n");
@@ -214,12 +230,12 @@ public class GeneratorHelper {
         sharedVars.put("CLASS_NAME", classname);
         sharedVars.put("CLASS_NAME_uncapitalize", StringUtils.uncapitalize(classname));
         sharedVars.put("TABLE_NAME", tablename);
-        sharedVars.put("TABLE_NAME_nounderline", (tablename.startsWith("t_") ? tablename.substring(2) : tablename).replaceAll("_", ""));
         sharedVars.put("TABLE_NAME_convertpoint", (tablename.startsWith("t_") ? tablename.substring(2) : tablename).replaceAll("_", "."));
         sharedVars.put("fields", fields.toString());
+        sharedVars.put("fields_dto", fields_dto.toString());
         sharedVars.put("fields_toString", fields_toString.toString());
         sharedVars.put("methods", methods.toString());
-        if(SimcoderRun.isGenerateModelBuilder){
+        if(SimcoderRun.IS_GENERATE_BUILDER){
             sharedVars.put("fields_BuilderSetValues", fields_BuilderSetValues.toString());
             sharedVars.put("fields_BuilderNoAnnotations", fields_BuilderNoAnnotations.toString());
             sharedVars.put("methods_Builders", methods_Builders.toString());
@@ -238,10 +254,12 @@ public class GeneratorHelper {
          */
         try {
             String outBaseDir = FileSystemView.getFileSystemView().getHomeDirectory().getPath() + System.getProperty("file.separator");
+            groupTemplate.getTemplate("api.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "api" + System.getProperty("file.separator") + classname + "Api.java")));
+            groupTemplate.getTemplate("dto.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "dto" + System.getProperty("file.separator") + classname + "DTO.java")));
+            groupTemplate.getTemplate("repository.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "repository" + System.getProperty("file.separator") + classname + "Repository.java")));
             groupTemplate.getTemplate("model.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "model" + System.getProperty("file.separator") + classname + ".java")));
             groupTemplate.getTemplate("service.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "service" + System.getProperty("file.separator") + classname + "Service.java")));
             groupTemplate.getTemplate("controller.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "controller" + System.getProperty("file.separator") + classname + "Controller.java")));
-            groupTemplate.getTemplate("repository.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "repository" + System.getProperty("file.separator") + classname + "Repository.java")));
         } catch (IOException e) {
             System.err.println("生成代码时发生异常，堆栈轨迹如下：");
             e.printStackTrace();

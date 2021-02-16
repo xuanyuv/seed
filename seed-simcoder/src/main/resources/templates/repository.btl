@@ -1,6 +1,6 @@
 package ${PACKAGE_REPOSITORY};
 
-import com.jadyer.seed.comm.jpa.BaseRepository;
+import ${IMPORT_JPA_BASEREPOSITORY};
 import ${PACKAGE_MODEL}.${CLASS_NAME};
 
 /**

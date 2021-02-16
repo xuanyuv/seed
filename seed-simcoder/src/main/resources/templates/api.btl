@@ -1,0 +1,34 @@
+package ${PACKAGE_API};
+
+import ${IMPORT_COMMRESULT};
+import ${IMPORT_CONSTANTS};
+import ${PACKAGE_DTO}.${CLASS_NAME}DTO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+/**
+ * Generated from seed-simcoder by 玄玉<https://jadyer.cn/> on ${date(), "yyyy/MM/dd HH:mm"}.
+ */
+@Api(tags="${tablecomment}")
+@RequestMapping("/api/${CLASS_NAME_uncapitalize}")
+@FeignClient(${strutil.subString(IMPORT_CONSTANTS,strutil.lastIndex(IMPORT_CONSTANTS, ".")+1)}.APPLICATION_NAME)
+public interface ${CLASS_NAME}Api {
+    @ApiOperation("更新或新增")
+    @PostMapping(value="/upsert", consumes=MediaType.APPLICATION_JSON_VALUE)
+    CommResult<${CLASS_NAME}DTO> upsert(@RequestBody ${CLASS_NAME}DTO ${CLASS_NAME_uncapitalize}DTO);
+
+    @ApiOperation("删除")
+    @PostMapping("/delete/{id}")
+    CommResult<Void> delete(@PathVariable long id);
+
+    @ApiOperation("查询")
+    @GetMapping("/get/{id}")
+    CommResult<${CLASS_NAME}DTO> get(@PathVariable long id);
+}

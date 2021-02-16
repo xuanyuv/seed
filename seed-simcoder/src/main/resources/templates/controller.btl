@@ -1,47 +1,52 @@
 package ${PACKAGE_CONTROLLER};
 
-import com.jadyer.seed.comm.constant.CommResult;
+import ${IMPORT_ENABLEFORMVALID};
+import ${IMPORT_COMMRESULT};
+import ${IMPORT_BEANUTIL};
+import ${PACKAGE_API}.${CLASS_NAME}Api;
+import ${PACKAGE_DTO}.${CLASS_NAME}DTO;
 import ${PACKAGE_MODEL}.${CLASS_NAME};
 import ${PACKAGE_SERVICE}.${CLASS_NAME}Service;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * ${tablecomment}
  * Generated from seed-simcoder by 玄玉<https://jadyer.cn/> on ${date(), "yyyy/MM/dd HH:mm"}.
  */
 @Controller
-@RequestMapping("/${TABLE_NAME_nounderline}")
-public class ${CLASS_NAME}Controller {
+@EnableFormValid
+public class ${CLASS_NAME}Controller implements ${CLASS_NAME}Api {
     @Resource
     private ${CLASS_NAME}Service ${CLASS_NAME_uncapitalize}Service;
 
+    @Override
     @ResponseBody
-    @PostMapping("/upsert")
-    public CommResult<${CLASS_NAME}> upsert(${CLASS_NAME} ${CLASS_NAME_uncapitalize}){
-        return CommResult.success(${CLASS_NAME_uncapitalize}Service.upsert(${CLASS_NAME_uncapitalize}));
+    public CommResult<${CLASS_NAME}DTO> upsert(${CLASS_NAME}DTO ${CLASS_NAME_uncapitalize}DTO){
+        ${CLASS_NAME} ${CLASS_NAME_uncapitalize} = BeanUtil.copyProperties(${CLASS_NAME_uncapitalize}DTO, ${CLASS_NAME}.class);
+        ${CLASS_NAME_uncapitalize} = ${CLASS_NAME_uncapitalize}Service.upsert(${CLASS_NAME_uncapitalize});
+        ${CLASS_NAME}DTO dto = BeanUtil.copyProperties(${CLASS_NAME_uncapitalize}, ${CLASS_NAME}DTO.class);
+        return CommResult.success(dto);
     }
 
 
+    @Override
     @ResponseBody
-    @PostMapping("/delete/{id}")
-    public CommResult<Void> delete(@PathVariable long id){
+    public CommResult<Void> delete(long id){
         ${CLASS_NAME_uncapitalize}Service.delete(id);
         return CommResult.success();
     }
 
 
+    @Override
     @ResponseBody
-    @GetMapping("/get/{id}")
-    public CommResult<${CLASS_NAME}> get(@PathVariable long id){
-        return CommResult.success(${CLASS_NAME_uncapitalize}Service.get(id).orElse(null));
+    public CommResult<${CLASS_NAME}DTO> get(long id){
+        ${CLASS_NAME} ${CLASS_NAME_uncapitalize} = ${CLASS_NAME_uncapitalize}Service.get(id).orElse(null);
+        return CommResult.success(BeanUtil.copyProperties(${CLASS_NAME_uncapitalize}, ${CLASS_NAME}DTO.class));
     }
 
 
@@ -49,6 +54,7 @@ public class ${CLASS_NAME}Controller {
      * @param pageNo 页码从“1”开始，传“0”表示不分页
      * @param ${CLASS_NAME_uncapitalize} null或空对象表示查询所有
      */
+    @ApiIgnore
     @GetMapping("/list")
     public String list(int pageNo, ${CLASS_NAME} ${CLASS_NAME_uncapitalize}, HttpServletRequest request){
         request.setAttribute("page", ${CLASS_NAME_uncapitalize}Service.list(pageNo, ${CLASS_NAME_uncapitalize}));

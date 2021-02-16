@@ -13,20 +13,30 @@ public class SimcoderRun {
     /**
      * 参数配置
      */
-    // 实体类是否生成Builder
-    public static final Boolean isGenerateModelBuilder = Boolean.FALSE;
+    // 是否生成实体类Builder（Model和DTO）
+    public static final Boolean IS_GENERATE_BUILDER = Boolean.FALSE;
+    // 公共类
+    public static final String IMPORT_ENABLEFORMVALID    = "com.jadyer.seed.comm.annotation.log.EnableFormValid";
+    public static final String IMPORT_COMMRESULT         = "com.jadyer.seed.comm.constant.CommResult";
+    public static final String IMPORT_CONSTANTS          = "com.jadyer.seed.comm.constant.SeedConstants";
+    public static final String IMPORT_JPA_BASEENTITY     = "com.jadyer.seed.comm.jpa.BaseEntity";
+    public static final String IMPORT_JPA_BASEREPOSITORY = "com.jadyer.seed.comm.jpa.BaseRepository";
+    public static final String IMPORT_JPA_CONDITION      = "com.jadyer.seed.comm.jpa.Condition";
+    public static final String IMPORT_BEANUTIL           = "com.jadyer.seed.comm.util.BeanUtil";
     // 包名（基础）
-    private static final String PACKGET_PREFIX    = "com.jadyer.seed.qss";
+    private static final String PACKAGE_PREFIX    = "com.jadyer.seed.qss";
     // 包名（各模块）
-    public static final String PACKGET_REPOSITORY = PACKGET_PREFIX + ".repository";
-    public static final String PACKGET_MODEL      = PACKGET_PREFIX + ".repository.model";
-    public static final String PACKGET_SERVICE    = PACKGET_PREFIX + ".service";
-    public static final String PACKGET_CONTROLLER = PACKGET_PREFIX + ".web.controller";
+    public static final String PACKAGE_API        = PACKAGE_PREFIX + ".api";
+    public static final String PACKAGE_DTO        = PACKAGE_PREFIX + ".dto";
+    public static final String PACKAGE_REPOSITORY = PACKAGE_PREFIX + ".repository";
+    public static final String PACKAGE_MODEL      = PACKAGE_PREFIX + ".repository.model";
+    public static final String PACKAGE_SERVICE    = PACKAGE_PREFIX + ".service";
+    public static final String PACKAGE_CONTROLLER = PACKAGE_PREFIX + ".web.controller";
     /**
      * 数据库配置
      */
     public static final String DB_ADDRESS  = "127.0.0.1:3306";
-    public static final String DB_NAME     = "qss";
+    public static final String DB_NAME     = "ability_pcs";
     public static final String DB_USERNAME = "root";
     public static final String DB_PASSWORD = "xuanyu";
 
