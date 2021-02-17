@@ -47,7 +47,7 @@ class LogAspect implements MethodInterceptor {
         }
         log.info("{}()被调用，入参为{}", methodInfo, JSON.toJSONStringWithDateFormat(argsList, JSON.DEFFAULT_DATE_FORMAT));
         // 表单验证
-        for(Object obj : objs){
+        for(Object obj : argsList){
             if(null!=obj && ((obj.getClass().isAnnotationPresent(EnableFormValid.class) || invocation.getMethod().isAnnotationPresent(EnableFormValid.class)) || invocation.getThis().getClass().isAnnotationPresent(EnableFormValid.class))){
                 String validateResult = ValidatorUtil.validate(obj);
                 log.info("{}()的表单-->{}", methodInfo, StringUtils.isBlank(validateResult)?"验证通过":"验证未通过");
