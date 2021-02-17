@@ -4,6 +4,7 @@ import ${PACKAGE_API}.${CLASS_NAME}Api;
 import ${IMPORT_COMMRESULT};
 import ${PACKAGE_DTO}.${CLASS_NAME}DTO;
 import ${IMPORT_ENABLEFORMVALID};
+import ${IMPORT_ENABLELOG};
 import ${IMPORT_BEANUTIL};
 import ${PACKAGE_MODEL}.${CLASS_NAME};
 import ${PACKAGE_SERVICE}.${CLASS_NAME}Service;
@@ -56,6 +57,7 @@ public class ${CLASS_NAME}Controller implements ${CLASS_NAME}Api {
      * @param pageSize 页长：从“1”开始，不传或传“0”则默认为999
      */
     @ApiIgnore
+    @EnableLog
     @GetMapping("/list")
     public String list(${CLASS_NAME} ${CLASS_NAME_uncapitalize}, String pageNo, String pageSize, HttpServletRequest request){
         request.setAttribute("page", ${CLASS_NAME_uncapitalize}Service.list(${CLASS_NAME_uncapitalize}, pageNo, pageSize));

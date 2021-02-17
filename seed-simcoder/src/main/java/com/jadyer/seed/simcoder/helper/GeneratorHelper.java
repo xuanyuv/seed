@@ -32,6 +32,7 @@ public class GeneratorHelper {
                     put("IMPORT_COMMRESULT",         SimcoderRun.IMPORT_COMMRESULT);
                     put("IMPORT_CONSTANTS",          SimcoderRun.IMPORT_CONSTANTS);
                     put("IMPORT_ENABLEFORMVALID",    SimcoderRun.IMPORT_ENABLEFORMVALID);
+                    put("IMPORT_ENABLELOG",          SimcoderRun.IMPORT_ENABLELOG);
                     put("IMPORT_JPA_BASEENTITY",     SimcoderRun.IMPORT_JPA_BASEENTITY);
                     put("IMPORT_JPA_BASEREPOSITORY", SimcoderRun.IMPORT_JPA_BASEREPOSITORY);
                     put("IMPORT_JPA_CONDITION",      SimcoderRun.IMPORT_JPA_CONDITION);

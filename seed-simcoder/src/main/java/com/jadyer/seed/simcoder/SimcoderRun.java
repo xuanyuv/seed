@@ -19,6 +19,7 @@ public class SimcoderRun {
     public static final String IMPORT_COMMRESULT         = "com.jadyer.seed.api.constant.CommResult";
     public static final String IMPORT_CONSTANTS          = "com.jadyer.seed.api.constant.SeedConstants";
     public static final String IMPORT_ENABLEFORMVALID    = "com.jadyer.seed.comm.annotation.log.EnableFormValid";
+    public static final String IMPORT_ENABLELOG          = "com.jadyer.seed.comm.annotation.log.EnableLog";
     public static final String IMPORT_JPA_BASEENTITY     = "com.jadyer.seed.comm.jpa.BaseEntity";
     public static final String IMPORT_JPA_BASEREPOSITORY = "com.jadyer.seed.comm.jpa.BaseRepository";
     public static final String IMPORT_JPA_CONDITION      = "com.jadyer.seed.comm.jpa.Condition";
