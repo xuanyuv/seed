@@ -95,17 +95,13 @@ public class UtilTest {
         System.out.println("private-->[" + privateKeyStr + "]");
         System.out.println("明文-->[" + data + "]");
         System.out.println();
-        String data22 = CodecUtil.buildRSAEncryptByPrivateKey(data, privateKeyStr);
-        System.out.println("私钥加密-->[" + data22 + "]");
-        System.out.println("公钥解密-->[" + CodecUtil.buildRSADecryptByPublicKey(data22, publicKeyStr) +"]");
-        System.out.println();
-        String data33 = CodecUtil.buildRSAEncryptByPublicKey(data, publicKeyStr);
+        String data33 = CodecUtil.rsaEncrypt(data, publicKeyStr);
         System.out.println("公钥加密-->[" + data33 + "]");
-        System.out.println("私钥解密-->[" + CodecUtil.buildRSADecryptByPrivateKey(data33, privateKeyStr) +"]");
+        System.out.println("私钥解密-->[" + CodecUtil.rsaDecrypt(data33, privateKeyStr) +"]");
         System.out.println();
-        String data44 = CodecUtil.buildRSASignByPrivateKey(data, privateKeyStr);
+        String data44 = CodecUtil.rsaSign(data, privateKeyStr);
         System.out.println("私钥签名-->[" + data44 +"]");
-        System.out.println("公钥验签-->[" + CodecUtil.buildRSAverifyByPublicKey(data, publicKeyStr, data44) +"]");
+        System.out.println("公钥验签-->[" + CodecUtil.rsaVerify(data, publicKeyStr, data44) +"]");
     }
 
 

@@ -56,12 +56,12 @@ import java.util.Map;
  * 最后,Base64算法会查询它自己定制的码表,该码表记录的是0--63所对应键盘上的明文字符,最后将其返回
  * -----------------------------------------------------------------------------------------------------------
  * RSA密钥对
- * 可以在线生产密钥对http://web.chacuo.net/netrsakeypair
- * 可以使用openssl工具来生成密钥对https://cshall.alipay.com/support/help_detail.htm?help_id=397433
- * 这两种在线生成的RSA密钥对,本工具类的<code>buildRSA**()</code>方法都是支持的
- * 另外,AES与RSA结合加密可参考https://wustrive2008.github.io/2015/08/21/开放接口的安全验证方案(AES+RSA)/
- * 公钥加密,私钥解密..因为我们不希望别人知道我的消息,所以只有我才能解密,仅我可读但别人不可读
- * 私钥签名,公钥验签..签名即不希望有人冒充我来发消息,只有我才能发这个签名,仅我可写但别人不可写,任何人都可读
+ * 可以在线生产密钥对：http://web.chacuo.net/netrsakeypair
+ * 可以使用openssl工具来生成密钥对：https://cshall.alipay.com/support/help_detail.htm?help_id=397433
+ * 这两种在线生成的RSA密钥对，本工具类的<code>rsa**()</code>方法都是支持的
+ * 另外，AES与RSA结合加密可参考：https://wustrive2008.github.io/2015/08/21/开放接口的安全验证方案(AES+RSA)/
+ * 公钥加密,私钥解密：可以保证信息只有我能收到（所有人都能看到密文，但只有我能解密看到明文）
+ * 私钥签名,公钥验签：可以保证信息是我发出去的（所有人都能看到签名，但只有我签的才能被接收方验证通过）
  * -----------------------------------------------------------------------------------------------------------
  * RSA明文长度
  * RSA规定允许加密的最大明文字节数等于密钥长度值除以8再减去11,但签名时无此限制
@@ -81,7 +81,8 @@ import java.util.Map;
  * Caused by: javax.crypto.IllegalBlockSizeException: Data must not be longer than 128 bytes
  * Caused by: javax.crypto.IllegalBlockSizeException: Data must not be longer than 256 bytes
  * -----------------------------------------------------------------------------------------------------------
- * @version v1.8
+ * @version v1.9
+ * @history v1.9-->修改RSA、AES、DESede、DES算法的方法名，使之简洁易懂
  * @history v1.8-->修复buildAESPKCS7Decrypt()方法没有初始化BouncyCastleProvider的BUG
  * @history v1.7-->细化各方法参数注释，使之描述更清晰
  * @history v1.6-->RSA算法加解密方法增加分段加解密功能，理论上可加解密任意长度的明文或密文
@@ -242,35 +243,12 @@ public final class CodecUtil {
 
 
     /**
-     * RSA算法私钥加密数据
-     * @param data 待加密的明文字符串
-     * @param key  RSA私钥字符串
-     * @return RSA私钥加密后的经过Base64编码的密文字符串
-     */
-    public static String buildRSAEncryptByPrivateKey(String data, String key){
-        try{
-            //通过PKCS#8编码的Key指令获得私钥对象
-            PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(Base64.decodeBase64(key));
-            KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM_RSA);
-            Key privateKey = keyFactory.generatePrivate(pkcs8KeySpec);
-            //encrypt
-            Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
-            cipher.init(Cipher.ENCRYPT_MODE, privateKey);
-            //return Base64.encodeBase64URLSafeString(cipher.doFinal(data.getBytes(CHARSET)));
-            return Base64.encodeBase64URLSafeString(rsaSplitCodec(cipher, Cipher.ENCRYPT_MODE, data.getBytes(SeedConstants.DEFAULT_CHARSET)));
-        }catch(Exception e){
-            throw new RuntimeException("加密字符串[" + data + "]时遇到异常", e);
-        }
-    }
-
-
-    /**
      * RSA算法公钥加密数据
      * @param data 待加密的明文字符串
      * @param key  RSA公钥字符串
      * @return RSA公钥加密后的经过Base64编码的密文字符串
      */
-    public static String buildRSAEncryptByPublicKey(String data, String key){
+    public static String rsaEncrypt(String data, String key){
         try{
             //通过X509编码的Key指令获得公钥对象
             X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(Base64.decodeBase64(key));
@@ -288,35 +266,12 @@ public final class CodecUtil {
 
 
     /**
-     * RSA算法公钥解密数据
-     * @param data 待解密的经过Base64编码的密文字符串
-     * @param key  RSA公钥字符串
-     * @return RSA公钥解密后的明文字符串
-     */
-    public static String buildRSADecryptByPublicKey(String data, String key){
-        try{
-            //通过X509编码的Key指令获得公钥对象
-            X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(Base64.decodeBase64(key));
-            KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM_RSA);
-            Key publicKey = keyFactory.generatePublic(x509KeySpec);
-            //decrypt
-            Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
-            cipher.init(Cipher.DECRYPT_MODE, publicKey);
-            //return new String(cipher.doFinal(Base64.decodeBase64(data)), CHARSET);
-            return new String(rsaSplitCodec(cipher, Cipher.DECRYPT_MODE, Base64.decodeBase64(data)), SeedConstants.DEFAULT_CHARSET);
-        }catch(Exception e){
-            throw new RuntimeException("解密字符串[" + data + "]时遇到异常", e);
-        }
-    }
-
-
-    /**
      * RSA算法私钥解密数据
      * @param data 待解密的经过Base64编码的密文字符串
      * @param key  RSA私钥字符串
      * @return RSA私钥解密后的明文字符串
      */
-    public static String buildRSADecryptByPrivateKey(String data, String key){
+    public static String rsaDecrypt(String data, String key){
         try{
             //通过PKCS#8编码的Key指令获得私钥对象
             PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(Base64.decodeBase64(key));
@@ -334,13 +289,13 @@ public final class CodecUtil {
 
 
     /**
-     * RSA算法使用私钥对数据生成数字签名
-     * 注意签名算法SHA1WithRSA已被废弃,推荐使用SHA256WithRSA
+     * RSA算法私钥签名数据
+     * 签名算法SHA1WithRSA已被废弃，推荐使用SHA256WithRSA
      * @param data 待签名的明文字符串
      * @param key  RSA私钥字符串
      * @return RSA私钥签名后的经过Base64编码的字符串
      */
-    public static String buildRSASignByPrivateKey(String data, String key){
+    public static String rsaSign(String data, String key){
         try{
             //通过PKCS#8编码的Key指令获得私钥对象
             PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(Base64.decodeBase64(key));
@@ -358,13 +313,13 @@ public final class CodecUtil {
 
 
     /**
-     * RSA算法使用公钥校验数字签名
+     * RSA算法公钥验签数据
      * @param data 参与签名的明文字符串
      * @param key  RSA公钥字符串
      * @param sign RSA签名得到的经过Base64编码的字符串
      * @return true--验签通过,false--验签未通过
      */
-    public static boolean buildRSAverifyByPublicKey(String data, String key, String sign){
+    public static boolean rsaVerify(String data, String key, String sign){
         try{
             //通过X509编码的Key指令获得公钥对象
             X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(Base64.decodeBase64(key));
@@ -387,7 +342,7 @@ public final class CodecUtil {
      * @param key  AES密钥字符串
      * @return AES加密后的经过Base64编码的密文字符串,加密过程中遇到异常则抛出RuntimeException
      * */
-    public static String buildAESEncrypt(String data, String key){
+    public static String aesEncrypt(String data, String key){
         try{
             //实例化Cipher对象,它用于完成实际的加密操作
             Cipher cipher = Cipher.getInstance(ALGORITHM_CIPHER_AES);
@@ -408,7 +363,7 @@ public final class CodecUtil {
      * @param key  AES密钥字符串
      * @return AES解密后的明文字符串,解密过程中遇到异常则抛出RuntimeException
      * */
-    public static String buildAESDecrypt(String data, String key){
+    public static String aesDecrypt(String data, String key){
         try {
             Cipher cipher = Cipher.getInstance(ALGORITHM_CIPHER_AES);
             cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(Base64.decodeBase64(key), ALGORITHM_AES));
@@ -426,7 +381,7 @@ public final class CodecUtil {
      * @param key  AES密钥字符串
      * @return AES-PKCS7加密后的16进制表示的密文字符串，加密过程中遇到异常则抛出RuntimeException
      */
-    public static String buildAESPKCS7Encrypt(String data, String key){
+    public static String aesPKCS7Encrypt(String data, String key){
         Security.addProvider(new BouncyCastleProvider());
         try{
             SecretKey secretKey = new SecretKeySpec(Hex.decodeHex(key.toCharArray()), ALGORITHM_AES_PKCS7);
@@ -446,7 +401,7 @@ public final class CodecUtil {
      * @param key  AES密钥字符串
      * @return AES-PKCS7解密后的明文字符串，解密过程中遇到异常则抛出RuntimeException
      */
-    public static String buildAESPKCS7Decrypt(String data, String key){
+    public static String aesPKCS7Decrypt(String data, String key){
         Security.addProvider(new BouncyCastleProvider());
         try {
             SecretKey secretKey = new SecretKeySpec(Hex.decodeHex(key.toCharArray()), ALGORITHM_AES_PKCS7);
@@ -465,7 +420,7 @@ public final class CodecUtil {
      * @param key  密钥
      * @return 加密后的经过Base64编码的密文字符串,加密过程中遇到异常则抛出RuntimeException
      * */
-    public static String buildDESEncrypt(String data, String key){
+    public static String desEncrypt(String data, String key){
         try{
             DESKeySpec dks = new DESKeySpec(Base64.decodeBase64(key));
             SecretKey secretKey = SecretKeyFactory.getInstance(ALGORITHM_DES).generateSecret(dks);
@@ -484,7 +439,7 @@ public final class CodecUtil {
      * @param key  密钥
      * @return 解密后的明文字符串,解密过程中遇到异常则抛出RuntimeException
      * */
-    public static String buildDESDecrypt(String data, String key){
+    public static String desDecrypt(String data, String key){
         try {
             DESKeySpec dks = new DESKeySpec(Base64.decodeBase64(key));
             SecretKey secretKey = SecretKeyFactory.getInstance(ALGORITHM_DES).generateSecret(dks);
@@ -503,7 +458,7 @@ public final class CodecUtil {
      * @param key  密钥
      * @return 加密后的经过Base64编码的密文字符串,加密过程中遇到异常则抛出RuntimeException
      * */
-    public static String buildDESedeEncrypt(String data, String key){
+    public static String desedeEncrypt(String data, String key){
         try{
             DESedeKeySpec dks = new DESedeKeySpec(Base64.decodeBase64(key));
             SecretKey secretKey = SecretKeyFactory.getInstance(ALGORITHM_DES_EDE).generateSecret(dks);
@@ -522,7 +477,7 @@ public final class CodecUtil {
      * @param key  密钥
      * @return 解密后的明文字符串,解密过程中遇到异常则抛出RuntimeException
      * */
-    public static String buildDESedeDecrypt(String data, String key){
+    public static String desedeDecrypt(String data, String key){
         try {
             DESedeKeySpec dks = new DESedeKeySpec(Base64.decodeBase64(key));
             SecretKey secretKey = SecretKeyFactory.getInstance(ALGORITHM_DES_EDE).generateSecret(dks);

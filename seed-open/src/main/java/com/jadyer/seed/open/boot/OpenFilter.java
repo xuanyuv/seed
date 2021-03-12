@@ -133,11 +133,11 @@ public class OpenFilter extends OncePerRequestFilter {
                 RespData respData = JSON.parseObject(respDataStr, RespData.class);
                 if(CodeEnum.SUCCESS.getCode() == Integer.parseInt(respData.getCode())){
                     if(SeedConstants.OPEN_VERSION_21.equals(reqData.getVersion())){
-                        respData.setData(StringUtils.isBlank(respData.getData()) ? "" : CodecUtil.buildAESEncrypt(respData.getData(), appsecret));
+                        respData.setData(StringUtils.isBlank(respData.getData()) ? "" : CodecUtil.aesEncrypt(respData.getData(), appsecret));
                     }else{
                         Map<String, String> dataMap = JSON.parseObject(appsecret, new TypeReference<Map<String, String>>(){});
-                        respData.setSign(StringUtils.isBlank(respData.getData()) ? "" : CodecUtil.buildRSASignByPrivateKey(respData.getData(), dataMap.get("openPrivateKey")));
-                        respData.setData(StringUtils.isBlank(respData.getData()) ? "" : CodecUtil.buildRSAEncryptByPublicKey(respData.getData(), dataMap.get("publicKey")));
+                        respData.setSign(StringUtils.isBlank(respData.getData()) ? "" : CodecUtil.rsaSign(respData.getData(), dataMap.get("openPrivateKey")));
+                        respData.setData(StringUtils.isBlank(respData.getData()) ? "" : CodecUtil.rsaEncrypt(respData.getData(), dataMap.get("publicKey")));
                     }
                 }
                 String respDataJson = JSON.toJSONString(respData);
@@ -257,12 +257,12 @@ public class OpenFilter extends OncePerRequestFilter {
         }
         String dataPlain;
         if(SeedConstants.OPEN_VERSION_21.equals(reqData.getVersion())){
-            dataPlain = CodecUtil.buildAESDecrypt(reqData.getData(), appsecret);
+            dataPlain = CodecUtil.aesDecrypt(reqData.getData(), appsecret);
         }else{
             //appsecret={"publicKey":"合作方公钥","openPublicKey":"我方公钥","openPrivateKey":"我方私钥"}
             Map<String, String> dataMap = JSON.parseObject(appsecret, new TypeReference<Map<String, String>>(){});
-            dataPlain = CodecUtil.buildRSADecryptByPrivateKey(reqData.getData(), dataMap.get("openPrivateKey"));
-            if(!CodecUtil.buildRSAverifyByPublicKey(dataPlain, dataMap.get("publicKey"), reqData.getSign())){
+            dataPlain = CodecUtil.rsaDecrypt(reqData.getData(), dataMap.get("openPrivateKey"));
+            if(!CodecUtil.rsaVerify(dataPlain, dataMap.get("publicKey"), reqData.getSign())){
                 throw new SeedException(CodeEnum.OPEN_SIGN_ERROR);
             }
         }
