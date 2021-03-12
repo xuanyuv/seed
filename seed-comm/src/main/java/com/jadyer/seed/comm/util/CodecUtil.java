@@ -81,7 +81,7 @@ import java.util.Map;
  * Caused by: javax.crypto.IllegalBlockSizeException: Data must not be longer than 128 bytes
  * Caused by: javax.crypto.IllegalBlockSizeException: Data must not be longer than 256 bytes
  * -----------------------------------------------------------------------------------------------------------
- * @version v1.7
+ * @version v1.8
  * @history v1.8-->修复buildAESPKCS7Decrypt()方法没有初始化BouncyCastleProvider的BUG
  * @history v1.7-->细化各方法参数注释，使之描述更清晰
  * @history v1.6-->RSA算法加解密方法增加分段加解密功能，理论上可加解密任意长度的明文或密文
