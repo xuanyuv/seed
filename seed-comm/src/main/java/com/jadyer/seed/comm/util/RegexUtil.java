@@ -118,6 +118,18 @@ public final class RegexUtil {
 
 
     /**
+     * 验证文字、字母、数字
+     * ---------------------------------------------------------------------------------------------
+     * 如果是验证文字、字母、数字及下划线，可以这么写：^[\u4e00-\u9fa5_a-zA-Z0-9]+$
+     * 如果想判断输入长度，可以这么写（此时一个中文的长度是1）：[\u4e00-\u9fa5_a-zA-Z0-9_]{4,10}
+     * ---------------------------------------------------------------------------------------------
+     */
+    public static boolean isChineseLetterNumer(String text){
+        return Pattern.matches("^[\\u4e00-\\u9fa5a-zA-Z0-9]+$", text);
+    }
+
+
+    /**
      * 验证中国邮政编码
      */
     public static boolean isPostCode(String postCode){
