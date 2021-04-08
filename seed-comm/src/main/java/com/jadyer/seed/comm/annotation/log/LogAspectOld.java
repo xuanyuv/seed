@@ -32,7 +32,7 @@ import java.lang.reflect.Method;
 //@Aspect
 //@Component
 public class LogAspectOld {
-    //@Around("execution(public * com.jadyer.seed..*Controller.*(..)) or execution(public * com.xuanyu..*Controller.*(..))")
+    //@Around("execution(public * com.jadyer.seed..*Controller.*(..)) || execution(public * com.xuanyu..*Controller.*(..)) || execution(public * com.xuanyu..*Repository.*(..))")
     //@Around("execution(public * com.jadyer.seed..*Controller.*(..))")
     public Object log(ProceedingJoinPoint joinPoint) throws Throwable {
         Object respData;
