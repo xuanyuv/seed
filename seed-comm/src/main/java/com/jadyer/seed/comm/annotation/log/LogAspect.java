@@ -6,7 +6,6 @@ import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.comm.util.JadyerUtil;
-import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.ValidatorUtil;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -66,7 +65,7 @@ class LogAspect implements MethodInterceptor {
                 if(null == attributes){
                     return invocation.proceed();
                 }
-                LogUtil.getLogger().info("Exception Occured URL=" + attributes.getRequest().getRequestURL() + "，堆栈轨迹如下", cause);
+                log.info("Exception Occured URL=" + attributes.getRequest().getRequestURL() + "，堆栈轨迹如下", cause);
                 int code;
                 String msg = cause.getMessage();
                 if(cause instanceof SeedException){
