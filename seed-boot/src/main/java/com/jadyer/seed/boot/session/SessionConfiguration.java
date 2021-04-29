@@ -31,8 +31,8 @@ public class SessionConfiguration {
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    public FilterRegistrationBean addRedisSessionFilter(){
-        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+    public FilterRegistrationBean<SessionRedisFilter> addRedisSessionFilter(){
+        FilterRegistrationBean<SessionRedisFilter> filterRegistrationBean = new FilterRegistrationBean<>();
         filterRegistrationBean.setFilter(new SessionRedisFilter(new SessionRedisRepository(this.jedisCluster, this.sessionExpireSeconds), this.sessionKey));
         filterRegistrationBean.addUrlPatterns("/*");
         filterRegistrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
