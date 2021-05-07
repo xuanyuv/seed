@@ -24,7 +24,6 @@ import java.util.Set;
  * Created by 玄玉<https://jadyer.cn/> on 2016/11/24 10:46.
  */
 //@Configuration
-@SuppressWarnings("WeakerAccess")
 @ConditionalOnClass({JedisCluster.class})
 @ConfigurationProperties(prefix="redis")
 public class RedisConfiguration {
