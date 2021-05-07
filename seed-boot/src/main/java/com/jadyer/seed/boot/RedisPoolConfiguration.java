@@ -31,7 +31,6 @@ import java.util.List;
  * Created by 玄玉<https://jadyer.cn/> on 2016/11/24 10:46.
  */
 //@Configuration
-@SuppressWarnings("WeakerAccess")
 @ConditionalOnClass({JedisPool.class})
 @ConfigurationProperties(prefix="redis")
 public class RedisPoolConfiguration {
