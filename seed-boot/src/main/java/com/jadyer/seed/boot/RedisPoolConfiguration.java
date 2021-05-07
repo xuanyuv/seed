@@ -27,6 +27,7 @@ import java.util.List;
  * try (Jedis jedis = jedisPool.getResource()) {
  *     jedis.publish("seed_channel", jsonData);
  * }
+ * 注：上面的是原始用法，更推荐用JedisPoolHelper
  * --------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.cn/> on 2016/11/24 10:46.
  */
