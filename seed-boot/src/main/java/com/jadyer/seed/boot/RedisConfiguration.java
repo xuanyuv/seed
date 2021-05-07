@@ -1,6 +1,5 @@
 package com.jadyer.seed.boot;
 
-import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -8,6 +7,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
+import redis.clients.jedis.JedisPoolConfig;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,7 +44,7 @@ public class RedisConfiguration {
         for(String node : this.getNodes()){
             try{
                 String[] parts = StringUtils.split(node, ":");
-                Assert.state(parts.length==2, "redis node shoule be defined as 'host:port', not '" + Arrays.toString(parts) + "'");
+                Assert.state(null!=parts&&parts.length==2, "redis node shoule be defined as 'host:port', not '" + Arrays.toString(parts) + "'");
                 nodes.add(new HostAndPort(parts[0], Integer.parseInt(parts[1])));
             }catch(RuntimeException e){
                 throw new IllegalStateException("Invalid redis cluster nodes property '" + node + "'", e);
@@ -53,7 +53,7 @@ public class RedisConfiguration {
         if(nodes.isEmpty()){
             return null;
         }
-        GenericObjectPoolConfig config = new GenericObjectPoolConfig();
+        JedisPoolConfig config = new JedisPoolConfig();
         config.setMaxTotal(this.getMaxTotal());
         config.setMaxIdle(this.getMaxIdle());
         config.setMinIdle(this.getMinIdle());
