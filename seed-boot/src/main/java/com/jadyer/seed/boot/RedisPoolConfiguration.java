@@ -3,12 +3,14 @@ package com.jadyer.seed.boot;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -76,6 +78,7 @@ public class RedisPoolConfiguration {
         //JedisPool pool = new JedisPool(config, uri, this.connectionTimeout);
         //这是普通host和port的方式
         String[] parts = StringUtils.split(this.nodes.get(0), ":");
+        Assert.state(null!=parts&&parts.length==2, "redis node shoule be defined as 'host:port', not '" + Arrays.toString(parts) + "'");
         JedisPool pool = new JedisPool(config, parts[0], Integer.parseInt(parts[1]),  this.connectionTimeout, this.password);
         //预热
         for(int i=0; i<this.minIdle; i++){
