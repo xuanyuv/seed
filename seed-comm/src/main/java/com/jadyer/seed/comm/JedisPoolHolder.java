@@ -10,28 +10,28 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * JedisPool工具类
+ * JedisPool持有器
  * ------------------------------------------------------------------------------------------------------------------
  * 由于@Resource注解不能注入一个static变量，故通过让它注入非static的setter方法的方式，把jedisPool对象赋给静态对象
  * ------------------------------------------------------------------------------------------------------------------
  * 本工具类的方法只是对JedisCommands原方法的一种包装，未修改原方法的入参出参及方法名
- * 用法举例：String name = JedisPoolUtil.get("Seed:Data:name")
+ * 用法举例：String name = JedisPoolHolder.get("Seed:Data:name")
  * ------------------------------------------------------------------------------------------------------------------
- * 注：使用时无需注入JedisPoolUtil，直接调用静态方法即可，但要保证JedisPoolUtil能被Spring扫描到
+ * 注：使用时无需注入JedisPoolHolder，直接调用静态方法即可，但要保证JedisPoolHolder能被Spring扫描到
  * ------------------------------------------------------------------------------------------------------------------
  * @version v1.0
  * @history v1.0-->增加若干JedisCommands原方法的包装
  * Created by 玄玉<https://jadyer.cn/> on 2021/5/7 22:02.
  */
 @Component
-public final class JedisPoolHelper {
+public final class JedisPoolHolder {
     @Resource
     public void setJedisPool(JedisPool jedisPool) {
-        JedisPoolHelper.jedisPool = jedisPool;
+        JedisPoolHolder.jedisPool = jedisPool;
     }
     private static JedisPool jedisPool;
 
-    private JedisPoolHelper(){}
+    private JedisPoolHolder(){}
 
     public static String set(byte[] key, byte[] value){
         try (Jedis jedis = jedisPool.getResource()) {
