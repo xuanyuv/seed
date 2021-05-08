@@ -415,14 +415,29 @@ public final class RequestUtil {
         }
         //图像生效
         g.dispose();
-        //输出图像到页面
+        LogUtil.getLogger().debug("本次生成的验证码为：[{}]", sb.toString());
+        /*
+        //输出图像为Base64字符串：<img src="data:image/png;base64,xxxxxx">
+        try(ByteArrayOutputStream baos = new ByteArrayOutputStream()){
+            ImageIO.write(image, "PNG", baos);
+            return new HashMap<String, String>(){
+                private static final long serialVersionUID = 6960237797379184414L;
+                {
+                    put("captcha", sb.toString());
+                    put("imgSrcBase64", "data:image/png;base64," + Base64.encodeBase64String(baos.toByteArray()));
+                }
+            };
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        */
+        //输出图像到页面：<img src="http://127.0.0.1/captcha">
         try(ServletOutputStream sos = response.getOutputStream()){
             ImageIO.write(image, "PNG", sos);
             sos.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        LogUtil.getLogger().debug("本次生成的验证码为：[{}]", sb.toString());
         return sb.toString();
     }
 
