@@ -159,6 +159,12 @@ public final class JedisPoolHolder {
         }
     }
 
+    public static Long del(byte[] key){
+        try (Jedis jedis = jedisPool.getResource()) {
+            return jedis.del(key);
+        }
+    }
+
     public static Long publish(String channel, String message){
         try (Jedis jedis = jedisPool.getResource()) {
             return jedis.publish(channel, message);
