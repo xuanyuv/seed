@@ -1,17 +1,16 @@
 package com.jadyer.seed.comm.annotation.log;
 
 import com.alibaba.fastjson.JSON;
-import com.jadyer.seed.comm.FastjsonConfiguration;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.comm.util.JadyerUtil;
+import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.ValidatorUtil;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -27,7 +26,17 @@ import java.util.List;
  * Created by 玄玉<https://jadyer.cn/> on 2018/4/17 13:39.
  */
 class LogAspect implements MethodInterceptor {
-    private static Logger log = LoggerFactory.getLogger(LogAspect.class);
+    private static SerializerFeature[] serializerFeatures = new SerializerFeature[8];
+    static {
+        serializerFeatures[0] = SerializerFeature.QuoteFieldNames;
+        serializerFeatures[1] = SerializerFeature.WriteMapNullValue;
+        serializerFeatures[2] = SerializerFeature.WriteNullListAsEmpty;
+        serializerFeatures[3] = SerializerFeature.WriteNullNumberAsZero;
+        serializerFeatures[4] = SerializerFeature.WriteNullStringAsEmpty;
+        serializerFeatures[5] = SerializerFeature.WriteNullBooleanAsFalse;
+        serializerFeatures[6] = SerializerFeature.WriteDateUseDateFormat;
+        serializerFeatures[7] = SerializerFeature.DisableCircularReferenceDetect;
+    }
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
@@ -44,12 +53,12 @@ class LogAspect implements MethodInterceptor {
             }
             argsList.add(obj);
         }
-        log.info("{}()被调用，入参为{}", methodInfo, JSON.toJSONStringWithDateFormat(argsList, JSON.DEFFAULT_DATE_FORMAT));
+        LogUtil.getLogger().info("{}()被调用，入参为{}", methodInfo, JSON.toJSONStringWithDateFormat(argsList, JSON.DEFFAULT_DATE_FORMAT));
         // 表单验证
         for(Object obj : argsList){
             if(null!=obj && ((obj.getClass().isAnnotationPresent(EnableFormValid.class) || invocation.getMethod().isAnnotationPresent(EnableFormValid.class)) || invocation.getThis().getClass().isAnnotationPresent(EnableFormValid.class))){
                 String validateResult = ValidatorUtil.validate(obj);
-                log.info("{}()的表单-->{}", methodInfo, StringUtils.isBlank(validateResult)?"验证通过":"验证未通过");
+                LogUtil.getLogger().info("{}()的表单-->{}", methodInfo, StringUtils.isBlank(validateResult)?"验证通过":"验证未通过");
                 if (StringUtils.isNotBlank(validateResult)) {
                     respData = CommResult.fail(CodeEnum.SYSTEM_BUSY.getCode(), validateResult);
                 }
@@ -65,7 +74,7 @@ class LogAspect implements MethodInterceptor {
                 if(null == attributes){
                     return invocation.proceed();
                 }
-                log.info("Exception Occured URL=" + attributes.getRequest().getRequestURL() + "，堆栈轨迹如下", cause);
+                LogUtil.getLogger().info("Exception Occured URL=" + attributes.getRequest().getRequestURL() + "，堆栈轨迹如下", cause);
                 int code;
                 String msg = cause.getMessage();
                 if(cause instanceof SeedException){
@@ -91,10 +100,10 @@ class LogAspect implements MethodInterceptor {
         }else if(respData.getClass().isAssignableFrom(ResponseEntity.class)) {
             returnInfo = "<org.springframework.http.ResponseEntity>";
         }else{
-            returnInfo = JSON.toJSONStringWithDateFormat(respData, JSON.DEFFAULT_DATE_FORMAT, FastjsonConfiguration.getSerializerFeatures());
+            returnInfo = JSON.toJSONStringWithDateFormat(respData, JSON.DEFFAULT_DATE_FORMAT, serializerFeatures);
         }
-        log.info("{}()被调用，出参为{}，Duration[{}]ms", methodInfo, returnInfo, endTime-startTime);
-        log.info("---------------------------------------------------------------------------------------------");
+        LogUtil.getLogger().info("{}()被调用，出参为{}，Duration[{}]ms", methodInfo, returnInfo, endTime-startTime);
+        LogUtil.getLogger().info("---------------------------------------------------------------------------------------------");
         return respData;
     }
 }
