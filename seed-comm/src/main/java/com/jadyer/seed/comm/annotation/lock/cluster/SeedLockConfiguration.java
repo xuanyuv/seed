@@ -2,6 +2,7 @@ package com.jadyer.seed.comm.annotation.lock.cluster;
 
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -170,7 +171,8 @@ public class SeedLockConfiguration implements EnvironmentAware {
             return key;
         }
         String[] params = discoverer.getParameterNames(method);
-        if(0 == params.length){
+        // if(0 == params.length){
+        if(ObjectUtils.isEmpty(params)){
             return key;
         }
         EvaluationContext context = new StandardEvaluationContext();
