@@ -51,7 +51,7 @@
     <logger name="wapLogger" level="INFO" additivity="true">
         <appender-ref ref="WAP_LOG"/>
     </logger>
-    <logger name="defaultLogger" level="INFO" additivity="true">
+    <logger name="defaultLogger" level="DEBUG" additivity="true">
         <appender-ref ref="DEFAULT_LOG"/>
     </logger>
 

@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
  * Created by 玄玉<https://jadyer.cn/> on 2018/7/17 16:44.
  */
 public class SeedLockHelper {
-    private static final String LOCK_PREFIX = "seedLockHelper:";
+    private static final String LOCK_PREFIX = "SeedLockHelper:";
     private static ThreadLocal<String> keyMap = new ThreadLocal<>();
     private static ThreadLocal<RedissonRedLock> redLockMap = new ThreadLocal<>();
 

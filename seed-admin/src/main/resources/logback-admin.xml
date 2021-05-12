@@ -20,7 +20,7 @@
         </encoder>
     </appender>
 
-    <logger name="defaultLogger" level="INFO" additivity="true">
+    <logger name="defaultLogger" level="DEBUG" additivity="true">
         <appender-ref ref="DEFAULT_LOG"/>
     </logger>
 

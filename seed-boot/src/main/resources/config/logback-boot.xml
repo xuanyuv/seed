@@ -58,7 +58,7 @@
         <filter class="com.jadyer.seed.controller.temp.websocket.LogFilter"/>
     </appender>
 
-    <logger name="defaultLogger" level="INFO" additivity="true">
+    <logger name="defaultLogger" level="DEBUG" additivity="true">
         <appender-ref ref="APP_LOG"/>
     </logger>
 

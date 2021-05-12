@@ -1,5 +1,7 @@
 package com.jadyer.seed.comm.annotation.lock.cluster;
 
+import org.springframework.core.annotation.AliasFor;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -39,6 +41,14 @@ import java.util.concurrent.TimeUnit;
 @Documented
 public @interface SeedLock {
     /**
+     * key()与value()同时传值，那么默认是以key()为准的
+     * 但由于使用了@AliasFor，它会检查发现同时传了，会抛异常致使应用启动失败
+     * Comment by 玄玉<https://jadyer.cn/> on 2021/5/12 18:53.
+     */
+    @AliasFor("key")
+    String value() default "";
+
+    /**
      * 锁的资源
      * --------------------------------------------------------------------------------
      * 支持SPEL：比如下面的两种加锁，是分别针对入参id，和UserMsg的name属性的
@@ -53,6 +63,7 @@ public @interface SeedLock {
      * 注意：该值不支持从配置文件读取，因为还没遇到这种场景需求
      * --------------------------------------------------------------------------------
      */
+    @AliasFor("value")
     String key() default "";
 
     /**

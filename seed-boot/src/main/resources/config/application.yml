@@ -165,12 +165,14 @@ spring:
 
 
 redis:
+  lockWatchdogTimeout: 50000
   connectionTimeout: 2000
   soTimeout: 5000
   maxRedirections: 5
   maxTotal: 16
   maxIdle: 8
   minIdle: 0
+  password: 111111
   nodes:
     - 192.168.2.210:7000
     - 192.168.2.210:7001
@@ -178,16 +180,6 @@ redis:
     - 192.168.2.210:7003
     - 192.168.2.210:7004
     - 192.168.2.210:7005
-
-
-redisson:
-  lockWatchdogTimeout: 10000
-  connectionMinimumIdleSize: 16
-  connectionPoolSize: 32
-  connectTimeout: 3000
-  password: 111111
-  nodes:
-      - redis://192.168.20.53:6389
 
 
 qss:

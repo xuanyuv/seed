@@ -40,24 +40,24 @@ import java.util.List;
 @Aspect
 //@Configuration
 @ConditionalOnClass({RedissonClient.class})
-@ConfigurationProperties(prefix="redisson")
+@ConfigurationProperties(prefix="redis")
 public class SeedLockConfiguration implements EnvironmentAware {
     /** 节点地址：[host:port] */
     private List<String> nodes = new ArrayList<>();
     /** 监控锁的看门狗超时，单位：毫秒（默认值：30000） */
     private int lockWatchdogTimeout;
     /** 最小空闲连接数（默认值：32） */
-    private int connectionMinimumIdleSize;
+    private int minIdle;
     /** 连接池大小（默认值：64） */
-    private int connectionPoolSize;
+    private int maxTotal;
     /** 连接超时，单位：毫秒（默认值：10000） */
-    private int connectTimeout;
+    private int connectionTimeout;
     /** 数据库编号（默认值：0） */
     private int database;
     /** 密码（默认值：null） */
     private String password;
     private Environment environment;
-    private static final String LOCK_PREFIX = "seedLock:";
+    private static final String LOCK_PREFIX = "SeedLock:";
     public static final List<RedissonClient> redissonClientList = new ArrayList<>();
     private ExpressionParser parser = new SpelExpressionParser();
     private LocalVariableTableParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
@@ -81,15 +81,15 @@ public class SeedLockConfiguration implements EnvironmentAware {
             if(lockWatchdogTimeout > 0){
                 config.setLockWatchdogTimeout(lockWatchdogTimeout);
             }
-            SingleServerConfig singleConfig = config.useSingleServer().setAddress(node);
-            if(connectionMinimumIdleSize > 0){
-                singleConfig.setConnectionMinimumIdleSize(connectionMinimumIdleSize);
+            SingleServerConfig singleConfig = config.useSingleServer().setAddress("redis://" + node);
+            if(minIdle > 0){
+                singleConfig.setConnectionMinimumIdleSize(minIdle);
             }
-            if(connectionPoolSize > 0){
-                singleConfig.setConnectionPoolSize(connectionPoolSize);
+            if(maxTotal > 0){
+                singleConfig.setConnectionPoolSize(maxTotal);
             }
-            if(connectTimeout > 0){
-                singleConfig.setConnectTimeout(connectTimeout);
+            if(connectionTimeout > 0){
+                singleConfig.setConnectTimeout(connectionTimeout);
             }
             if(database > 0){
                 singleConfig.setDatabase(database);
@@ -109,12 +109,12 @@ public class SeedLockConfiguration implements EnvironmentAware {
         //计算上锁的key
         Method method = ((MethodSignature)joinPoint.getSignature()).getMethod();
         SeedLock seedLock = method.getAnnotation(SeedLock.class);
-        if(StringUtils.isBlank(seedLock.key())){
+        if(StringUtils.isBlank(seedLock.key()) && StringUtils.isBlank(seedLock.value())){
             LogUtil.getLogger().error("资源加锁-->失败：空的key");
             return null;
         }
         Object[] args = joinPoint.getArgs();
-        String key = LOCK_PREFIX + (StringUtils.isBlank(seedLock.appname())?"":this.getPropertyFromEnv(seedLock.appname())+":") + this.parseSpringEL(seedLock.key(), method, args);
+        String key = LOCK_PREFIX + (StringUtils.isBlank(seedLock.appname())?"":this.getPropertyFromEnv(seedLock.appname())+":") + this.parseSpringEL(seedLock, method, args);
         //加锁
         RLock[] rLocks = new RLock[redissonClientList.size()];
         for(int i=0; i<redissonClientList.size(); i++){
@@ -161,12 +161,13 @@ public class SeedLockConfiguration implements EnvironmentAware {
 
     /**
      * 解析SpringEL表达式
-     * @param key    表达式
+     * @param glock  锁
      * @param method 方法
      * @param args   方法参数
      * @return spel解析结果
      */
-    private String parseSpringEL(String key, Method method, Object[] args) {
+    private String parseSpringEL(SeedLock seedLock, Method method, Object[] args) {
+        String key = StringUtils.isNotBlank(seedLock.key()) ? seedLock.key() : seedLock.value();
         if(!key.contains("#") && !key.contains("'")){
             return key;
         }
@@ -213,28 +214,28 @@ public class SeedLockConfiguration implements EnvironmentAware {
         this.lockWatchdogTimeout = lockWatchdogTimeout;
     }
 
-    public int getConnectionMinimumIdleSize() {
-        return connectionMinimumIdleSize;
+    public int getMinIdle() {
+        return minIdle;
     }
 
-    public void setConnectionMinimumIdleSize(int connectionMinimumIdleSize) {
-        this.connectionMinimumIdleSize = connectionMinimumIdleSize;
+    public void setMinIdle(int minIdle) {
+        this.minIdle = minIdle;
     }
 
-    public int getConnectionPoolSize() {
-        return connectionPoolSize;
+    public int getMaxTotal() {
+        return maxTotal;
     }
 
-    public void setConnectionPoolSize(int connectionPoolSize) {
-        this.connectionPoolSize = connectionPoolSize;
+    public void setMaxTotal(int maxTotal) {
+        this.maxTotal = maxTotal;
     }
 
-    public int getConnectTimeout() {
-        return connectTimeout;
+    public int getConnectionTimeout() {
+        return connectionTimeout;
     }
 
-    public void setConnectTimeout(int connectTimeout) {
-        this.connectTimeout = connectTimeout;
+    public void setConnectionTimeout(int connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
     }
 
     public int getDatabase() {
