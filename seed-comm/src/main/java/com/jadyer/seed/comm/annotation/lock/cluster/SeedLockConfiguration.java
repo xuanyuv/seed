@@ -57,7 +57,7 @@ public class SeedLockConfiguration implements EnvironmentAware {
     /** 密码（默认值：null） */
     private String password;
     private Environment environment;
-    private static final String LOCK_PREFIX = "SeedLock:";
+    private static final String LOCK_PREFIX = SeedLock.class.getSimpleName() + ":";
     public static final List<RedissonClient> redissonClientList = new ArrayList<>();
     private ExpressionParser parser = new SpelExpressionParser();
     private LocalVariableTableParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
