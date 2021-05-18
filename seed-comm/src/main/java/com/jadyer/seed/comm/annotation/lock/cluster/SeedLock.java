@@ -58,7 +58,7 @@ public @interface SeedLock {
      * @SeedLock(key="#id")
      * @SeedLock(key="#userMsg.name")
      * public CommResult<Map<String, Object>> prop(int id, UserMsg userMsg){}
-     * 注：当直接使用@SeedLock而没有设置属性时，默认会取当前类名作为锁的资源标记
+     * 注：当直接使用@SeedLock而没有设置属性时，默认会取当前“类名.方法名”为锁的资源标记
      * ------------------------------------------------------------------------------------------
      * 如果想在key值中加入字符串，可以像下面这样写
      * key="'seedboot:' + #userMsg.name"

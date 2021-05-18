@@ -164,7 +164,7 @@ public class SeedLockConfiguration implements EnvironmentAware {
         // 优先取key属性，其次取value属性，最次取类名
         String key = StringUtils.isNotBlank(seedLock.key()) ? seedLock.key() : seedLock.value();
         if(StringUtils.isBlank(key)){
-            key = joinPoint.getTarget().getClass().getSimpleName();
+            key = joinPoint.getTarget().getClass().getSimpleName() + "." + method.getName();
         }
         // 非SPEL直接返回
         if(!key.contains("#") && !key.contains("'")){
