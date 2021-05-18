@@ -107,14 +107,8 @@ public class SeedLockConfiguration implements EnvironmentAware {
     @Around("@annotation(com.jadyer.seed.comm.annotation.lock.cluster.SeedLock)")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         //计算上锁的key
-        Method method = ((MethodSignature)joinPoint.getSignature()).getMethod();
-        SeedLock seedLock = method.getAnnotation(SeedLock.class);
-        if(StringUtils.isBlank(seedLock.key()) && StringUtils.isBlank(seedLock.value())){
-            LogUtil.getLogger().error("资源加锁-->失败：空的key");
-            return null;
-        }
-        Object[] args = joinPoint.getArgs();
-        String key = LOCK_PREFIX + (StringUtils.isBlank(seedLock.appname())?"":this.getPropertyFromEnv(seedLock.appname())+":") + this.parseSpringEL(seedLock, method, args);
+        SeedLock seedLock = ((MethodSignature)joinPoint.getSignature()).getMethod().getAnnotation(SeedLock.class);
+        String key = LOCK_PREFIX + (StringUtils.isBlank(seedLock.appname())?"":this.getPropertyFromEnv(seedLock.appname())+":") + this.parseSpringEL(seedLock, joinPoint);
         //加锁
         RLock[] rLocks = new RLock[redissonClientList.size()];
         for(int i=0; i<redissonClientList.size(); i++){
@@ -128,12 +122,12 @@ public class SeedLockConfiguration implements EnvironmentAware {
                 redLock = new RedissonRedLock(rLocks);
                 if(!redLock.tryLock(seedLock.waitTime(), seedLock.leaseTime(), seedLock.unit())){
                     LogUtil.getLogger().warn("资源[{}]加锁-->失败", key);
-                    this.lockFallback(key, seedLock.fallbackMethod(), joinPoint, method, args);
+                    this.lockFallback(key, seedLock.fallbackMethod(), joinPoint);
                     return null;
                 }
             } catch (Throwable t) {
                 LogUtil.getLogger().error("资源[{}]加锁-->失败：{}", key, JadyerUtil.extractStackTraceCausedBy(t), t);
-                this.lockFallback(key, seedLock.fallbackMethod(), joinPoint, method, args);
+                this.lockFallback(key, seedLock.fallbackMethod(), joinPoint);
                 return null;
             }
             LogUtil.getLogger().debug("资源[{}]加锁-->成功", key);
@@ -162,15 +156,21 @@ public class SeedLockConfiguration implements EnvironmentAware {
     /**
      * 解析SpringEL表达式
      * @param glock  锁
-     * @param method 方法
-     * @param args   方法参数
      * @return spel解析结果
      */
-    private String parseSpringEL(SeedLock seedLock, Method method, Object[] args) {
+    private String parseSpringEL(SeedLock seedLock, ProceedingJoinPoint joinPoint) {
+        Method method = ((MethodSignature)joinPoint.getSignature()).getMethod();
+        Object[] args = joinPoint.getArgs();
+        // 优先取key属性，其次取value属性，最次取类名
         String key = StringUtils.isNotBlank(seedLock.key()) ? seedLock.key() : seedLock.value();
+        if(StringUtils.isBlank(key)){
+            key = joinPoint.getTarget().getClass().getSimpleName();
+        }
+        // 非SPEL直接返回
         if(!key.contains("#") && !key.contains("'")){
             return key;
         }
+        // SPEL解析
         String[] params = discoverer.getParameterNames(method);
         // if(0 == params.length){
         if(ObjectUtils.isEmpty(params)){
@@ -187,13 +187,15 @@ public class SeedLockConfiguration implements EnvironmentAware {
     /**
      * 加锁失败时的回调
      */
-    private void lockFallback(String key, String fallbackMethod, ProceedingJoinPoint joinPoint, Method method, Object[] args){
+    private void lockFallback(String key, String fallbackMethod, ProceedingJoinPoint joinPoint){
         if(StringUtils.isBlank(fallbackMethod)){
             LogUtil.getLogger().debug("资源[{}]加锁-->失败，未配置回调方法名，故不回调", key);
             return;
         }
         try {
             LogUtil.getLogger().debug("资源[{}]加锁-->失败，回调开始...", key);
+            Method method = ((MethodSignature)joinPoint.getSignature()).getMethod();
+            Object[] args = joinPoint.getArgs();
             joinPoint.getTarget().getClass().getMethod(fallbackMethod, method.getParameterTypes()).invoke(joinPoint.getTarget(), args);
             LogUtil.getLogger().debug("资源[{}]加锁-->失败，回调结束...", key);
         } catch (Throwable t) {
