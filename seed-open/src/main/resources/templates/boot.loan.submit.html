@@ -10,295 +10,295 @@
                 <th width="5%" align="center">必传</th>
                 <th width="65%">说明</th>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>partnerApplyNo</td>
                 <td align="center">VARCHAR2(32)</td>
                 <td align="center">Y</td>
                 <td>合作方申请单号</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>loanMoney</td>
                 <td align="center">NUMBER(8)</td>
                 <td align="center">N</td>
                 <td>贷款金额，额度贷为选传，现金贷为必传，单位：分，允许10000--20000000分</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>loanTerm</td>
                 <td align="center">NUMBER(2)</td>
                 <td align="center">N</td>
                 <td>贷款期数，额度贷为选传，现金贷为必传，目前可选值为3/6/9/12/15/18/24/36</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>loanPurpose</td>
                 <td align="center">CHAR(4)</td>
                 <td align="center">N</td>
                 <td>贷款用途，额度贷为选传，现金贷为必传，可选值见数据字典</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>useLifeInsurance</td>
                 <td align="center">CHAR(1)</td>
                 <td align="center">N</td>
                 <td>寿险计划，Y--参加，N--不参加，不传值则默认为N</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>productCode</td>
                 <td align="center">NUMBER(4)</td>
                 <td align="center">Y</td>
                 <td>产品编码，具体值由合作业务约定</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>userName</td>
                 <td align="center">VARCHAR2(16)</td>
                 <td align="center">Y</td>
                 <td>客户姓名</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>userPhone</td>
                 <td align="center">NUMBER(11)</td>
                 <td align="center">Y</td>
                 <td>客户手机号</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>userIdCard</td>
                 <td align="center">VARCHAR2(18)</td>
                 <td align="center">Y</td>
                 <td>客户身份证号，15位或18位</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>bankCardNo</td>
                 <td align="center">VARCHAR2(19)</td>
                 <td align="center">Y</td>
                 <td>银行卡号，值为14--19位数字</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>bankCode</td>
                 <td align="center">CHAR(4)</td>
                 <td align="center">Y</td>
                 <td>银行行号，可选值见数据字典</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>bankProvinceCode</td>
                 <td align="center">CHAR(6)</td>
                 <td align="center">Y</td>
                 <td>银行分行省份编码，值为国家统计局最新县及县以上行政区划代码</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>bankCityCode</td>
                 <td align="center">CHAR(6)</td>
                 <td align="center">Y</td>
                 <td>银行分行城市编码，值为国家统计局最新县及县以上行政区划代码</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>liveProvinceCode</td>
                 <td align="center">CHAR(6)</td>
                 <td align="center">Y</td>
                 <td>居住地省份编码，值为国家统计局最新县及县以上行政区划代码</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>liveCityCode</td>
                 <td align="center">CHAR(6)</td>
                 <td align="center">Y</td>
                 <td>居住地城市编码，值为国家统计局最新县及县以上行政区划代码</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>liveTownCode</td>
                 <td align="center">CHAR(6)</td>
                 <td align="center">Y</td>
                 <td>居住地区县编码，值为国家统计局最新县及县以上行政区划代码</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>liveDetailAddress</td>
                 <td align="center">VARCHAR2(128)</td>
                 <td align="center">Y</td>
                 <td>居住地区详细地址</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>livePhone</td>
                 <td align="center">VARCHAR2(14)</td>
                 <td align="center">N</td>
                 <td>住宅电话，格式为0451-12345678（区号最长5位，固话在个别地区为7位）</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>maritalStatus</td>
                 <td align="center">CHAR(2)</td>
                 <td align="center">Y</td>
                 <td>婚姻状况，可选值见数据字典</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>email</td>
                 <td align="center">VARCHAR2(64)</td>
                 <td align="center">N</td>
                 <td>常用电子邮件</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>education</td>
                 <td align="center">CHAR(4)</td>
                 <td align="center">N</td>
                 <td>教育程度，可选值见数据字典</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>schoolAddress</td>
                 <td align="center">VARCHAR2(64)</td>
                 <td align="center">N</td>
                 <td>学校地址</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>schoolName</td>
                 <td align="center">VARCHAR2(64)</td>
                 <td align="center">N</td>
                 <td>学校名称，userIdentity=SI01时必传</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>schoolLength</td>
                 <td align="center">NUMBER(1)</td>
                 <td align="center">N</td>
                 <td>学制，值为1--8的整数，userIdentity=SI01时必传</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>schoolEnterDate</td>
                 <td align="center">CHAR(7)</td>
                 <td align="center">N</td>
                 <td>入学时间，格式为yyyy-MM，userIdentity=SI01时必传</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>unitEnterDate</td>
                 <td align="center">CHAR(7)</td>
                 <td align="center">N</td>
                 <td>入职时间，格式为yyyy-MM，userIdentity=SI02/SI04时必传</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>unitStartDate</td>
                 <td align="center">CHAR(7)</td>
                 <td align="center">N</td>
                 <td>参加工作时间，格式为yyyy-MM，userIdentity=SI02/SI04时必传</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>unitName</td>
                 <td align="center">VARCHAR2(64)</td>
                 <td align="center">N</td>
                 <td>工作单位名称，userIdentity=SI02/SI04时必传</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>unitDepartment</td>
                 <td align="center">VARCHAR2(16)</td>
                 <td align="center">N</td>
                 <td>工作单位任职部门</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>unitPosition</td>
                 <td align="center">CHAR(1)</td>
                 <td align="center">N</td>
                 <td>工作单位现任职务，可选值见数据字典</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>unitPhone</td>
                 <td align="center">VARCHAR2(14)</td>
                 <td align="center">N</td>
                 <td>工作单位电话号码，支持手机号或最长为14位的座机号，座机格式为0451-12345678</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>unitPhoneExt</td>
                 <td align="center">NUMBER(5)</td>
                 <td align="center">N</td>
                 <td>工作单位分机号</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>unitProvinceCode</td>
                 <td align="center">NUMBER(6)</td>
                 <td align="center">N</td>
                 <td>工作单位地址省份编码，值为国家统计局最新县及县以上行政区划代码，userIdentity=SI02/SI04时必传</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>unitCityCode</td>
                 <td align="center">NUMBER(6)</td>
                 <td align="center">N</td>
                 <td>工作单位地址城市编码，值为国家统计局最新县及县以上行政区划代码，userIdentity=SI02/SI04时必传</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>unitTownCode</td>
                 <td align="center">NUMBER(6)</td>
                 <td align="center">N</td>
                 <td>工作单位地址区县编码，值为国家统计局最新县及县以上行政区划代码，userIdentity=SI02/SI04时必传</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>unitDetailAddress</td>
                 <td align="center">VARCHAR2(128)</td>
                 <td align="center">N</td>
                 <td>工作单位详细地址，userIdentity=SI02/SI04时必传</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>unitBusinessType</td>
                 <td align="center">CHAR(1)</td>
                 <td align="center">N</td>
                 <td>工作单位企业类型，可选值见数据字典，userIdentity=SI02/SI04时必传</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>unitIndustry</td>
                 <td align="center">CHAR(1)</td>
                 <td align="center">N</td>
                 <td>工作单位所属行业，可选值见数据字典</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>unitOccupation</td>
                 <td align="center">VARCHAR2(2)</td>
                 <td align="center">N</td>
                 <td>工作内容从事职业，可选值见数据字典，userIdentity=SI02/SI04时必传</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>unitMonthIncome</td>
                 <td align="center">NUMBER(8)</td>
                 <td align="center">N</td>
                 <td>工作月收入，单位：分，最多允许99999999分，userIdentity=SI02/SI04时必传</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>otherIncome</td>
                 <td align="center">NUMBER(8)</td>
                 <td align="center">N</td>
                 <td>其它收入，单位：分，最多允许99999999分</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>otherLoan</td>
                 <td align="center">NUMBER(8)</td>
                 <td align="center">N</td>
                 <td>其它贷款，单位：分，最多允许99999999分</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>userIdentity</td>
                 <td align="center">CHAR(4)</td>
                 <td align="center">Y</td>
                 <td>客户社会身份，可选值见数据字典</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>userCredit</td>
                 <td align="center">CHAR(1)</td>
                 <td align="center">N</td>
                 <td>客户信用记录，可选值见数据字典</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>userHousing</td>
                 <td align="center">CHAR(1)</td>
                 <td align="center">N</td>
                 <td>客户居住状况，可选值见数据字典</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>userCarInfo</td>
                 <td align="center">CHAR(1)</td>
                 <td align="center">N</td>
                 <td>客户车产情况，可选值见数据字典</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>warrantMode</td>
                 <td align="center">CHAR(1)</td>
                 <td align="center">N</td>
                 <td>担保方式：0--未知，1--信用贷</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>financeOrganize</td>
                 <td align="center">CHAR(1)</td>
                 <td align="center">N</td>
                 <td>金融机构：0--未知，1--消费金融公司</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>fileList</td>
                 <td align="center">JSONObject</td>
                 <td align="center">N</td>
@@ -310,7 +310,7 @@
                     ]
                 </td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>contactList</td>
                 <td align="center">JSONObject</td>
                 <td align="center">Y</td>
@@ -322,7 +322,7 @@
                     ]
                 </td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>addonsList</td>
                 <td align="center">JSONObject</td>
                 <td align="center">N</td>
@@ -334,79 +334,79 @@
                     ]
                 </td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>clientType</td>
                 <td align="center">VARCHAR2(32)</td>
                 <td align="center">Y</td>
                 <td>客户端类型，可选值：IOS、Android、WeChat、PCBrowser、MobileBrowser</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>clientVersion</td>
                 <td align="center">VARCHAR2(64)</td>
                 <td align="center">N</td>
                 <td>客户端版本号，clientType=IOS或Android时传系统版本号，其余传浏览器版本号</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>clientChannel</td>
                 <td align="center">VARCHAR2(64)</td>
                 <td align="center">N</td>
                 <td>客户端发行渠道，即客户端获取来源，比如appstore</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>clientInVersion</td>
                 <td align="center">VARCHAR2(64)</td>
                 <td align="center">N</td>
                 <td>客户端内部版本号，clientType=IOS或Android时传App的，其余传浏览器版本号即可</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>clientCompany</td>
                 <td align="center">VARCHAR2(64)</td>
                 <td align="center">N</td>
                 <td>客户端制造商，clientType=IOS或Android时传手机制造商，其余传浏览器名即可</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>clientTradeMark</td>
                 <td align="center">VARCHAR2(64)</td>
                 <td align="center">N</td>
                 <td>客户端品牌，clientType=IOS或Android时传手机牌子，其余传浏览器名即可</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>clientModels</td>
                 <td align="center">VARCHAR2(64)</td>
                 <td align="center">N</td>
                 <td>客户端型号，clientType=IOS或Android时传手机型号，其余传浏览器版本号即可</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>clientCompileId</td>
                 <td align="center">VARCHAR2(64)</td>
                 <td align="center">N</td>
                 <td>客户端编译ID，clientType=IOS或Android时传App编译ID，其余传浏览器版本号即可</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>clientIMEI</td>
                 <td align="center">VARCHAR2(64)</td>
                 <td align="center">N</td>
                 <td>客户端IMEI</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>clientGPS</td>
                 <td align="center">VARCHAR2(32)</td>
                 <td align="center">N</td>
                 <td>客户端GPS(lat,lng)</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>clientNetwork</td>
                 <td align="center">NUMBER(1)</td>
                 <td align="center">N</td>
                 <td>客户端网络，可选值：0--无，1--WIFI，2--2G，3--3G，4--4G，5--5G，9--其它</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>notifyUrl</td>
                 <td align="center">VARCHAR2(512)</td>
                 <td align="center">N</td>
                 <td>后台通知URL，通知参数同3.1章节请求参数，该参数暂时不完全生效，可不传</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>state</td>
                 <td align="center">VARCHAR2(512)</td>
                 <td align="center">N</td>
@@ -415,7 +415,7 @@
         </table>
         <br/>
         <table width="1260" border="0" cellspacing="1" bgcolor="#000000">
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>
                     {<br/>
                     &nbsp;&nbsp;&nbsp;&nbsp;&quot;userIdCard&quot;:&quot;232126201602231608&quot;,<br/>
@@ -452,13 +452,13 @@
                 <th width="5%" align="center">必传</th>
                 <th width="65%">说明</th>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>applyNo</td>
                 <td align="center">VARCHAR2(32)</td>
                 <td align="center">Y</td>
                 <td>开放平台申请单号</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>contractNo</td>
                 <td align="center">VARCHAR2(32)</td>
                 <td align="center">N</td>
@@ -467,7 +467,7 @@
         </table>
         <br/>
         <table width="1260" border="0" cellspacing="1" bgcolor="#000000">
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>
                     {<br/>
                     &nbsp;&nbsp;&nbsp;&nbsp;&quot;code&quot;: &quot;0&quot;,<br/>

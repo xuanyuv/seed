@@ -9,21 +9,21 @@
     <br/>
     <table width="666" border="0" cellspacing="1" bgcolor="#000000">
         <tr align="center">
-            <th bgcolor="#FFFFFF">歌曲编号</th>
-            <th bgcolor="#FFFFFF">歌曲名称</th>
-            <th bgcolor="#FFFFFF">歌手</th>
-            <th bgcolor="#FFFFFF">词作者</th>
-            <th bgcolor="#FFFFFF">歌曲大小</th>
-            <th bgcolor="#FFFFFF">压缩后大小</th>
+            <th bgcolor="#EDEDED">歌曲编号</th>
+            <th bgcolor="#EDEDED">歌曲名称</th>
+            <th bgcolor="#EDEDED">歌手</th>
+            <th bgcolor="#EDEDED">词作者</th>
+            <th bgcolor="#EDEDED">歌曲大小</th>
+            <th bgcolor="#EDEDED">压缩后大小</th>
         </tr>
         <c:forEach items="${list}" var="mp3">
             <tr align="center">
-                <td bgcolor="#FFFFFF">${mp3.id}</td>
-                <td bgcolor="#FFFFFF">${mp3.name}</td>
-                <td bgcolor="#FFFFFF">${mp3.singer}</td>
-                <td bgcolor="#FFFFFF">${mp3.author}</td>
-                <td bgcolor="#FFFFFF"><del>${mp3.size}</del></td>
-                <td bgcolor="#FFFFFF">${mp3.size*0.8}</td>
+                <td bgcolor="#EDEDED">${mp3.id}</td>
+                <td bgcolor="#EDEDED">${mp3.name}</td>
+                <td bgcolor="#EDEDED">${mp3.singer}</td>
+                <td bgcolor="#EDEDED">${mp3.author}</td>
+                <td bgcolor="#EDEDED"><del>${mp3.size}</del></td>
+                <td bgcolor="#EDEDED">${mp3.size*0.8}</td>
             </tr>
         </c:forEach>
     </table>

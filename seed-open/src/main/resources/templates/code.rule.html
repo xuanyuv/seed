@@ -107,43 +107,43 @@
                 <th width="5%" align="center">必传</th>
                 <th width="65%">说明</th>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>method</td>
                 <td align="center">VARCHAR2(32)</td>
                 <td align="center">Y</td>
                 <td>API接口名称</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>version</td>
                 <td align="center">CHAR(3)</td>
                 <td align="center">Y</td>
                 <td>API协议版本，暂时支持：2.1和2.2</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>appid</td>
                 <td align="center">VARCHAR2(32)</td>
                 <td align="center">Y</td>
                 <td>分配给合作方的用于识别合作方身份的appid（同时会分配appsecret作为密钥）</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>timestamp</td>
                 <td align="center">CHAR(19)</td>
                 <td align="center">Y</td>
                 <td>时间戳，格式为yyyy-MM-dd HH:mm:ss，服务端允许客户端请求最大时间误差为10分钟</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>signType</td>
                 <td align="center">VARCHAR2(512)</td>
                 <td align="center">N</td>
                 <td>签名的摘要算法，可选值：小写的md5，version=2.0时必传</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>sign</td>
                 <td align="center">VARCHAR2(512)</td>
                 <td align="center">N</td>
                 <td>签名结果字符串，version=2.0和2.2时必传</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>data</td>
                 <td align="center">VARCHAR2(999)</td>
                 <td align="center">N</td>
@@ -160,25 +160,25 @@
                 <th width="5%" align="center">必传</th>
                 <th width="65%">说明</th>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>code</td>
                 <td align="center">VARCHAR2(3)</td>
                 <td align="center">Y</td>
                 <td>应答码，见附录 C</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>msg</td>
                 <td align="center">VARCHAR2(512)</td>
                 <td align="center">Y</td>
                 <td>应答码描述</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>sign</td>
                 <td align="center">VARCHAR2(512)</td>
                 <td align="center">N</td>
                 <td>签名结果字符串，通常只有code=0且version=2.2时该域才会有值</td>
             </tr>
-            <tr bgcolor="#FFFFFF">
+            <tr bgcolor="#EDEDED">
                 <td>data</td>
                 <td align="center">VARCHAR2(999)<T></td>
                 <td align="center">N</td>
