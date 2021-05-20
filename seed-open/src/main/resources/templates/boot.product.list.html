@@ -10,13 +10,13 @@
                 <th width="5%" align="center">必传</th>
                 <th width="65%">说明</th>
             </tr>
-            <tr bgcolor="#EDEDED">
+            <tr bgcolor="#F0F0F0">
                 <td>productCode</td>
                 <td align="center">VARCHAR2(8)</td>
                 <td align="center">N</td>
                 <td>产品编码，若传值则返回指定编码的相关产品参数，否则返回所有产品相关参数</td>
             </tr>
-            <tr bgcolor="#EDEDED">
+            <tr bgcolor="#F0F0F0">
                 <td>loanMoney</td>
                 <td align="center">NUMBER(6)</td>
                 <td align="center">N</td>
@@ -33,37 +33,37 @@
                 <th width="5%" align="center">必传</th>
                 <th width="65%">说明</th>
             </tr>
-            <tr bgcolor="#EDEDED">
+            <tr bgcolor="#F0F0F0">
                 <td>productCode</td>
                 <td align="center">VARCHAR2(32)</td>
                 <td align="center">Y</td>
                 <td>贷款产品代码</td>
             </tr>
-            <tr bgcolor="#EDEDED">
+            <tr bgcolor="#F0F0F0">
                 <td>productDesc</td>
                 <td align="center">VARCHAR2(64)</td>
                 <td align="center">Y</td>
                 <td>贷款产品描述</td>
             </tr>
-            <tr bgcolor="#EDEDED">
+            <tr bgcolor="#F0F0F0">
                 <td>loanType</td>
                 <td align="center">VARCHAR2(8)</td>
                 <td align="center">Y</td>
                 <td>贷款类型：MCAT--随借随还，MCEP--等额本金，MCEI--等额本息</td>
             </tr>
-            <tr bgcolor="#EDEDED">
+            <tr bgcolor="#F0F0F0">
                 <td>productStatus</td>
                 <td align="center">CHAR(1)</td>
                 <td align="center">Y</td>
                 <td>产品使用状态：A--使用中，S--暂停使用</td>
             </tr>
-            <tr bgcolor="#EDEDED">
+            <tr bgcolor="#F0F0F0">
                 <td>productValidity</td>
                 <td align="center">DATE</td>
                 <td align="center">Y</td>
                 <td>产品有效期，格式为yyyy-MM-dd</td>
             </tr>
-            <tr bgcolor="#EDEDED">
+            <tr bgcolor="#F0F0F0">
                 <td>subList</td>
                 <td align="center">JSONObject</td>
                 <td align="center">Y</td>
@@ -75,31 +75,31 @@
                     ]
                 </td>
             </tr>
-            <tr bgcolor="#EDEDED">
+            <tr bgcolor="#F0F0F0">
                 <td>subList.code</td>
                 <td align="center">VARCHAR2(8)</td>
                 <td align="center">Y</td>
                 <td>子产品代码</td>
             </tr>
-            <tr bgcolor="#EDEDED">
+            <tr bgcolor="#F0F0F0">
                 <td>subList.term</td>
                 <td align="center">VARCHAR2(2)</td>
                 <td align="center">Y</td>
                 <td>贷款期数</td>
             </tr>
-            <tr bgcolor="#EDEDED">
+            <tr bgcolor="#F0F0F0">
                 <td>subList.minAmt</td>
                 <td align="center">NUMBER(9)</td>
                 <td align="center">Y</td>
                 <td>最小允许贷款额度，单位：分</td>
             </tr>
-            <tr bgcolor="#EDEDED">
+            <tr bgcolor="#F0F0F0">
                 <td>subList.maxAmt</td>
                 <td align="center">NUMBER(9)</td>
                 <td align="center">Y</td>
                 <td>最大允许贷款额度，单位：分</td>
             </tr>
-            <tr bgcolor="#EDEDED">
+            <tr bgcolor="#F0F0F0">
                 <td>subList.status</td>
                 <td align="center">CHAR(1)</td>
                 <td align="center">Y</td>
