@@ -163,7 +163,7 @@ public final class BeanUtil {
     /**
      * Map转为Bean（根据key找到属性名，再将value作为属性值）
      * -------------------------------------------------------------------------------------
-     * Bean的属性值目前只支持String、int、long，其它未做兼容
+     * Bean的属性值目前只支持String、int、Integer、long、Long，其它未做兼容
      * 另附注意事项：https://jadyer.cn/2013/09/24/spring-introspector-cleanup-listener/
      * -------------------------------------------------------------------------------------
      */
@@ -183,8 +183,10 @@ public final class BeanUtil {
                 if(dataMap.containsKey(propertyName)){
                     //获得并执行setter
                     switch(obj.getPropertyType().getName()){
-                        case "int"  : obj.getWriteMethod().invoke(bean, Integer.parseInt(dataMap.get(propertyName))); break;
-                        case "long" : obj.getWriteMethod().invoke(bean, Long.parseLong(dataMap.get(propertyName)));   break;
+                        case "int"               :
+                        case "java.lang.Integer" : obj.getWriteMethod().invoke(bean, Integer.parseInt(dataMap.get(propertyName))); break;
+                        case "long"              :
+                        case "java.lang.Long"    : obj.getWriteMethod().invoke(bean, Long.parseLong(dataMap.get(propertyName)));   break;
                         default: obj.getWriteMethod().invoke(bean, dataMap.get(propertyName));
                     }
                 }

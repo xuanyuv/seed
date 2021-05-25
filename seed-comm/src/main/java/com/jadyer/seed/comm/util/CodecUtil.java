@@ -555,7 +555,7 @@ public final class CodecUtil {
      * 根据指定的签名密钥和算法签名Map<String,String>
      * 方法内部首先会过滤Map<String,String>参数中的部分键值对
      * 过滤规则为移除键名为cert、hmac、sign、signMsg及键值为null或键值长度为零的键值对
-     * 过滤后会产生一个字符串，其格式为按照键名升序排序的key11=value11|key22=value22|key=signKey
+     * 过滤后会产生一个字符串，其格式为按照键名升序排序的key11=value11&key22=value22&key=signKey
      * 最后调用 {@link #buildHexSign(String, String, String)} 签名，返回签名后的小写的十六进制字符串
      * @param param     待签名的Map<String,String>
      * @param charset   签名时转码用到的字符集
@@ -572,7 +572,7 @@ public final class CodecUtil {
             if(StringUtils.equalsAnyIgnoreCase(key, "cert", "hmac", "sign", "signMsg") || StringUtils.isEmpty(value)){
                 continue;
             }
-            sb.append(key).append("=").append(value).append("|");
+            sb.append(key).append("=").append(value).append("&");
         }
         sb.append("key=").append(signKey);
         return buildHexSign(sb.toString(), charset, algorithm);
