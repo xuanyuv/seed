@@ -18,6 +18,7 @@ import java.util.List;
  * Condition<User> spec = Condition.or();
  * Condition<User> spec = Condition.and();
  * spec.eq("uid", uid);
+ * spec.gt("createTime", new Date());
  * spec.between("updateTime", new Date(), new Date());
  * Condition<User> spec = Condition.<User>or().eq("id", 8).notIn("name", nameList);
  * userRepository.findAll(spec, PageRequest.of(0, 15, new Sort(Sort.Direction.DESC, "id")));
@@ -54,7 +55,7 @@ public class Condition<T> implements Specification<T> {
     private List<SearchFilter> filters = new ArrayList<>();
 
     //记录每一个字段查询条件的实体
-    private class SearchFilter {
+    private static class SearchFilter {
         String property;
         Operator operator;
         Object value;
@@ -95,7 +96,7 @@ public class Condition<T> implements Specification<T> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         if (filters.isEmpty()) {
             return cb.conjunction();
@@ -124,21 +125,19 @@ public class Condition<T> implements Specification<T> {
                             predicateList.add(cb.notEqual(expression, filter.value));
                         }
                         break;
-                case GT:
-                        predicateList.add(cb.gt(expression, (Number)filter.value));
-                        break;
                 case LT:
-                        predicateList.add(cb.lt(expression, (Number)filter.value));
-                        break;
-                case GE:
-                        predicateList.add(cb.ge(expression, (Number)filter.value));
+                        predicateList.add(cb.lessThan(expression, (Comparable)filter.value));
                         break;
                 case LE:
-                        predicateList.add(cb.le(expression, (Number)filter.value));
+                        predicateList.add(cb.lessThanOrEqualTo(expression, (Comparable)filter.value));
+                        break;
+                case GT:
+                        predicateList.add(cb.greaterThan(expression, (Comparable)filter.value));
+                        break;
+                case GE:
+                        predicateList.add(cb.greaterThanOrEqualTo(expression, (Comparable)filter.value));
                         break;
                 case BETWEEN:
-                        //https://github.com/wenhao/jpa-spec/blob/master/src/main/java/com/github/wenhao/jpa/specification/BetweenSpecification.java
-                        //https://stackoverflow.com/questions/15610094/jpa-find-entities-where-date-is-between-start-and-end-date-that-can-be-null-usin
                         Comparable[] comparables = (Comparable[])filter.value;
                         predicateList.add(cb.between(expression, comparables[0], comparables[1]));
                         break;
@@ -149,23 +148,23 @@ public class Condition<T> implements Specification<T> {
                         predicateList.add(cb.in(expression).value(filter.value).not());
                         break;
                 case LIKE:
-                        List valueList = (List)filter.value;
+                        List<String> valueList = (List<String>)filter.value;
                         Predicate[] predicates = new Predicate[valueList.size()];
-                        for(int i=0; i<valueList.size(); i++){
+                        for(int i=0,len=valueList.size(); i<len; i++){
                             predicates[i] = cb.like(expression, "%" + valueList.get(i) + "%");
                         }
                         predicateList.add(cb.or(predicates));
                         break;
                 case NOTLIKE:
-                        valueList = (List)filter.value;
+                        valueList = (List<String>)filter.value;
                         predicates = new Predicate[valueList.size()];
-                        for(int i=0; i<valueList.size(); i++){
+                        for(int i=0,len=valueList.size(); i<len; i++){
                             predicates[i] = cb.notLike(expression, "%" + valueList.get(i) + "%");
                         }
                         predicateList.add(cb.and(predicates));
                         break;
                 default:
-                        System.out.println("nothing to do");
+                        System.out.println("Nothing to do...");
             }
         }
         //联合所有条件构造sql
@@ -174,43 +173,43 @@ public class Condition<T> implements Specification<T> {
         return Predicate.BooleanOperator.AND.equals(operatorType) ? cb.and(predicates) : cb.or(predicates);
     }
 
-    public Condition<T> eq(String property, Object value) {
+    public <V extends Comparable<V>> Condition<T> eq(String property, V value) {
         return this.add(property, Operator.EQ, value);
     }
 
-    public Condition<T> ne(String property, Object value) {
+    public <V extends Comparable<V>> Condition<T> ne(String property, V value) {
         return this.add(property, Operator.NE, value);
     }
 
-    public Condition<T> gt(String property, Number number) {
-        return this.add(property, Operator.GT, number);
+    public <V extends Comparable<V>> Condition<T> gt(String property, V value) {
+        return this.add(property, Operator.GT, value);
     }
 
-    public Condition<T> lt(String property, Number number) {
-        return this.add(property, Operator.LT, number);
+    public <V extends Comparable<V>> Condition<T> lt(String property, V value) {
+        return this.add(property, Operator.LT, value);
     }
 
-    public Condition<T> ge(String property, Number number) {
-        return this.add(property, Operator.GE, number);
+    public <V extends Comparable<V>> Condition<T> ge(String property, V value) {
+        return this.add(property, Operator.GE, value);
     }
 
-    public Condition<T> le(String property, Number number) {
-        return this.add(property, Operator.LE, number);
+    public <V extends Comparable<V>> Condition<T> le(String property, V value) {
+        return this.add(property, Operator.LE, value);
     }
 
-    public Condition<T> between(String property, Comparable<?> lower, Comparable<?> upper) {
-        Comparable[] comparables = new Comparable[2];
+    public <V extends Comparable<V>> Condition<T> between(String property, V lower, V upper) {
+        Comparable<?>[] comparables = new Comparable<?>[2];
         comparables[0] = lower;
         comparables[1] = upper;
         return this.add(property, Operator.BETWEEN, comparables);
     }
 
-    public Condition<T> in(String property, List valueList) {
-        return this.add(property, Operator.IN, valueList);
+    public Condition<T> in(String property, Object... values) {
+        return this.add(property, Operator.IN, values);
     }
 
-    public Condition<T> notIn(String property, List valueList) {
-        return this.add(property, Operator.NOTIN, valueList);
+    public Condition<T> notIn(String property,  Object... values) {
+        return this.add(property, Operator.NOTIN, values);
     }
 
     public Condition<T> like(String property, List<String> valueList) {
