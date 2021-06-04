@@ -12,6 +12,7 @@ import org.redisson.Redisson;
 import org.redisson.RedissonRedLock;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.redisson.config.ClusterServersConfig;
 import org.redisson.config.Config;
 import org.redisson.config.SingleServerConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -44,6 +45,8 @@ import java.util.List;
 public class SeedLockConfiguration implements EnvironmentAware {
     /** 节点地址：[host:port] */
     private List<String> nodes = new ArrayList<>();
+    /** 部署模式（SINGLE、CLUSTER） */
+    private String pattern;
     /** 监控锁的看门狗超时，单位：毫秒（默认值：30000） */
     private int lockWatchdogTimeout;
     /** 最小空闲连接数（默认值：32） */
@@ -76,6 +79,16 @@ public class SeedLockConfiguration implements EnvironmentAware {
             LogUtil.getLogger().info("RedissonClientList has inited, skip...");
             return;
         }
+        if(StringUtils.equals(pattern, "SINGLE")){
+            this.initSingleServerConfig();
+        }else{
+            this.initClusterServersConfig();
+        }
+        LogUtil.getLogger().info("RedissonClientList init end...");
+    }
+
+
+    private void initSingleServerConfig(){
         for(String node : nodes){
             Config config = new Config();
             if(lockWatchdogTimeout > 0){
@@ -100,7 +113,27 @@ public class SeedLockConfiguration implements EnvironmentAware {
             redissonClientList.add(Redisson.create(config));
             LogUtil.getLogger().info("RedissonClientList init on {}", node);
         }
-        LogUtil.getLogger().info("RedissonClientList init end...");
+    }
+
+
+    private void initClusterServersConfig(){
+        String[] nodeAddresses = new String[nodes.size()];
+        for(int i=0,len=nodes.size(); i<len; i++){
+            nodeAddresses[i] = "redis://" + nodes.get(i);
+        }
+        Config config = new Config();
+        if(lockWatchdogTimeout > 0){
+            config.setLockWatchdogTimeout(lockWatchdogTimeout);
+        }
+        ClusterServersConfig clusterConfig = config.useClusterServers().addNodeAddress(nodeAddresses);
+        if(connectionTimeout > 0){
+            clusterConfig.setConnectTimeout(connectionTimeout);
+        }
+        if(StringUtils.isNotBlank(password)){
+            clusterConfig.setPassword(password);
+        }
+        redissonClientList.add(Redisson.create(config));
+        LogUtil.getLogger().info("RedissonClientList init on {}", (Object)nodeAddresses);
     }
 
 
@@ -206,6 +239,14 @@ public class SeedLockConfiguration implements EnvironmentAware {
 
     public List<String> getNodes() {
         return nodes;
+    }
+
+    public String getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
     }
 
     public int getLockWatchdogTimeout() {
