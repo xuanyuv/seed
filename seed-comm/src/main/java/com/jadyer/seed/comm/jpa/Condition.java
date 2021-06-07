@@ -9,6 +9,7 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -204,11 +205,11 @@ public class Condition<T> implements Specification<T> {
         return this.add(property, Operator.BETWEEN, comparables);
     }
 
-    public Condition<T> in(String property, Object... values) {
+    public Condition<T> in(String property, Collection<?> values) {
         return this.add(property, Operator.IN, values);
     }
 
-    public Condition<T> notIn(String property,  Object... values) {
+    public Condition<T> notIn(String property,  Collection<?> values) {
         return this.add(property, Operator.NOTIN, values);
     }
 
