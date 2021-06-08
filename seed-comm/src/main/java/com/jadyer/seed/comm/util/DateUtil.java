@@ -20,7 +20,7 @@ import java.util.List;
  * @history v1.1-->增加根据日期获得星期的方法getWeekName()
  * @history v1.0-->新建不添加若干方法
  * ----------------------------------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2017/5/19 11:05.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/5/19 11:05.
  */
 public final class DateUtil {
     private DateUtil(){}

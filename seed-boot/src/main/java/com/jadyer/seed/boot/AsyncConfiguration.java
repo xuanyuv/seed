@@ -41,7 +41,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  *     <li>当@Async标注在方法上时，该方法会异步执行，标注在类上时，该类的所有方法都会异步执行</li>
  * </ul>
  * -----------------------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2017/6/8 14:06.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/6/8 14:06.
  */
 @Configuration
 @EnableAsync

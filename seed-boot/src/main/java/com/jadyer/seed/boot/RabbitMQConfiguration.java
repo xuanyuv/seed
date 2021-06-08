@@ -61,7 +61,7 @@ import org.springframework.context.annotation.Profile;
  *                                                                                 .build();
  * channel.basicPublish(EXCHANGE_NAME, "routingkey.data", false, false, properties, "success".getBytes(StandardCharsets.UTF_8.name()));
  * ----------------------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2017/6/5 15:19.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/6/5 15:19.
  */
 @Configuration
 @Profile("test")

@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 /**
  * 日志记录
- * Created by 玄玉<https://jadyer.github.io/> on 2017/6/20 16:53.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/6/20 16:53.
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

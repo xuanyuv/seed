@@ -2,7 +2,7 @@ package com.jadyer.seed.comm.annotation;
 
 /**
  * 动作类型
- * Created by 玄玉<https://jadyer.github.io/> on 2017/6/20 16:57.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/6/20 16:57.
  */
 public enum ActionEnum {
     OTHER  (0, "其它"),

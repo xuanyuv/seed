@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
  * 1、从配置文件读值：@SeedQSSReg(qssHost="${jadyer.qss.host}")
  * 2、直接写具体的值：@SeedQSSReg(qssHost="http://192.168.2.34:8008")
  * ----------------------------------------------------------------------------------------------------
- * Created by 玄玉<https://jadyer.github.io/> on 2018/6/12 16:46.
+ * Created by 玄玉<https://jadyer.cn/> on 2018/6/12 16:46.
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

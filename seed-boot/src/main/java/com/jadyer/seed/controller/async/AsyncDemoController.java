@@ -10,7 +10,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by 玄玉<https://jadyer.github.io/> on 2017/6/7 11:08.
+ * Created by 玄玉<https://jadyer.cn/> on 2017/6/7 11:08.
  */
 @RestController
 @RequestMapping("/async")
