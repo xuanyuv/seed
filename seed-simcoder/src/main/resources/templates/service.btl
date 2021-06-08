@@ -30,12 +30,12 @@ public class ${CLASS_NAME}Service {
 
 
     @Transactional(rollbackFor=Exception.class)
-    public void delete(long id){
+    public void delete(Long id){
         ${CLASS_NAME_uncapitalize}Repository.deleteById(id);
     }
 
 
-    public Optional<${CLASS_NAME}> get(long id){
+    public Optional<${CLASS_NAME}> get(Long id){
         return ${CLASS_NAME_uncapitalize}Repository.findById(id);
     }
 

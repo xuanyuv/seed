@@ -37,7 +37,7 @@ public class ${CLASS_NAME}Controller implements ${CLASS_NAME}Api {
 
     @Override
     @ResponseBody
-    public CommResult<Void> delete(long id){
+    public CommResult<Void> delete(Long id){
         ${CLASS_NAME_uncapitalize}Service.delete(id);
         return CommResult.success();
     }
@@ -45,7 +45,7 @@ public class ${CLASS_NAME}Controller implements ${CLASS_NAME}Api {
 
     @Override
     @ResponseBody
-    public CommResult<${CLASS_NAME}DTO> get(long id){
+    public CommResult<${CLASS_NAME}DTO> get(Long id){
         ${CLASS_NAME} ${CLASS_NAME_uncapitalize} = ${CLASS_NAME_uncapitalize}Service.get(id).orElse(null);
         return CommResult.success(BeanUtil.copyProperties(${CLASS_NAME_uncapitalize}, ${CLASS_NAME}DTO.class));
     }

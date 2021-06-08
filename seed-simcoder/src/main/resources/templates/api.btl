@@ -26,9 +26,9 @@ public interface ${CLASS_NAME}Api {
 
     @ApiOperation("删除")
     @PostMapping("/delete/{id}")
-    CommResult<Void> delete(@PathVariable long id);
+    CommResult<Void> delete(@PathVariable Long id);
 
     @ApiOperation("查询")
     @GetMapping("/get/{id}")
-    CommResult<${CLASS_NAME}DTO> get(@PathVariable long id);
+    CommResult<${CLASS_NAME}DTO> get(@PathVariable Long id);
 }
