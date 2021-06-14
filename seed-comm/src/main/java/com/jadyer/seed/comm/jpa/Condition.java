@@ -22,7 +22,7 @@ import java.util.List;
  * spec.gt("createTime", new Date());
  * spec.between("updateTime", new Date(), new Date());
  * Condition<User> spec = Condition.<User>or().eq("id", 8).notIn("name", nameList);
- * userRepository.findAll(spec, PageRequest.of(0, 15, new Sort(Sort.Direction.DESC, "id")));
+ * userRepository.findAll(spec, PageRequest.of(0, 15, Sort.by(Sort.Direction.DESC, "id")));
  * ---------------------------------------------------------------------------------------------------------------
  * 参考了以下实现
  * https://github.com/wenhao/jpa-spec
