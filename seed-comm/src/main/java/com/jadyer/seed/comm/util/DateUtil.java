@@ -216,6 +216,15 @@ public final class DateUtil {
 
 
     /**
+     * 计算两个日期相隔的秒数
+     * Comment by 玄玉<https://jadyer.cn/> on 2021/6/14 15:54.
+     */
+    public static long getDistanceSecond(Date begin, Date end){
+        return (end.getTime() - begin.getTime()) / 1000;
+    }
+
+
+    /**
      * 获取指定日期相隔一定天数后的日期
      * @see 该方法等效于org.apache.commons.lang3.time.DateUtils.addDays(startDate, days)
      * @param startDate 参照日期
