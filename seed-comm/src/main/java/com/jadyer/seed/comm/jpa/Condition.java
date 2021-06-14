@@ -217,7 +217,7 @@ public class Condition<T> implements Specification<T> {
         return this.add(property, Operator.IN, values);
     }
 
-    public Condition<T> notIn(String property,  Collection<?> values) {
+    public Condition<T> notIn(String property, Collection<?> values) {
         return this.add(property, Operator.NOTIN, values);
     }
 
@@ -229,11 +229,67 @@ public class Condition<T> implements Specification<T> {
         return this.like(property, Collections.singletonList(value));
     }
 
+    public Condition<T> notLike(String property, List<String> valueList) {
+        return this.add(property, Operator.NOTLIKE, valueList);
+    }
+
     public Condition<T> notLike(String property, String value) {
         return this.notLike(property, Collections.singletonList(value));
     }
 
-    public Condition<T> notLike(String property, List<String> valueList) {
-        return this.add(property, Operator.NOTLIKE, valueList);
+    /**
+     * 根据条件决定是否添加查询参数
+     * Comment by 玄玉<https://jadyer.cn/> on 2021/6/14 20:37.
+     */
+    public <V extends Comparable<V>> Condition<T> eq(boolean valid, String property, V value) {
+        return valid ? this.eq(property, value) : this;
+    }
+
+    public <V extends Comparable<V>> Condition<T> ne(boolean valid, String property, V value) {
+        return valid ? this.ne(property, value) : this;
+    }
+
+    public <V extends Comparable<V>> Condition<T> gt(boolean valid, String property, V value) {
+        return valid ? this.gt(property, value) : this;
+    }
+
+    public <V extends Comparable<V>> Condition<T> lt(boolean valid, String property, V value) {
+        return valid ? this.lt(property, value) : this;
+    }
+
+    public <V extends Comparable<V>> Condition<T> ge(boolean valid, String property, V value) {
+        return valid ? this.ge(property, value) : this;
+    }
+
+    public <V extends Comparable<V>> Condition<T> le(boolean valid, String property, V value) {
+        return valid ? this.le(property, value) : this;
+    }
+
+    public <V extends Comparable<V>> Condition<T> between(boolean valid, String property, V lower, V upper) {
+        return valid ? this.between(property, lower, upper) : this;
+    }
+
+    public Condition<T> in(boolean valid, String property, Collection<?> values) {
+        return valid ? this.in(property, values) : this;
+    }
+
+    public Condition<T> notIn(boolean valid, String property, Collection<?> values) {
+        return valid ? this.notIn(property, values) : this;
+    }
+
+    public Condition<T> like(boolean valid, String property, List<String> valueList) {
+        return valid ? this.like(property, valueList) : this;
+    }
+
+    public Condition<T> like(boolean valid, String property, String value) {
+        return valid ? this.like(property, value) : this;
+    }
+
+    public Condition<T> notLike(boolean valid, String property, List<String> valueList) {
+        return valid ? this.notLike(property, valueList) : this;
+    }
+
+    public Condition<T> notLike(boolean valid, String property, String value) {
+        return valid ? this.notLike(property, value) : this;
     }
 }
