@@ -152,7 +152,8 @@ public class Condition<T> implements Specification<T> {
                         List<String> valueList = (List<String>)filter.value;
                         Predicate[] predicates = new Predicate[valueList.size()];
                         for(int i=0,len=valueList.size(); i<len; i++){
-                            predicates[i] = cb.like(expression, "%" + valueList.get(i) + "%");
+                            // predicates[i] = cb.like(expression, "%" + valueList.get(i) + "%");
+                            predicates[i] = cb.like(expression, valueList.get(i));
                         }
                         predicateList.add(cb.or(predicates));
                         break;
@@ -160,7 +161,8 @@ public class Condition<T> implements Specification<T> {
                         valueList = (List<String>)filter.value;
                         predicates = new Predicate[valueList.size()];
                         for(int i=0,len=valueList.size(); i<len; i++){
-                            predicates[i] = cb.notLike(expression, "%" + valueList.get(i) + "%");
+                            // predicates[i] = cb.notLike(expression, "%" + valueList.get(i) + "%");
+                            predicates[i] = cb.notLike(expression, valueList.get(i));
                         }
                         predicateList.add(cb.and(predicates));
                         break;
