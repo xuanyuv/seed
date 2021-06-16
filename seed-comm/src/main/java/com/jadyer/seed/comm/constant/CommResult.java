@@ -20,21 +20,17 @@ public class CommResult<T> {
         this.msg = msg;
     }
 
-
     public static <Void> CommResult<Void> fail(int code, String msg){
         return new CommResult<>(code, msg);
     }
-
 
     public static <Void> CommResult<Void> fail(){
         return new CommResult<>(CodeEnum.SYSTEM_ERROR.getCode(), CodeEnum.SYSTEM_ERROR.getMsg());
     }
 
-
     public static <Void> CommResult<Void> success(){
         return new CommResult<>();
     }
-
 
     public static <T> CommResult<T> success(T data){
         return new CommResult<>(data);
