@@ -1,6 +1,5 @@
 package com.jadyer.seed.server.core;
 
-import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.ConfigUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.mina.core.buffer.IoBuffer;
@@ -9,8 +8,7 @@ import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 import org.apache.mina.filter.codec.demux.MessageDecoder;
 import org.apache.mina.filter.codec.demux.MessageDecoderResult;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Server端HTTP协议解码器
@@ -36,9 +34,9 @@ public class ServerProtocolHTTPDecoder implements MessageDecoder {
     public MessageDecoderResult decode(IoSession session, IoBuffer in, ProtocolDecoderOutput out) throws Exception {
         byte[] message = new byte[in.limit()];
         in.get(message);
-        String fullMessage = StringUtils.toEncodedString(message, Charset.forName(SeedConstants.DEFAULT_CHARSET));
+        String fullMessage = StringUtils.toEncodedString(message, StandardCharsets.UTF_8);
         Token token = new Token();
-        token.setBusiCharset(SeedConstants.DEFAULT_CHARSET);
+        token.setBusiCharset(StandardCharsets.UTF_8.displayName());
         token.setBusiType(Token.BUSI_TYPE_HTTP);
         token.setFullMessage(fullMessage);
         if(fullMessage.startsWith("GET")){
@@ -130,7 +128,7 @@ public class ServerProtocolHTTPDecoder implements MessageDecoder {
          */
         byte[] messages = new byte[in.limit()];
         in.get(messages);
-        String message = StringUtils.toEncodedString(messages, Charset.forName(SeedConstants.DEFAULT_CHARSET));
+        String message = StringUtils.toEncodedString(messages, StandardCharsets.UTF_8);
         /*
          * 授理GET请求
          */
@@ -152,13 +150,7 @@ public class ServerProtocolHTTPDecoder implements MessageDecoder {
                     }else if(contentLength >= 0){
                         //取HTTP_POST请求报文体
                         String messageBody = message.split("\r\n\r\n")[1];
-                        try {
-                            if(contentLength == messageBody.getBytes(SeedConstants.DEFAULT_CHARSET).length){
-                                return true;
-                            }
-                        } catch (UnsupportedEncodingException e) {
-                            throw new IllegalArgumentException("将HTTP_POST请求报文体转为byte[]时发生异常：Unsupported Encoding-->[" + SeedConstants.DEFAULT_CHARSET + "]");
-                        }
+                        return contentLength == messageBody.getBytes(StandardCharsets.UTF_8).length;
                     }
                 }
             }

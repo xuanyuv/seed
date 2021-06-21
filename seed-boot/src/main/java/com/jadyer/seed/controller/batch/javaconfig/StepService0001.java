@@ -1,7 +1,6 @@
 package com.jadyer.seed.controller.batch.javaconfig;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.ValidatorUtil;
@@ -23,6 +22,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 结算批量任务：读取文件数据后录库
@@ -65,7 +65,7 @@ public class StepService0001 {
         //        .name("step0001Reader")
         //        .resource(new FileSystemResource("/data/seedboot-batch.txt"))
         //        .strict(true)
-        //        .encoding(SeedConstants.DEFAULT_CHARSET)
+        //        .encoding(StandardCharsets.UTF_8)
         //        .linesToSkip(1)
         //        .delimited().delimiter("|")
         //        .names(new String[]{"realName", "age", "birthDay"})
@@ -77,7 +77,7 @@ public class StepService0001 {
         //严格模式（默认为true：即资源文件不存在会抛出异常，阻断当前job）
         reader.setStrict(true);
         //读取编码（默认为ISO-8859-1）
-        reader.setEncoding(SeedConstants.DEFAULT_CHARSET);
+        reader.setEncoding(StandardCharsets.UTF_8.displayName());
         //跳过标题行（这里跳过了前1行）
         reader.setLinesToSkip(1);
         //行映射（将每行映射为一个对象）

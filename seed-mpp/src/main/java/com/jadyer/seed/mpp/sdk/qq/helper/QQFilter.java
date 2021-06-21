@@ -1,6 +1,5 @@
 package com.jadyer.seed.mpp.sdk.qq.helper;
 
-import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.RequestUtil;
 import com.jadyer.seed.mpp.sdk.qq.constant.QQConstants;
@@ -16,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 用于处理QQ相关的Filter
@@ -43,8 +43,8 @@ public class QQFilter implements Filter {
                 throw new RuntimeException("请不要通过Ajax获取粉丝信息");
             }
             if(RequestUtil.isQQBrowser(request)){
-                response.setCharacterEncoding(SeedConstants.DEFAULT_CHARSET);
-                response.setContentType("text/plain; charset=" + SeedConstants.DEFAULT_CHARSET);
+                response.setCharacterEncoding(StandardCharsets.UTF_8.displayName());
+                response.setContentType("text/plain; charset=" + StandardCharsets.UTF_8);
                 response.setHeader("Cache-Control", "no-cache");
                 response.setHeader("Pragma", "no-cache");
                 response.setDateHeader("Expires", 0);

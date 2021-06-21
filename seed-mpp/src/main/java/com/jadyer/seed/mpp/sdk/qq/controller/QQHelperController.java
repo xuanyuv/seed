@@ -1,6 +1,5 @@
 package com.jadyer.seed.mpp.sdk.qq.controller;
 
-import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.mpp.sdk.qq.helper.QQTokenHolder;
 import com.jadyer.seed.mpp.sdk.qq.model.QQOAuthAccessToken;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 接收QQ服务器回调以及其它的辅助功能
@@ -49,8 +49,8 @@ public class QQHelperController {
                 response.sendRedirect(fullURI);
             }
         }
-        response.setCharacterEncoding(SeedConstants.DEFAULT_CHARSET);
-        response.setContentType("text/plain; charset=" + SeedConstants.DEFAULT_CHARSET);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.displayName());
+        response.setContentType("text/plain; charset=" + StandardCharsets.UTF_8);
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);

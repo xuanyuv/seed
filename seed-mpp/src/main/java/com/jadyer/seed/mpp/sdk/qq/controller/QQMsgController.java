@@ -1,6 +1,5 @@
 package com.jadyer.seed.mpp.sdk.qq.controller;
 
-import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.RequestUtil;
 import com.jadyer.seed.mpp.sdk.qq.msg.QQInMsgParser;
@@ -22,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 /**
@@ -32,7 +32,7 @@ import java.util.Arrays;
 public abstract class QQMsgController {
     @RequestMapping(value="/{uuid}")
     public void index(@PathVariable String uuid, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setCharacterEncoding(SeedConstants.DEFAULT_CHARSET);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.displayName());
         PrintWriter out = response.getWriter();
         String reqBodyMsg = RequestUtil.extractHttpServletRequestBodyMessage(request);
         LogUtil.getLogger().info("收到QQ服务器消息如下\n{}", RequestUtil.extractHttpServletRequestHeaderMessage(request)+"\n"+reqBodyMsg);

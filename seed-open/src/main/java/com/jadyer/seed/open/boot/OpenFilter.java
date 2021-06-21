@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -87,7 +88,7 @@ public class OpenFilter extends OncePerRequestFilter {
                 LogUtil.getLogger().debug("收到客户端IP=[{}]的请求报文为-->{}", reqIp, reqDataStr);
                 reqData = BeanUtil.requestToBean(request, ReqData.class);
             }else{
-                reqDataStr = IOUtils.toString(request.getInputStream(), SeedConstants.DEFAULT_CHARSET);
+                reqDataStr = IOUtils.toString(request.getInputStream(), StandardCharsets.UTF_8);
                 LogUtil.getLogger().debug("收到客户端IP=[{}]的请求报文为-->[{}]", reqIp, reqDataStr);
                 if(StringUtils.isBlank(reqDataStr)){
                     throw new SeedException(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "请求无数据");
@@ -159,8 +160,8 @@ public class OpenFilter extends OncePerRequestFilter {
      * </p>
      */
     private void writeToResponse(String respDataStr, HttpServletResponse response) throws IOException {
-        byte[] respDataBeytes = respDataStr.getBytes(SeedConstants.DEFAULT_CHARSET);
-        response.setHeader("Content-Type", "application/json; charset=" + SeedConstants.DEFAULT_CHARSET);
+        byte[] respDataBeytes = respDataStr.getBytes(StandardCharsets.UTF_8);
+        response.setHeader("Content-Type", "application/json; charset=" + StandardCharsets.UTF_8);
         response.setHeader("Content-Length", respDataBeytes.length+"");
         try(ServletOutputStream out = response.getOutputStream()){
             out.write(respDataBeytes);
@@ -428,7 +429,7 @@ public class OpenFilter extends OncePerRequestFilter {
         String getContent() {
             try {
                 writer.flush();
-                return writer.getByteArrayOutputStream().toString(SeedConstants.DEFAULT_CHARSET);
+                return writer.getByteArrayOutputStream().toString(StandardCharsets.UTF_8.displayName());
             } catch (UnsupportedEncodingException e) {
                 return "UnsupportedEncoding";
             }

@@ -2,7 +2,6 @@ package com.jadyer.seed.mpp.sdk.weixin.helper;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.BeanUtil;
 import com.jadyer.seed.comm.util.CodecUtil;
 import com.jadyer.seed.comm.util.HTTPUtil;
@@ -137,7 +136,7 @@ public final class WeixinHelper {
             return WeixinConstants.URL_WEIXIN_OAUTH2_GET_CODE.replace(WeixinConstants.URL_PLACEHOLDER_APPID, appid)
                                                           .replace(WeixinConstants.URL_PLACEHOLDER_SCOPE, scope)
                                                           .replace(WeixinConstants.URL_PLACEHOLDER_STATE, state)
-                                                          .replace(WeixinConstants.URL_PLACEHOLDER_REDIRECT_URI, URLEncoder.encode(redirectURI, SeedConstants.DEFAULT_CHARSET));
+                                                          .replace(WeixinConstants.URL_PLACEHOLDER_REDIRECT_URI, URLEncoder.encode(redirectURI, StandardCharsets.UTF_8.displayName()));
         } catch (UnsupportedEncodingException e) {
             return null;
         }
@@ -240,7 +239,7 @@ public final class WeixinHelper {
         String reqURL = WeixinConstants.URL_WEIXIN_TEMPLATE_PUSH_MESSAGE.replace(WeixinConstants.URL_PLACEHOLDER_ACCESSTOKEN, accesstoken);
         String reqData = JSON.toJSONString(templateMsg);
         LogUtil.getLogger().info("单发主动推模板消息-->发送的JSON为{}", reqData);
-        String respData = HTTPUtil.post(reqURL, reqData, "application/json; charset="+ SeedConstants.DEFAULT_CHARSET);
+        String respData = HTTPUtil.post(reqURL, reqData, "application/json; charset="+ StandardCharsets.UTF_8);
         LogUtil.getLogger().info("单发主动推模板消息-->微信应答JSON为{}", respData);
         WeixinErrorInfo errinfo = JSON.parseObject(respData, WeixinErrorInfo.class);
         if(errinfo.getErrcode() != 0){

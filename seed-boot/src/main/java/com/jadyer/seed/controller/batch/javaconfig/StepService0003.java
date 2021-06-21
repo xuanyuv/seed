@@ -1,7 +1,6 @@
 package com.jadyer.seed.controller.batch.javaconfig;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.ValidatorUtil;
@@ -24,6 +23,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 /**
@@ -86,7 +86,7 @@ public class StepService0003 {
     private FlatFileItemWriter<Person> writer(){
         //写到文件
         FlatFileItemWriter<Person> writer = new FlatFileItemWriter<>();
-        writer.setEncoding(SeedConstants.DEFAULT_CHARSET);
+        writer.setEncoding(StandardCharsets.UTF_8.displayName());
         writer.setResource(new FileSystemResource("/data/seedboot-batch-result.txt"));
         //创建对象属性聚合字符串（它会根据设置的分隔符以及对象属性对应的字符名称来聚合）
         writer.setLineAggregator(new DelimitedLineAggregator<Person>() {{

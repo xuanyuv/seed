@@ -90,7 +90,6 @@
 
 package com.jadyer.seed.comm.util;
 
-import com.jadyer.seed.comm.constant.SeedConstants;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
@@ -113,6 +112,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -561,7 +561,7 @@ public final class JadyerUtil {
             return "";
         }
         try {
-            input = URLDecoder.decode(input, SeedConstants.DEFAULT_CHARSET);
+            input = URLDecoder.decode(input, StandardCharsets.UTF_8.displayName());
         } catch (UnsupportedEncodingException e) {
             //ingore
         }
@@ -830,7 +830,7 @@ public final class JadyerUtil {
         /*
          * 开始统计
          */
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(codeFile), SeedConstants.DEFAULT_CHARSET))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(codeFile), StandardCharsets.UTF_8))) {
             while (null != (content = br.readLine())) {
                 countsTotal++;
                 content = content.trim();

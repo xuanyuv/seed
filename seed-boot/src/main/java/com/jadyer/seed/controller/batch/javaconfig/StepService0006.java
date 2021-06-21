@@ -1,7 +1,6 @@
 package com.jadyer.seed.controller.batch.javaconfig;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.controller.batch.SettleJobListeners;
 import com.jadyer.seed.controller.batch.model.Person;
@@ -17,6 +16,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -50,7 +50,7 @@ public class StepService0006 {
                 .name("step0001Reader")
                 .resource(new FileSystemResource("/data/seedboot-batch.txt"))
                 .strict(true)
-                .encoding(SeedConstants.DEFAULT_CHARSET)
+                .encoding(StandardCharsets.UTF_8.displayName())
                 .linesToSkip(1)
                 .delimited().delimiter("|")
                 .names(new String[]{"realName", "age", "birthDay"})

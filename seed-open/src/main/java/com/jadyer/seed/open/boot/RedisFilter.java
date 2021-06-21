@@ -18,6 +18,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,7 +73,7 @@ public class RedisFilter extends OncePerRequestFilter {
             hash.put(REDIS_DATA_KEY, content);
             jedisCluster.hmset(redisKey, hash);
             jedisCluster.expire(redisKey, EXPIRE_TIME_SECONDS);
-            response.getOutputStream().write(content.getBytes(SeedConstants.DEFAULT_CHARSET));
+            response.getOutputStream().write(content.getBytes(StandardCharsets.UTF_8));
             return;
         }
         //返回0表示非首次请求，此时会计算应答哪些内容
@@ -82,7 +83,7 @@ public class RedisFilter extends OncePerRequestFilter {
             response.getWriter().write(values.get(REDIS_DATA_KEY));
         }else{
             response.setHeader("Content-Type", RESP_CONTENT_TYPE);
-            response.getOutputStream().write(("{\"code\":\"" + CodeEnum.SYSTEM_BUSY.getCode() + "\", \"msg\":\"处理中，请勿重复提交\"}").getBytes(SeedConstants.DEFAULT_CHARSET));
+            response.getOutputStream().write(("{\"code\":\"" + CodeEnum.SYSTEM_BUSY.getCode() + "\", \"msg\":\"处理中，请勿重复提交\"}").getBytes(StandardCharsets.UTF_8));
         }
     }
 
@@ -113,7 +114,7 @@ public class RedisFilter extends OncePerRequestFilter {
         String getContent() {
             try {
                 writer.flush();
-                return writer.getByteArrayOutputStream().toString(SeedConstants.DEFAULT_CHARSET);
+                return writer.getByteArrayOutputStream().toString(StandardCharsets.UTF_8.displayName());
             } catch (UnsupportedEncodingException e) {
                 return "UnsupportedEncoding";
             }

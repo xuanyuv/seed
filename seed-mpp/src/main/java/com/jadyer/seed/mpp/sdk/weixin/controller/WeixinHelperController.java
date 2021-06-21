@@ -1,6 +1,5 @@
 package com.jadyer.seed.mpp.sdk.weixin.controller;
 
-import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.RequestUtil;
@@ -28,6 +27,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,8 +67,8 @@ public class WeixinHelperController {
                 response.sendRedirect(fullURI);
             }
         }
-        response.setCharacterEncoding(SeedConstants.DEFAULT_CHARSET);
-        response.setContentType("text/plain; charset=" + SeedConstants.DEFAULT_CHARSET);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.displayName());
+        response.setContentType("text/plain; charset=" + StandardCharsets.UTF_8);
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
@@ -164,8 +164,8 @@ public class WeixinHelperController {
         }
         String ticket = WeixinHelper.createQrcodeTicket(WeixinTokenHolder.getWeixinAccessToken(appid), type, Integer.parseInt(expireSeconds), Long.parseLong(sceneId), sceneStr);
         String qrcodeURL = WeixinConstants.URL_WEIXIN_GET_QRCODE.replace(WeixinConstants.URL_PLACEHOLDER_QRCODE_TICKET, ticket);
-        response.setCharacterEncoding(SeedConstants.DEFAULT_CHARSET);
-        response.setContentType("text/plain; charset=" + SeedConstants.DEFAULT_CHARSET);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.displayName());
+        response.setContentType("text/plain; charset=" + StandardCharsets.UTF_8);
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
@@ -222,8 +222,8 @@ public class WeixinHelperController {
         String transaction_id = dataMap.get("transaction_id");
         String time_end = dataMap.get("time_end");
         //应答成功结果
-        response.setCharacterEncoding(SeedConstants.DEFAULT_CHARSET);
-        response.setContentType("text/plain; charset=" + SeedConstants.DEFAULT_CHARSET);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.displayName());
+        response.setContentType("text/plain; charset=" + StandardCharsets.UTF_8);
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);

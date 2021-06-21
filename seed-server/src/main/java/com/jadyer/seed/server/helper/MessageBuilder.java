@@ -1,6 +1,5 @@
 package com.jadyer.seed.server.helper;
 
-import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.DateUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.server.model.NetBankResultNotify;
@@ -10,7 +9,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Properties;
@@ -92,7 +91,7 @@ public final class MessageBuilder {
      * @return 计算并修正了真实长度后的可以发送出去的完整报文
      */
     private static String buildFullMessage(String message){
-        StringBuilder sb = new StringBuilder(String.valueOf(getBytes(message, SeedConstants.DEFAULT_CHARSET).length));
+        StringBuilder sb = new StringBuilder(String.valueOf(getBytes(message, StandardCharsets.UTF_8.displayName()).length));
         while(sb.length() < 6){
             sb.insert(0, "0");
         }
@@ -200,9 +199,9 @@ public final class MessageBuilder {
         if(httpResponseCode == HttpURLConnection.HTTP_OK){
             StringBuilder sb = new StringBuilder();
             sb.append("HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=");
-            sb.append(SeedConstants.DEFAULT_CHARSET);
+            sb.append(StandardCharsets.UTF_8);
             sb.append("\r\nContent-Length: ");
-            sb.append(getBytes(httpResponseMessageBody, SeedConstants.DEFAULT_CHARSET).length);
+            sb.append(getBytes(httpResponseMessageBody, StandardCharsets.UTF_8.displayName()).length);
             sb.append("\r\n\r\n");
             sb.append(httpResponseMessageBody);
             return sb.toString();
@@ -226,8 +225,8 @@ public final class MessageBuilder {
         //计算报文体长度（报文总长度 - 报文头长度）
         int messageBodyLength = Integer.parseInt(respData.substring(0,6)) - messageHeahLength;
         byte[] messageBodys = new byte[messageBodyLength];
-        System.arraycopy(getBytes(respData, SeedConstants.DEFAULT_CHARSET), messageHeahLength, messageBodys, 0, messageBodyLength);
-        return StringUtils.toEncodedString(messageBodys, Charset.forName(SeedConstants.DEFAULT_CHARSET));
+        System.arraycopy(getBytes(respData, StandardCharsets.UTF_8.displayName()), messageHeahLength, messageBodys, 0, messageBodyLength);
+        return StringUtils.toEncodedString(messageBodys, StandardCharsets.UTF_8);
     }
 
 
@@ -240,7 +239,7 @@ public final class MessageBuilder {
      * @param length   报文头中自起始截止到应答描述字段时的长度,如支付处理的为114,沃前置则为128
      */
     public static String getTCPMessageHeadRespDesc(String respData, int length){
-        byte[] srcByte = getBytes(respData, SeedConstants.DEFAULT_CHARSET);
+        byte[] srcByte = getBytes(respData, StandardCharsets.UTF_8.displayName());
         int respDesclength = 0;     //有效的应答描述字节长度
         if(srcByte[length-1] != 0){ //应答描述的字节长度为固长100,不足时0x00右侧自动补齐
             respDesclength = 100;
@@ -254,7 +253,7 @@ public final class MessageBuilder {
         }
         byte[] destByte = new byte[respDesclength];
         System.arraycopy(srcByte, length-100, destByte, 0, respDesclength); //从源数组的应答描述起始下标开始拷贝
-        return StringUtils.toEncodedString(destByte, Charset.forName(SeedConstants.DEFAULT_CHARSET));
+        return StringUtils.toEncodedString(destByte, StandardCharsets.UTF_8);
     }
 
 
@@ -299,7 +298,7 @@ public final class MessageBuilder {
         while(enums.hasMoreElements()){
             Object key = enums.nextElement();
             if(properties.get(key).toString().length() > 128){
-                sb.append("<tr><th>").append(key).append(":</th><td>").append(properties.get(key).toString().substring(0,128)).append(" ...").append("</td></tr>\n");
+                sb.append("<tr><th>").append(key).append(":</th><td>").append(properties.get(key).toString(), 0, 128).append(" ...").append("</td></tr>\n");
             }else{
                 sb.append("<tr><th>").append(key).append(":</th><td>").append(properties.get(key)).append("</td></tr>\n");
             }

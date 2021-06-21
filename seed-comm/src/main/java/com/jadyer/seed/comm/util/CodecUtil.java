@@ -1,6 +1,5 @@
 package com.jadyer.seed.comm.util;
 
-import com.jadyer.seed.comm.constant.SeedConstants;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +16,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.AlgorithmParameters;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -258,7 +258,7 @@ public final class CodecUtil {
             Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
             //return Base64.encodeBase64URLSafeString(cipher.doFinal(data.getBytes(CHARSET)));
-            return Base64.encodeBase64URLSafeString(rsaSplitCodec(cipher, Cipher.ENCRYPT_MODE, data.getBytes(SeedConstants.DEFAULT_CHARSET)));
+            return Base64.encodeBase64URLSafeString(rsaSplitCodec(cipher, Cipher.ENCRYPT_MODE, data.getBytes(StandardCharsets.UTF_8)));
         }catch(Exception e){
             throw new RuntimeException("加密字符串[" + data + "]时遇到异常", e);
         }
@@ -281,7 +281,7 @@ public final class CodecUtil {
             Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             //return new String(cipher.doFinal(Base64.decodeBase64(data)), CHARSET);
-            return new String(rsaSplitCodec(cipher, Cipher.DECRYPT_MODE, Base64.decodeBase64(data)), SeedConstants.DEFAULT_CHARSET);
+            return new String(rsaSplitCodec(cipher, Cipher.DECRYPT_MODE, Base64.decodeBase64(data)), StandardCharsets.UTF_8);
         }catch(Exception e){
             throw new RuntimeException("解密字符串[" + data + "]时遇到异常", e);
         }
@@ -304,7 +304,7 @@ public final class CodecUtil {
             //sign
             Signature signature = Signature.getInstance(ALGORITHM_RSA_SIGN);
             signature.initSign(privateKey);
-            signature.update(data.getBytes(SeedConstants.DEFAULT_CHARSET));
+            signature.update(data.getBytes(StandardCharsets.UTF_8));
             return Base64.encodeBase64URLSafeString(signature.sign());
         }catch(Exception e){
             throw new RuntimeException("签名字符串[" + data + "]时遇到异常", e);
@@ -328,7 +328,7 @@ public final class CodecUtil {
             //verify
             Signature signature = Signature.getInstance(ALGORITHM_RSA_SIGN);
             signature.initVerify(publicKey);
-            signature.update(data.getBytes(SeedConstants.DEFAULT_CHARSET));
+            signature.update(data.getBytes(StandardCharsets.UTF_8));
             return signature.verify(Base64.decodeBase64(sign));
         }catch(Exception e){
             throw new RuntimeException("验签字符串[" + data + "]时遇到异常", e);
@@ -350,7 +350,7 @@ public final class CodecUtil {
             cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(Base64.decodeBase64(key), ALGORITHM_AES));
             //执行加密操作,加密后的结果通常都会用Base64编码进行传输
             //将Base64中的URL非法字符如'+','/','='转为其他字符,详见RFC3548
-            return Base64.encodeBase64URLSafeString(cipher.doFinal(data.getBytes(SeedConstants.DEFAULT_CHARSET)));
+            return Base64.encodeBase64URLSafeString(cipher.doFinal(data.getBytes(StandardCharsets.UTF_8)));
         }catch(Exception e){
             throw new RuntimeException("加密字符串[" + data + "]时遇到异常", e);
         }
@@ -367,7 +367,7 @@ public final class CodecUtil {
         try {
             Cipher cipher = Cipher.getInstance(ALGORITHM_CIPHER_AES);
             cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(Base64.decodeBase64(key), ALGORITHM_AES));
-            return new String(cipher.doFinal(Base64.decodeBase64(data)), SeedConstants.DEFAULT_CHARSET);
+            return new String(cipher.doFinal(Base64.decodeBase64(data)), StandardCharsets.UTF_8);
         }catch(Exception e){
             throw new RuntimeException("解密字符串[" + data + "]时遇到异常", e);
         }
@@ -387,7 +387,7 @@ public final class CodecUtil {
             SecretKey secretKey = new SecretKeySpec(Hex.decodeHex(key.toCharArray()), ALGORITHM_AES_PKCS7);
             Cipher cipher = Cipher.getInstance(ALGORITHM_CIPHER_AES_PKCS7);
             cipher.init(Cipher.ENCRYPT_MODE, secretKey, initIV());
-            return Hex.encodeHexString(cipher.doFinal(data.getBytes(SeedConstants.DEFAULT_CHARSET)));
+            return Hex.encodeHexString(cipher.doFinal(data.getBytes(StandardCharsets.UTF_8)));
         }catch(Exception e){
             throw new RuntimeException("加密字符串[" + data + "]时遇到异常", e);
         }
@@ -407,7 +407,7 @@ public final class CodecUtil {
             SecretKey secretKey = new SecretKeySpec(Hex.decodeHex(key.toCharArray()), ALGORITHM_AES_PKCS7);
             Cipher cipher = Cipher.getInstance(ALGORITHM_CIPHER_AES_PKCS7);
             cipher.init(Cipher.DECRYPT_MODE, secretKey, initIV());
-            return new String(cipher.doFinal(Hex.decodeHex(data.toCharArray())), SeedConstants.DEFAULT_CHARSET);
+            return new String(cipher.doFinal(Hex.decodeHex(data.toCharArray())), StandardCharsets.UTF_8);
         }catch(Exception e){
             throw new RuntimeException("解密字符串[" + data + "]时遇到异常", e);
         }
@@ -426,7 +426,7 @@ public final class CodecUtil {
             SecretKey secretKey = SecretKeyFactory.getInstance(ALGORITHM_DES).generateSecret(dks);
             Cipher cipher = Cipher.getInstance(ALGORITHM_CIPHER_DES);
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            return Base64.encodeBase64URLSafeString(cipher.doFinal(data.getBytes(SeedConstants.DEFAULT_CHARSET)));
+            return Base64.encodeBase64URLSafeString(cipher.doFinal(data.getBytes(StandardCharsets.UTF_8)));
         }catch(Exception e){
             throw new RuntimeException("加密字符串[" + data + "]时遇到异常", e);
         }
@@ -445,7 +445,7 @@ public final class CodecUtil {
             SecretKey secretKey = SecretKeyFactory.getInstance(ALGORITHM_DES).generateSecret(dks);
             Cipher cipher = Cipher.getInstance(ALGORITHM_CIPHER_DES);
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
-            return new String(cipher.doFinal(Base64.decodeBase64(data)), SeedConstants.DEFAULT_CHARSET);
+            return new String(cipher.doFinal(Base64.decodeBase64(data)), StandardCharsets.UTF_8);
         }catch(Exception e){
             throw new RuntimeException("解密字符串[" + data + "]时遇到异常", e);
         }
@@ -464,7 +464,7 @@ public final class CodecUtil {
             SecretKey secretKey = SecretKeyFactory.getInstance(ALGORITHM_DES_EDE).generateSecret(dks);
             Cipher cipher = Cipher.getInstance(ALGORITHM_CIPHER_DES_EDE);
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            return Base64.encodeBase64URLSafeString(cipher.doFinal(data.getBytes(SeedConstants.DEFAULT_CHARSET)));
+            return Base64.encodeBase64URLSafeString(cipher.doFinal(data.getBytes(StandardCharsets.UTF_8)));
         }catch(Exception e){
             throw new RuntimeException("加密字符串[" + data + "]时遇到异常", e);
         }
@@ -483,7 +483,7 @@ public final class CodecUtil {
             SecretKey secretKey = SecretKeyFactory.getInstance(ALGORITHM_DES_EDE).generateSecret(dks);
             Cipher cipher = Cipher.getInstance(ALGORITHM_CIPHER_DES_EDE);
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
-            return new String(cipher.doFinal(Base64.decodeBase64(data)), SeedConstants.DEFAULT_CHARSET);
+            return new String(cipher.doFinal(Base64.decodeBase64(data)), StandardCharsets.UTF_8);
         }catch(Exception e){
             throw new RuntimeException("解密字符串[" + data + "]时遇到异常", e);
         }
@@ -541,12 +541,7 @@ public final class CodecUtil {
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalArgumentException("签名字符串[" + data + "]时发生异常：No Such Algorithm-->[" + algorithm + "]");
         }
-        byte[] dataBytes;
-        try {
-            dataBytes = data.getBytes(SeedConstants.DEFAULT_CHARSET);
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException("将字符串[" + data + "]转为byte[]时发生异常：Unsupported Encoding-->[" + SeedConstants.DEFAULT_CHARSET + "]");
-        }
+        byte[] dataBytes = data.getBytes(StandardCharsets.UTF_8);
         return Hex.encodeHexString(mac.doFinal(dataBytes));
     }
 

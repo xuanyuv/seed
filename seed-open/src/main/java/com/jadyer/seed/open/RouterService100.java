@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -128,8 +129,8 @@ public class RouterService100 {
         if(!"1".equals(type) && !"2".equals(type) && !"3".equals(type)){
             return CommResult.fail(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "type shoule be 1 or 2 or 3");
         }
-        response.setCharacterEncoding(SeedConstants.DEFAULT_CHARSET);
-        response.setContentType("text/plain; charset=" + SeedConstants.DEFAULT_CHARSET);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.displayName());
+        response.setContentType("text/plain; charset=" + StandardCharsets.UTF_8);
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
@@ -139,7 +140,7 @@ public class RouterService100 {
         } catch (IOException e) {
             throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "返回字符串时出错-->"+e.getMessage(), e);
         }
-        out.write("<!DOCTYPE html><html><head><meta charset=\"" + SeedConstants.DEFAULT_CHARSET + "\"><title>个人循环信用额度贷款合同</title></head><body><b style=\"line-height:1.5;\">这是个人循环信用额度贷款合同的正文</b></body></html>");
+        out.write("<!DOCTYPE html><html><head><meta charset=\"" + StandardCharsets.UTF_8 + "\"><title>个人循环信用额度贷款合同</title></head><body><b style=\"line-height:1.5;\">这是个人循环信用额度贷款合同的正文</b></body></html>");
         out.flush();
         out.close();
         return null;
@@ -160,8 +161,8 @@ public class RouterService100 {
         if(!"0".equals(reportSignType) && !SeedConstants.OPEN_SIGN_TYPE_md5.equals(reportSignType) && !SeedConstants.OPEN_SIGN_TYPE_hmac.equals(reportSignType)){
             return CommResult.fail(CodeEnum.SYSTEM_BUSY.getCode(), "未知的报表文件内容签名类型");
         }
-        response.setCharacterEncoding(SeedConstants.DEFAULT_CHARSET);
-        response.setContentType("text/plain; charset=" + SeedConstants.DEFAULT_CHARSET);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.displayName());
+        response.setContentType("text/plain; charset=" + StandardCharsets.UTF_8);
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
