@@ -254,7 +254,7 @@ public class GeneratorHelper {
          * 解析Beetl模板
          */
         try {
-            String outBaseDir = FileSystemView.getFileSystemView().getHomeDirectory().getPath() + System.getProperty("file.separator");
+            String outBaseDir = FileSystemView.getFileSystemView().getHomeDirectory().getPath() + System.getProperty("file.separator") + "simcoder" + System.getProperty("file.separator");
             groupTemplate.getTemplate("api.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "api" + System.getProperty("file.separator") + classname + "Api.java")));
             groupTemplate.getTemplate("dto.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "dto" + System.getProperty("file.separator") + classname + "DTO.java")));
             groupTemplate.getTemplate("repository.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "repository" + System.getProperty("file.separator") + classname + "Repository.java")));
