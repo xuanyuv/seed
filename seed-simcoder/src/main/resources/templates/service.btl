@@ -54,14 +54,10 @@ public class ${CLASS_NAME}Service {
         var fielename_getter = CLASS_NAME_uncapitalize + ".get" + @org.apache.commons.lang3.StringUtils.capitalize(entry.key) + "()";
         if(entry.value=="Integer" || entry.value=="Long"){
         %>
-            if(null != ${fielename_getter}){
-                spec.eq("${entry.key}", ${fielename_getter});
-            }
+            spec.eq(null!=${fielename_getter}, "${entry.key}", ${fielename_getter});
         <%}%>
         <%if(entry.value == "String"){%>
-            if(StringUtils.isNotBlank(${fielename_getter})){
-                spec.eq("${entry.key}", ${fielename_getter});
-            }
+            spec.eq(StringUtils.isNotBlank(${fielename_getter}), "${entry.key}", ${fielename_getter});
         <%}%>
         <%}%>
         }
