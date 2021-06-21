@@ -132,26 +132,40 @@ public class GeneratorHelper {
             }
             // 暂时只对Integer、Long、String三种类型增加校验注解：@NotNull @NotBlank @Size(max=16)
             String javaType = DBHelper.buildJavatypeFromDbtype(column.getType());
-            if(!column.isNullable()){
+            if(!column.isNullable() && !SimcoderRun.IS_GENERATE_FEIGN_API){
                 if("Integer".equals(javaType) || "Long".equals(javaType)){
                     hasNotNullAnnotation = true;
                     fields.append("    @NotNull").append("\n");
-                    fields_dto.append("    @NotNull").append("\n");
                 }
                 if("String".equals(javaType)){
                     hasNotBlankAnnotation = true;
                     fields.append("    @NotBlank").append("\n");
-                    fields_dto.append("    @NotBlank").append("\n");
                     if(column.getLength() > 0){
                         hasNotBlankSizeAnnotation = true;
                         fields.append("    @Size(");
-                        fields_dto.append("    @Size(");
                         /* 对于CHAR(6)类型的数据库字段，增加最小长度注解配置 */
                         if(column.getType().equals("char")){
                             fields.append("min=").append(column.getLength()).append(", ");
-                            fields_dto.append("min=").append(column.getLength()).append(", ");
                         }
                         fields.append("max=").append(column.getLength()).append(")").append("\n");
+                    }
+                }
+            }
+            if(!column.isNullable() && SimcoderRun.IS_GENERATE_FEIGN_API){
+                if("Integer".equals(javaType) || "Long".equals(javaType)){
+                    hasNotNullAnnotation = true;
+                    fields_dto.append("    @NotNull").append("\n");
+                }
+                if("String".equals(javaType)){
+                    hasNotBlankAnnotation = true;
+                    fields_dto.append("    @NotBlank").append("\n");
+                    if(column.getLength() > 0){
+                        hasNotBlankSizeAnnotation = true;
+                        fields_dto.append("    @Size(");
+                        /* 对于CHAR(6)类型的数据库字段，增加最小长度注解配置 */
+                        if(column.getType().equals("char")){
+                            fields_dto.append("min=").append(column.getLength()).append(", ");
+                        }
                         fields_dto.append("max=").append(column.getLength()).append(")").append("\n");
                     }
                 }
@@ -161,7 +175,7 @@ public class GeneratorHelper {
                 if(!column.isNullable()){
                     fields_dto.append("    @ApiModelProperty(value=\"").append(column.getComment()).append("\", required=true)").append("\n");
                 }else{
-                    fields_dto.append("    @ApiModelProperty(value=\"").append(column.getComment()).append("\")").append("\n");
+                    fields_dto.append("    @ApiModelProperty(\"").append(column.getComment()).append("\")").append("\n");
                 }
             }
             // @Column(name="bind_status")
