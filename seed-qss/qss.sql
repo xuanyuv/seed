@@ -18,7 +18,7 @@ CREATE TABLE t_schedule_task(
 DROP TABLE IF EXISTS t_schedule_log;
 CREATE TABLE t_schedule_log(
     id INT PRIMARY KEY AUTO_INCREMENT COMMENT '主键',
-    task_id   INT          NOT NULL COMMENT '任务ID，对应t_schedule_task#id',
+    task_id   INT          NOT NULL COMMENT '任务ID，对应t_schedule_task.id',
     appname   VARCHAR(32)  NOT NULL COMMENT '定时任务的应用名称',
     name      VARCHAR(32)  NOT NULL COMMENT '定时任务名称',
     url       VARCHAR(512) NOT NULL COMMENT '定时任务URL',

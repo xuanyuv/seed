@@ -67,7 +67,7 @@ CREATE TABLE t_mpp_user_info(
 DROP TABLE IF EXISTS t_mpp_fans_info;
 CREATE TABLE t_mpp_fans_info(
     id INT PRIMARY KEY AUTO_INCREMENT COMMENT '主键',
-    uid            INT          NOT NULL COMMENT '平台用户ID，对应t_mpp_user_info#id',
+    uid            INT          NOT NULL COMMENT '平台用户ID，对应t_mpp_user_info.id',
     wxid           VARCHAR(32)           COMMENT '微信原始ID',
     openid         VARCHAR(64)  NOT NULL COMMENT '粉丝的openid',
     name           VARCHAR(16)           COMMENT '粉丝的真实姓名',
@@ -94,12 +94,12 @@ CREATE TABLE t_mpp_fans_info(
 DROP TABLE IF EXISTS t_mpp_reply_info;
 CREATE TABLE t_mpp_reply_info(
     id INT PRIMARY KEY AUTO_INCREMENT COMMENT '主键',
-    uid       INT           NOT NULL COMMENT '平台用户ID，对应t_mpp_user_info#id',
+    uid       INT           NOT NULL COMMENT '平台用户ID，对应t_mpp_user_info.id',
     category  TINYINT(1)    NOT NULL COMMENT '回复的类别：0--通用的回复，1--关注后回复，2--关键字回复',
     type      TINYINT(1)    NOT NULL COMMENT '回复的类型：0--文本，1--图文，2--图片，3--活动，4--转发到多客服',
     keyword   VARCHAR(16)            COMMENT '关键字',
     content   VARCHAR(2048)          COMMENT '回复的内容',
-    plugin_id INT                    COMMENT '活动插件ID，对应t_plugin#id',
+    plugin_id INT                    COMMENT '活动插件ID，对应t_plugin.id',
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     UNIQUE INDEX unique_index_uid_keyword(uid, keyword)
@@ -110,12 +110,12 @@ DROP TABLE IF EXISTS t_mpp_menu_info;
 CREATE TABLE t_mpp_menu_info(
     id INT PRIMARY KEY AUTO_INCREMENT COMMENT '主键',
     pid       INT                   COMMENT '上一级菜单的ID，一级菜单情况下为0',
-    uid       INT          NOT NULL COMMENT '平台用户ID，对应t_mpp_user_info#id',
+    uid       INT          NOT NULL COMMENT '平台用户ID，对应t_mpp_user_info.id',
     type      TINYINT(1)   NOT NULL COMMENT '菜单类型：1--CLICK，2--VIEW，3--JSON',
     level     TINYINT(1)            COMMENT '菜单级别：1--一级菜单，2--二级菜单',
     name      VARCHAR(16)           COMMENT '菜单名称',
     view_url  VARCHAR(256)          COMMENT 'type=2时用到',
-    reply_id  INT                   COMMENT 'type=1时用到，对应t_reply_info#id',
+    reply_id  INT                   COMMENT 'type=1时用到，对应t_reply_info.id',
     menu_json MEDIUMTEXT            COMMENT '微信或QQ公众号菜单JSON',
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间'
