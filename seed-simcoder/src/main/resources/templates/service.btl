@@ -35,8 +35,16 @@ public class ${CLASS_NAME}Service {
     }
 
 
-    public Optional<${CLASS_NAME}> get(Long id){
+    public Optional<${CLASS_NAME}> getOptional(Long id){
         return ${CLASS_NAME_uncapitalize}Repository.findById(id);
+    }
+
+
+    /**
+     * 查不到数据时，会抛出IllegalArgumentException异常
+     */
+    public ${CLASS_NAME} get(Long id){
+        return this.getOptional(id).orElseThrow(() -> new IllegalArgumentException("无此数据，id=[]" + id));
     }
 
 
@@ -66,4 +74,14 @@ public class ${CLASS_NAME}Service {
         Pageable pageable = PageRequest.of(StringUtils.isBlank(pageNo)?0:Integer.parseInt(pageNo)-1, StringUtils.isBlank(pageSize)||"0".equals(pageSize) ? 999 : Integer.parseInt(pageSize), sort);
         return ${CLASS_NAME_uncapitalize}Repository.findAll(spec, pageable);
     }
+
+
+    /**
+     * ****************************************************************************************************************
+     * 上方：自动生成
+     * ****************************************************************************************************************
+     * 下方：手动新增
+     * ****************************************************************************************************************
+     * Comment by 玄玉<https://jadyer.cn/> on ${date(), "yyyy/MM/dd HH:mm"}.
+     */
 }
