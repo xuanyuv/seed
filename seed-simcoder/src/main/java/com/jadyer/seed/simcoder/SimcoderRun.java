@@ -18,17 +18,18 @@ public class SimcoderRun {
     // 是否生成SpringCloud-Feign-API的类（否则生成普通Controller）
     public static final Boolean IS_GENERATE_FEIGN_API = Boolean.FALSE;
     // 公共类
-    public static final String IMPORT_COMMRESULT         = "com.jadyer.seed.api.constant.CommResult";
-    public static final String IMPORT_CONSTANTS          = "com.jadyer.seed.api.constant.SeedConstants";
-    public static final String IMPORT_ENABLEFORMVALID    = "com.jadyer.seed.comm.annotation.log.EnableFormValid";
-    public static final String IMPORT_ENABLELOG          = "com.jadyer.seed.comm.annotation.log.EnableLog";
-    public static final String IMPORT_JPA_BASEENTITY     = "com.jadyer.seed.comm.jpa.BaseEntity";
-    public static final String IMPORT_JPA_BASEREPOSITORY = "com.jadyer.seed.comm.jpa.BaseRepository";
-    public static final String IMPORT_JPA_CONDITION      = "com.jadyer.seed.comm.jpa.Condition";
-    public static final String IMPORT_BEANUTIL           = "com.jadyer.seed.comm.util.BeanUtil";
-    // 包名（基础）
+    public static final String IMPORT_COMMRESULT_FEIGN_API = "com.jadyer.seed.api.constant.CommResult";
+    public static final String IMPORT_CONSTANTS_FEIGN_API  = "com.jadyer.seed.api.constant.SeedConstants";
+    public static final String IMPORT_COMMRESULT           = "com.jadyer.seed.comm.constant.CommResult";
+    public static final String IMPORT_CONSTANTS            = "com.jadyer.seed.comm.constant.SeedConstants";
+    public static final String IMPORT_ENABLEFORMVALID      = "com.jadyer.seed.comm.annotation.log.EnableFormValid";
+    public static final String IMPORT_ENABLELOG            = "com.jadyer.seed.comm.annotation.log.EnableLog";
+    public static final String IMPORT_JPA_BASEENTITY       = "com.jadyer.seed.comm.jpa.BaseEntity";
+    public static final String IMPORT_JPA_BASEREPOSITORY   = "com.jadyer.seed.comm.jpa.BaseRepository";
+    public static final String IMPORT_JPA_CONDITION        = "com.jadyer.seed.comm.jpa.Condition";
+    public static final String IMPORT_BEANUTIL             = "com.jadyer.seed.comm.util.BeanUtil";
+    // 包名（基础及各模块）
     private static final String PACKAGE_PREFIX    = "com.jadyer.seed.qss";
-    // 包名（各模块）
     public static final String PACKAGE_API        = PACKAGE_PREFIX + ".api";
     public static final String PACKAGE_DTO        = PACKAGE_PREFIX + ".api.dto";
     public static final String PACKAGE_REPOSITORY = PACKAGE_PREFIX + ".repository";
