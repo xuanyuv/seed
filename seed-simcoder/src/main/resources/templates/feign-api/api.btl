@@ -24,10 +24,6 @@ public interface ${CLASS_NAME}Api {
     @PostMapping(value="/upsert", consumes=MediaType.APPLICATION_JSON_VALUE)
     CommResult<${CLASS_NAME}DTO> upsert(@RequestBody ${CLASS_NAME}DTO ${CLASS_NAME_uncapitalize}DTO);
 
-    @ApiOperation("删除")
-    @PostMapping("/delete/{id}")
-    CommResult<Void> delete(@PathVariable("id") Long id);
-
     @ApiOperation("查询")
     @GetMapping("/get/{id}")
     CommResult<${CLASS_NAME}DTO> get(@PathVariable("id") Long id);

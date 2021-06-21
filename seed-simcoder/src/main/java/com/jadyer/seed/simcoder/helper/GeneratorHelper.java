@@ -1,6 +1,5 @@
 package com.jadyer.seed.simcoder.helper;
 
-import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.simcoder.SimcoderRun;
 import com.jadyer.seed.simcoder.model.Column;
 import com.jadyer.seed.simcoder.model.Table;
@@ -122,31 +121,38 @@ public class GeneratorHelper {
             if(StringUtils.equalsAnyIgnoreCase(column.getName(), "id", "create_time", "update_time")){
                 continue;
             }
+            // /* 属性注释 */
+            if(StringUtils.isNotBlank(column.getComment())){
+                fields.append("    /* ").append(column.getComment()).append(" */").append("\n");
+            }
             // 暂时只对Integer、Long、String三种类型增加校验注解：@NotNull @NotBlank @Size(max=16)
             String javaType = DBHelper.buildJavatypeFromDbtype(column.getType());
             if(!column.isNullable()){
                 if("Integer".equals(javaType) || "Long".equals(javaType)){
                     hasNotNullAnnotation = true;
+                    fields.append("    @NotNull").append("\n");
                     fields_dto.append("    @NotNull").append("\n");
                 }
                 if("String".equals(javaType)){
                     hasNotBlankAnnotation = true;
+                    fields.append("    @NotBlank").append("\n");
                     fields_dto.append("    @NotBlank").append("\n");
                     if(column.getLength() > 0){
                         hasNotBlankSizeAnnotation = true;
+                        fields.append("    @Size(");
                         fields_dto.append("    @Size(");
                         /* 对于CHAR(6)类型的数据库字段，增加最小长度注解配置 */
                         if(column.getType().equals("char")){
+                            fields.append("min=").append(column.getLength()).append(", ");
                             fields_dto.append("min=").append(column.getLength()).append(", ");
                         }
+                        fields.append("max=").append(column.getLength()).append(")").append("\n");
                         fields_dto.append("max=").append(column.getLength()).append(")").append("\n");
                     }
                 }
             }
-            // /** 属性注释 */
             // @ApiModelProperty(value="定时任务的应用名称", required=true)
             if(StringUtils.isNotBlank(column.getComment())){
-                fields.append("    /** ").append(column.getComment()).append(" */").append("\n");
                 if(!column.isNullable()){
                     fields_dto.append("    @ApiModelProperty(value=\"").append(column.getComment()).append("\", required=true)").append("\n");
                 }else{
@@ -227,7 +233,6 @@ public class GeneratorHelper {
          */
         String classname = DBHelper.buildClassnameFromTablename(tablename);
         Map<String, Object> sharedVars = new HashMap<>();
-        sharedVars.put("serialVersionUID", JadyerUtil.buildSerialVersionUID());
         sharedVars.put("CLASS_NAME", classname);
         sharedVars.put("CLASS_NAME_uncapitalize", StringUtils.uncapitalize(classname));
         sharedVars.put("TABLE_NAME", tablename);
@@ -236,11 +241,6 @@ public class GeneratorHelper {
         sharedVars.put("fields_dto", fields_dto.toString());
         sharedVars.put("fields_toString", fields_toString.toString());
         sharedVars.put("methods", methods.toString());
-        if(SimcoderRun.IS_GENERATE_BUILDER){
-            sharedVars.put("fields_BuilderSetValues", fields_BuilderSetValues.toString());
-            sharedVars.put("fields_BuilderNoAnnotations", fields_BuilderNoAnnotations.toString());
-            sharedVars.put("methods_Builders", methods_Builders.toString());
-        }
         sharedVars.put("tablecomment", tablecomment);
         sharedVars.put("fieldnameMap", fieldnameMap);
         sharedVars.put("hasDate", hasDate);
@@ -249,18 +249,28 @@ public class GeneratorHelper {
         sharedVars.put("hasNotNullAnnotation", hasNotNullAnnotation);
         sharedVars.put("hasNotBlankAnnotation", hasNotBlankAnnotation);
         sharedVars.put("hasNotBlankSizeAnnotation", hasNotBlankSizeAnnotation);
+        if(SimcoderRun.IS_GENERATE_BUILDER){
+            sharedVars.put("fields_BuilderSetValues", fields_BuilderSetValues.toString());
+            sharedVars.put("fields_BuilderNoAnnotations", fields_BuilderNoAnnotations.toString());
+            sharedVars.put("methods_Builders", methods_Builders.toString());
+        }
         groupTemplate.setSharedVars(sharedVars);
         /*
          * 解析Beetl模板
          */
         try {
             String outBaseDir = FileSystemView.getFileSystemView().getHomeDirectory().getPath() + System.getProperty("file.separator") + "simcoder" + System.getProperty("file.separator");
-            groupTemplate.getTemplate("api.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "api" + System.getProperty("file.separator") + classname + "Api.java")));
-            groupTemplate.getTemplate("dto.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "dto" + System.getProperty("file.separator") + classname + "DTO.java")));
-            groupTemplate.getTemplate("repository.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "repository" + System.getProperty("file.separator") + classname + "Repository.java")));
-            groupTemplate.getTemplate("model.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "model" + System.getProperty("file.separator") + classname + ".java")));
+            if(SimcoderRun.IS_GENERATE_FEIGN_API){
+                groupTemplate.getTemplate("feign-api/api.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "api" + System.getProperty("file.separator") + classname + "Api.java")));
+                groupTemplate.getTemplate("feign-api/dto.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "dto" + System.getProperty("file.separator") + classname + "DTO.java")));
+                groupTemplate.getTemplate("feign-api/model.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "model" + System.getProperty("file.separator") + classname + ".java")));
+                groupTemplate.getTemplate("feign-api/controller.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "controller" + System.getProperty("file.separator") + classname + "Controller.java")));
+            }else{
+                groupTemplate.getTemplate("model.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "model" + System.getProperty("file.separator") + classname + ".java")));
+                groupTemplate.getTemplate("controller.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "controller" + System.getProperty("file.separator") + classname + "Controller.java")));
+            }
             groupTemplate.getTemplate("service.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "service" + System.getProperty("file.separator") + classname + "Service.java")));
-            groupTemplate.getTemplate("controller.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "controller" + System.getProperty("file.separator") + classname + "Controller.java")));
+            groupTemplate.getTemplate("repository.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "repository" + System.getProperty("file.separator") + classname + "Repository.java")));
         } catch (IOException e) {
             System.err.println("生成代码时发生异常，堆栈轨迹如下：");
             e.printStackTrace();

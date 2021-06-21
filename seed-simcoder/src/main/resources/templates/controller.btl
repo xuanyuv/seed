@@ -1,53 +1,42 @@
 package ${PACKAGE_CONTROLLER};
 
-import ${PACKAGE_API}.${CLASS_NAME}Api;
 import ${IMPORT_COMMRESULT};
-import ${PACKAGE_DTO}.${CLASS_NAME}DTO;
-import ${IMPORT_ENABLEFORMVALID};
-import ${IMPORT_ENABLELOG};
-import ${IMPORT_BEANUTIL};
 import ${PACKAGE_MODEL}.${CLASS_NAME};
 import ${PACKAGE_SERVICE}.${CLASS_NAME}Service;
-import org.springframework.stereotype.Controller;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import springfox.documentation.annotations.ApiIgnore;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Generated from seed-simcoder by 玄玉<https://jadyer.cn/> on ${date(), "yyyy/MM/dd HH:mm"}.
  */
-@Controller
-@EnableFormValid
-public class ${CLASS_NAME}Controller implements ${CLASS_NAME}Api {
+@RestController
+@RequestMapping("/${CLASS_NAME_uncapitalize}")
+public class ${CLASS_NAME}Controller {
     @Resource
     private ${CLASS_NAME}Service ${CLASS_NAME_uncapitalize}Service;
 
-    @Override
-    @ResponseBody
-    public CommResult<${CLASS_NAME}DTO> upsert(${CLASS_NAME}DTO ${CLASS_NAME_uncapitalize}DTO){
-        ${CLASS_NAME} ${CLASS_NAME_uncapitalize} = BeanUtil.copyProperties(${CLASS_NAME_uncapitalize}DTO, ${CLASS_NAME}.class);
-        ${CLASS_NAME_uncapitalize} = ${CLASS_NAME_uncapitalize}Service.upsert(${CLASS_NAME_uncapitalize});
-        ${CLASS_NAME}DTO dto = BeanUtil.copyProperties(${CLASS_NAME_uncapitalize}, ${CLASS_NAME}DTO.class);
-        return CommResult.success(dto);
+    @PostMapping("/upsert")
+    public CommResult<${CLASS_NAME}> upsert(${CLASS_NAME} ${CLASS_NAME_uncapitalize}){
+        return CommResult.success(${CLASS_NAME_uncapitalize}Service.upsert(${CLASS_NAME_uncapitalize}));
     }
 
 
-    @Override
-    @ResponseBody
-    public CommResult<Void> delete(Long id){
+    @PostMapping("/delete/{id}")
+    public CommResult<Void> delete(@PathVariable Long id){
         ${CLASS_NAME_uncapitalize}Service.delete(id);
         return CommResult.success();
     }
 
 
-    @Override
-    @ResponseBody
-    public CommResult<${CLASS_NAME}DTO> get(Long id){
-        ${CLASS_NAME} ${CLASS_NAME_uncapitalize} = ${CLASS_NAME_uncapitalize}Service.get(id);
-        return CommResult.success(BeanUtil.copyProperties(${CLASS_NAME_uncapitalize}, ${CLASS_NAME}DTO.class));
+    @GetMapping("/get/{id}")
+    public CommResult<${CLASS_NAME}> get(@PathVariable Long id){
+        return CommResult.success(${CLASS_NAME_uncapitalize}Service.get(id));
     }
 
 
@@ -56,11 +45,8 @@ public class ${CLASS_NAME}Controller implements ${CLASS_NAME}Api {
      * @param pageNo   页码：从“1”开始，不传或传“0”则表示不分页
      * @param pageSize 页长：从“1”开始，不传或传“0”则默认为999
      */
-    @ApiIgnore
-    @EnableLog
     @GetMapping("/list")
-    public String list(${CLASS_NAME} ${CLASS_NAME_uncapitalize}, String pageNo, String pageSize, HttpServletRequest request){
-        request.setAttribute("page", ${CLASS_NAME_uncapitalize}Service.list(${CLASS_NAME_uncapitalize}, pageNo, pageSize));
-        return "${TABLE_NAME_convertpoint}.list";
+    public CommResult<Page<${CLASS_NAME}>> list(${CLASS_NAME} ${CLASS_NAME_uncapitalize}, String pageNo, String pageSize){
+        return CommResult.success(${CLASS_NAME_uncapitalize}Service.list(${CLASS_NAME_uncapitalize}, pageNo, pageSize));
     }
 }

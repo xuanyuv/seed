@@ -9,15 +9,6 @@ import javax.persistence.Column;
 <%}%>
 import javax.persistence.Entity;
 import javax.persistence.Table;
-<%if(hasNotBlankAnnotation){%>
-import javax.validation.constraints.NotBlank;
-<%}%>
-<%if(hasNotNullAnnotation){%>
-import javax.validation.constraints.NotNull;
-<%}%>
-<%if(hasNotBlankSizeAnnotation){%>
-import javax.validation.constraints.Size;
-<%}%>
 <%if(hasBigDecimal){%>
 import java.math.BigDecimal;
 <%}%>

@@ -25,7 +25,7 @@ import java.util.Date;
  */
 @ApiModel("${tablecomment}")
 public class ${CLASS_NAME}DTO implements Serializable {
-    private static final long serialVersionUID = ${serialVersionUID}L;
+    private static final long serialVersionUID = ${@com.jadyer.seed.simcoder.helper.CoderHelper.buildSerialVersionUID()}L;
     private Long id;
     private Date createTime;
     private Date updateTime;

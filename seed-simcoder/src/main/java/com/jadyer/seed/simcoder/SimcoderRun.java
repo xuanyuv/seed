@@ -14,7 +14,9 @@ public class SimcoderRun {
      * 参数配置
      */
     // 是否生成实体类Builder（Model和DTO）
-    public static final Boolean IS_GENERATE_BUILDER = Boolean.FALSE;
+    public static final Boolean IS_GENERATE_BUILDER   = Boolean.FALSE;
+    // 是否生成SpringCloud-Feign-API的类（否则生成普通Controller）
+    public static final Boolean IS_GENERATE_FEIGN_API = Boolean.FALSE;
     // 公共类
     public static final String IMPORT_COMMRESULT         = "com.jadyer.seed.api.constant.CommResult";
     public static final String IMPORT_CONSTANTS          = "com.jadyer.seed.api.constant.SeedConstants";

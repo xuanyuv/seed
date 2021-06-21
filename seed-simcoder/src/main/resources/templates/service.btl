@@ -44,7 +44,7 @@ public class ${CLASS_NAME}Service {
      * 查不到数据时，会抛出IllegalArgumentException异常
      */
     public ${CLASS_NAME} get(Long id){
-        return this.getOptional(id).orElseThrow(() -> new IllegalArgumentException("无此数据，id=[]" + id));
+        return this.getOptional(id).orElseThrow(() -> new IllegalArgumentException("无此数据，${CLASS_NAME}.id=[]" + id));
     }
 
 

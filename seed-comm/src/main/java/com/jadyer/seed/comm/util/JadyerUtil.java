@@ -120,7 +120,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * 玄玉的开发工具类
@@ -193,15 +192,6 @@ public final class JadyerUtil {
      */
     public static String randomAlphabetic(final int count) {
         return new RandomStringGenerator.Builder().withinRange('a', 'z').build().generate(count);
-    }
-
-
-    /**
-     * 构建serialVersionUID
-     */
-    public static long buildSerialVersionUID(){
-        long serialVersionUID = new Random().nextLong();
-        return serialVersionUID>0 ? serialVersionUID : -serialVersionUID;
     }
 
 
@@ -840,35 +830,33 @@ public final class JadyerUtil {
         /*
          * 开始统计
          */
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(codeFile), "UTF-8"));
-            while(null != (content=br.readLine())){
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(codeFile), SeedConstants.DEFAULT_CHARSET))) {
+            while (null != (content = br.readLine())) {
                 countsTotal++;
                 content = content.trim();
-                if(0 == content.length()){
+                if (0 == content.length()) {
                     countsBlank++;
                     continue; //空行读取完毕,就不需要再往下判断了
                 }
                 //特殊处理<style type="text/css"><!--css code//--></style>
                 //以及<script type="text/javascript"><!--js code//--></script>
                 //并使用[!isReadInComments]过滤调多行注释中含有的css和js标记的情况
-                if(!isReadInComments && StringUtils.equalsAny(codeFileSuffix, "jsp", "htm", "html")){
+                if (!isReadInComments && StringUtils.equalsAny(codeFileSuffix, "jsp", "htm", "html")) {
                     //css和js标记的起始标签分别有不止一种的写法,故startsWith
-                    if(content.startsWith("<style") || content.startsWith("<script")){
+                    if (content.startsWith("<style") || content.startsWith("<script")) {
                         //这里之所以取下标为0的元素,是因为上面在初始化多行的注释标记时,均将页面中的<!---->注释标记放置在第0个元素
                         multiCommentPrefix[0] = "https://jadyer.cn/";
                         multiCommentSuffix[0] = "https://jadyer.cn/";
                     }
-                    if(StringUtils.equalsAny(content, "</style>", "</script>")){
+                    if (StringUtils.equalsAny(content, "</style>", "</script>")) {
                         multiCommentPrefix[0] = "<!--";
                         multiCommentSuffix[0] = "-->";
                     }
                 }
-                if(isReadInComments){
+                if (isReadInComments) {
                     countsComment++;
                 }
-                for(int i=0; i<multiCommentPrefix.length; i++){
+                for (int i = 0; i < multiCommentPrefix.length; i++) {
                     //多加一个[!isReadInComments]判断是为了防止有人在多行注释中使用其它的多行注释标记再进行多行注释,如下面是一个JSP中的例子
                     //<%--
                     //这是JSP中的多行标记
@@ -876,7 +864,7 @@ public final class JadyerUtil {
                     //这是JSP中的多行标记
                     //--%>
                     //另外multiCommentSuffixIndex的初始值设置为任何都可以,也不需要在这里重新设置其为初始值,因为有了[!isReadInComments]限制
-                    if(!isReadInComments && content.startsWith(multiCommentPrefix[i])){
+                    if (!isReadInComments && content.startsWith(multiCommentPrefix[i])) {
                         isReadInComments = true;
                         countsComment++;
                         multiCommentSuffixIndex = i;
@@ -890,29 +878,22 @@ public final class JadyerUtil {
                 //即css中的代码类似这样[float:left; /*css comment*/],而之前恰好读取过类似这样的/*comment*/注释
                 //导致multiCommentSuffix[multiCommentSuffixIndex]取到的值就是[*/]
                 //另外multiCommentSuffixIndex的初始值设置为任何都可以,也不需要在这里重新设置其为初始值,因为有了[isReadInComments]限制
-                if(isReadInComments && content.endsWith(multiCommentSuffix[multiCommentSuffixIndex])){
+                if (isReadInComments && content.endsWith(multiCommentSuffix[multiCommentSuffixIndex])) {
                     isReadInComments = false;
                     continue;
                 }
-                if(!isReadInComments){
-                    if(content.startsWith(singleCommentPrefix)){
+                if (!isReadInComments) {
+                    if (content.startsWith(singleCommentPrefix)) {
                         countsComment++;
-                    }else{
+                    } else {
                         countsCode++;
                     }
                 }
             }
         } catch (Exception e) {
             throw new RuntimeException(e.toString(), e);
-        } finally {
-            if(null != br){
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    //nothing to do
-                }
-            }
         }
+        //nothing to do
         resultMap.put("total", (resultMap.get("total")==null ? 0 : resultMap.get("total")) + countsTotal);
         resultMap.put("code", (resultMap.get("code")==null ? 0 : resultMap.get("code")) + countsCode);
         resultMap.put("comment", (resultMap.get("comment")==null ? 0 : resultMap.get("comment")) + countsComment);
