@@ -3,6 +3,7 @@ package com.jadyer.seed.controller.batch;
 import com.alibaba.fastjson.JSON;
 import com.jadyer.seed.comm.SpringContextHolder;
 import com.jadyer.seed.comm.constant.CommResult;
+import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.SystemClockUtil;
 import org.apache.commons.collections4.MapUtils;
@@ -14,6 +15,7 @@ import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -110,9 +112,13 @@ public class SettleQuartzController {
             }
         }
         //执行job
-        Job xmlSettleJob = (Job)SpringContextHolder.getBean(jobNameStr);
-        JobExecution execution = jobLauncher.run(xmlSettleJob, jobParametersBuilder.toJobParameters());
-        LogUtil.getLogger().info("{}==>{}：Ending......jobInstance={}", jobNameDesc, isResume?"：断点续跑":"", execution.getJobInstance());
-        return execution;
+        try{
+            Job xmlSettleJob = (Job)SpringContextHolder.getBean(jobNameStr);
+            JobExecution execution = jobLauncher.run(xmlSettleJob, jobParametersBuilder.toJobParameters());
+            LogUtil.getLogger().info("{}==>{}：Ending......jobInstance={}", jobNameDesc, isResume?"：断点续跑":"", execution.getJobInstance());
+            return execution;
+        }catch(JobInstanceAlreadyCompleteException e){
+            throw new SeedException(" A job instance already exists and is complete");
+        }
     }
 }
