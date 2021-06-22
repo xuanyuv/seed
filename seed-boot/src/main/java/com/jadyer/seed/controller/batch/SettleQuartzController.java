@@ -1,5 +1,6 @@
 package com.jadyer.seed.controller.batch;
 
+import com.alibaba.fastjson.JSON;
 import com.jadyer.seed.comm.SpringContextHolder;
 import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.util.LogUtil;
@@ -99,7 +100,7 @@ public class SettleQuartzController {
             isResume = true;
             timeLong = Long.parseLong(time);
         }
-        LogUtil.getLogger().info("{}==>{}：Starting...time={}", jobNameDesc, isResume?"：断点续跑":"", timeLong);
+        LogUtil.getLogger().info("{}==>{}：Starting...time={}，parameterMap={}", jobNameDesc, isResume?"：断点续跑":"", timeLong, JSON.toJSONString(parameterMap));
         //构造JobParameters
         JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
         jobParametersBuilder.addLong("time", timeLong);
