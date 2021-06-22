@@ -4,6 +4,7 @@ import com.jadyer.seed.comm.SpringContextHolder;
 import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.SystemClockUtil;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.batch.core.Job;
@@ -102,7 +103,7 @@ public class SettleQuartzController {
         //构造JobParameters
         JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
         jobParametersBuilder.addLong("time", timeLong);
-        if(null!=parameterMap && !parameterMap.isEmpty()){
+        if(MapUtils.isNotEmpty(parameterMap)){
             for(Map.Entry<String,String> entry : parameterMap.entrySet()){
                 jobParametersBuilder.addString(entry.getKey(), entry.getValue(), false);
             }
