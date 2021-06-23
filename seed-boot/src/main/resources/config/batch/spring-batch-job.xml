@@ -61,7 +61,7 @@
                 <bean class="com.jadyer.seed.controller.batch.xmlconfig.Tasklet301"/>
             </batch:tasklet>
         </batch:step>
-        <!-- Step400：啥都不做，处理中读取数据库内容并处理后，落库 -->
+        <!-- Step400：读取数据库内容，处理后，落库 -->
         <batch:step id="step400" parent="parentStep">
             <batch:tasklet>
                 <batch:chunk commit-interval="2" reader="reader201" processor="processor400" writer="writer400"/>
@@ -75,6 +75,9 @@
                 <bean class="com.jadyer.seed.controller.batch.xmlconfig.Processor401"/>
                 <bean class="com.jadyer.seed.controller.batch.xmlconfig.Processor402"/>
                 <bean class="com.jadyer.seed.controller.batch.xmlconfig.Processor403"/>
+                <!--
+                <bean class="com.jadyer.seed.controller.batch.xmlconfig.Processor404"/>
+                -->
             </list>
         </property>
     </bean>
