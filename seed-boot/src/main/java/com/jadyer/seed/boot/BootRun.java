@@ -120,7 +120,7 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
  *   详见https://www.cnblogs.com/lobo/p/5657684.html & https://my.oschina.net/u/4292220/blog/3236949
  * 3.http://127.0.0.1/loggers/日志端点/新的日志级别
  *   可以动态修改日志级别，示例代码见{@link com.jadyer.seed.controller.DemoController#loglevel(String, String)}
- *   并且，GET请求“http://127.0.0.1/loggers/日志端点”还可以查看其当前的日志级别
+ *   并且，GET请求“http://127.0.0.1/actuator/loggers/日志端点”还可以查看其当前的日志级别
  *   需要注意的是：该功能需要配置management.security.enabled=false来关闭安全认证校验
  * ---------------------------------------------------------------------------------------------------------------
  * 【Spring Boot Admin 配置之Admin端】
