@@ -64,16 +64,16 @@ public class ConditionStatementInspector implements StatementInspector {
             e.printStackTrace();
             System.exit(1);
         } finally {
-            if(null != rs){
+            if(null != rs_column){
                 try {
-                    rs.close();
+                    rs_column.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
-            if(null != rs_column){
+            if(null != rs){
                 try {
-                    rs_column.close();
+                    rs.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
