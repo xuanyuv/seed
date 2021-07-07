@@ -151,6 +151,8 @@ spring:
         format_sql: true
         id:
           new_generator_mappings: false
+        session_factory:
+          statement_inspector: com.jadyer.seed.comm.jpa.ConditionStatementInspector
   # org.springframework.boot.autoconfigure.quartz.QuartzProperties.java
   quartz:
     # spring-boot-starter-quartz默认使用的就是MEMORY
