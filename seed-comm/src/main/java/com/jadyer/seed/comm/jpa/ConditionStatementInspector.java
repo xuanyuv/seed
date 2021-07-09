@@ -18,6 +18,8 @@ import java.util.List;
 /**
  * JPA-SQL拦截器
  * ------------------------------------------------------------------------------------------
+ * 条件：只会拦截数据库表中，含有appid字段名，的表
+ * ------------------------------------------------------------------------------------------
  * 注意：需要在application.yml中增加以下配置，方可生效
  * 注意：spring.jpa.properties.hibernate.session_factory.statement_inspector=com.jadyer.seed.comm.jpa.ConditionStatementInspector
  * ------------------------------------------------------------------------------------------
@@ -92,11 +94,6 @@ public class ConditionStatementInspector implements StatementInspector {
                 }
             }
         }
-    }
-
-
-    public static void setAppid(String appid){
-        setAppid(Long.parseLong(appid));
     }
 
 
