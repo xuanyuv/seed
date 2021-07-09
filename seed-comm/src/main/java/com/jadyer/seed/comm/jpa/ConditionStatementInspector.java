@@ -66,6 +66,8 @@ public class ConditionStatementInspector implements StatementInspector {
             e.printStackTrace();
             System.exit(1);
         } finally {
+            // DBUtil.INSTANCE.closeAll(rs_column, null, null);
+            // DBUtil.INSTANCE.closeAll(rs, null, conn);
             if(null != rs_column){
                 try {
                     rs_column.close();
