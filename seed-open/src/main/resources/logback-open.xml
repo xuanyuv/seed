@@ -24,7 +24,16 @@
         <appender-ref ref="DEFAULT_LOG"/>
     </logger>
 
-    <root level="DEBUG">
-        <appender-ref ref="CONSOLE"/>
-    </root>
+    <if condition='property("spring.profiles.active").contains("prod")'>
+        <then>
+            <root level="INFO">
+                <appender-ref ref="CONSOLE"/>
+            </root>
+        </then>
+        <else>
+            <root level="DEBUG">
+                <appender-ref ref="CONSOLE"/>
+            </root>
+        </else>
+    </if>
 </configuration>

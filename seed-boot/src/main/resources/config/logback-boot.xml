@@ -62,11 +62,16 @@
         <appender-ref ref="APP_LOG"/>
     </logger>
 
-    <root level="DEBUG">
-        <if condition='property("spring.profiles.active").contains("local")'>
-            <then>
+    <if condition='property("spring.profiles.active").contains("prod")'>
+        <then>
+            <root level="INFO">
                 <appender-ref ref="CONSOLE"/>
-            </then>
-        </if>
-    </root>
+            </root>
+        </then>
+        <else>
+            <root level="DEBUG">
+                <appender-ref ref="CONSOLE"/>
+            </root>
+        </else>
+    </if>
 </configuration>
