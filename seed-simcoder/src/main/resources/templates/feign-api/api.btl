@@ -2,6 +2,7 @@ package ${PACKAGE_API};
 
 import ${IMPORT_COMMRESULT};
 import ${IMPORT_CONSTANTS};
+import ${IMPORT_PAGER};
 import ${PACKAGE_DTO}.${CLASS_NAME}DTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,7 +25,20 @@ public interface ${CLASS_NAME}Api {
     @PostMapping(value="/upsert", consumes=MediaType.APPLICATION_JSON_VALUE)
     CommResult<${CLASS_NAME}DTO> upsert(@RequestBody ${CLASS_NAME}DTO ${CLASS_NAME_uncapitalize}DTO);
 
+    @ApiOperation("删除")
+    @PostMapping("/delete/{id}")
+    CommResult<Void> delete(@PathVariable("id") Long id);
+
     @ApiOperation("查询")
     @GetMapping("/get/{id}")
     CommResult<${CLASS_NAME}DTO> get(@PathVariable("id") Long id);
+
+    /**
+     * @param ${CLASS_NAME_uncapitalize} null或空对象表示查询所有
+     * @param pageNo   页码：从“1”开始，不传或传“0”则表示不分页
+     * @param pageSize 页长：从“1”开始，不传或传“0”则默认为999
+     */
+    @ApiOperation("列表查询")
+    @PostMapping(value="/list", consumes=MediaType.APPLICATION_JSON_VALUE)
+    CommResult<Pager<${CLASS_NAME}DTO>> list(@RequestBody ${CLASS_NAME}DTO ${CLASS_NAME_uncapitalize}DTO, String pageNo, String pageSize);
 }

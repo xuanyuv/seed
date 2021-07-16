@@ -40,7 +40,7 @@ class LogAspect implements MethodInterceptor {
     }
 
     @Override
-    public Object invoke(MethodInvocation invocation) throws Throwable {
+    public Object invoke(MethodInvocation invocation) {
         Object respData = null;
         long startTime = System.currentTimeMillis();
         // 类名.方法名（不含类的包名），举例：MppController.bind
@@ -57,7 +57,13 @@ class LogAspect implements MethodInterceptor {
         LogUtil.getLogger().info("{}()被调用，入参为{}", methodInfo, JSON.toJSONStringWithDateFormat(argsList, JSON.DEFFAULT_DATE_FORMAT));
         // 表单验证
         for(Object obj : argsList){
-            if(null!=obj && ((obj.getClass().isAnnotationPresent(EnableFormValid.class) || invocation.getMethod().isAnnotationPresent(EnableFormValid.class)) || invocation.getThis().getClass().isAnnotationPresent(EnableFormValid.class))){
+            if(null == obj){
+                continue;
+            }
+            if(obj.getClass().isAnnotationPresent(DisableFormValid.class) || invocation.getMethod().isAnnotationPresent(DisableFormValid.class) || invocation.getThis().getClass().isAnnotationPresent(DisableFormValid.class)){
+                continue;
+            }
+            if(obj.getClass().isAnnotationPresent(EnableFormValid.class) || invocation.getMethod().isAnnotationPresent(EnableFormValid.class) || invocation.getThis().getClass().isAnnotationPresent(EnableFormValid.class)){
                 String validateResult = ValidatorUtil.validate(obj);
                 LogUtil.getLogger().info("{}()的表单-->{}", methodInfo, StringUtils.isBlank(validateResult)?"验证通过":"验证未通过");
                 if (StringUtils.isNotBlank(validateResult)) {
@@ -72,10 +78,14 @@ class LogAspect implements MethodInterceptor {
             }catch(Throwable cause){
                 // 异常处理
                 ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+                // if(null == attributes){
+                //     return invocation.proceed();
+                // }
                 if(null == attributes){
-                    return invocation.proceed();
+                    LogUtil.getLogger().info("Exception Occured，堆栈轨迹如下", cause);
+                }else{
+                    LogUtil.getLogger().info("Exception Occured URL=" + attributes.getRequest().getRequestURL() + "，堆栈轨迹如下", cause);
                 }
-                LogUtil.getLogger().info("Exception Occured URL=" + attributes.getRequest().getRequestURL() + "，堆栈轨迹如下", cause);
                 int code;
                 String msg = cause.getMessage();
                 if(cause instanceof SeedException){

@@ -7,15 +7,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 禁用日志记录
- * -------------------------------------------------------
+ * 禁用JSR303自动验证
+ * ------------------------------------------------------
  * 优先级：Disable 高于 Enable
- * -------------------------------------------------------
- * Created by 玄玉<https://jadyer.cn/> on 2018/4/17 13:22.
+ * ------------------------------------------------------
+ * Created by 玄玉<https://jadyer.cn/> on 2021/7/16 9:54.
  */
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface DisableLog {
+public @interface DisableFormValid {
     String value() default "";
 }

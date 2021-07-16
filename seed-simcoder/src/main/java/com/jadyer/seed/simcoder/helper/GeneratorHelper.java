@@ -28,13 +28,16 @@ public class GeneratorHelper {
                 private static final long serialVersionUID = -7774932094711543319L;
                 {
                     if(SimcoderRun.IS_GENERATE_FEIGN_API){
-                        put("IMPORT_COMMRESULT",         SimcoderRun.IMPORT_COMMRESULT_FEIGN_API);
-                        put("IMPORT_CONSTANTS",          SimcoderRun.IMPORT_CONSTANTS_FEIGN_API);
+                        put("IMPORT_COMMRESULT",         SimcoderRun.IMPORT_FEIGN_API_COMMRESULT);
+                        put("IMPORT_CONSTANTS",          SimcoderRun.IMPORT_FEIGN_API_CONSTANTS);
+                        put("IMPORT_PAGER",              SimcoderRun.IMPORT_FEIGN_API_PAGER);
+                        put("IMPORT_PAGEUTIL",           SimcoderRun.IMPORT_FEIGN_API_PAGEUTIL);
                     }else{
                         put("IMPORT_COMMRESULT",         SimcoderRun.IMPORT_COMMRESULT);
                         put("IMPORT_CONSTANTS",          SimcoderRun.IMPORT_CONSTANTS);
                     }
                     put("IS_GENERATE_BUILDER",       SimcoderRun.IS_GENERATE_BUILDER);
+                    put("IMPORT_DISABLEFORMVALID",    SimcoderRun.IMPORT_DISABLEFORMVALID);
                     put("IMPORT_ENABLEFORMVALID",    SimcoderRun.IMPORT_ENABLEFORMVALID);
                     put("IMPORT_ENABLELOG",          SimcoderRun.IMPORT_ENABLELOG);
                     put("IMPORT_JPA_BASEENTITY",     SimcoderRun.IMPORT_JPA_BASEENTITY);

@@ -18,10 +18,13 @@ public class SimcoderRun {
     // 是否生成SpringCloud-Feign-API的类（否则生成普通Controller）
     public static final Boolean IS_GENERATE_FEIGN_API = Boolean.FALSE;
     // 公共类
-    public static final String IMPORT_COMMRESULT_FEIGN_API = "com.jadyer.seed.api.constant.CommResult";
-    public static final String IMPORT_CONSTANTS_FEIGN_API  = "com.jadyer.seed.api.constant.SeedConstants";
+    public static final String IMPORT_FEIGN_API_COMMRESULT = "com.jadyer.seed.api.constant.CommResult";
+    public static final String IMPORT_FEIGN_API_CONSTANTS  = "com.jadyer.seed.api.constant.SeedConstants";
+    public static final String IMPORT_FEIGN_API_PAGER      = "com.jadyer.seed.api.dto.Pager";
+    public static final String IMPORT_FEIGN_API_PAGEUTIL   = "com.jadyer.seed.comm.util.PageUtil";
     public static final String IMPORT_COMMRESULT           = "com.jadyer.seed.comm.constant.CommResult";
     public static final String IMPORT_CONSTANTS            = "com.jadyer.seed.comm.constant.SeedConstants";
+    public static final String IMPORT_DISABLEFORMVALID     = "com.jadyer.seed.comm.annotation.log.DisableFormValid";
     public static final String IMPORT_ENABLEFORMVALID      = "com.jadyer.seed.comm.annotation.log.EnableFormValid";
     public static final String IMPORT_ENABLELOG            = "com.jadyer.seed.comm.annotation.log.EnableLog";
     public static final String IMPORT_JPA_BASEENTITY       = "com.jadyer.seed.comm.jpa.BaseEntity";

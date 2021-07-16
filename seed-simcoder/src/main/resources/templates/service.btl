@@ -71,7 +71,7 @@ public class ${CLASS_NAME}Service {
         }
         //查询数据
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
-        Pageable pageable = PageRequest.of(StringUtils.isBlank(pageNo)?0:Integer.parseInt(pageNo)-1, StringUtils.isBlank(pageSize)||"0".equals(pageSize) ? 999 : Integer.parseInt(pageSize), sort);
+        Pageable pageable = PageRequest.of(StringUtils.isBlank(pageNo)||"0".equals(pageNo)?0:Integer.parseInt(pageNo)-1, StringUtils.isBlank(pageSize)||"0".equals(pageSize) ? 999 : Integer.parseInt(pageSize), sort);
         return ${CLASS_NAME_uncapitalize}Repository.findAll(spec, pageable);
     }
 
