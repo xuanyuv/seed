@@ -16,9 +16,7 @@ import java.io.Serializable;
 <%if(hasBigDecimal){%>
 import java.math.BigDecimal;
 <%}%>
-<%if(hasDate){%>
 import java.util.Date;
-<%}%>
 
 /**
  * Generated from seed-simcoder by 玄玉<https://jadyer.cn/> on ${date(), "yyyy/MM/dd HH:mm"}.
