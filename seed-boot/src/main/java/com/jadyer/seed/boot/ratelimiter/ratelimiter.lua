@@ -2,10 +2,10 @@
   A lua rate limiter script run in redis use token bucket algorithm.
 --]]
 
--- KEYS和ARGV相當於lua關鍵字，分別用來表示存儲在Redis中的key和redis命令傳給lua的參數，下標都是從1開始的
+-- KEYS和ARGV相当于lua关键字，分別用来表示存储在Redis中的key和redis命令传给lua的参数，下标都是从1开始的
 -- eval "return {KEYS[1],KEYS[2],ARGV[1],ARGV[2]}" 2 key1 key2 first second
--- eval是lua腳本解釋器，它的第一個參數是腳本內容，第二個參數是腳本裏面KEYS數組的長度（不包括ARGV參數的個數），第三個參數用於傳遞KEYS數組，後面剩下的參數會全部傳遞給ARGV數據
--- 上面說的是redis中調用lua，若在lua中調用redis可以使用redis.call()或redis.pcall()（二者的區別是遇到錯誤時返回的提示方式不同）
+-- eval是lua脚本解释器，它的第一个参数是脚本內容，第二个参数是脚本里面KEYS数组的长度（不包括ARGV参数的个数），第三个参数用于传递KEYS数组，后面剩下的参数会全部传递给ARGV数据
+-- 上面说的是redis中调用lua，若在lua中调用redis可以使用redis.call()或redis.pcall()（二者的区别是遇到错误时返回的提示方式不同）
 
 -- intervalPerPermit, time interval in millis between two token permits;
 -- refillTime, timestamp when running this lua script;
@@ -37,12 +37,12 @@ elseif table.maxn(bucket) == 4 then
             currentTokens = limit
             redis.call('hset', key, 'lastRefillTime', refillTime)
         else
-            -- 通過floor下舍取整（0.6=0，5.1=5，5=5，-5.9=-6）
+            -- 通过floor下舍取整（0.6=0，5.1=5，5=5，-5.9=-6）
             local grantedTokens = math.floor(intervalSinceLast / intervalPerPermit)
             if grantedTokens > 0 then
                 -- ajust lastRefillTime, we want shift left the refill time.
                 local padMillis = math.fmod(intervalSinceLast, intervalPerPermit)
-                -- 更為精確的設置上一次填充Token的時間（減掉fmod取余后的結果，相當於上面floor是對一個整數操作后得到了grantedTokens）
+                -- 更为精确的设置上一次填充Token的时间（减掉fmod取余后的结果，相当于上面floor是对一个整数操作后得到了grantedTokens）
                 redis.call('hset', key, 'lastRefillTime', refillTime - padMillis)
             end
             currentTokens = math.min(grantedTokens + tokensRemaining, limit)

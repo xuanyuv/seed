@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Redis+Lua結合TokenBucket算法實現的RateLimiter
+ * Redis+Lua结合TokenBucket算法实现的RateLimiter
  * <ul>
  *     <li>可以考虑做成注解</li>
  *     <li>public @interface RateLimiter {}</li>
@@ -38,13 +38,13 @@ import java.util.Map;
  *     </li>
  * </ul>
  * <ul>
- *     <li>參考了以下網站</li>
+ *     <li>参考了以下网站</li>
  *     <li>http://jinnianshilongnian.iteye.com/blog/2305117</li>
  *     <li>https://zhuanlan.zhihu.com/p/20872901</li>
  *     <li>http://www.kissyu.org/2016/08/13/限流算法总结/</li>
  * </ul>
  * <ul>
- *     <li>需要注意不同節點間的操作</li>
+ *     <li>需要注意不同节点间的操作</li>
  *     <li>https://www.v2ex.com/t/186712</li>
  *     <li>http://stackoverflow.com/questions/38234507/redis-cluster-update-keys-in-different-node-with-lua-script</li>
  * </ul>
@@ -61,9 +61,9 @@ public class RateLimiterLuaV2 {
         //try {
         //    this.luaScriptSHA1 = jedisCluster.scriptLoad(new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("ratelimiter.lua"))), LUA_SCRIPT_KEY);
         //} catch (IOException e) {
-        //    throw new IllegalArgumentException("lua脚本加载失敗", e);
+        //    throw new IllegalArgumentException("lua脚本加载失败", e);
         //}
-        //脚本注释見同包下的ratelimiter.lua
+        //脚本注释见同包下的ratelimiter.lua
         luaScript = "local key = KEYS[1]\n" +
                 "local limit, interval, intervalPerPermit, refillTime = tonumber(ARGV[1]), tonumber(ARGV[2]), tonumber(ARGV[3]), tonumber(ARGV[4])\n" +
                 "\n" +
@@ -118,14 +118,14 @@ public class RateLimiterLuaV2 {
      * <p>
      *     intervalPerPermit指的是TokenBucket桶填充Token的速率
      *     <ul>
-     *         <li>可以理解為：該速率指的是每多少時間段填充一個Token</li>
-     *         <li>假設limit=3，intervalInMills=10000ms，此時intervalPerPermit=3333ms，即需要每3.3s往桶里填充一個Token</li>
-     *         <li>所以若需要計算某段時間內應該填充的Token數，就應該用這個時間段的毫秒數除以該參數</li>
-     *         <li>比如計算5s內這個時間段，需要填充的Token數，就是Math.floor(5000/3333=1.5)=1，即5s內需填充1個Token</li>
+     *         <li>可以理解为：该速率指的是每多少时间段填充一个Token</li>
+     *         <li>假设limit=3，intervalInMills=10000ms，此时intervalPerPermit=3333ms，即需要每3.3s往桶里填充一个Token</li>
+     *         <li>所以若需要计算某段时间內应该填充的Token数，就应该用这个时间段的毫秒数除以该参数</li>
+     *         <li>比如计算5s內这个时间段，需要填充的Token数，就是Math.floor(5000/3333=1.5)=1，即5s內需填充1个Token</li>
      *     </ul>
      * </p>
      * @param limit           TokenBucket桶最大容量
-     * @param intervalInMills TokenBucket桶容量消耗的最少時間，也即限流的流量間隔的毫秒數（可以理解為：intervalInMills時間段內，請求次數不能超過limit）
+     * @param intervalInMills TokenBucket桶容量消耗的最少时间，也即限流的流量间隔的毫秒数（可以理解为：intervalInMills时间段內，请求次数不能超过limit）
      */
     public void setLimitRule(String identity, long limit, long intervalInMills){
         Map<String, String> limitRuleMap = new HashMap<>();
@@ -188,7 +188,7 @@ public class RateLimiterLuaV2 {
 import redis.clients.jedis.JedisCluster;
 import java.util.HashMap;
 import java.util.Map;
-//TokenBucket算法實現（易引发RaceCondition）
+//TokenBucket算法实现（易引发RaceCondition）
 //Created by 玄玉<https://jadyer.cn/> on 2016/9/12 10:41.
 @Deprecated
 public class RateLimiter {
@@ -210,29 +210,29 @@ public class RateLimiter {
         //计算该请求的TokenBucket的key
         String key = this.genBucketKey(identity);
         Map<String, String> counter = jedisCluster.hgetAll(key);
-        //Redis中不存在TokenBucket，那就新建一个，並设置其Token数为最大值减一（去掉了这次请求获取的Token）
+        //Redis中不存在TokenBucket，那就新建一个，并设置其Token数为最大值减一（去掉了这次请求获取的Token）
         if(counter.size() == 0) {
             TokenBucket tokenBucket = new TokenBucket(System.currentTimeMillis(), limit - 1);
             jedisCluster.hmset(key, tokenBucket.toHash());
             return true;
         }
-        //Redis中已存在TokenBucket，則判斷其上一次加入Token的時間到當前時間的間隔，與它的interval關係
+        //Redis中已存在TokenBucket，则判断其上一次加入Token的时间到当前时间的间隔，与它的interval关系
         TokenBucket tokenBucket = TokenBucket.fromHash(counter);
         long refillTime = System.currentTimeMillis();
         long intervalSinceLast = refillTime - tokenBucket.getLastRefillTime();
         long currentTokensRemaining;
         if(intervalSinceLast > intervalInMills){
-            //時間間隔大於interval，則将Bucket的Token值重置为最大值减一（是在下面減的一）後更新到TokenBucket
+            //时间间隔大于interval，则将Bucket的Token值重置为最大值减一（是在下面減的一）后更新到TokenBucket
             currentTokensRemaining = limit;
         }else{
-            //時間間隔不大於interval，則计算本次的Token补充量並更新到TokenBucket
+            //时间间隔不大于interval，则计算本次的Token补充量并更新到TokenBucket
             long grantedTokens = (long)(intervalSinceLast/intervalPerPermit);
             System.out.println("gen token = [" + grantedTokens + "]");
-            //使用Math.min()取二者中較小的，保證其不超過令牌桶的最大容量
+            //使用Math.min()取二者中较小的，保证其不超过令牌桶的最大容量
             currentTokensRemaining = Math.min(grantedTokens + tokenBucket.getTokensRemaining(), limit);
         }
         tokenBucket.setLastRefillTime(refillTime);
-        //零說明沒有可用的Token
+        //零说明沒有可用的Token
         if(currentTokensRemaining == 0){
             tokenBucket.setTokensRemaining(currentTokensRemaining);
             jedisCluster.hmset(key, tokenBucket.toHash());
