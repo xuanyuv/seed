@@ -34,7 +34,7 @@ public final class RateLimiterLua {
      * <ul>
      *     <li>可以理解为：该速率指的是每多少时间段填充一个Token</li>
      *     <li>假设limit=3，intervalInMills=10000ms，此时intervalPerPermit=3333ms，即需要每3.3s往桶里填充一个Token</li>
-     *     <li>所以若需要计算某段时间內应该填充的Token数，就应该用这个时间段的毫秒数除以該参数</li>
+     *     <li>所以若需要计算某段时间內应该填充的Token数，就应该用这个时间段的毫秒数除以该参数</li>
      *     <li>比如计算5s內这个时间段，需要填充的Token数，就是Math.floor(5000/3333=1.5)=1，即5s內需填充1个Token</li>
      * </ul>
      */
