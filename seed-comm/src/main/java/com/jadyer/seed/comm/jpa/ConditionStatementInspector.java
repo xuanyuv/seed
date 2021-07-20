@@ -99,12 +99,17 @@ public class ConditionStatementInspector implements StatementInspector {
     }
 
 
+    public static void removeAppid() {
+        appidMap.remove();
+    }
+
+
     public static void setAppid(long appid){
         appidMap.set(appid);
     }
 
 
-    public static long getAppid(){
+    public static Long getAppid(){
         return appidMap.get();
     }
 
@@ -117,6 +122,7 @@ public class ConditionStatementInspector implements StatementInspector {
 
     private String buildSQL(Long appid, String sql){
         LogUtil.getLogger().debug("SQL拦截器：appid=[{}]，SQL=[{}]", appid, sql);
+        sql = sql.toLowerCase();
         if(null==appid || !StringUtils.startsWithAny(sql, "insert", "delete", "update", "select")){
             LogUtil.getLogger().debug("SQL拦截器：无需拦截，appid为空或当前非CRUD-SQL");
             return null;
@@ -131,7 +137,24 @@ public class ConditionStatementInspector implements StatementInspector {
             String[] sqls = sql.split("\\)");
             sql = sqls[0] + ", appid)" + sqls[1] + ", " + appid + ")";
         }else{
-            sql = sql + " AND appid=" + appid;
+            // SELECT * FROM t_demo_person where name='jadyer' order by id desc limit ?
+            if(sql.contains("where")){
+                String[] sqls = sql.split("where");
+                sql = sqls[0] + "WHERE appid=" + appid;
+                if(StringUtils.startsWithAny(sqls[1].trim(), "order by", "limit")){
+                    sql = sql + sqls[1];
+                }else{
+                    sql = sql + " AND" + sqls[1];
+                }
+            }else{
+                if(sql.contains("order by")){
+                    sql = sql.substring(0, sql.indexOf("order by")) + "WHERE appid=" + appid + " " + sql.substring(sql.indexOf("order by"));
+                }else if(sql.contains("limit")){
+                    sql = sql.substring(0, sql.indexOf("limit")) + "WHERE appid=" + appid + " " + sql.substring(sql.indexOf("limit"));
+                }else{
+                    sql = sql + " WHERE appid=" + appid;
+                }
+            }
         }
         LogUtil.getLogger().debug("SQL拦截器：appid=[{}]，newSQL=[{}]", appid, sql);
         return sql;
