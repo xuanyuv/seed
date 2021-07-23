@@ -626,7 +626,7 @@ public final class FTPUtil {
             LogUtil.getLogger().error("从SFTP服务器["+hostname+"]删除文件["+remoteURL+"]失败", e);
             return false;
         }finally{
-            logout();
+            logoutViaSFTP();
         }
     }
 
