@@ -237,7 +237,7 @@ public final class FTPUtil {
                 createRemoteFolder(ftpClient, FilenameUtils.getFullPathNoEndSeparator(remoteURL));
                 ftpClient.changeWorkingDirectory(FilenameUtils.getFullPathNoEndSeparator(remoteURL));
             }
-            String remoteFile = new String(FilenameUtils.getName(remoteURL).getBytes(DEFAULT_CHARSET), "ISO-8859-1");
+            String remoteFile = new String(FilenameUtils.getName(remoteURL).getBytes(DEFAULT_CHARSET), StandardCharsets.ISO_8859_1);
             ftpClient.setCopyStreamListener(new FTPProcess(is.available(), System.currentTimeMillis()));
             return ftpClient.storeFile(remoteFile, is);
         }catch(IOException e){
@@ -515,7 +515,7 @@ public final class FTPUtil {
             }
         }
         try{
-            String filename = new String(FilenameUtils.getName(remoteURL).getBytes(DEFAULT_CHARSET), "ISO-8859-1");
+            String filename = new String(FilenameUtils.getName(remoteURL).getBytes(DEFAULT_CHARSET), StandardCharsets.ISO_8859_1);
             //channelSftp.put(is, filename);
             channelSftp.put(is, filename, new SFTPProcess(is.available(), System.currentTimeMillis()));
             return true;
