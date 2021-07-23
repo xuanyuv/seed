@@ -43,7 +43,7 @@ import java.util.List;
  *   这个错误的原因就是FTP服务器端发生故障或者网络出现问题
  * -----------------------------------------------------------------------------------------------------------
  * @version v2.3
- * @history v2.3-->重構并優化FTP文件下載接口：解決大文件下載時假死的情況
+ * @history v2.3-->重构并优化FTP文件下载接口：解决大文件下载时假死的情況
  * @history v2.2-->校验文件是否存在时，传入的文件名编码由ISO-8859-1改为系统默认编码，以解决明明有文件却取到空数组的问题
  * @history v2.1-->FTP文件下载后增加传输成功与否的校验,否则会导致同一FTP连接下载第二个文件时找不到文件
  * @history v2.0-->增加JSch实现的SFTP上传和下载等静态方法
@@ -148,9 +148,9 @@ public final class FTPUtil {
              * 主要因为ftpServer可能每次开启不同的端口来传输数据，但linux上由于安全限制，可能某些端口没开启，所以出现阻塞
              * ----------------------------------------------------------------------------------------------------
              */
-            ////配置為本地主动模式
+            ////配置为本地主动模式
             //ftpClient.enterLocalActiveMode();
-            //配置為本地被动模式
+            //配置为本地被动模式
             ftpClient.enterLocalPassiveMode();
             ftpClientMap.set(ftpClient);
             return true;
@@ -295,7 +295,7 @@ public final class FTPUtil {
                 throw new SeedException(CodeEnum.FILE_NOT_FOUND.getCode(), "远程文件["+remoteURL+"]不存在");
             }
             InputStream is = ftpClient.retrieveFileStream(remoteURL);
-            //拷貝InputStream
+            //拷贝InputStream
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             byte[] buff = new byte[1024];
             int len;
@@ -307,10 +307,10 @@ public final class FTPUtil {
             //查询ByteArrayOutputStream.close()的源码会发现，它没有做任何事情,所以其close()与否是无所谓的
             baos.close();
             IOUtils.closeQuietly(is);
-            //completePendingCommand()會一直等待FTPServer返回[226 Transfer complete]
-            //但是FTPServer需要在InputStream.close()執行之後才會返回，所以要先執行InputStream.close()
-            //201704121637測試發現：對於小文件，沒有調用close()，直接completePendingCommand()也會返回true
-            //但大文件就會卡在completePendingCommand()位置，所以上面做了一步InputStream拷貝
+            //completePendingCommand()会一直等待FTPServer返回[226 Transfer complete]
+            //但是FTPServer需要在InputStream.close()执行之后才会返回，所以要先执行InputStream.close()
+            //201704121637测试发现：对于小文件，沒有调用close()，直接completePendingCommand()也会返回true
+            //但大文件就会卡在completePendingCommand()位置，所以上面做了一步InputStream拷贝
             if(!ftpClient.completePendingCommand()){
                 logout();
                 throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "File transfer failed.");
