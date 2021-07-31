@@ -37,6 +37,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.CRC32;
 
 /**
  * 加解密工具类
@@ -81,7 +82,8 @@ import java.util.Map;
  * Caused by: javax.crypto.IllegalBlockSizeException: Data must not be longer than 128 bytes
  * Caused by: javax.crypto.IllegalBlockSizeException: Data must not be longer than 256 bytes
  * -----------------------------------------------------------------------------------------------------------
- * @version v1.9
+ * @version v1.10
+ * @history v1.10-->增加CRC32()
  * @history v1.9-->修改RSA、AES、DESede、DES算法的方法名，使之简洁易懂
  * @history v1.8-->修复buildAESPKCS7Decrypt()方法没有初始化BouncyCastleProvider的BUG
  * @history v1.7-->细化各方法参数注释，使之描述更清晰
@@ -609,5 +611,17 @@ public final class CodecUtil {
         String sign = new String(respData);
         LogUtil.getLogger().info("生成的签名值为-->[{}]", sign);
         return sign;
+    }
+
+
+    /**
+     * 生成CRC32码
+     * @return 返回一个长度为10的数字
+     * Comment by 玄玉<https://jadyer.cn/> on 2021/7/31 14:27.
+     */
+    public static long crc32(String data){
+        CRC32 crc32 = new CRC32();
+        crc32.update(data.getBytes());
+        return crc32.getValue();
     }
 }
