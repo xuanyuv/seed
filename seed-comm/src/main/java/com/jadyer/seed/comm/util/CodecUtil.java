@@ -620,8 +620,22 @@ public final class CodecUtil {
      * Comment by 玄玉<https://jadyer.cn/> on 2021/7/31 14:27.
      */
     public static long crc32(String data){
+        // CRC32 crc32 = new CRC32();
+        // crc32.update(data.getBytes());
+        // return crc32.getValue();
         CRC32 crc32 = new CRC32();
         crc32.update(data.getBytes());
-        return crc32.getValue();
+        StringBuilder sb = new StringBuilder(String.valueOf(crc32.getValue()));
+        if(sb.length() < 10){
+            for(int i=0,len=10-sb.length(); i<len; i++){
+                sb.append("0");
+            }
+        }
+        if(sb.length() > 10){
+            for(int i=0,len=sb.length()-10; i<len; i++){
+                sb.deleteCharAt(sb.length() - 1);
+            }
+        }
+        return Long.parseLong(sb.toString());
     }
 }
