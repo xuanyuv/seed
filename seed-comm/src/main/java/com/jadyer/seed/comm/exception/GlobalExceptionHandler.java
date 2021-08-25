@@ -1,5 +1,17 @@
 package com.jadyer.seed.comm.exception;
 
+import com.alibaba.fastjson.JSON;
+import com.jadyer.seed.comm.constant.CodeEnum;
+import com.jadyer.seed.comm.constant.CommResult;
+import com.jadyer.seed.comm.util.LogUtil;
+import com.jadyer.seed.comm.util.RequestUtil;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * 全局异常控制器
  * ----------------------------------------------------------------------------------------------------------------------
@@ -12,7 +24,7 @@ package com.jadyer.seed.comm.exception;
  * Created by 玄玉<https://jadyer.cn/> on 2015/6/6 12:31.
  */
 // @DisableLog
-// @ControllerAdvice
+@ControllerAdvice
 public class GlobalExceptionHandler {
     /*
      * 1、这里会捕获Throwable及其所有子异常
@@ -32,4 +44,25 @@ public class GlobalExceptionHandler {
     //     }
     //     return CommResult.fail(code, msg);
     // }
+
+
+    /**
+     * -----------------------------------------------------------------------------------------------------------
+     * 异常发生场景：
+     * 1、Controller方法接收参数是一个实体对象，该方法对应接口入参是一个json
+     * 2、当传入json不是合格的json时，比如传这样：{"name":""zhangsan""}的值时，会报告下面的异常：
+     *    [AbstractHandlerExceptionResolver.logException]Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: error parse false; nested exception is com.alibaba.fastjson.JSONException: error parse false]
+     * 即：此时LogAspect拦截不到，故写此方法，拦截处理，以便提示友好信息给调用方
+     * -----------------------------------------------------------------------------------------------------------
+     * 注意事项：
+     * 1、此方法不能使用@ResponseBody
+     * 2、此方法直接输出到HttpServletResponse
+     * -----------------------------------------------------------------------------------------------------------
+     * Comment by 玄玉<https://jadyer.cn/> on 2021/8/25 14:52.
+     */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public void process(HttpMessageNotReadableException cause, HttpServletRequest request, HttpServletResponse response) {
+        LogUtil.getLogger().info("Exception Occured URL={}，入参转换异常：系统自动返回提示信息", request.getRequestURL());
+        RequestUtil.writeToResponse(JSON.toJSONString(CommResult.fail(CodeEnum.SYSTEM_BUSY)), response);
+    }
 }

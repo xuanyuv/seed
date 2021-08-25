@@ -143,29 +143,12 @@ public class OpenFilter extends OncePerRequestFilter {
                 }
                 String respDataJson = JSON.toJSONString(respData);
                 LogUtil.getLogger().debug("返回客户端IP=[{}]的应答密文为-->[{}]，Duration[{}]ms", reqIp, respDataJson, (System.currentTimeMillis()-startTime));
-                this.writeToResponse(respDataJson, response);
+                RequestUtil.writeToResponse(respDataJson, response);
             }
         }catch(SeedException e){
             respDataStr = JSON.toJSONString(CommResult.fail(e.getCode(), e.getMessage()), true);
             LogUtil.getLogger().info("返回客户端IP=[{}]的应答明文为-->[{}]，Duration[{}]ms", reqIp, respDataStr, (System.currentTimeMillis()-startTime));
-            this.writeToResponse(respDataStr, response);
-        }
-    }
-
-
-    /**
-     * 将内容输出的输出流
-     * <p>
-     *     实际发现fastjson-1.2.37会返回输出内容的原长度，非字节长度，故此处重新计算了Content-Length
-     * </p>
-     */
-    private void writeToResponse(String respDataStr, HttpServletResponse response) throws IOException {
-        byte[] respDataBeytes = respDataStr.getBytes(StandardCharsets.UTF_8);
-        response.setHeader("Content-Type", "application/json; charset=" + StandardCharsets.UTF_8);
-        response.setHeader("Content-Length", respDataBeytes.length+"");
-        try(ServletOutputStream out = response.getOutputStream()){
-            out.write(respDataBeytes);
-            out.flush();
+            RequestUtil.writeToResponse(respDataStr, response);
         }
     }
 

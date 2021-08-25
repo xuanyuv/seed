@@ -1,5 +1,7 @@
 package com.jadyer.seed.comm.util;
 
+import com.jadyer.seed.comm.constant.CodeEnum;
+import com.jadyer.seed.comm.exception.SeedException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.whois.WhoisClient;
 
@@ -18,6 +20,7 @@ import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +30,8 @@ import java.util.Random;
 /**
  * 网络请求工具类
  * ------------------------------------------------------------------------------------------------------
- * @version v3.0
+ * @version v3.1
+ * @history v3.1-->增加writeToResponse()方法用于将内容输出到输出流
  * @history v3.0-->NetUtil升级为RequestUtil，并增加若干判断请求类型的方法
  * @history v2.0-->IPUtil升级为NetUtil，并增加whois()方法用于查询域名注册信息
  * @history v1.1-->增加获取服务端IP的方法
@@ -200,6 +204,26 @@ public final class RequestUtil {
         }
         sb.append(request.getContextPath());
         return sb.toString();
+    }
+
+
+    /**
+     * 将内容输出到输出流
+     * @param data JSON字符串
+     */
+    public static void writeToResponse(String data, HttpServletResponse response) {
+        byte[] datas = data.getBytes(StandardCharsets.UTF_8);
+        // response.setHeader("Content-Type", "application/json; charset=" + StandardCharsets.UTF_8);
+        // response.setHeader("Content-Length", datas.length+"");
+        // 两种写法，二者等效
+        response.setContentType("application/json; charset=" + StandardCharsets.UTF_8);
+        response.setContentLength(datas.length);
+        try(ServletOutputStream out = response.getOutputStream()){
+            out.write(datas);
+            out.flush();
+        } catch (IOException e) {
+            throw new SeedException(CodeEnum.SYSTEM_BUSY, e);
+        }
     }
 
 
