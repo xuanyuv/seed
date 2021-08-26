@@ -1,5 +1,6 @@
 package com.jadyer.seed.comm.util;
 
+import cn.hutool.core.net.NetUtil;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.exception.SeedException;
 import org.apache.commons.lang3.StringUtils;
@@ -30,7 +31,8 @@ import java.util.Random;
 /**
  * 网络请求工具类
  * ------------------------------------------------------------------------------------------------------
- * @version v3.1
+ * @version v3.2
+ * @history v3.2-->增加isLanIP()方法用于判断是否为内网IP
  * @history v3.1-->增加writeToResponse()方法用于将内容输出到输出流
  * @history v3.0-->NetUtil升级为RequestUtil，并增加若干判断请求类型的方法
  * @history v2.0-->IPUtil升级为NetUtil，并增加whois()方法用于查询域名注册信息
@@ -128,6 +130,21 @@ public final class RequestUtil {
             serverIP = "服务器IP地址获取失败";
         }
         return serverIP;
+    }
+
+
+    /**
+     * 判断是否为内网IP
+     * ------------------------------------------------------------------------------------------------------------
+     * TCP/IP协议中，专门保留了三个IP地址区域作为私有地址，其地址范围如下：（另外还有127.0.0.1这个网段是环回地址）
+     * A类：    10.0.0.0/8：   10.0.0.0～10.255.255.255
+     * B类： 172.16.0.0/12： 172.16.0.0～172.31.255.255
+     * C类：192.168.0.0/16：192.168.0.0～192.168.255.255
+     * ------------------------------------------------------------------------------------------------------------
+     * Comment by 玄玉<https://jadyer.cn/> on 2021/8/26 15:30.
+     */
+    public static boolean isLanIP(HttpServletRequest request){
+        return NetUtil.isInnerIP(getClientIP(request));
     }
 
 
