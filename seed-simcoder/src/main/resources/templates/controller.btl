@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,8 +29,8 @@ public class ${CLASS_NAME}Controller {
     private ${CLASS_NAME}Service ${CLASS_NAME_uncapitalize}Service;
 
     @ApiOperation("更新或新增")
-    @PostMapping("/upsert")
-    public CommResult<${CLASS_NAME}> upsert(${CLASS_NAME} ${CLASS_NAME_uncapitalize}){
+    @PostMapping(value="/upsert", consumes=MediaType.APPLICATION_JSON_VALUE)
+    public CommResult<${CLASS_NAME}> upsert(@RequestBody ${CLASS_NAME} ${CLASS_NAME_uncapitalize}){
         return CommResult.success(${CLASS_NAME_uncapitalize}Service.upsert(${CLASS_NAME_uncapitalize}));
     }
 
@@ -56,8 +57,8 @@ public class ${CLASS_NAME}Controller {
      */
     @ApiOperation("列表查询")
     @DisableFormValid
-    @GetMapping("/list")
-    public CommResult<Page<${CLASS_NAME}>> list(${CLASS_NAME} ${CLASS_NAME_uncapitalize}, String pageNo, String pageSize){
+    @PostMapping(value="/list", consumes=MediaType.APPLICATION_JSON_VALUE)
+    public CommResult<Page<${CLASS_NAME}>> list(@RequestBody ${CLASS_NAME} ${CLASS_NAME_uncapitalize}, String pageNo, String pageSize){
         return CommResult.success(${CLASS_NAME_uncapitalize}Service.list(${CLASS_NAME_uncapitalize}, pageNo, pageSize));
     }
 }
