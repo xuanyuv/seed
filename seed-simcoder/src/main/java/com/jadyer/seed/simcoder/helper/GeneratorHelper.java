@@ -176,8 +176,10 @@ public class GeneratorHelper {
             // @ApiModelProperty(value="定时任务的应用名称", required=true)
             if(StringUtils.isNotBlank(column.getComment())){
                 if(!column.isNullable()){
+                    fields.append("    @ApiModelProperty(value=\"").append(column.getComment()).append("\", required=true)").append("\n");
                     fields_dto.append("    @ApiModelProperty(value=\"").append(column.getComment()).append("\", required=true)").append("\n");
                 }else{
+                    fields.append("    @ApiModelProperty(\"").append(column.getComment()).append("\")").append("\n");
                     fields_dto.append("    @ApiModelProperty(\"").append(column.getComment()).append("\")").append("\n");
                 }
             }
