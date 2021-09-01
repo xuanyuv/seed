@@ -58,7 +58,7 @@ public class ${CLASS_NAME}Controller {
     @ApiOperation("列表查询")
     @DisableFormValid
     @PostMapping(value="/list", consumes=MediaType.APPLICATION_JSON_VALUE)
-    public CommResult<Page<${CLASS_NAME}>> list(@RequestBody ${CLASS_NAME} ${CLASS_NAME_uncapitalize}, String pageNo, String pageSize){
+    public CommResult<Page<${CLASS_NAME}>> list(@RequestBody(required=false) ${CLASS_NAME} ${CLASS_NAME_uncapitalize}, String pageNo, String pageSize){
         return CommResult.success(${CLASS_NAME_uncapitalize}Service.list(${CLASS_NAME_uncapitalize}, pageNo, pageSize));
     }
 }

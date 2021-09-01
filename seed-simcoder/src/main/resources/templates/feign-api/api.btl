@@ -40,5 +40,5 @@ public interface ${CLASS_NAME}Api {
      */
     @ApiOperation("列表查询")
     @PostMapping(value="/list", consumes=MediaType.APPLICATION_JSON_VALUE)
-    CommResult<Pager<${CLASS_NAME}DTO>> list(@RequestBody ${CLASS_NAME}DTO ${CLASS_NAME_uncapitalize}DTO, String pageNo, String pageSize);
+    CommResult<Pager<${CLASS_NAME}DTO>> list(@RequestBody(required=false) ${CLASS_NAME}DTO ${CLASS_NAME_uncapitalize}DTO, String pageNo, String pageSize);
 }
