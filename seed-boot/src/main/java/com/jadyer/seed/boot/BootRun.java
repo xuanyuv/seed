@@ -5,11 +5,16 @@ import com.jadyer.seed.boot.event.ApplicationFailedEventListener;
 import com.jadyer.seed.boot.event.ApplicationPreparedEventListener;
 import com.jadyer.seed.boot.event.ApplicationStartingEventListener;
 import com.jadyer.seed.comm.constant.SeedConstants;
+import com.jadyer.seed.comm.util.LogUtil;
+import com.jadyer.seed.comm.util.RequestUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.ApplicationPidFileWriter;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.env.Environment;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 
 /**
@@ -57,7 +62,27 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
  * 发布成war
  * 1、<packaging>war</packaging>
  * 2、mvn clean install -DskipTests
- * 此时只需要com.jadyer.seed.boot.BootStrap.java，本类就不需要了，也不需要配置spring-boot-maven-plugin
+ * 此时就不需要本类了（也不需要配置spring-boot-maven-plugin），这种情况下的启动类，内容如下：
+ * package com.jadyer.seed.boot;
+ * import com.jadyer.seed.boot.event.ApplicationEnvironmentPreparedEventListener;
+ * import com.jadyer.seed.boot.event.ApplicationFailedEventListener;
+ * import com.jadyer.seed.boot.event.ApplicationPreparedEventListener;
+ * import com.jadyer.seed.boot.event.ApplicationStartingEventListener;
+ * import org.springframework.boot.autoconfigure.SpringBootApplication;
+ * import org.springframework.boot.builder.SpringApplicationBuilder;
+ * import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+ * @SpringBootApplication(scanBasePackages="${scan.base.packages}")
+ * public class BootStrap extends SpringBootServletInitializer {
+ *     @Override
+ *     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+ *         //此处未设置.profiles()，则打成的war包在Tomcat中启动时，会自动读取Tomcat启动变量中的spring.profiles.active
+ *         return builder.sources(getClass())
+ *                .listeners(new ApplicationStartingEventListener())
+ *                .listeners(new ApplicationEnvironmentPreparedEventListener())
+ *                .listeners(new ApplicationPreparedEventListener())
+ *                .listeners(new ApplicationFailedEventListener());
+ *     }
+ * }
  * ---------------------------------------------------------------------------------------------------------------
  * 发布成可执行jar
  * 1、也可以不设置，因为它默认就是jar：<packaging>jar</packaging>
@@ -171,7 +196,7 @@ public class BootRun {
     public static void main(String[] args) {
         //SpringApplication.run(BootRun.class, args);
         //new SpringApplicationBuilder().sources(BootRun.class).profiles(getProfile(new SimpleCommandLinePropertySource(args))).run(args);
-        new SpringApplicationBuilder().sources(BootRun.class)
+        ConfigurableApplicationContext applicationContext = new SpringApplicationBuilder().sources(BootRun.class)
                 .listeners(new ApplicationStartingEventListener())
                 .listeners(new ApplicationEnvironmentPreparedEventListener())
                 .listeners(new ApplicationPreparedEventListener())
@@ -179,5 +204,25 @@ public class BootRun {
                 .listeners(new ApplicationPidFileWriter())
                 .profiles(getProfile(new SimpleCommandLinePropertySource(args)))
                 .run(args);
+        Environment env = applicationContext.getEnvironment();
+        String protocol = StringUtils.isBlank(env.getProperty("server.ssl.key-store")) ? "http" : "https";
+        String serverPort = env.getProperty("server.port");
+        String contextPath = env.getProperty("server.servlet.context-path");
+        if (StringUtils.isBlank(contextPath)) {
+            contextPath = "/";
+        }
+        if(!contextPath.endsWith("/")){
+            contextPath += "/";
+        }
+        // contextPath += "doc.html";
+        LogUtil.getLogger().info("\n------------------------------------------------------------" +
+                        "\n\tApplication '{}' is running! \t\tProfile(s): {}" +
+                        "\n\tAccess URLs:" +
+                        "\n\tLocal: \t\t{}://{}:{}{}" +
+                        "\n\tExternal: \t{}://{}:{}{}" +
+                        "\n------------------------------------------------------------",
+                env.getProperty("spring.application.name"), env.getActiveProfiles(),
+                protocol, "127.0.0.1", serverPort, contextPath,
+                protocol, RequestUtil.getServerIP(), serverPort, contextPath);
     }
 }

@@ -1,6 +1,6 @@
 package com.jadyer.seed.test;
 
-import com.jadyer.seed.boot.BootStrap;
+import com.jadyer.seed.boot.BootRun;
 import com.jadyer.seed.boot.ratelimiter.RateLimiterLua;
 import com.jadyer.seed.boot.ratelimiter.RateLimiterLuaV2;
 import com.jadyer.seed.comm.util.JadyerUtil;
@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Profile("local")
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes=BootStrap.class)
+@SpringBootTest(classes=BootRun.class)
 public class BootTest {
     @Resource
     private JedisCluster jedisCluster;
