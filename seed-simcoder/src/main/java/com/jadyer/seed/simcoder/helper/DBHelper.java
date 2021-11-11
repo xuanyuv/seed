@@ -20,7 +20,7 @@ class DBHelper {
     private static final String DB_USERNAME = SimcoderRun.DB_USERNAME;
     private static final String DB_PASSWORD = SimcoderRun.DB_PASSWORD;
     private static final String SQL_GET_TABLE = "SELECT TABLE_NAME, TABLE_COMMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA=?;";
-    private static final String SQL_GET_COLUMN = "SELECT DISTINCT COLUMN_NAME as name, COLUMN_COMMENT as comment, DATA_TYPE as type, ifnull(CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION) as length, if(IS_NULLABLE='yes'||IS_NULLABLE='YES', true, false) as nullable, if(COLUMN_KEY='pri'||COLUMN_KEY='PRI', true, false) as isPrikey, if(EXTRA='auto_increment', true, false) as isAutoIncrement, ORDINAL_POSITION FROM information_schema.COLUMNS WHERE TABLE_NAME=? ORDER BY ORDINAL_POSITION;";
+    private static final String SQL_GET_COLUMN = "SELECT DISTINCT COLUMN_NAME as name, COLUMN_COMMENT as comment, DATA_TYPE as type, ifnull(CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION) as length, if(IS_NULLABLE='yes'||IS_NULLABLE='YES', true, false) as nullable, if(COLUMN_KEY='pri'||COLUMN_KEY='PRI', true, false) as isPrikey, if(EXTRA='auto_increment', true, false) as isAutoIncrement, ORDINAL_POSITION FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='" + SimcoderRun.DB_NAME + "' AND TABLE_NAME=? ORDER BY ORDINAL_POSITION;";
 
     /**
      * 获取数据库中的所有表信息
