@@ -105,7 +105,6 @@ public class CommTest {
                 str += "...";
                 //throw new RuntimeException("测试ReturnFinally时发生异常-->[" + e.getMessage() + "]");
             }finally{
-                //noinspection UnusedAssignment
                 str += "22";
                 System.out.println("22执行了");
             }

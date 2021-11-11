@@ -13,7 +13,6 @@ import com.jadyer.seed.comm.util.PasswordUtil;
 import com.jadyer.seed.comm.util.ValidatorUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Assert;
@@ -29,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -204,7 +204,7 @@ public class UtilTest {
      * FTP下载测试
      */
     @Test
-    public void FTPUtilForDownloadTest() throws IOException {
+    public void FTPUtilForDownloadTest() {
         String host = "ftp.jadyer.test";
         String username = "yangguang01";
         String password = "yangguang01@#$";
@@ -239,7 +239,7 @@ public class UtilTest {
      * SFTP下载测试
      */
     @Test
-    public void FTPUtilForDownloadViaSFTPTest() throws IOException {
+    public void FTPUtilForDownloadViaSFTPTest() {
         String remoteURL = "/upload/test/sf/20151022151736.exe";
         String localURL = "C:\\Users\\Jadyer.JADYER-PC.000\\Desktop\\aa.exe";
         FTPUtil.downloadAndLogoutViaSFTP("192.168.2.41", 22, "yizhifu", "YMQwcUZh2LvhmR87d7tjmqoRbj6ST1", remoteURL, localURL);
@@ -288,26 +288,21 @@ public class UtilTest {
     public void validatorUtilTest(){
         ValidateUser user = new ValidateUser();
         //user.setName("铁面生");
-        String validateMsg = ValidatorUtil.validate(user, "id");
-        System.out.print("User验证结果为[" + validateMsg + "]-->");
-        if(StringUtils.isBlank(validateMsg)){
-            System.out.println("验证通过");
-        }else{
-            System.out.println("验证未通过");
-        }
-        System.out.println("-------------------------------");
+        System.out.println(ValidatorUtil.validate(user, "id"));
+        System.out.println("------------------------------------------");
         ValidateUserDetail userDetail = new ValidateUserDetail();
         userDetail.setId(2);
         //userDetail.setSex("M");
-        validateMsg = ValidatorUtil.validate(userDetail);
-        System.out.print("UserDetail验证[" + validateMsg + "]-->");
-        if(StringUtils.isBlank(validateMsg)){
-            System.out.println("验证通过");
-        }else{
-            System.out.println("验证未通过");
-        }
+        System.out.println(ValidatorUtil.validate(userDetail));
+        System.out.println("------------------------------------------");
+        ValidateUser user22 = new ValidateUser();
+        user22.setId(2);
+        List<ValidateUser> userList = new ArrayList<>();
+        userList.add(user);
+        userList.add(user22);
+        System.out.println(ValidatorUtil.validate(userList));
     }
-    class ValidateUser{
+    static class ValidateUser{
         @Min(1)
         private int id;
         @NotBlank
@@ -325,7 +320,7 @@ public class UtilTest {
             this.name = name;
         }
     }
-    public class ValidateUserDetail extends ValidateUser {
+    public static class ValidateUserDetail extends ValidateUser {
         @NotBlank
         @Pattern(regexp="^M|F$", message="性别只能传M或F")
         private String sex;

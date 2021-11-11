@@ -5,8 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -83,7 +82,8 @@ import java.util.Set;
  * 除了以上列出的JSR-303原生支持的限制类型之外，还可以定义自己的限制类型
  * 本工具类最下方的注释部分是一个例子（也可参考此文http://haohaoxuexi.iteye.com/blog/1812584）
  * -------------------------------------------------------------------------------------------
- * @version v1.5
+ * @version v1.6
+ * @version v1.6-->移除返回值为Map的验证方法，增加对java.util.List对象的验证支持
  * @history v1.5-->被验证对象若为空对象，由于没什么可验证的，故直接返回验证通过
  * @history v1.4-->简化例外属性的判断方式
  * @history v1.3-->增加一些常用的pojo配置例子
@@ -94,7 +94,7 @@ import java.util.Set;
  * Created by 玄玉<https://jadyer.cn/> on 2015/06/09 23:25.
  */
 public final class ValidatorUtil {
-    private static Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     private ValidatorUtil() {}
 
@@ -108,7 +108,15 @@ public final class ValidatorUtil {
      * @return 返回空字符串""表示验证通过，否则返回错误信息
      */
     public static String validate(Object obj){
-        return validate(obj, new String[]{});
+        StringBuilder sb = new StringBuilder();
+        if(obj instanceof List){
+            for (int i=0,len=((List<?>)obj).size(); i<len; i++) {
+                sb.append(validate(((List<?>)obj).get(i), "List.object["+i+"]."));
+            }
+        }else{
+            sb.append(validate(obj, null));
+        }
+        return sb.toString();
     }
 
 
@@ -118,10 +126,11 @@ public final class ValidatorUtil {
      * 注意：被验证对象若为空对象，由于没什么可验证的，故直接返回验证通过
      * -------------------------------------------------------------------------------
      * @param obj             需要验证的对象，若其父类的属性也有验证注解则会一并验证
+     * @param msgPrefix       验证结果消息前缀
      * @param exceptFieldName 不需要验证的属性
      * @return 返回空字符串""表示验证通过，否则返回错误信息
      */
-    public static String validate(Object obj, String... exceptFieldName){
+    public static String validate(Object obj, String msgPrefix, String... exceptFieldName){
         if(null == obj){
             return "";
         }
@@ -133,52 +142,13 @@ public final class ValidatorUtil {
             if(!StringUtils.equalsAnyIgnoreCase(field, exceptFieldName)){
                 //id:最小不能小于1
                 //name:不能为空
-                sb.append(field).append(": ").append(message).append("\r\n");
+                sb.append(msgPrefix).append(field).append(": ").append(message).append("\r\n");
             }
         }
         if(StringUtils.isNotBlank(sb)){
             sb.insert(0, "\r\n");
         }
         return sb.toString();
-    }
-
-
-    /**
-     * 验证对象中的属性的值是否符合注解定义
-     * -------------------------------------------------------------------------------
-     * 注意：被验证对象若为空对象，由于没什么可验证的，故直接返回验证通过
-     * -------------------------------------------------------------------------------
-     * @param obj 需要验证的对象，若其父类的属性也有验证注解则会一并验证
-     * @return 返回空Map<String, String>(not null)表示验证通过，否则会将各错误字段作为key放入Map,value为错误信息
-     */
-    public static Map<String, String> validateToMap(Object obj){
-        return validateToMap(obj, new String[]{});
-    }
-
-
-    /**
-     * 验证对象中的属性的值是否符合注解定义
-     * -------------------------------------------------------------------------------
-     * 注意：被验证对象若为空对象，由于没什么可验证的，故直接返回验证通过
-     * -------------------------------------------------------------------------------
-     * @param obj             需要验证的对象，若其父类的属性也有验证注解则会一并验证
-     * @param exceptFieldName 不需要验证的属性
-     * @return 返回空Map<String, String>(not null)表示验证通过，否则会将各错误字段作为key放入Map,value为错误信息
-     */
-    public static Map<String, String> validateToMap(Object obj, String... exceptFieldName){
-        Map<String, String> resultMap = new HashMap<>();
-        if(null == obj){
-            return resultMap;
-        }
-        Set<ConstraintViolation<Object>> validateSet = validator.validate(obj);
-        for(ConstraintViolation<Object> constraintViolation : validateSet){
-            String field = constraintViolation.getPropertyPath().toString();
-            String message = constraintViolation.getMessage();
-            if(!StringUtils.equalsAnyIgnoreCase(field, exceptFieldName)){
-                resultMap.put(field, message);
-            }
-        }
-        return resultMap;
     }
 }
 /*

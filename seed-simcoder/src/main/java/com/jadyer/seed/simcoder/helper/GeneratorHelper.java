@@ -133,10 +133,10 @@ public class GeneratorHelper {
             if(StringUtils.isNotBlank(column.getComment())){
                 fields.append("    /* ").append(column.getComment()).append(" */").append("\n");
             }
-            // 暂时只对Integer、Long、String三种类型增加校验注解：@NotNull @NotBlank @Size(max=16)
+            // 暂时只对Integer、Long、BigDecimal、String三种类型增加校验注解：@NotNull @NotBlank @Size(max=16)
             String javaType = DBHelper.buildJavatypeFromDbtype(column.getType());
             if(!column.isNullable() && !SimcoderRun.IS_GENERATE_FEIGN_API){
-                if("Integer".equals(javaType) || "Long".equals(javaType)){
+                if("Integer".equals(javaType) || "Long".equals(javaType) || "BigDecimal".equals(javaType)){
                     hasNotNullAnnotation = true;
                     fields.append("    @NotNull").append("\n");
                 }
@@ -155,7 +155,7 @@ public class GeneratorHelper {
                 }
             }
             if(!column.isNullable() && SimcoderRun.IS_GENERATE_FEIGN_API){
-                if("Integer".equals(javaType) || "Long".equals(javaType)){
+                if("Integer".equals(javaType) || "Long".equals(javaType) || "BigDecimal".equals(javaType)){
                     hasNotNullAnnotation = true;
                     fields_dto.append("    @NotNull").append("\n");
                 }
