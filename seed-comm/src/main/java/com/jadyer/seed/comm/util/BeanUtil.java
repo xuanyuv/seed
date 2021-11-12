@@ -92,6 +92,18 @@ public final class BeanUtil {
 
 
     /**
+     * JavaBean属性拷贝
+     */
+    public static <E, T> T copyProperties(E source, T target) {
+        if(null == source){
+            return null;
+        }
+        org.springframework.beans.BeanUtils.copyProperties(source, target);
+        return target;
+    }
+
+
+    /**
      * HttpServletRequest参数值转为JavaBean
      * -------------------------------------------------------------------------------------
      * 1、类属性只能是String
