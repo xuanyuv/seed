@@ -30,7 +30,7 @@ import java.util.List;
  * List<Person> personList = new ArrayList<>();
  * userPage.getContent().forEach(user -> {
  *     Person person = BeanUtil.copyProperties(user, Person.class);
- *     UserHistory userHistory = userHistoryRepository.getByUserId(obj.getId());
+ *     UserHistory userHistory = userHistoryRepository.getByUserId(user.getId());
  *     person.setAmount(userHistory.getAmount().setScale(6, RoundingMode.HALF_UP));
  *     person.setAddress(userHistory.getAddress());
  *     personList.add(person);
