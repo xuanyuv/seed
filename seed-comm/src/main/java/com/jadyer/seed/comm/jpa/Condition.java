@@ -24,6 +24,20 @@ import java.util.List;
  * Condition<User> spec = Condition.<User>or().eq("id", 8).notIn("name", nameList);
  * userRepository.findAll(spec, PageRequest.of(0, 15, Sort.by(Sort.Direction.DESC, "id")));
  * ---------------------------------------------------------------------------------------------------------------
+ * 将原返回值Page<User>修改为Page<Person>
+ * Pageable pageable = PageRequest.of(0, 15, Sort.by(Sort.Direction.DESC, "id"));
+ * Page<User> userPage = userRepository.findAll(spec, pageable);
+ * List<Person> personList = new ArrayList<>();
+ * userPage.getContent().forEach(user -> {
+ *     Person person = BeanUtil.copyProperties(user, Person.class);
+ *     UserHistory userHistory = userHistoryRepository.getByUserId(obj.getId());
+ *     person.setAmount(userHistory.getAmount().setScale(6, RoundingMode.HALF_UP));
+ *     person.setAddress(userHistory.getAddress());
+ *     personList.add(person);
+ * });
+ * Page<Person> personPage = new PageImpl<>(personList, pageable, userPage.getTotalElements());
+ * return personPage;
+ * ---------------------------------------------------------------------------------------------------------------
  * 参考了以下实现
  * https://github.com/wenhao/jpa-spec
  * https://github.com/springside/springside4/blob/4.0/modules/core/src/main/java/org/springside/modules/persistence/SearchFilter.java
