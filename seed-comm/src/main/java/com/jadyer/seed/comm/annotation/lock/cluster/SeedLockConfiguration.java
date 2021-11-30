@@ -39,7 +39,7 @@ import java.util.List;
  * Created by 玄玉<https://jadyer.cn/> on 2018/6/5 10:00.
  */
 @Aspect
-//@Configuration
+// @Configuration
 @ConditionalOnClass({RedissonClient.class})
 @ConfigurationProperties(prefix="redis")
 public class SeedLockConfiguration implements EnvironmentAware {
@@ -155,11 +155,17 @@ public class SeedLockConfiguration implements EnvironmentAware {
                 redLock = new RedissonRedLock(rLocks);
                 if(!redLock.tryLock(seedLock.waitTime(), seedLock.leaseTime(), seedLock.unit())){
                     LogUtil.getLogger().warn("资源[{}]加锁-->失败", key);
+                    if(seedLock.failThrowException()){
+                        throw new RuntimeException(String.format("资源[%s]加锁-->失败", key));
+                    }
                     this.lockFallback(key, seedLock.fallbackMethod(), joinPoint);
                     return null;
                 }
             } catch (Throwable t) {
                 LogUtil.getLogger().error("资源[{}]加锁-->失败：{}", key, JadyerUtil.extractStackTraceCausedBy(t), t);
+                if(seedLock.failThrowException()){
+                    throw new RuntimeException(String.format("资源[%s]加锁-->失败：%s", key, JadyerUtil.extractStackTraceCausedBy(t)));
+                }
                 this.lockFallback(key, seedLock.fallbackMethod(), joinPoint);
                 return null;
             }
