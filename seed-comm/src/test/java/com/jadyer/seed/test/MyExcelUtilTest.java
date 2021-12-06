@@ -39,7 +39,7 @@ public class MyExcelUtilTest {
     }
 
 
-    @ExcelModel(sheetName="测试数据", style={"text-align:center", "title->color:red;font-weight:bold;text-align:center", "odd->background-color:#F0FFFF"})
+    @ExcelModel(sheetName="测试数据", style={"text-align:center", "title->text-align:center;color:red;font-weight:bold", "odd->background-color:#F0FFFF"})
     private static class MyExcelWriterUser{
         @ExcelColumn(order=1, title="序号", convertToString=true)
         private int id;
