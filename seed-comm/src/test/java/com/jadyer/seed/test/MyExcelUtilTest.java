@@ -2,11 +2,13 @@ package com.jadyer.seed.test;
 
 import com.alibaba.fastjson.JSON;
 import com.github.liaochong.myexcel.core.annotation.ExcelColumn;
-import com.github.liaochong.myexcel.core.annotation.ExcelTable;
+import com.github.liaochong.myexcel.core.annotation.ExcelModel;
 import com.jadyer.seed.comm.util.MyExcelUtil;
 import org.junit.Test;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,10 +22,10 @@ public class MyExcelUtilTest {
     @Test
     public void write() {
         List<MyExcelWriterUser> dataList = new ArrayList<>();
-        dataList.add(new MyExcelWriterUser(2, "方子敬", new Date()));
-        dataList.add(new MyExcelWriterUser(6, "宁不凡", new Date()));
-        dataList.add(new MyExcelWriterUser(9, "卓凌昭", new Date()));
-        MyExcelUtil.write(dataList, MyExcelWriterUser.class, EXCEL_FILE_PATHNAME);
+        dataList.add(new MyExcelWriterUser(2, "方子敬", new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()));
+        dataList.add(new MyExcelWriterUser(6, "宁不凡", new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()));
+        dataList.add(new MyExcelWriterUser(9, "卓凌昭", new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()));
+        MyExcelUtil.writeToFile(dataList, MyExcelWriterUser.class, EXCEL_FILE_PATHNAME);
     }
 
 
@@ -37,15 +39,15 @@ public class MyExcelUtilTest {
     }
 
 
-    @ExcelTable(sheetName="测试数据")
+    @ExcelModel(sheetName="测试数据", style={"text-align:center", "title->color:red;font-weight:bold;text-align:center", "odd->background-color:#F0FFFF"})
     private static class MyExcelWriterUser{
-        @ExcelColumn(order=1, title="序号")
+        @ExcelColumn(order=1, title="序号", convertToString=true)
         private int id;
-        @ExcelColumn(order=2, title="姓名")
+        @ExcelColumn(order=2, title="姓名", width=8)
         private String username;
-        @ExcelColumn(order=3, title="生日", dateFormatPattern="yyyyMMdd HH:mm:ss:SSS")
-        private Date birthday;
-        MyExcelWriterUser(int id, String username, Date birthday) {
+        @ExcelColumn(order=3, title="生日", format="yyyy-MM-dd HH:mm:ss", width=11)
+        private LocalDateTime birthday;
+        MyExcelWriterUser(int id, String username, LocalDateTime birthday) {
             this.id = id;
             this.username = username;
             this.birthday = birthday;
@@ -58,8 +60,8 @@ public class MyExcelUtilTest {
         private String id;
         @ExcelColumn(index=1)
         private String username;
-        @ExcelColumn(index=2, dateFormatPattern="yyyyMMdd HH:mm:ss:SSS")
-        private Date birthday;
+        @ExcelColumn(index=2, format="yyyyMMdd HH:mm:ss:SSS")
+        private LocalDateTime birthday;
         public String getId() {
             return id;
         }
@@ -72,10 +74,10 @@ public class MyExcelUtilTest {
         public void setUsername(String username) {
             this.username = username;
         }
-        public Date getBirthday() {
+        public LocalDateTime getBirthday() {
             return birthday;
         }
-        public void setBirthday(Date birthday) {
+        public void setBirthday(LocalDateTime birthday) {
             this.birthday = birthday;
         }
     }
