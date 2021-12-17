@@ -20,15 +20,20 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ReadListener;
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
@@ -266,6 +271,46 @@ public class OpenFilter extends OncePerRequestFilter {
             }
         }
         return allParams;
+    }
+
+
+    /**
+     * 解决request-body只能读取一次的问题
+     * ---------------------------------------------------------------------------------------
+     * 适用于：请求进入业务逻辑前，针对request-body做一些前置处理
+     * ---------------------------------------------------------------------------------------
+     */
+    private static class RequestBodyWrapper extends HttpServletRequestWrapper {
+        private final byte[] requestBody;
+        public RequestBodyWrapper (HttpServletRequest request) {
+            super(request);
+            String requestBodyStr = RequestUtil.extractHttpServletRequestBodyMessage(request);
+            this.requestBody = StringUtils.isEmpty(requestBodyStr) ? new byte[0] : requestBodyStr.getBytes(StandardCharsets.UTF_8);
+        }
+        @Override
+        public BufferedReader getReader() {
+            return new BufferedReader(new InputStreamReader(getInputStream()));
+        }
+        @Override
+        public ServletInputStream getInputStream() {
+            final ByteArrayInputStream bais = new ByteArrayInputStream(requestBody);
+            return new ServletInputStream() {
+                @Override
+                public boolean isFinished() {
+                    return false;
+                }
+                @Override
+                public boolean isReady() {
+                    return false;
+                }
+                @Override
+                public void setReadListener(ReadListener listener) {}
+                @Override
+                public int read() {
+                    return bais.read();
+                }
+            };
+        }
     }
 
 

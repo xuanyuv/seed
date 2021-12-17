@@ -62,7 +62,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public void process(HttpMessageNotReadableException cause, HttpServletRequest request, HttpServletResponse response) {
-        LogUtil.getLogger().info("Exception Occured URL={}，入参转换异常：系统自动返回提示信息", request.getRequestURL());
-        RequestUtil.writeToResponse(JSON.toJSONString(CommResult.fail(CodeEnum.SYSTEM_BUSY)), response);
+        LogUtil.getLogger().info("Exception Occured URL={}，入参格式有误", request.getRequestURL(), cause);
+        RequestUtil.writeToResponse(JSON.toJSONString(CommResult.fail(CodeEnum.SYSTEM_BUSY.getCode(), "入参格式有误")), response);
     }
 }
