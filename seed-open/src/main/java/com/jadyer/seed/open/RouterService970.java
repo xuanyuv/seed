@@ -1,9 +1,10 @@
 package com.jadyer.seed.open;
 
+import com.jadyer.seed.open.core.RouterService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RouterService970 extends RouterService100 {
+public class RouterService970 extends RouterService {
     ///**
     // * ------------------------------------------------------------------------------------
     // * 本来appid=970的业务接口中有一个是boot.loan.get，但其实现细节，在整个平台都是公共的

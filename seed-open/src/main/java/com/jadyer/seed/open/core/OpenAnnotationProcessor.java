@@ -27,8 +27,8 @@ import java.util.concurrent.ConcurrentHashMap;
 enum OpenAnnotationProcessor {
     INSTANCE;
 
-    private String appidParent = "100";
-    private ConcurrentHashMap<String, Method> methodMap = new ConcurrentHashMap<>();
+    private final String appidParent = "0";
+    private final ConcurrentHashMap<String, Method> methodMap = new ConcurrentHashMap<>();
 
     OpenAnnotationProcessor(){
         Class<?> serviceClazz = this.getBean(appidParent).getClass();
@@ -131,7 +131,7 @@ enum OpenAnnotationProcessor {
      */
     private Object getBean(String appid){
         try{
-            return SpringContextHolder.getBean("routerService" + appid);
+            return SpringContextHolder.getBean("routerService" + (appid.equals(appidParent)?"":appid));
         }catch(NoSuchBeanDefinitionException e){
             //org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'routerService971' available
             throw new SeedException(CodeEnum.OPEN_APPID_NO_IMPL);

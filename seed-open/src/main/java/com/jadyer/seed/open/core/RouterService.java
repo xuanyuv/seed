@@ -1,4 +1,4 @@
-package com.jadyer.seed.open;
+package com.jadyer.seed.open.core;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -8,7 +8,6 @@ import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
-import com.jadyer.seed.open.core.OpenMethod;
 import com.jadyer.seed.open.model.ReqData;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -40,7 +39,7 @@ import java.util.Map;
  * Created by 玄玉<https://jadyer.cn/> on 2017/9/20 17:57.
  */
 @Service
-public class RouterService100 {
+public class RouterService {
     /**
      * 文件上传接口
      */

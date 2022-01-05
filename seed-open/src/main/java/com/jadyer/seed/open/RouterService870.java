@@ -7,6 +7,7 @@ import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.util.ValidatorUtil;
 import com.jadyer.seed.open.core.OpenMethod;
+import com.jadyer.seed.open.core.RouterService;
 import com.jadyer.seed.open.model.LoanSubmit;
 import com.jadyer.seed.open.model.LoanSubmit1101;
 import com.jadyer.seed.open.model.ReqData;
@@ -17,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class RouterService870 extends RouterService100 {
+public class RouterService870 extends RouterService {
     /**
      * 申请单提交接口
      */
