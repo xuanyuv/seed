@@ -21,11 +21,11 @@ public class RouterService770 extends RouterService100 {
      * 申请单提交接口
      */
     @OpenMethod(SeedConstants.OPEN_METHOD_boot_loan_submit)
-    public CommResult<Map<String, String>> loanSubmit(ReqData reqData) {
+    public CommResult<Map<String, String>> loanSubmit(/*ReqData reqData*/ LoanSubmit loanSubmit) {
         String validMsg;
-        LoanSubmit loanSubmit = JSON.parseObject(reqData.getData(), LoanSubmit.class);
+        // LoanSubmit loanSubmit = JSON.parseObject(reqData.getData(), LoanSubmit.class);
         if("1101".equals(loanSubmit.getProductCode())){
-            LoanSubmit1101 loanSubmit1101 = JSON.parseObject(reqData.getData(), LoanSubmit1101.class);
+            LoanSubmit1101 loanSubmit1101 = JSON.parseObject(loanSubmit.getData(), LoanSubmit1101.class);
             validMsg = ValidatorUtil.validate(loanSubmit1101);
         }else{
             validMsg = ValidatorUtil.validate(loanSubmit);

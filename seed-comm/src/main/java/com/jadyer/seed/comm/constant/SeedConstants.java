@@ -36,6 +36,7 @@ public interface SeedConstants {
     /**
      * seed-open用到的常量
      */
+    String OPEN_TIMESTAMP = "yyyyMMddHHmmss";
     //seed-open的API协议版本
     String OPEN_VERSION_21 = "2.1";
     String OPEN_VERSION_22 = "2.2";

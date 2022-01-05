@@ -1,8 +1,13 @@
 package com.jadyer.seed.open.core;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.jadyer.seed.comm.SpringContextHolder;
 import com.jadyer.seed.comm.constant.CodeEnum;
+import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.exception.SeedException;
+import com.jadyer.seed.comm.util.BeanUtil;
+import com.jadyer.seed.comm.util.ValidatorUtil;
 import com.jadyer.seed.open.model.ReqData;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -12,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -55,6 +61,20 @@ enum OpenAnnotationProcessor {
                 }
                 if(obj == ReqData.class){
                     paramList.add(reqData);
+                }
+                //将参数值提供给实际的接收对象中（也就是ReqData的子类）
+                if(ReqData.class.isAssignableFrom(obj)){
+                    Map<String, String> dataMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
+                    Map<String, String> fullMap = BeanUtil.beanToMap(reqData);
+                    fullMap.putAll(dataMap);
+                    Object fullObject = BeanUtil.mapTobean(fullMap, obj);
+                    // 表单验证
+                    String validMsg = ValidatorUtil.validate(fullObject);
+                    if(StringUtils.isNotBlank(validMsg)){
+                        return CommResult.fail(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), validMsg);
+                    }
+                    // 把对象传给具体的Service
+                    paramList.add(fullObject);
                 }
             }
             //目前要求该方法参数，不能使用非这三种的

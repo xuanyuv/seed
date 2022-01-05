@@ -56,9 +56,9 @@ import java.util.Vector;
  */
 public class OpenFilter extends OncePerRequestFilter {
     private static final int TIMESTAMP_VALID_MILLISECONDS = 1000 * 60 * 10; //时间戳验证：服务端允许客户端请求最大时间误差为10分钟
-    private String filterURL;
-    private Map<String, String> appsecretMap;
-    private Map<String, List<String>> apiGrantMap;
+    private final String filterURL;
+    private final Map<String, String> appsecretMap;
+    private final Map<String, List<String>> apiGrantMap;
 
     /**
      * @param _filterURL    指定该Filter只拦截哪种请求URL，空表示都不拦截
@@ -73,7 +73,7 @@ public class OpenFilter extends OncePerRequestFilter {
 
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         return StringUtils.isBlank(filterURL) || !request.getServletPath().startsWith(filterURL);
     }
 
@@ -81,25 +81,21 @@ public class OpenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         ReqData reqData;
-        String reqDataStr;
         String respDataStr;
         String reqIp = RequestUtil.getClientIP(request);
         long startTime = System.currentTimeMillis();
         try{
             //将请求入参解析到ReqData
-            String method = request.getParameter("method");
-            if(StringUtils.isNotBlank(method) && StringUtils.endsWithAny(method, "h5", "file.upload")){
-                reqDataStr = JadyerUtil.buildStringFromMap(request.getParameterMap());
-                LogUtil.getLogger().debug("收到客户端IP=[{}]的请求报文为-->{}", reqIp, reqDataStr);
+            if(StringUtils.isNotBlank(request.getParameter("method")) && StringUtils.endsWithAny(request.getParameter("method"), "h5", "file.upload")){
+                LogUtil.getLogger().debug("收到客户端IP=[{}]的请求报文为-->{}", reqIp, JadyerUtil.buildStringFromMap(request.getParameterMap()));
                 reqData = BeanUtil.requestToBean(request, ReqData.class);
             }else{
-                reqDataStr = IOUtils.toString(request.getInputStream(), StandardCharsets.UTF_8);
+                String reqDataStr = IOUtils.toString(request.getInputStream(), StandardCharsets.UTF_8);
                 LogUtil.getLogger().debug("收到客户端IP=[{}]的请求报文为-->[{}]", reqIp, reqDataStr);
                 if(StringUtils.isBlank(reqDataStr)){
                     throw new SeedException(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "请求无数据");
                 }
                 reqData = JSON.parseObject(reqDataStr, ReqData.class);
-                method = reqData.getMethod();
             }
             //验证请求方法名非空
             if(StringUtils.isBlank(reqData.getMethod())){
@@ -118,7 +114,7 @@ public class OpenFilter extends OncePerRequestFilter {
                 throw new SeedException(CodeEnum.OPEN_UNKNOWN_VERSION);
             }
             //验证接口是否已授权
-            this.verifyGrant(reqData.getAppid(), method);
+            this.verifyGrant(reqData.getAppid(), reqData.getMethod());
             //验签
             //if(SeedConstants.VERSION_20.equals(reqData.getVersion())){
             //    this.verifySign(request.getParameterMap(), apiApplication.getAppSecret());
@@ -127,9 +123,9 @@ public class OpenFilter extends OncePerRequestFilter {
             //解密并处理（返回诸如html或txt内容时，就不用先得到字符串再转成字节数组输出，这会影响性能，尤其对账文件下载）
             RequestParameterWrapper requestWrapper = new RequestParameterWrapper(request);
             requestWrapper.addAllParameters(this.decrypt(reqData, appsecret));
-            if(StringUtils.endsWithAny(method, "h5", "agree", "download")){
+            if(StringUtils.endsWithAny(reqData.getMethod(), "h5", "agree", "download")){
                 filterChain.doFilter(requestWrapper, response);
-                respDataStr = method + "...";
+                respDataStr = reqData.getMethod() + "...";
                 LogUtil.getLogger().info("返回客户端IP=[{}]的应答明文为-->[{}]，Duration[{}]ms", reqIp, respDataStr, (System.currentTimeMillis()-startTime));
             }else{
                 ResponseContentWrapper responseWrapper = new ResponseContentWrapper(response);
@@ -166,7 +162,7 @@ public class OpenFilter extends OncePerRequestFilter {
             throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "timestamp is blank");
         }
         try {
-            long reqTime = DateUtils.parseDate(timestamp, "yyyy-MM-dd HH:mm:ss").getTime();
+            long reqTime = DateUtils.parseDate(timestamp, SeedConstants.OPEN_TIMESTAMP).getTime();
             if(Math.abs(System.currentTimeMillis()-reqTime) >= TIMESTAMP_VALID_MILLISECONDS){
                 throw new SeedException(CodeEnum.OPEN_TIMESTAMP_ERROR);
             }
@@ -223,7 +219,7 @@ public class OpenFilter extends OncePerRequestFilter {
             verfiyResult = sign.equals(paramMap.get("sign")[0]);
         }else{
             String sign = CodecUtil.buildHmacSign(sb.toString(), appsecret, "HmacMD5");
-            LogUtil.getLogger().debug("请求参数签名原文-->[{}]", sb.toString());
+            LogUtil.getLogger().debug("请求参数签名原文-->[{}]", sb);
             LogUtil.getLogger().debug("请求参数签名得到-->[{}]", sign);
             verfiyResult = sign.equals(paramMap.get("sign")[0]);
         }
@@ -332,9 +328,9 @@ public class OpenFilter extends OncePerRequestFilter {
      * filterChain.doFilter(requestWrapper, response);
      * ---------------------------------------------------------------------------------------
      */
-    private class RequestParameterWrapper extends HttpServletRequestWrapper {
-        private Map<String, String[]> paramMap = new HashMap<>();
-        private Map<String, String> headerMap = new HashMap<>();
+    private static class RequestParameterWrapper extends HttpServletRequestWrapper {
+        private final Map<String, String[]> paramMap = new HashMap<>();
+        private final Map<String, String> headerMap = new HashMap<>();
         RequestParameterWrapper(HttpServletRequest request) {
             super(request);
             this.paramMap.putAll(request.getParameterMap());
@@ -434,10 +430,10 @@ public class OpenFilter extends OncePerRequestFilter {
      * return;
      * ---------------------------------------------------------------------------------------
      */
-    private class ResponseContentWrapper extends HttpServletResponseWrapper {
-        private ResponsePrintWriter writer;
-        private OutputStreamWrapper outputWrapper;
-        private ByteArrayOutputStream output;
+    private static class ResponseContentWrapper extends HttpServletResponseWrapper {
+        private final ResponsePrintWriter writer;
+        private final OutputStreamWrapper outputWrapper;
+        private final ByteArrayOutputStream output;
         ResponseContentWrapper(HttpServletResponse httpServletResponse) {
             super(httpServletResponse);
             output = new ByteArrayOutputStream();
@@ -445,13 +441,13 @@ public class OpenFilter extends OncePerRequestFilter {
             writer = new ResponsePrintWriter(output);
         }
         @Override
-        public void finalize() throws Throwable {
+        protected void finalize() throws Throwable {
             super.finalize();
             output.close();
             writer.close();
         }
         @Override
-        public ServletOutputStream getOutputStream() throws IOException {
+        public ServletOutputStream getOutputStream() {
             return outputWrapper;
         }
         String getContent() {
@@ -462,14 +458,14 @@ public class OpenFilter extends OncePerRequestFilter {
                 return "UnsupportedEncoding";
             }
         }
-        public void close() throws IOException {
+        public void close() {
             writer.close();
         }
         @Override
-        public PrintWriter getWriter() throws IOException {
+        public PrintWriter getWriter() {
             return writer;
         }
-        private class ResponsePrintWriter extends PrintWriter {
+        private static class ResponsePrintWriter extends PrintWriter {
             ByteArrayOutputStream output;
             ResponsePrintWriter(ByteArrayOutputStream output) {
                 super(output);
@@ -479,7 +475,7 @@ public class OpenFilter extends OncePerRequestFilter {
                 return output;
             }
         }
-        private class OutputStreamWrapper extends ServletOutputStream {
+        private static class OutputStreamWrapper extends ServletOutputStream {
             ByteArrayOutputStream output;
             OutputStreamWrapper(ByteArrayOutputStream output) {
                 this.output = output;
@@ -493,7 +489,7 @@ public class OpenFilter extends OncePerRequestFilter {
                 throw new UnsupportedOperationException("UnsupportedMethod setWriteListener.");
             }
             @Override
-            public void write(int b) throws IOException {
+            public void write(int b) {
                 output.write(b);
             }
         }

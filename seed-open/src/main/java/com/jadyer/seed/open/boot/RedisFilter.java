@@ -33,16 +33,16 @@ public class RedisFilter extends OncePerRequestFilter {
     private static final String REDIS_DATA_KEY = "data-key";         //请求应答内容的RedisKey
     private static final String REDIS_DATA_CONTENT = "data-content"; //请求应答内容
     private static final String RESP_CONTENT_TYPE = "application/json; charset=UTF-8";
-    private String filterURL;
-    private JedisCluster jedisCluster;
-    private List<String> filterMethodList = new ArrayList<>();
+    private final String filterURL;
+    private final JedisCluster jedisCluster;
+    private final List<String> filterMethodList = new ArrayList<>();
 
     /**
      * @param _filterURL        指定该Filter只拦截哪种请求URL，空表示都不拦截
-     * @param _filterMethodList 指定该Filter只拦截的方法列表，空表示都不拦截
      * @param jedisCluster      redis集群对象
+     * @param _filterMethodList 指定该Filter只拦截的方法列表，空表示都不拦截
      */
-    RedisFilter(String filterURL, List<String> filterMethodList, JedisCluster jedisCluster){
+    RedisFilter(String filterURL, JedisCluster jedisCluster, List<String> filterMethodList){
         this.filterURL = filterURL;
         this.jedisCluster = jedisCluster;
         this.filterMethodList.addAll(filterMethodList);
@@ -50,7 +50,7 @@ public class RedisFilter extends OncePerRequestFilter {
 
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         return StringUtils.isNotBlank(filterURL) || !request.getServletPath().startsWith(filterURL) || filterMethodList.isEmpty() || !filterMethodList.contains(request.getParameter("method"));
     }
 
@@ -91,10 +91,10 @@ public class RedisFilter extends OncePerRequestFilter {
     /**
      * 可手工设置HttpServletResponse出参的Wrapper
      */
-    private class ResponseContentWrapper extends HttpServletResponseWrapper {
-        private ResponsePrintWriter writer;
-        private OutputStreamWrapper outputWrapper;
-        private ByteArrayOutputStream output;
+    private static class ResponseContentWrapper extends HttpServletResponseWrapper {
+        private final ResponsePrintWriter writer;
+        private final OutputStreamWrapper outputWrapper;
+        private final ByteArrayOutputStream output;
         ResponseContentWrapper(HttpServletResponse httpServletResponse) {
             super(httpServletResponse);
             output = new ByteArrayOutputStream();
@@ -102,13 +102,13 @@ public class RedisFilter extends OncePerRequestFilter {
             writer = new ResponsePrintWriter(output);
         }
         @Override
-        public void finalize() throws Throwable {
+        protected void finalize() throws Throwable {
             super.finalize();
             output.close();
             writer.close();
         }
         @Override
-        public ServletOutputStream getOutputStream() throws IOException {
+        public ServletOutputStream getOutputStream() {
             return outputWrapper;
         }
         String getContent() {
@@ -119,14 +119,14 @@ public class RedisFilter extends OncePerRequestFilter {
                 return "UnsupportedEncoding";
             }
         }
-        public void close() throws IOException {
+        public void close() {
             writer.close();
         }
         @Override
-        public PrintWriter getWriter() throws IOException {
+        public PrintWriter getWriter() {
             return writer;
         }
-        private class ResponsePrintWriter extends PrintWriter {
+        private static class ResponsePrintWriter extends PrintWriter {
             ByteArrayOutputStream output;
             ResponsePrintWriter(ByteArrayOutputStream output) {
                 super(output);
@@ -136,7 +136,7 @@ public class RedisFilter extends OncePerRequestFilter {
                 return output;
             }
         }
-        private class OutputStreamWrapper extends ServletOutputStream {
+        private static class OutputStreamWrapper extends ServletOutputStream {
             ByteArrayOutputStream output;
             OutputStreamWrapper(ByteArrayOutputStream output) {
                 this.output = output;
@@ -150,7 +150,7 @@ public class RedisFilter extends OncePerRequestFilter {
                 throw new UnsupportedOperationException("UnsupportedMethod setWriteListener.");
             }
             @Override
-            public void write(int b) throws IOException {
+            public void write(int b) {
                 output.write(b);
             }
         }

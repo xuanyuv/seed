@@ -25,7 +25,7 @@ public class OpenConfiguration {
     //    List<String> filterMethodList = new ArrayList<>();
     //    filterMethodList.add(SeedConstants.OPEN_METHOD_boot_loan_submit);
     //    filterMethodList.add(SeedConstants.OPEN_METHOD_boot_loan_agree);
-    //    return new RedisFilter("/open/router/rest", filterMethodList, jedisCluster);
+    //    return new RedisFilter("/open/router/rest", jedisCluster, filterMethodList);
     //}
 
 

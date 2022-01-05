@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
  * 申请单基本参数
  * Created by 玄玉<https://jadyer.cn/> on 2016/5/10 18:58.
  */
-public class LoanSubmit {
+public class LoanSubmit extends ReqData {
     @NotBlank
     @Size(min=1, max=32)
     private String partnerApplyNo;
