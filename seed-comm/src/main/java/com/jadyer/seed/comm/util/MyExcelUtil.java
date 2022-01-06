@@ -9,6 +9,7 @@ import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.exception.SeedException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -23,7 +24,8 @@ import java.util.List;
  * -------------------------------------------------------------------------------
  * 封装自：https://github.com/liaochong/myexcel/wiki
  * -------------------------------------------------------------------------------
- * @version v1.4
+ * @version v1.5
+ * @history v1.5-->读取文件时，支持指定文件编码（通常用于csv文件）
  * @history v1.4-->增加支持前端下载文件的流式导出的方法
  * @history v1.3-->写文件的方法增加对文件后缀名.xls的判断
  * @history v1.2-->简单封装一个写文件的方法
@@ -35,16 +37,25 @@ import java.util.List;
 public class MyExcelUtil {
     private MyExcelUtil(){}
 
+    public static <T> List<T> read(File excelFile, Class<T> modelClass, int skipRows){
+        return read(excelFile, modelClass, skipRows, null);
+    }
+
     /**
      * @param excelFile  Excel文件
      * @param modelClass 承载Excel数据的实体类
      * @param skipRows   指定跳过的行数：从0开始，传-1表示不跳过
+     * @param charset    Excel文件编码，默认UTF-8（注：csv时，若读取到乱码，可显式传GBK试试）
      * Comment by 玄玉<https://jadyer.cn/> on 2019/8/15 19:35.
      */
-    public static <T> List<T> read(File excelFile, Class<T> modelClass, int skipRows){
+    public static <T> List<T> read(File excelFile, Class<T> modelClass, int skipRows, String charset){
         List<T> dataList;
         //初始化SaxExcelReader
         SaxExcelReader<T> saxExcelReader = SaxExcelReader.of(modelClass);
+        //是否指定编码
+        if(!StringUtils.isBlank(charset)){
+            saxExcelReader = saxExcelReader.charset(charset);
+        }
         //判断是否需要跳过行
         if(-1 < skipRows){
             saxExcelReader = saxExcelReader.rowFilter(row -> row.getRowNum() > skipRows);
