@@ -22,7 +22,7 @@ public class QuartzDemo {
         List<String> dataList = Arrays.asList("1", "2", "3", "4", "5", "6");
         for(int i=0,len=dataList.size(); i<len; i++){
             String idx = JadyerUtil.leftPadUseZero(i+1+"", (len+"").length());
-            LogUtil.getLogger().info("定时任务：{}-->[{}-{}]-->開始处理，读到数据={}", quartzName, len, idx, ReflectionToStringBuilder.toString(dataList.get(i)));
+            LogUtil.getLogger().info("定时任务：{}-->[{}-{}]-->开始处理，读到数据={}", quartzName, len, idx, ReflectionToStringBuilder.toString(dataList.get(i)));
             LogUtil.getLogger().info("定时任务：{}-->[{}-{}]-->处理完毕", quartzName, len, idx);
         }
         LogUtil.getLogger().info("定时任务：{}-->结束<---------------------------------------------------", quartzName);
