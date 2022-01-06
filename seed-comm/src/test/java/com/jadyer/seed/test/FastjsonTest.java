@@ -1,6 +1,7 @@
 package com.jadyer.seed.test;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.jadyer.seed.test.model.FastjsonDataInfo;
@@ -338,4 +339,34 @@ public class FastjsonTest {
 //        System.out.println(customerInfoMap22.get("contacts").get(0).get("name"));
 //        System.out.println(customerInfoMap22.get("contacts").get(1).get("name"));
 //    }
+
+
+    @Test
+    public void jsonArrayTest(){
+        // [{"dataList":[{"id":99,"name":"秦仲海"},{"id":88,"name":"杨肃观"},{"id":77,"name":"伍定远"}],"msg":"成功","code":"0000"}]
+        String jsonStr = "[{\"dataList\":[{\"id\":99,\"name\":\"秦仲海\"},{\"id\":88,\"name\":\"杨肃观\"},{\"id\":77,\"name\":\"伍定远\"}],\"msg\":\"成功\",\"code\":\"0000\"}]";
+        JSONArray jsonArray = JSONArray.parseArray(jsonStr);
+        String code = ((JSONObject)jsonArray.get(0)).get("code").toString();
+        String dataList = ((JSONObject)jsonArray.get(0)).get("dataList").toString();
+        List<MyJSONArryData> MyJSONArryDataList = JSON.parseObject(dataList, new TypeReference<List<MyJSONArryData>>(){});
+        System.out.println("code = " + code);
+        System.out.println("dataList = " + dataList);
+        System.out.println("MyJSONArryDataList = " + JSON.toJSONString(MyJSONArryDataList));
+    }
+    static class MyJSONArryData {
+        private int id;
+        private String name;
+        public int getId() {
+            return id;
+        }
+        public void setId(int id) {
+            this.id = id;
+        }
+        public String getName() {
+            return name;
+        }
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
 }
