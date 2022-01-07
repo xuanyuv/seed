@@ -3,6 +3,9 @@
 <ol>
     <li>
         <h2>请求报文</h2>
+        1.1 通知方式：<font color="#FF0000"><b>POST&nbsp;</b></font><font color="#0000FF">&lt;Content-Type: application/json; charset=UTF-8&gt;</font><br/>
+        1.2 通知频率：每分钟一次，最多五次<del>（15s/15s/30s/3m/10m/20m/30m/30m/30m/60m/3h/3h/3h/6h/6h - 总计 24h4m）</del><br/>
+        1.3 通知规则：进件成功或支付失败的单子
         <table width="1260" border="0" cellspacing="1" bgcolor="#000000">
             <tr bgcolor="#8CB3E2">
                 <th width="20%">名称</th>
@@ -26,7 +29,7 @@
                 <td>applyStatus</td>
                 <td align="center">CHAR(1)</td>
                 <td align="center">Y</td>
-                <td>申请单状态，状态值见附录A</td>
+                <td>申请单状态，<a href="${ctxPath}/open/router/apidoc/view/code.status" target="_blank">&lt;取值见附录A：状态码&gt;</a></td>
             </tr>
             <tr bgcolor="#F0F0F0">
                 <td>applyRemark</td>
@@ -58,7 +61,7 @@
     </li>
     <li>
         <h2>响应报文</h2>
-        应答字符串”SUCCESS”（大写的）表示已收到通知。
+        应答字符串“<font color="FF0000"><b>SUCCESS</b></font>”（大写的）表示收到通知（可能会多次通知，业务侧注意幂等）
     </li>
 </ol>
 <% include("comm/footer.html"){} %>
