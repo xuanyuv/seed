@@ -23,6 +23,13 @@ public class QuartzDemo {
         for(int i=0,len=dataList.size(); i<len; i++){
             String idx = JadyerUtil.leftPadUseZero(i+1+"", (len+"").length());
             LogUtil.getLogger().info("定时任务：{}-->[{}-{}]-->开始处理，读到数据={}", quartzName, len, idx, ReflectionToStringBuilder.toString(dataList.get(i)));
+            try {
+                System.out.println("do something ...");
+                System.out.println("do something ...");
+                System.out.println("do something ...");
+            } catch (Exception e) {
+                LogUtil.getLogger().error("定时任务：{}-->[{}-{}]-->处理时发生异常，本条自动跳过", quartzName, len, idx, e);
+            }
             LogUtil.getLogger().info("定时任务：{}-->[{}-{}]-->处理完毕", quartzName, len, idx);
         }
         LogUtil.getLogger().info("定时任务：{}-->结束<---------------------------------------------------", quartzName);
