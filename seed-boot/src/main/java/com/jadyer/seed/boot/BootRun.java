@@ -216,13 +216,13 @@ public class BootRun {
         }
         // contextPath += "doc.html";
         LogUtil.getLogger().info("\n------------------------------------------------------------" +
-                        "\n\tApplication '{}' is running! \t\tProfile(s): {}" +
-                        "\n\tAccess URLs:" +
-                        "\n\tLocal: \t\t{}://{}:{}{}" +
-                        "\n\tExternal: \t{}://{}:{}{}" +
-                        "\n------------------------------------------------------------",
-                env.getProperty("spring.application.name"), env.getActiveProfiles(),
-                protocol, "127.0.0.1", serverPort, contextPath,
-                protocol, RequestUtil.getServerIP(), serverPort, contextPath);
+                "\n\tApplication  : [{}] is running!" +
+                "\n\tProfile  (s) : {}" +
+                "\n\tLocal    URL : {}://{}:{}{}" +
+                "\n\tExternal URL : {}://{}:{}{}" +
+                "\n------------------------------------------------------------",
+            env.getProperty("spring.application.name"), env.getActiveProfiles(),
+            protocol, "127.0.0.1", serverPort, contextPath,
+            protocol, RequestUtil.getServerIP(), serverPort, contextPath);
     }
 }
