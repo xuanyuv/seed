@@ -42,6 +42,40 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
  * 4. 同时，客户端的配置中，也要指定服务端用户名/密码，否则连接不上
  *    spring.boot.admin.client.username='admin'/password='admin'
  * -----------------------------------------------------------------------------------------------------------
+ * 客户端安全性设置（开放的端点是不安全的，漏洞扫描也会扫出异常）
+ * 1. 引入spring-boot-starter-security
+ * 2. 配置spring.security.user.name='client'/password='client'
+ * 3. 配置SecurityConfiguration（此时访问客户端/actuator，就会显示登录页）
+ * 4. 配置将客户端用户名/密码发送给服务端
+ *    spring.boot.admin.client.instance.metadata.user.name=${spring.security.user.name}/password=${spring.security.user.password}
+ * 此时启动客户端，会发现服务端能正常获取客户端信息，但通过浏览器访问客户端端子信息url时，需要用户名密码认证
+ * -----------------------------------------------------------------------------------------------------------
+ * 注：客户端用到的SecurityConfiguration.java如下所示
+ * package com.jadyer.seed.admin.boot;
+ *
+ * import org.springframework.context.annotation.Configuration;
+ * import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+ * import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+ * import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+ *
+ * @Configuration
+ * public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+ *     @Override
+ *     protected void configure(HttpSecurity http) throws Exception {
+ *         // super.configure(http);
+ *         SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
+ *         successHandler.setTargetUrlParameter("redirectTo");
+ *         http.authorizeRequests()
+ *                 // 此路径需要加验证
+ *                 .antMatchers("/actuator/**").authenticated()
+ *                 // 其他路径放开
+ *                 .anyRequest().permitAll()
+ *                 .and()
+ *                 .httpBasic().and()
+ *                 .csrf().disable();
+ *     }
+ * }
+ * -----------------------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.cn/> on 2018/11/15 18:10.
  */
 @EnableAdminServer
