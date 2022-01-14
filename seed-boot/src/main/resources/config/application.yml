@@ -55,7 +55,7 @@ management:
     web:
 #      base-path: /actuator
       exposure:
-        include: "*"
+        include: '*'
         #include: health,info,env,metrics
     health:
       show-details: always
@@ -81,7 +81,11 @@ spring:
 #  boot:
 #    admin:
 #      client:
+#        # 指定Spring-Boot-Admin的服务端URL
 #        url: http://127.0.0.1:8080
+#        # 接入Spring-Boot-Admin的客户端URL（通常用于服务端和客户端不在同一个服务器的情况）
+#        instance:
+#          service-url: http://127.0.0.1
   pid:
     file: /data/seed-boot.pid
   # org.springframework.boot.autoconfigure.batch.BatchProperties.java

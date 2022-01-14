@@ -156,7 +156,7 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
  * 增加三以下三个配置后，启动应用即可
  * 1.spring.application.name=SeedBoot
  * 2.spring.boot.admin.client.url=http://127.0.0.1:8080
- * 3.management.endpoints.web.exposure.include=*
+ * 3.management.endpoints.web.exposure.include='*'
  * ---------------------------------------------------------------------------------------------------------------
  * 记录应用进程号到本地文件
  * 除了{@link com.jadyer.seed.comm.util.RequestUtil#getPID()}方法外，也可以在应用启动时把pid写到本地文件中
