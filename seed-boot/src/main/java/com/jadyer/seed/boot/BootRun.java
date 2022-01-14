@@ -136,7 +136,7 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
  *   /trace------------查看应用相关的跟踪信息
  *   注意：只有当应用程序是Web应用程序（Spring MVC，Spring WebFlux或Jersey），才可以使用这几个端点：heapdump、jolokia、logfile、prometheus
  * 2.http://127.0.0.1/shutdown
- *   通过配置management.endpoints.shutdown.enabled=true即可启用
+ *   通过配置management.endpoint.shutdown.enabled=true即可启用
  *   另外：http://127.0.0.1/shutdown支持POST，但不支持GET（curl -X POST host:port/shutdown）
  *   它在收到请求，关闭应用时，本例中的SpringContextHolder.clearHolder()方法会被调用
  *   并返回该字符串给调用方（含小括号）：{"message":"Shutting down, bye..."}
