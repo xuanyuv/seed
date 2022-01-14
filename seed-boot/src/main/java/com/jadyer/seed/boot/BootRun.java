@@ -196,6 +196,7 @@ public class BootRun {
     public static void main(String[] args) {
         //SpringApplication.run(BootRun.class, args);
         //new SpringApplicationBuilder().sources(BootRun.class).profiles(getProfile(new SimpleCommandLinePropertySource(args))).run(args);
+        // ConfigurableApplicationContext applicationContext = SpringApplication.run(BootRun.class, args);
         ConfigurableApplicationContext applicationContext = new SpringApplicationBuilder().sources(BootRun.class)
                 .listeners(new ApplicationStartingEventListener())
                 .listeners(new ApplicationEnvironmentPreparedEventListener())
