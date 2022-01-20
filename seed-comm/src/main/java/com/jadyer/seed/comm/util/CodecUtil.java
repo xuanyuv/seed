@@ -616,6 +616,14 @@ public final class CodecUtil {
 
     /**
      * 生成CRC32码
+     * -------------------------------------------------------------------------------------------------
+     * CRC32存在冲突的概率，比如以下 4 对字符串的CRC32就冲突了
+     * htpqwklvynl = pojqhnulnxu
+     * rcoadjtslsa = gcpshlifrsp
+     * hydybfnyrpt = vtcdkivpjyt
+     * cmudwvdvmnb = svurvjgsmog
+     * 如果冲突了，那就只有改动一下原字符串（比如尾部添加特殊标记）重新生成了
+     * -------------------------------------------------------------------------------------------------
      * @return 返回一个长度为10的数字
      * Comment by 玄玉<https://jadyer.cn/> on 2021/7/31 14:27.
      */
