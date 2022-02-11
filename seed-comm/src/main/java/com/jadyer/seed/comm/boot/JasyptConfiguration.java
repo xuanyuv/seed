@@ -1,4 +1,4 @@
-package com.jadyer.seed.boot;
+package com.jadyer.seed.comm.boot;
 
 import com.jadyer.seed.comm.util.LogUtil;
 import org.jasypt.encryption.StringEncryptor;

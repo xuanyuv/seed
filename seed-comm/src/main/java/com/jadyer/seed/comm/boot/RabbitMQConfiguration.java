@@ -1,4 +1,4 @@
-package com.jadyer.seed.boot;
+package com.jadyer.seed.comm.boot;
 
 import com.alibaba.fastjson.JSON;
 import com.jadyer.seed.comm.util.LogUtil;
@@ -7,7 +7,6 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.nio.charset.StandardCharsets;
@@ -64,7 +63,7 @@ import java.nio.charset.StandardCharsets;
  * ----------------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.cn/> on 2017/6/5 15:19.
  */
-@Configuration
+// @Configuration
 @Profile("test")
 public class RabbitMQConfiguration {
     @Bean

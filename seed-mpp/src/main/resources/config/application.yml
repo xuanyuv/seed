@@ -64,6 +64,7 @@ spring:
           new_generator_mappings: false
 
 
+# 允许匿名访问的资源列表
 auth:
   unauthUrl: /
   anonyList:

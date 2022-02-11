@@ -4,13 +4,9 @@ import com.jadyer.seed.comm.constant.SeedConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@EntityScan(basePackages="com.jadyer.seed")
-@EnableJpaRepositories(basePackages="com.jadyer.seed")
 @SpringBootApplication(scanBasePackages="com.jadyer.seed")
 public class MppRun {
     private static final Logger log = LoggerFactory.getLogger(MppRun.class);

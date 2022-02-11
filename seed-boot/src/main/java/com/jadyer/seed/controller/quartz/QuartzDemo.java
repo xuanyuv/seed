@@ -15,7 +15,8 @@ import java.util.List;
 @Component
 @EnableScheduling
 public class QuartzDemo {
-    //@Scheduled(cron="${spring.quartz.cron.demo}")
+    // @Scheduled(cron="${spring.quartz.cron.demo}")
+    // @Scheduled(cron="0 */2 * * * ?")
     void justDoIt(){
         String quartzName = "DEMO";
         LogUtil.getLogger().info("定时任务：{}-->启动--------------------------------------------------->", quartzName);

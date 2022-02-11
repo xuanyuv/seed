@@ -208,25 +208,6 @@ qss:
   cron: 0 */2 * * * ?
 
 
-# 允许匿名访问的资源列表
-auth:
-  unauthUrl: /index
-  anonyList:
-    - /
-    - /js/**
-    - /css/**
-    - /img/**
-    - /druid/**
-    - /portal/**
-    - /info
-    - /actuator/info
-    - /actuator/health
-    - /login
-    - /captcha
-    - /favicon.ico
-    - /prop
-
-
 ---
 spring:
   profiles: local

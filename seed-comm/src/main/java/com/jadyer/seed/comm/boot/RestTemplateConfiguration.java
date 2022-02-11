@@ -1,4 +1,4 @@
-package com.jadyer.seed.boot;
+package com.jadyer.seed.comm.boot;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;

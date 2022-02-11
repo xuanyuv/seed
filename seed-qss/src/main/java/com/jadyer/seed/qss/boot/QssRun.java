@@ -10,10 +10,8 @@ import com.jadyer.seed.qss.repository.ScheduleTaskRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
@@ -25,8 +23,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by 玄玉<https://jadyer.cn/> on 2017/3/4 18:39.
  */
-@EntityScan(basePackages="com.jadyer.seed")
-@EnableJpaRepositories(basePackages="com.jadyer.seed")
 @SpringBootApplication(scanBasePackages="com.jadyer.seed")
 public class QssRun {
     private static final Logger log = LoggerFactory.getLogger(QssRun.class);

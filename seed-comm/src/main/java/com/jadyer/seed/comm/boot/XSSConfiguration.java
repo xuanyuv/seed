@@ -1,4 +1,4 @@
-package com.jadyer.seed.boot;
+package com.jadyer.seed.comm.boot;
 
 import com.jadyer.seed.comm.util.JadyerUtil;
 import org.apache.commons.lang3.StringUtils;

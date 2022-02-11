@@ -1,7 +1,7 @@
 package com.jadyer.seed.comm.annotation.log;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.jadyer.seed.comm.boot.FastjsonConfiguration;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.exception.SeedException;
@@ -27,18 +27,6 @@ import java.util.List;
  * Created by 玄玉<https://jadyer.cn/> on 2018/4/17 13:39.
  */
 class LogAspect implements MethodInterceptor {
-    private static SerializerFeature[] serializerFeatures = new SerializerFeature[8];
-    static {
-        serializerFeatures[0] = SerializerFeature.QuoteFieldNames;
-        serializerFeatures[1] = SerializerFeature.WriteMapNullValue;
-        serializerFeatures[2] = SerializerFeature.WriteNullListAsEmpty;
-        serializerFeatures[3] = SerializerFeature.WriteNullNumberAsZero;
-        serializerFeatures[4] = SerializerFeature.WriteNullStringAsEmpty;
-        serializerFeatures[5] = SerializerFeature.WriteNullBooleanAsFalse;
-        serializerFeatures[6] = SerializerFeature.WriteDateUseDateFormat;
-        serializerFeatures[7] = SerializerFeature.DisableCircularReferenceDetect;
-    }
-
     @Override
     public Object invoke(MethodInvocation invocation) {
         Object respData = null;
@@ -111,7 +99,7 @@ class LogAspect implements MethodInterceptor {
         }else if(respData.getClass().isAssignableFrom(ResponseEntity.class)) {
             returnInfo = "<org.springframework.http.ResponseEntity>";
         }else{
-            returnInfo = JSON.toJSONStringWithDateFormat(respData, JSON.DEFFAULT_DATE_FORMAT, serializerFeatures);
+            returnInfo = JSON.toJSONStringWithDateFormat(respData, JSON.DEFFAULT_DATE_FORMAT, FastjsonConfiguration.serializerFeatures);
         }
         LogUtil.getLogger().info("{}()被调用，出参为{}，Duration[{}]ms", methodInfo, returnInfo, endTime-startTime);
         LogUtil.getLogger().info("---------------------------------------------------------------------------------------------");

@@ -29,7 +29,7 @@ public class QuartzListenerConfiguration {
         scheduler.getListenerManager().addTriggerListener(new TriggerListenerSupport() {
             @Override
             public String getName() {
-                return "Seed-QSS-JobTriggerListener";
+                return "Seed-Job-TriggerListener";
             }
             @Override
             public void triggerComplete(Trigger trigger, JobExecutionContext context, Trigger.CompletedExecutionInstruction triggerInstructionCode) {
