@@ -62,13 +62,9 @@ spring:
 
 
 redis:
-  password: 111111
+  password: 123456
   nodes:
-    - 192.168.20.53:6389
-redisson:
-  password: 111111
-  nodes:
-    - redis://192.168.20.53:6389
+    - 127.0.0.1:6379
 
 
 ---

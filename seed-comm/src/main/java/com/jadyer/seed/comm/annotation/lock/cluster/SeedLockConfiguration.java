@@ -46,7 +46,7 @@ public class SeedLockConfiguration implements EnvironmentAware {
     /** 节点地址：[host:port] */
     private List<String> nodes = new ArrayList<>();
     /** 部署模式（SINGLE、CLUSTER） */
-    private String pattern;
+    private String pattern = "CLUSTER";
     /** 监控锁的看门狗超时，单位：毫秒（默认值：30000） */
     private int lockWatchdogTimeout;
     /** 最小空闲连接数（默认值：32） */

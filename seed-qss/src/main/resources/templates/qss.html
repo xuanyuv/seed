@@ -16,7 +16,7 @@ function formValidate(){
         alert("动态密码不能为空");
         return false;
     }
-    if($("#dynamicPassword").val() == "请输入动态密码（动态密码请联系玄玉）"){
+    if($("#dynamicPassword").val() == "请输入动态密码"){
         alert("请输入动态密码");
         return false;
     }
@@ -174,11 +174,12 @@ function inputDynamicPassword(){
                 </tr>
             <%}%>
             <tr>
+                <td><input name="appname" id="appname" size="16"/></td>
                 <td><input name="name" id="name" size="16"/></td>
                 <td>停止</td>
                 <td><input name="url" id="url" size="32"/></td>
                 <td><input name="cron" id="cron" value="50 * * * * ?" size="16"/></td>
-                <td colspan="2"><input name="dynamicPassword" id="dynamicPassword" value="请输入动态密码（动态密码请联系玄玉）" size="34"/></td>
+                <td colspan="2"><input name="dynamicPassword" id="dynamicPassword" value="请输入动态密码" size="34"/></td>
                 <td><input type="button" onclick="addTask()" value="保存"/></td>
             </tr>
         </table>
