@@ -154,11 +154,9 @@ public final class CodecUtil {
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalArgumentException("No such algorithm-->[" + algorithm + "]");
         }
-        //初始化密钥生成器:AES要求密钥长度为128,192,256位
-        if(ALGORITHM_AES.equals(algorithm)){
+        //初始化密钥生成器：AES要求密钥长度为128,192,256位
+        if(ALGORITHM_AES.equals(algorithm)/* || ALGORITHM_AES_PKCS7.equals(algorithm)*/){
             kg.init(128);
-        // }else if(ALGORITHM_AES_PKCS7.equals(algorithm)){
-        //     kg.init(128);
         }else if(ALGORITHM_DES.equals(algorithm)){
             kg.init(56);
         }else if(ALGORITHM_DES_EDE.equals(algorithm)){
