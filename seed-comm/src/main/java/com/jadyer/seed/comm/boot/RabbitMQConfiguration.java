@@ -64,7 +64,8 @@ import java.nio.charset.StandardCharsets;
  * Created by 玄玉<https://jadyer.cn/> on 2017/6/5 15:19.
  */
 // @Configuration
-@Profile("test")
+// @Profile("test")
+@Profile({"test", "uat", "prod"})
 public class RabbitMQConfiguration {
     @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory){

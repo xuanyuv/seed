@@ -11,7 +11,6 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
@@ -39,7 +38,7 @@ import org.springframework.core.io.support.ResourcePropertySource;
  * ----------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.cn/> on 2016/5/14 13:22.
  */
-@Configuration
+// @Configuration
 @ConditionalOnClass(StringEncryptor.class)
 @PropertySource(value={"${jasypt.file:classpath:config/encrypted.properties}"})
 public class JasyptConfiguration implements EnvironmentAware {
