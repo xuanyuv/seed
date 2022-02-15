@@ -118,8 +118,8 @@ public final class CodecUtil {
 
     /**
      * 生成AES/CBC/PKCS7Padding专用的IV
-     * ECB模式只用密钥即可对数据进行加解密,CBC模式需要添加一个参数IV
-     * IV是一个16字节的数组,这里采用和IOS一样的构造方法,数据全为0
+     * ECB模式只用密钥即可对数据进行加解密，CBC模式需要添加一个参数IV
+     * IV是一个16字节的数组，这里采用和IOS一样的构造方法，数据全为0
      */
     private static AlgorithmParameters initIV(){
         byte[] iv = new byte[16];
@@ -371,6 +371,70 @@ public final class CodecUtil {
         }catch(Exception e){
             throw new RuntimeException("解密字符串[" + data + "]时遇到异常", e);
         }
+    }
+
+
+    /**
+     * AES-PKCS7算法加密数据-IV版
+     * -------------------------------------------------------------------------------------------
+     * IV与非IV版区别在于：前端项目（vue3.0）的加解密包要求传偏移量，且是PKCS7Padding的，故编写此方法
+     * 另外，本法中用到的密钥和偏移量，随机生成固定长度为16的字符串即可，不需要用initKey()方法来生成
+     * -------------------------------------------------------------------------------------------
+     * 前端项目（vue3.0）的加解密包，要求传入的密钥和偏移量，是十六进制的字符串，如下所示
+     * const key = CryptoJS.enc.Utf8.parse("64326533316638663632633834643366");
+     * 对应java的就是：Hex.encodeHexString("d2e31f8f62c84d3f".getBytes("UTF-8"));
+     * -------------------------------------------------------------------------------------------
+     * @param data 待加密的明文字符串
+     * @param key  密钥，固定长度为16的字符串（字母数字混合均可）
+     * @param iv   偏移量，固定长度为16的字符串（字母数字混合均可）
+     * @return AES-PKCS7加密后的16进制表示的密文字符串，加密过程中遇到异常则抛出RuntimeException
+     */
+    public static String aesPKCS7Encrypt(String data, String key, String iv){
+        try{
+            Cipher cipher = aesPKCS7(key, iv, Cipher.ENCRYPT_MODE);
+            return Hex.encodeHexString(cipher.doFinal(data.getBytes(StandardCharsets.UTF_8)));
+        }catch(Exception e){
+            throw new RuntimeException("加密字符串[" + data + "]时遇到异常", e);
+        }
+    }
+
+
+    /**
+     * AES-PKCS7算法解密数据-IV版
+     * @param data 待解密的16进制表示的密文字符串
+     * @param key  密钥，固定长度为16的字符串（字母数字混合均可）
+     * @param iv   偏移量，固定长度为16的字符串（字母数字混合均可）
+     * @return AES-PKCS7解密后的明文字符串，解密过程中遇到异常则抛出RuntimeException
+     */
+    public static String aesPKCS7Decrypt(String data, String key, String iv){
+        try {
+            Cipher cipher = aesPKCS7(key, iv, Cipher.DECRYPT_MODE);
+            return new String(cipher.doFinal(Hex.decodeHex(data.toCharArray())), StandardCharsets.UTF_8);
+        }catch(Exception e){
+            throw new RuntimeException("解密字符串[" + data + "]时遇到异常", e);
+        }
+    }
+
+
+    /**
+     * AES-PKCS7算法解密数据-IV版-专用
+     * @param key  密钥，固定长度为16的字符串（字母数字混合均可）
+     * @param iv   偏移量，固定长度为16的字符串（字母数字混合均可）
+     * @param mode 加解密模式，仅支持两个值：Cipher.ENCRYPT_MODE/DECRYPT_MODE
+     * Comment by 玄玉<https://jadyer.cn/> on 2022/2/15 16:10.
+     */
+    private static Cipher aesPKCS7(String key, String iv, int mode) throws Exception {
+        if(StringUtils.length(key)!=16 || StringUtils.length(iv)!=16){
+            throw new RuntimeException("密钥或偏移量应为固定长度为16的字符串");
+        }
+        if(mode!=Cipher.ENCRYPT_MODE && mode!=Cipher.DECRYPT_MODE){
+            throw new RuntimeException("加解密模式仅支持 " + Cipher.ENCRYPT_MODE + " 或 " + Cipher.DECRYPT_MODE);
+        }
+        Security.addProvider(new BouncyCastleProvider());
+        Key secretKey = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), ALGORITHM_AES_PKCS7);
+        Cipher cipher = Cipher.getInstance(ALGORITHM_CIPHER_AES_PKCS7, "BC");
+        cipher.init(mode, secretKey, new IvParameterSpec(iv.getBytes(StandardCharsets.UTF_8)));
+        return cipher;
     }
 
 
