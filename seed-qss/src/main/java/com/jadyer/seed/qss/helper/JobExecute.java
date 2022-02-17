@@ -1,10 +1,7 @@
 package com.jadyer.seed.qss.helper;
 
 import com.jadyer.seed.comm.SpringContextHolder;
-import com.jadyer.seed.comm.annotation.lock.cluster.SeedLockConfiguration;
-import com.jadyer.seed.comm.annotation.lock.cluster.SeedLockHelper;
 import com.jadyer.seed.comm.util.HTTPUtil;
-import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.qss.model.ScheduleLog;
 import com.jadyer.seed.qss.model.ScheduleTask;
 import com.jadyer.seed.qss.repository.ScheduleLogRepository;
@@ -12,11 +9,10 @@ import com.jadyer.seed.qss.repository.ScheduleLogRepository;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 class JobExecute {
     private static final int WAIT_MILLISECONDS = 6000;
-    private static ExecutorService threadPool = Executors.newCachedThreadPool();
+    private static final ExecutorService threadPool = Executors.newCachedThreadPool();
 
     ///**
     // * 通过反射调用task中的方法
@@ -64,41 +60,35 @@ class JobExecute {
      * Created by 玄玉<https://jadyer.cn/> on 2015/8/8 20:33.
      */
     static void invokMethod(ScheduleTask task){
-        try {
-            if(SeedLockHelper.lock(SeedLockConfiguration.redissonClientList, task.getJobname(), "seedqss")){
+        String jobName = task.getId() + ":" + task.getAppname() + ":" + task.getName();
+        // try {
+            // if(SeedLockHelper.lock(SeedLockConfiguration.redissonClientList, jobName, "seed-qss")){
+                // 记录调用日志
                 ScheduleLogRepository repository = SpringContextHolder.getBean(ScheduleLogRepository.class);
-                //ScheduleLog log = ScheduleLog.builder().taskId(task.getId()).appname(task.getAppname()).name(task.getName()).url(task.getUrl()).fireTime(new Date()).build();
-                ScheduleLog log = new ScheduleLog();
-                log.setTaskId(task.getId());
-                log.setAppname(task.getAppname());
-                log.setName(task.getName());
-                log.setUrl(task.getUrl());
-                log.setFireTime(new Date());
+                ScheduleLog log = ScheduleLog.builder().taskId(task.getId()).appname(task.getAppname()).name(task.getName()).url(task.getUrl()).fireTime(new Date()).build();
                 log = repository.saveAndFlush(log);
-                //正式调用
-                LogUtil.getLogger().info("start-->定时任务：[{}]=[{}]", task.getJobname(), task.getUrl());
+                // 开始调用
                 long startTime = System.currentTimeMillis();
                 String respData = HTTPUtil.post(task.getUrl().trim(), null);
                 long durationTime = System.currentTimeMillis() - startTime;
-                LogUtil.getLogger().info("stopp-->定时任务：[{}]=[{}]，return=[{}]", task.getJobname(), task.getUrl(), respData);
-                //服务器时间同步存在误差时的容错处理：最多容错6s，即最多允许服务器之间的时间同步误差为6s
-                if(durationTime < WAIT_MILLISECONDS){
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(WAIT_MILLISECONDS - durationTime);
-                    } catch (InterruptedException e){
-                        LogUtil.getLogger().error("服务器时间误差容错处理时，遇到异常", e);
-                    }
-                }
-                //更新耗时及应答结果
+                // // 服务器时间同步存在误差时的容错处理：最多容错6s，即最多允许服务器之间的时间同步误差为6s
+                // if(durationTime < WAIT_MILLISECONDS){
+                //     try {
+                //         TimeUnit.MILLISECONDS.sleep(WAIT_MILLISECONDS - durationTime);
+                //     } catch (InterruptedException e){
+                //         LogUtil.getLogger().error("服务器时间误差容错处理时，遇到异常", e);
+                //     }
+                // }
+                // 更新调用日志
                 ScheduleLog finalLog = log;
                 threadPool.execute(() -> {
                     finalLog.setDuration(durationTime);
                     finalLog.setRespData(respData);
                     repository.saveAndFlush(finalLog);
                 });
-            }
-        } finally {
-            SeedLockHelper.unlock();
-        }
+            // }
+        // } finally {
+        //     SeedLockHelper.unlock();
+        // }
     }
 }

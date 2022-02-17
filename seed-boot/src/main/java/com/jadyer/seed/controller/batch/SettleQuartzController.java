@@ -55,7 +55,6 @@ public class SettleQuartzController {
      * -----------------------------------------------------------------------------------------------
      */
     @RequestMapping("/batch")
-    //@SeedQSSReg(qssHost="${qss.host}", appHost="${qss.appHost}", appname="${qss.appname}", name="${qss.name}", cron="${qss.cron}")
     CommResult<JobInstance> batch(String bizDate) throws Exception {
         //判断是否断点续跑
         boolean isResume = false;

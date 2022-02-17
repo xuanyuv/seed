@@ -1,6 +1,5 @@
 package com.jadyer.seed.comm;
 
-import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPubSub;
@@ -23,7 +22,7 @@ import java.util.Map;
  * @history v1.0-->增加若干JedisCommands原方法的包装
  * Created by 玄玉<https://jadyer.cn/> on 2021/5/7 22:02.
  */
-@Component
+// @Component
 public final class JedisPoolHolder {
     @Resource
     public void setJedisPool(JedisPool jedisPool) {

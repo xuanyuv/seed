@@ -21,14 +21,13 @@ public interface SeedConstants {
     /**
      * seed-qss用到的常量
      */
-    int QSS_STATUS_STOP        = 0; //停止
-    int QSS_STATUS_RUNNING     = 1; //启动
-    //int QSS_STATUS_PAUSE     = 2; //暂停
-    //int QSS_STATUS_RESUME    = 3; //暂停后恢复
-    int QSS_CONCURRENT_NO      = 0; //禁止并发执行
-    int QSS_CONCURRENT_YES     = 1; //允许并发执行
-    String QSS_JOB_DATAMAP_KEY = "qss"; //存放在Quartz测JobDataMap中的key
-    String CHANNEL_SUBSCRIBER  = "qss_jedis_pubsub_channel";
+    int QSS_STATUS_STOP        = 0;     //停止
+    int QSS_STATUS_RUN         = 1;     //启动
+    int QSS_STATUS_PAUSE       = 2;     //挂起
+    int QSS_STATUS_RESUME      = 3;     //恢复
+    int QSS_CONCURRENT_NO      = 0;     //禁止并发执行
+    int QSS_CONCURRENT_YES     = 1;     //允许并发执行
+    String QSS_JOB_DATAMAP_KEY = "qss"; //存放在Quartz.JobDataMap中的key
 
     /**
      * seed-open用到的常量

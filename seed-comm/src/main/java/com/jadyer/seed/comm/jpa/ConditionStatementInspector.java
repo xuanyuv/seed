@@ -86,12 +86,12 @@ public class ConditionStatementInspector implements StatementInspector {
                 try {
                     conn.close();
                     if(conn.isClosed()){
-                        System.out.println("此数据库连接已关闭-->" + conn);
+                        System.out.println("SQL拦截器：此数据库连接已关闭-->" + conn);
                     }else{
-                        System.err.println("此数据库连接关闭失败-->" + conn);
+                        System.err.println("SQL拦截器：此数据库连接关闭失败-->" + conn);
                     }
                 } catch (SQLException e) {
-                    System.err.println("数据库连接关闭失败，堆栈轨迹如下：");
+                    System.err.println("SQL拦截器：数据库连接关闭失败，堆栈轨迹如下：");
                     e.printStackTrace();
                 }
             }

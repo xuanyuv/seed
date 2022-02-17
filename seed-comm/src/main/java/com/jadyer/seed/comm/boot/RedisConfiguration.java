@@ -1,4 +1,4 @@
-package com.jadyer.seed.boot;
+package com.jadyer.seed.comm.boot;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.ConfigurationProperties;

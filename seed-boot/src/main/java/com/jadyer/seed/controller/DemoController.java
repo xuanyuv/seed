@@ -66,7 +66,6 @@ public class DemoController {
     @GetMapping("/prop")
     //@SeedLock(key="#userMsg.name", appname="seedboot", fallbackMethod="propLockFail")
     @SeedLog(action= ActionEnum.LIST, value="读取配置文件中的属性")
-    //@SeedQSSReg(qssHost="${qss.host}", appHost="${qss.appHost}", appname="seedboot", name="打印系统属性", cron="${qss.cron}")
     public CommResult<Map<String, Object>> prop(Integer id, UserMsg userMsg){
         Map<String, Object> map = new HashMap<>(13);
         map.put("weight", this.weight);

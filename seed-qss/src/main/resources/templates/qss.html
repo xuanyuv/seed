@@ -41,7 +41,7 @@ function formValidate(){
 function addTask(){
     if(formValidate()){
         $.post("${ctxPath}/qss/add",
-                {status:${@com.jadyer.seed.comm.constant.SeedConstants.QSS_STATUS_STOP}, name:$("#name").val(), url:$("#url").val(), cron:$("#cron").val(), dynamicPassword:$("#dynamicPassword").val()},
+                {appname:$("#appname").val(), name:$("#name").val(), status:${@com.jadyer.seed.comm.constant.SeedConstants.QSS_STATUS_STOP}, concurrent:$("#concurrent").val(), url:$("#url").val(), cron:$("#cron").val(), dynamicPassword:$("#dynamicPassword").val()},
                 function(jsonData){
                     if(0 == jsonData.code){
                         location.reload();
@@ -141,10 +141,11 @@ function inputDynamicPassword(){
         <br>
         <table border="9">
             <tr>
-                <th style="width:10%;">应用</th>
-                <th style="width:10%;">任务</th>
+                <th style="width:10%;">应用名</th>
+                <th style="width:10%;">任务名</th>
                 <th style="width:3%;">状态</th>
-                <th style="width:25%;">URL</th>
+                <th style="width:3%;">并发</th>
+                <th style="width:24%;">URL</th>
                 <th style="width:10%;">Cron</th>
                 <th style="width:11%;">下次触发时间</th>
                 <th style="width:11%;">上次触发时间</th>
@@ -154,18 +155,26 @@ function inputDynamicPassword(){
                 <tr>
                     <td>${task.appname}</td>
                     <td>${task.name}</td>
-                    <td>${task.status==@com.jadyer.seed.comm.constant.SeedConstants.QSS_STATUS_RUNNING ? '启动' : '停止'}</td>
+                    <td>${task.status==1 ? '已启动' : task.status==2 ? '已挂起' : task.status==3 ? '已恢复':'已停止'}</td>
+                    <td>${task.concurrent==@com.jadyer.seed.comm.constant.SeedConstants.QSS_CONCURRENT_YES ? '允许' : '不允许'}</td>
                     <td style="word-break:break-all;">${task.url}</td>
                     <td>${task.cron}</td>
                     <td>${task.nextFireTime, dateFormat="yyyy-MM-dd HH:mm:ss"}</td>
                     <td>${task.previousFireTime, dateFormat="yyyy-MM-dd HH:mm:ss"}</td>
                     <td>
                         <%if(task.status==0){%>
-                            <a href="javascript:updateStatus(${task.id}, ${@com.jadyer.seed.comm.constant.SeedConstants.QSS_STATUS_RUNNING});">启动</a>
+                            <a href="javascript:updateStatus(${task.id}, ${@com.jadyer.seed.comm.constant.SeedConstants.QSS_STATUS_RUN});">启动</a>
+                            挂起
                             立即执行
                         <%}%>
-                        <%if(task.status==1){%>
+                        <%if(task.status==2){%>
+                            停止
+                            <a href="javascript:updateStatus(${task.id}, ${@com.jadyer.seed.comm.constant.SeedConstants.QSS_STATUS_RESUME});">恢复</a>
+                            立即执行
+                        <%}%>
+                        <%if(task.status==1 || task.status==3){%>
                             <a href="javascript:updateStatus(${task.id}, ${@com.jadyer.seed.comm.constant.SeedConstants.QSS_STATUS_STOP});">停止</a>
+                            <a href="javascript:updateStatus(${task.id}, ${@com.jadyer.seed.comm.constant.SeedConstants.QSS_STATUS_PAUSE});">挂起</a>
                             <a href="javascript:triggerJob(${task.id});">立即执行</a>
                         <%}%>
                         <a href="javascript:updateCron(${task.id}, '${task.cron}');">更新Cron</a>
@@ -177,6 +186,12 @@ function inputDynamicPassword(){
                 <td><input name="appname" id="appname" size="16"/></td>
                 <td><input name="name" id="name" size="16"/></td>
                 <td>停止</td>
+                <td>
+                    <select name="concurrent" id="concurrent">
+                        <option value="${@com.jadyer.seed.comm.constant.SeedConstants.QSS_CONCURRENT_NO}">不允许</option>
+                        <option value="${@com.jadyer.seed.comm.constant.SeedConstants.QSS_CONCURRENT_YES}">允许</option>
+                    </select>
+                </td>
                 <td><input name="url" id="url" size="32"/></td>
                 <td><input name="cron" id="cron" value="50 * * * * ?" size="16"/></td>
                 <td colspan="2"><input name="dynamicPassword" id="dynamicPassword" value="请输入动态密码" size="34"/></td>

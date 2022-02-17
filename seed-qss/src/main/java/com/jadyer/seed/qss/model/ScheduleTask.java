@@ -8,7 +8,6 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import java.util.Date;
 
 /**
@@ -50,10 +49,10 @@ public class ScheduleTask extends BaseEntity<Long> {
     /** 定时任务URL */
     private String url;
 
-    /** 定时任务状态：0--停止，1--启动，2--挂起，3--恢复 */
+    /** 定时任务状态：0-停止、1-启动、2-挂起、3-恢复 */
     private int status = SeedConstants.QSS_STATUS_STOP;
 
-    /** 定时任务是否允许并行执行：0--不允许，1--允许 */
+    /** 定时任务是否允许并行执行：0-不允许、1-允许 */
     private int concurrent = SeedConstants.QSS_CONCURRENT_NO;
 
     /** 定时任务下次触发时间 */
@@ -63,17 +62,6 @@ public class ScheduleTask extends BaseEntity<Long> {
     /** 定时任务上次触发时间 */
     @Column(name="previous_fire_time")
     private Date previousFireTime;
-
-    //指明被标注的变量不需要被映射到数据库表中
-    @Transient
-    private String jobname;
-
-    /**
-     * 获取job-name
-     */
-    public String getJobname() {
-        return super.getId() + ":" + appname + ":" + name;
-    }
 
     public String getAppname() {
         return appname;

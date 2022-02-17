@@ -61,12 +61,6 @@ spring:
             threadCount: 11
 
 
-redis:
-  password: 123456
-  nodes:
-    - 127.0.0.1:6379
-
-
 ---
 spring:
   profiles: local
