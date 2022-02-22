@@ -3,7 +3,7 @@ package com.jadyer.seed.test;
 import com.jadyer.seed.boot.BootRun;
 import com.jadyer.seed.boot.ratelimiter.RateLimiterLua;
 import com.jadyer.seed.boot.ratelimiter.RateLimiterLuaV2;
-import com.jadyer.seed.comm.util.JadyerUtil;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
 import org.junit.Assert;
@@ -60,7 +60,7 @@ public class BootTest {
      */
     @Test
     public void redisTest(){
-        String redisKey = JadyerUtil.randomNumeric(6);
+        String redisKey = RandomStringUtils.randomNumeric(6);
         Map<String, String> hash = new HashMap<>();
         hash.put("测试key01", "这是有效期为12分钟的内容01");
         hash.put("测试key02", "这是有效期为12分钟的内容02");
