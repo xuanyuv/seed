@@ -4,6 +4,7 @@ import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.exception.SeedException;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
@@ -603,7 +604,7 @@ public final class HTTPUtil {
                     }
                 }
                 if(StringUtils.isBlank(filename)){
-                    filename = JadyerUtil.randomNumeric(16);
+                    filename = RandomStringUtils.randomAlphabetic(16);
                 }
                 File localFile = new File(System.getProperty("java.io.tmpdir") + "/seed/HTTPUtil-download/" + filename);
                 FileUtils.copyInputStreamToFile(entity.getContent(), localFile);

@@ -92,7 +92,6 @@ package com.jadyer.seed.comm.util;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.RandomStringGenerator;
 
 import javax.imageio.ImageIO;
 import javax.swing.filechooser.FileSystemView;
@@ -124,7 +123,8 @@ import java.util.Map;
 /**
  * 玄玉的开发工具类
  * ---------------------------------------------------------------------------------------------------------------
- * @version v3.22
+ * @version v3.23
+ * @history v3.23-->移除randomNumeric()、randomAlphabetic()
  * @history v3.22-->增加mergeFile()：多文件合并为单文件
  * @history v3.21-->增加extractStackTraceCausedBy()：提取堆栈轨迹中表示真正错误提示的的Caused by: 部分
  * @history v3.20-->移动若干网络请求的相关方法至{@link RequestUtil}
@@ -168,32 +168,6 @@ import java.util.Map;
  */
 public final class JadyerUtil {
     private JadyerUtil(){}
-
-    /**
-     * 生成指定长度的，由纯数字组成的，随机字符串
-     * <p>
-     *     注意：返回的字符串的首字符，不会是零
-     * </p>
-     */
-    public static String randomNumeric(final int count) {
-        //RandomStringUtils这个类不推荐使用了，用RandomStringGenerator来代替
-        //return RandomStringUtils.randomNumeric(count);
-        RandomStringGenerator generator = new RandomStringGenerator.Builder().withinRange('0', '9').build();
-        String str = generator.generate(count);
-        while(str.startsWith("0")){
-            str = generator.generate(count);
-        }
-        return str;
-    }
-
-
-    /**
-     * 生成指定长度的，由纯小写字母组成的，随机字符串
-     */
-    public static String randomAlphabetic(final int count) {
-        return new RandomStringGenerator.Builder().withinRange('a', 'z').build().generate(count);
-    }
-
 
     /**
      * 多文件合并为单文件
@@ -358,7 +332,7 @@ public final class JadyerUtil {
                 }
             }
             sb.append("| ");
-            sb.append(sb2.toString());
+            sb.append(sb2);
         }
         sb.append("\r\n------------------------------------------------------------------------");
         return sb.toString();
@@ -682,9 +656,9 @@ public final class JadyerUtil {
      * </p>
      */
     public static String extractStackTrace(Throwable cause){
-        //ByteArrayOutputStream byteArrayOut = new ByteArrayOutputStream();
-        //cause.printStackTrace(new PrintStream(byteArrayOut));
-        //return byteArrayOut.toString();
+        // ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        // cause.printStackTrace(new PrintStream(baos));
+        // return baos.toString();
         StringWriter sw = new StringWriter();
         try (PrintWriter pw = new PrintWriter(sw)) {
             cause.printStackTrace(pw);
