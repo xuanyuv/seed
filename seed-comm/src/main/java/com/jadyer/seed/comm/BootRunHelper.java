@@ -1,4 +1,4 @@
-package com.jadyer.seed.comm.boot;
+package com.jadyer.seed.comm;
 
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.RequestUtil;

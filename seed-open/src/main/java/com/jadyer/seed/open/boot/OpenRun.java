@@ -1,7 +1,7 @@
 package com.jadyer.seed.open.boot;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
-import com.jadyer.seed.comm.boot.BootRunHelper;
+import com.jadyer.seed.comm.BootRunHelper;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;

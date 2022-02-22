@@ -1,6 +1,6 @@
 package com.jadyer.seed.qss.boot;
 
-import com.jadyer.seed.comm.boot.BootRunHelper;
+import com.jadyer.seed.comm.BootRunHelper;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**

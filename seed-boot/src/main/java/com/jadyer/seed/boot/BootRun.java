@@ -4,7 +4,7 @@ import com.jadyer.seed.boot.event.ApplicationEnvironmentPreparedEventListener;
 import com.jadyer.seed.boot.event.ApplicationFailedEventListener;
 import com.jadyer.seed.boot.event.ApplicationPreparedEventListener;
 import com.jadyer.seed.boot.event.ApplicationStartingEventListener;
-import com.jadyer.seed.comm.boot.BootRunHelper;
+import com.jadyer.seed.comm.BootRunHelper;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.ApplicationPidFileWriter;
 
