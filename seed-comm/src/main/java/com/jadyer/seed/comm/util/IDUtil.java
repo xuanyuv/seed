@@ -42,12 +42,15 @@ public enum IDUtil {
     //通过Chrome控制台执行new Date(1507564800000)，回车后发现这里表示的是：Tue Oct 10 2017 00:00:00 GMT+0800 (中国标准时间)
     //由于Snowflake算法41bit最多支持69.7年，所以本工具类最多可支持到2017+69=2086年
     private final long twepoch = 1507564800000L;
+    //数据中心ID(0 ~ 31）
+    private long datacenterId;
+    //工作机器ID（0 ~ 31）
+    private long workerId;
     //机器ID所占的位数
     private final long workerIdBits = 5L;
     //数据中心ID所占的位数
     private final long datacenterIdBits = 5L;
     //支持的最大机器ID，结果是31（这个移位算法可以很快的计算出几位二进制数所能表示的最大十进制数）
-    //private final long maxWorkerId = -1L ^ (-1L << workerIdBits);
     private final long maxWorkerId = ~(-1L << workerIdBits);
     //支持的最大数据中心ID，结果是31
     private final long maxDatacenterId = ~(-1L << datacenterIdBits);
@@ -65,19 +68,15 @@ public enum IDUtil {
     private long lastTimestamp = -1L;
     //毫秒内序列(0 ~ 4095）
     private long sequence = 0L;
-    //工作机器ID（0 ~ 31）
-    private long workerId;
-    //数据中心ID(0 ~ 31）
-    private long datacenterId;
 
     IDUtil(){
-        this.datacenterId = this.getDatacenterId(maxDatacenterId);
-        this.workerId = this.getWorkerId(datacenterId, maxWorkerId);
-        LogUtil.getLogger().info("计算得到：数据中心ID=[{}]，工作机器ID=[{}]", this.datacenterId, this.workerId);
+        this.datacenterId = this.getDatacenterId();
+        this.workerId = this.getWorkerId(this.datacenterId);
+        LogUtil.getLogger().info("初始化得到：数据中心ID=[{}]，工作机器ID=[{}]", this.datacenterId, this.workerId);
     }
 
 
-    private long getDatacenterId(long maxDatacenterId){
+    private long getDatacenterId(){
         long id = 0L;
         try{
             InetAddress ip = InetAddress.getLocalHost();
@@ -87,7 +86,7 @@ public enum IDUtil {
             }else{
                 byte[] mac = network.getHardwareAddress();
                 id = ((0x000000FF & (long)mac[mac.length-1]) | (0x0000FF00 & (((long)mac[mac.length-2]) << 8))) >> 6;
-                id = id % (maxDatacenterId + 1);
+                id = id % (this.maxDatacenterId + 1);
             }
         }catch(Throwable t){
             //ignore
@@ -96,7 +95,7 @@ public enum IDUtil {
     }
 
 
-    private long getWorkerId(long datacenterId, long maxWorkerId) {
+    private long getWorkerId(long datacenterId) {
         StringBuilder sb = new StringBuilder();
         sb.append(datacenterId);
         String name = ManagementFactory.getRuntimeMXBean().getName();
@@ -105,7 +104,7 @@ public enum IDUtil {
             sb.append(name.split("@")[0]);
         }
         //MAC + PID 的 hashcode 获取16个低位
-        return (sb.toString().hashCode() & 0xffff) % (maxWorkerId + 1);
+        return (sb.toString().hashCode() & 0xffff) % (this.maxWorkerId + 1);
     }
 
 
@@ -113,11 +112,11 @@ public enum IDUtil {
      * 手工设置数据中心ID和机器ID（设置之后其它线程获取到的对象的datacenterId和workerId值就是这里设置的值，它是全局的）
      */
     public IDUtil setDatacenterWorkerId(long datacenterId, long workerId){
-        if(datacenterId>maxDatacenterId || datacenterId<0){
-            throw new RuntimeException(String.format("datacenterId can't be greater than %d or less than 0", maxDatacenterId));
+        if(datacenterId>this.maxDatacenterId || datacenterId<0){
+            throw new RuntimeException(String.format("datacenterId can't be greater than %d or less than 0", this.maxDatacenterId));
         }
-        if(workerId>maxWorkerId || workerId<0){
-            throw new RuntimeException(String.format("workerId can't be greater than %d or less than 0", maxWorkerId));
+        if(workerId>this.maxWorkerId || workerId<0){
+            throw new RuntimeException(String.format("workerId can't be greater than %d or less than 0", this.maxWorkerId));
         }
         this.datacenterId = datacenterId;
         this.workerId = workerId;
