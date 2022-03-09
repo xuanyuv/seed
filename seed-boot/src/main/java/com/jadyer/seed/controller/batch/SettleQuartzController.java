@@ -1,27 +1,16 @@
 package com.jadyer.seed.controller.batch;
 
-import com.alibaba.fastjson.JSON;
-import com.jadyer.seed.comm.SpringContextHolder;
 import com.jadyer.seed.comm.constant.CommResult;
-import com.jadyer.seed.comm.exception.SeedException;
-import com.jadyer.seed.comm.util.LogUtil;
-import com.jadyer.seed.comm.util.SystemClockUtil;
-import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
-import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,7 +25,11 @@ public class SettleQuartzController {
     @Resource
     private Job settleJob;
     @Resource
+    private Job xmlSettleJob;
+    @Resource
     private JobLauncher jobLauncher;
+    @Resource
+    private BatchComponent batchComponent;
 
     /**
      * SpringBatch的断点续跑
@@ -55,69 +48,19 @@ public class SettleQuartzController {
      * -----------------------------------------------------------------------------------------------
      */
     @RequestMapping("/batch")
-    CommResult<JobInstance> batch(String bizDate) throws Exception {
-        //判断是否断点续跑
-        boolean isResume = false;
-        if(StringUtils.isBlank(bizDate)){
-            bizDate = DateFormatUtils.format(new Date(), "yyyyMMdd");
-        }else{
-            isResume = true;
-        }
-        LogUtil.getLogger().info("结算跑批{}：Starting...bizDate={}", isResume?"：断点续跑":"", bizDate);
-        //构造JobParameters
-        JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
-        jobParametersBuilder.addString("bizDate", bizDate);
-        //执行job
-        JobExecution execution = jobLauncher.run(settleJob, jobParametersBuilder.toJobParameters());
-        LogUtil.getLogger().info("结算跑批{}：Ending......", isResume?"：断点续跑":"");
+    CommResult<JobInstance> batch(String bizDate) {
+        JobExecution execution = batchComponent.runJob(settleJob, "结算跑批", bizDate, null);
         return CommResult.success(execution.getJobInstance());
     }
 
 
     @RequestMapping("/xmlBatch")
-    CommResult<JobInstance> xmlBatch(String time) throws Exception {
-        Map<String, String> parameterMap = new HashMap<>();
-        parameterMap.put("filePath", "/data/seedboot-batch.txt");
-        parameterMap.put("birthDay", "20190911");
-        JobExecution execution = this.runJob("xmlSettleJob", "结算跑批", time, parameterMap);
+    CommResult<JobInstance> xmlBatch(String time) {
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put("filePath", "/data/seedboot-batch.txt");
+        paramMap.put("birthDay", "20190911");
+        // Job xmlSettleJob = (Job)SpringContextHolder.getBean("xmlSettleJob");
+        JobExecution execution = batchComponent.runJob(xmlSettleJob, "结算跑批", time, paramMap);
         return CommResult.success(execution.getJobInstance());
-    }
-
-
-    /**
-     * @param jobNameStr   任务名字符串
-     * @param jobNameDesc  任务名描述
-     * @param time         随机数：批量的唯一标志（非断点续跑可直接传null）
-     * @param parameterMap 其它参数：不会作为批量的唯一标志（无参可传null）
-     * Comment by 玄玉<https://jadyer.cn/> on 2019/8/12 18:25.
-     */
-    private JobExecution runJob(String jobNameStr, String jobNameDesc, String time, Map<String, String> parameterMap) throws Exception {
-        //判断是否断点续跑
-        boolean isResume = false;
-        long timeLong;
-        if(StringUtils.isBlank(time)){
-            timeLong = SystemClockUtil.INSTANCE.now();
-        }else{
-            isResume = true;
-            timeLong = Long.parseLong(time);
-        }
-        LogUtil.getLogger().info("{}==>{}：Starting...time={}，parameterMap={}", jobNameDesc, isResume?"：断点续跑":"", timeLong, JSON.toJSONString(parameterMap));
-        //构造JobParameters
-        JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
-        jobParametersBuilder.addLong("time", timeLong);
-        if(MapUtils.isNotEmpty(parameterMap)){
-            for(Map.Entry<String,String> entry : parameterMap.entrySet()){
-                jobParametersBuilder.addString(entry.getKey(), entry.getValue(), false);
-            }
-        }
-        //执行job
-        try{
-            Job xmlSettleJob = (Job)SpringContextHolder.getBean(jobNameStr);
-            JobExecution execution = jobLauncher.run(xmlSettleJob, jobParametersBuilder.toJobParameters());
-            LogUtil.getLogger().info("{}==>{}：Ending......jobInstance={}", jobNameDesc, isResume?"：断点续跑":"", execution.getJobInstance());
-            return execution;
-        }catch(JobInstanceAlreadyCompleteException e){
-            throw new SeedException(" A job instance already exists and is complete");
-        }
     }
 }
