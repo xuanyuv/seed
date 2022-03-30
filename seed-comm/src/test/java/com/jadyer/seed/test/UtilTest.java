@@ -10,7 +10,6 @@ import com.jadyer.seed.comm.util.JsoupHelper;
 import com.jadyer.seed.comm.util.MoneyUtil;
 import com.jadyer.seed.comm.util.OSSUtil;
 import com.jadyer.seed.comm.util.PasswordUtil;
-import com.jadyer.seed.comm.util.ValidatorUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -18,9 +17,6 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -28,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -278,57 +273,5 @@ public class UtilTest {
         System.out.println(MoneyUtil.toChinese("1.00"));
         System.out.println(MoneyUtil.toChinese("987654321.00"));
         Assert.assertEquals("玖仟玖佰玖拾玖万伍仟陆佰柒拾捌亿玖仟零壹拾贰万叁仟肆佰伍拾陆元柒角捌分玖厘", MoneyUtil.toChinese("9999567890123456.7899"));
-    }
-
-
-    /**
-     * hibernate.validator测试
-     */
-    @Test
-    public void validatorUtilTest(){
-        ValidateUser user = new ValidateUser();
-        //user.setName("铁面生");
-        System.out.println(ValidatorUtil.validate(user, "id"));
-        System.out.println("------------------------------------------");
-        ValidateUserDetail userDetail = new ValidateUserDetail();
-        userDetail.setId(2);
-        //userDetail.setSex("M");
-        System.out.println(ValidatorUtil.validate(userDetail));
-        System.out.println("------------------------------------------");
-        ValidateUser user22 = new ValidateUser();
-        user22.setId(2);
-        List<ValidateUser> userList = new ArrayList<>();
-        userList.add(user);
-        userList.add(user22);
-        System.out.println(ValidatorUtil.validate(userList));
-    }
-    static class ValidateUser{
-        @Min(1)
-        private int id;
-        @NotBlank
-        private String name;
-        public int getId() {
-            return id;
-        }
-        void setId(int id) {
-            this.id = id;
-        }
-        public String getName() {
-            return name;
-        }
-        void setName(String name) {
-            this.name = name;
-        }
-    }
-    public static class ValidateUserDetail extends ValidateUser {
-        @NotBlank
-        @Pattern(regexp="^M|F$", message="性别只能传M或F")
-        private String sex;
-        public String getSex() {
-            return sex;
-        }
-        void setSex(String sex) {
-            this.sex = sex;
-        }
     }
 }

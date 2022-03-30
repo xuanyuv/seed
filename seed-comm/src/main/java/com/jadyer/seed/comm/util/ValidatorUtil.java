@@ -1,7 +1,5 @@
 package com.jadyer.seed.comm.util;
 
-import org.apache.commons.lang3.StringUtils;
-
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -82,7 +80,8 @@ import java.util.Set;
  * 除了以上列出的JSR-303原生支持的限制类型之外，还可以定义自己的限制类型
  * 本工具类最下方的注释部分是一个例子（也可参考此文http://haohaoxuexi.iteye.com/blog/1812584）
  * -------------------------------------------------------------------------------------------
- * @version v1.6
+ * @version v1.7
+ * @version v1.7-->优化校验不通过时的提示信息的格式
  * @version v1.6-->移除返回值为Map的验证方法，增加对java.util.List对象的验证支持
  * @history v1.5-->被验证对象若为空对象，由于没什么可验证的，故直接返回验证通过
  * @history v1.4-->简化例外属性的判断方式
@@ -116,6 +115,7 @@ public final class ValidatorUtil {
         }else{
             sb.append(validate(obj, null));
         }
+        sb.delete(0, 2);
         return sb.toString();
     }
 
@@ -130,7 +130,7 @@ public final class ValidatorUtil {
      * @param exceptFieldName 不需要验证的属性
      * @return 返回空字符串""表示验证通过，否则返回错误信息
      */
-    public static String validate(Object obj, String msgPrefix, String... exceptFieldName){
+    private static String validate(Object obj, String msgPrefix){
         if(null == obj){
             return "";
         }
@@ -139,14 +139,13 @@ public final class ValidatorUtil {
         for(ConstraintViolation<Object> constraintViolation : validateSet){
             String field = constraintViolation.getPropertyPath().toString();
             String message = constraintViolation.getMessage();
-            if(!StringUtils.equalsAnyIgnoreCase(field, exceptFieldName)){
-                //id:最小不能小于1
-                //name:不能为空
-                sb.append(msgPrefix).append(field).append(": ").append(message).append("\r\n");
+            sb.append(", ");
+            // List.object[0].name不能为空, List.object[0].id最小不能小于1, List.object[1].name不能为空
+            if(null != msgPrefix){
+                sb.append(msgPrefix);
             }
-        }
-        if(StringUtils.isNotBlank(sb)){
-            sb.insert(0, "\r\n");
+            // name不能为空, id最小不能小于1
+            sb.append(field).append(message);
         }
         return sb.toString();
     }
