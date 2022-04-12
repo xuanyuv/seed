@@ -51,14 +51,23 @@ public final class BeanUtil {
      * -------------------------------------------------------------------------------------
      */
     public static <E, T> T copyProperties(E source, Class<T> targetClass) {
-        if(null == source){
-            return null;
-        }
         T target;
         try {
             target = targetClass.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException("copyProperties时发生异常：目标类非public（内部类则应static），堆栈轨迹如下", e);
+        }
+        copyProperties(source, target);
+        return target;
+    }
+
+
+    /**
+     * JavaBean属性拷贝
+     */
+    public static <E, T> T copyProperties(E source, T target) {
+        if(null == source){
+            return null;
         }
         ////采用Cglib实现（实际使用时可以在Service类中全局缓存BeanCopier对象）
         //net.sf.cglib.beans.BeanCopier beanCopier = BeanCopier.create(source.getClass(), target.getClass(), false);
@@ -87,18 +96,6 @@ public final class BeanUtil {
         //} catch (IllegalAccessException | InvocationTargetException e) {
         //    throw new RuntimeException("copyProperties失败，堆栈轨迹如下", e);
         //}
-        return target;
-    }
-
-
-    /**
-     * JavaBean属性拷贝
-     */
-    public static <E, T> T copyProperties(E source, T target) {
-        if(null == source){
-            return null;
-        }
-        org.springframework.beans.BeanUtils.copyProperties(source, target);
         return target;
     }
 
