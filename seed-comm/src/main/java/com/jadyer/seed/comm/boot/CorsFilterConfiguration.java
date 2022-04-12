@@ -1,16 +1,17 @@
 package com.jadyer.seed.comm.boot;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 //@Configuration
-public class CorsConfiguration {
-    private org.springframework.web.cors.CorsConfiguration corsConfig() {
-        org.springframework.web.cors.CorsConfiguration corsConfig = new org.springframework.web.cors.CorsConfiguration();
-        corsConfig.addAllowedOrigin(org.springframework.web.cors.CorsConfiguration.ALL);
-        corsConfig.addAllowedHeader(org.springframework.web.cors.CorsConfiguration.ALL);
-        corsConfig.addAllowedMethod(org.springframework.web.cors.CorsConfiguration.ALL);
+public class CorsFilterConfiguration {
+    private CorsConfiguration corsConfig() {
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.addAllowedOrigin(CorsConfiguration.ALL);
+        corsConfig.addAllowedHeader(CorsConfiguration.ALL);
+        corsConfig.addAllowedMethod(CorsConfiguration.ALL);
         corsConfig.setAllowCredentials(true);
         corsConfig.setMaxAge(3600L);
         return corsConfig;
