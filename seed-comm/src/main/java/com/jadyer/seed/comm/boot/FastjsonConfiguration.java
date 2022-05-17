@@ -6,8 +6,10 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 /**
  * https://stackoverflow.com/questions/44121648/controlleradvice-responsebodyadvice-failed-to-enclose-a-string-response
@@ -31,6 +33,27 @@ public class FastjsonConfiguration /*implements WebMvcConfigurer*/ {
     //             setCharset(StandardCharsets.UTF_8);        // 默认就是com.alibaba.fastjson.util.IOUtils.UTF8
     //             setDateFormat("yyyy-MM-dd HH:mm:ss");      // 默认就是[yyyy-MM-dd HH:mm:ss]
     //             setSerializerFeatures(serializerFeatures); // 设置序列化输出时的一些额外属性
+    //         }
+    //     });
+    //     fastjson.setSupportedMediaTypes(new ArrayList<MediaType>(){
+    //         {
+    //             // 解决：Content-Type cannot contain wildcard type '*'
+    //             add(MediaType.APPLICATION_JSON);
+    //             add(MediaType.APPLICATION_ATOM_XML);
+    //             add(MediaType.APPLICATION_FORM_URLENCODED);
+    //             add(MediaType.APPLICATION_OCTET_STREAM);
+    //             add(MediaType.APPLICATION_PDF);
+    //             add(MediaType.APPLICATION_RSS_XML);
+    //             add(MediaType.APPLICATION_XHTML_XML);
+    //             add(MediaType.APPLICATION_XML);
+    //             add(MediaType.IMAGE_GIF);
+    //             add(MediaType.IMAGE_JPEG);
+    //             add(MediaType.IMAGE_PNG);
+    //             add(MediaType.TEXT_EVENT_STREAM);
+    //             add(MediaType.TEXT_HTML);
+    //             add(MediaType.TEXT_MARKDOWN);
+    //             add(MediaType.TEXT_PLAIN);
+    //             add(MediaType.TEXT_XML);
     //         }
     //     });
     //     // fastjson放在转换器List的首位
@@ -74,6 +97,27 @@ public class FastjsonConfiguration /*implements WebMvcConfigurer*/ {
                 setCharset(StandardCharsets.UTF_8);        // 默认就是com.alibaba.fastjson.util.IOUtils.UTF8
                 setDateFormat("yyyy-MM-dd HH:mm:ss");      // 默认就是[yyyy-MM-dd HH:mm:ss]
                 setSerializerFeatures(serializerFeatures); // 设置序列化输出时的一些额外属性
+            }
+        });
+        fastjson.setSupportedMediaTypes(new ArrayList<MediaType>(){
+            {
+                // 解决：Content-Type cannot contain wildcard type '*'
+                add(MediaType.APPLICATION_JSON);
+                add(MediaType.APPLICATION_ATOM_XML);
+                add(MediaType.APPLICATION_FORM_URLENCODED);
+                add(MediaType.APPLICATION_OCTET_STREAM);
+                add(MediaType.APPLICATION_PDF);
+                add(MediaType.APPLICATION_RSS_XML);
+                add(MediaType.APPLICATION_XHTML_XML);
+                add(MediaType.APPLICATION_XML);
+                add(MediaType.IMAGE_GIF);
+                add(MediaType.IMAGE_JPEG);
+                add(MediaType.IMAGE_PNG);
+                add(MediaType.TEXT_EVENT_STREAM);
+                add(MediaType.TEXT_HTML);
+                add(MediaType.TEXT_MARKDOWN);
+                add(MediaType.TEXT_PLAIN);
+                add(MediaType.TEXT_XML);
             }
         });
         return new HttpMessageConverters(fastjson);
