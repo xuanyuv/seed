@@ -321,9 +321,17 @@ public final class JadyerUtil {
                             String s = new String(data, j, 1);
                             sb2.append(s);
                         }else{
-                            sb.append(String.format("%02X %02X ", data[j], data[j + 1]));
-                            String s = new String(data, j, 2);
-                            sb2.append(s);
+                            // 20230114新增-->begin
+                            if(j+1 == end){
+                                sb.append(String.format("%02X    ", data[j]));
+                                String s = new String(data, j, 1);
+                                sb2.append(s);
+                                // 20230114新增<--end
+                            }else{
+                                sb.append(String.format("%02X %02X ", data[j], data[j + 1]));
+                                String s = new String(data, j, 2);
+                                sb2.append(s);
+                            }
                             j++;
                         }
                     }
