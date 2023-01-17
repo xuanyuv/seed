@@ -368,6 +368,18 @@ public final class JadyerUtil {
 
     /**
      * convert byte to hex
+     */
+    public static String byteToHex(byte in){
+        String hex = Integer.toHexString(in & 0xFF);
+        if(hex.length() < 2){
+            hex = "0" + hex;
+        }
+        return hex;
+    }
+
+
+    /**
+     * convert bytes to hex
      * <p>
      *     等效于{@link org.apache.commons.codec.binary.Hex#encodeHexString(byte[])}
      * </p>
@@ -390,7 +402,7 @@ public final class JadyerUtil {
 
 
     /**
-     * convert hex to byte
+     * convert hex to bytes
      * <p>
      *     等效于{@link org.apache.commons.codec.binary.Hex#decodeHex(char[])}
      *     本例的参数可传hex.toCharArray()
