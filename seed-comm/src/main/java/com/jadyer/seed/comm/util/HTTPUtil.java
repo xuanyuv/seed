@@ -962,7 +962,7 @@ public final class HTTPUtil {
             bytesOut.flush();
             //响应的原始字节数组
             byte[] respBuffer = bytesOut.toByteArray();
-            respMsgHex = JadyerUtil.buildHexStringWithASCII(respBuffer);
+            respMsgHex = ByteUtil.buildHexStringWithASCII(respBuffer);
             /*
              * 获取Content-Type中的charset值(Content-Type: text/html; charset=GBK)
              */
@@ -1062,7 +1062,7 @@ public final class HTTPUtil {
             bytesOut.flush();
             //解码TCP响应的完整报文
             respData = bytesOut.toString(StandardCharsets.UTF_8.displayName());
-            respDataHex = JadyerUtil.buildHexStringWithASCII(bytesOut.toByteArray());
+            respDataHex = ByteUtil.buildHexStringWithASCII(bytesOut.toByteArray());
             ///*
             // * 校验响应报文是否已全部接收
             // * <p>

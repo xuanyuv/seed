@@ -1,7 +1,7 @@
 package com.jadyer.seed.server.helper;
 
+import com.jadyer.seed.comm.util.ByteUtil;
 import com.jadyer.seed.comm.util.DateUtil;
-import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.server.model.NetBankResultNotify;
 import com.jadyer.seed.server.model.OrderResultNotify;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -44,7 +44,7 @@ public final class MessageBuilder {
     private static String buildResponseMessageHead(String respCode, String respDesc){
         StringBuilder sb = new StringBuilder("000000"); //msgLen--------固长6,报文长度
         sb.append(respCode)                             //respCode------固长8,应答码
-          .append(JadyerUtil.rightPadUseByte(respDesc)) //respDesc------固长100,应答描述
+          .append(ByteUtil.rightPadUseByte(respDesc))   //respDesc------固长100,应答描述
           .append(RandomStringUtils.randomNumeric(20)) //respSerialNo--固长20,应答流水号
           .append(DateUtil.getCurrentTime())            //respTime------固长14,应答日期时间yyyyMMddhhmmss
           .append(DateUtil.getCurrentDate());           //accountDate---固长8,账务日期时间yyyMMdd

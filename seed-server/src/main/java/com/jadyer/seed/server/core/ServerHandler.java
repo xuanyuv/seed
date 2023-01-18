@@ -1,6 +1,6 @@
 package com.jadyer.seed.server.core;
 
-import com.jadyer.seed.comm.util.JadyerUtil;
+import com.jadyer.seed.comm.util.ByteUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.server.helper.MessageBuilder;
 import org.apache.mina.core.service.IoHandlerAdapter;
@@ -42,7 +42,7 @@ public class ServerHandler extends IoHandlerAdapter {
             LogUtil.getLogger().warn("将接收到的完整报文转为byte[]时发生异常：Unsupported Encoding-->[" + token.getBusiCharset() + "]，转为使用默认字符集转码");
             msgbytes = token.getFullMessage().getBytes();
         }
-        LogUtil.getLogger().info("渠道:"+token.getBusiType()+"  交易码:"+token.getBusiCode()+"  完整报文(HEX):"+ JadyerUtil.buildHexStringWithASCII(msgbytes));
+        LogUtil.getLogger().info("渠道:"+token.getBusiType()+"  交易码:"+token.getBusiCode()+"  完整报文(HEX):"+ ByteUtil.buildHexStringWithASCII(msgbytes));
         StringBuilder sb = new StringBuilder();
         sb.append("\r\n------------------------------------------------------------------------------------------");
         sb.append("\r\n【通信双方】").append(session);

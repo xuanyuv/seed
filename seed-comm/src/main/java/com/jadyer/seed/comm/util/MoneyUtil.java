@@ -253,7 +253,7 @@ public class MoneyUtil {
          */
         StringBuilder intNumberChinese = new StringBuilder();
         //整数部分的整形数组
-        int[] intArray = JadyerUtil.intToIntArray(intNumberStr);
+        int[] intArray = ByteUtil.intToIntArray(intNumberStr);
         for(int i=0; i<intArray.length; i++){
             //0出现在关键位置：1234（万）5678（亿）9012（万）3456（元）
             //特殊情况：10（拾元、壹拾元、壹拾万元、拾万元）
@@ -280,7 +280,7 @@ public class MoneyUtil {
          */
         StringBuilder decimalNumberChinese = new StringBuilder();
         //小数部分的整形数组
-        int[] decimalArray = JadyerUtil.intToIntArray(decimalNumberStr);
+        int[] decimalArray = ByteUtil.intToIntArray(decimalNumberStr);
         for(int i=0; i<decimalArray.length; i++){
             //超出小数部分的单位的个数，则直接舍去
             //假设DECIMAL_UNIT={"角", "分", "厘", "毫", "丝"}，则说明该方法只计算到角、分、厘、毫、丝五位
