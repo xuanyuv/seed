@@ -96,7 +96,7 @@ import org.springframework.boot.context.ApplicationPidFileWriter;
  *         </plugin>
  *     </plugins>
  *    </build>
- * 3、启动应用：java -jar -Dspring.profiles.active=prod seed-boot-2.0.jar
+ * 3、启动应用：nohup java -jar -Dspring.profiles.active=dev dhenergies-system-start-1.0.0-SNAPSHOT.jar > nohup.log 2>&1 &
  * ---------------------------------------------------------------------------------------------------------------
  * spring-boot-starter-actuator
  * 1./auditevents------公开当前应用程序的审核事件信息
