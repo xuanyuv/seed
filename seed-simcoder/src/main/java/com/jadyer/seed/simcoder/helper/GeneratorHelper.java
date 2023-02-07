@@ -283,18 +283,19 @@ public class GeneratorHelper {
          * 解析Beetl模板
          */
         try {
-            String outBaseDir = FileSystemView.getFileSystemView().getHomeDirectory().getPath() + System.getProperty("file.separator") + "simcoder" + System.getProperty("file.separator");
+            String fileSeparator = System.getProperty("file.separator");
+            String outBaseDir = FileSystemView.getFileSystemView().getHomeDirectory().getPath() + fileSeparator + "simcoder" + fileSeparator;
             if(SimcoderRun.IS_GENERATE_FEIGN_API){
-                groupTemplate.getTemplate("feign-api/api.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "api" + System.getProperty("file.separator") + classname + "Api.java")));
-                groupTemplate.getTemplate("feign-api/dto.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "dto" + System.getProperty("file.separator") + classname + "DTO.java")));
-                groupTemplate.getTemplate("feign-api/model.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "model" + System.getProperty("file.separator") + classname + ".java")));
-                groupTemplate.getTemplate("feign-api/controller.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "controller" + System.getProperty("file.separator") + classname + "Controller.java")));
+                groupTemplate.getTemplate("feign-api/api.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "api" + fileSeparator + classname + "Api.java")));
+                groupTemplate.getTemplate("feign-api/dto.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "dto" + fileSeparator + classname + "DTO.java")));
+                groupTemplate.getTemplate("feign-api/model.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "model" + fileSeparator + classname + ".java")));
+                groupTemplate.getTemplate("feign-api/controller.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "controller" + fileSeparator + classname + "Controller.java")));
             }else{
-                groupTemplate.getTemplate("model.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "model" + System.getProperty("file.separator") + classname + ".java")));
-                groupTemplate.getTemplate("controller.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "controller" + System.getProperty("file.separator") + classname + "Controller.java")));
+                groupTemplate.getTemplate("model.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "model" + fileSeparator + classname + ".java")));
+                groupTemplate.getTemplate("controller.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "controller" + fileSeparator + classname + "Controller.java")));
             }
-            groupTemplate.getTemplate("service.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "service" + System.getProperty("file.separator") + classname + "Service.java")));
-            groupTemplate.getTemplate("repository.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "repository" + System.getProperty("file.separator") + classname + "Repository.java")));
+            groupTemplate.getTemplate("service.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "service" + fileSeparator + classname + "Service.java")));
+            groupTemplate.getTemplate("repository.btl").renderTo(FileUtils.openOutputStream(new File(outBaseDir + "repository" + fileSeparator + classname + "Repository.java")));
         } catch (IOException e) {
             System.err.println("生成代码时发生异常，堆栈轨迹如下：");
             e.printStackTrace();
