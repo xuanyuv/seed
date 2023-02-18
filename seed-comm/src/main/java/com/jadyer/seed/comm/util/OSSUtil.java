@@ -110,6 +110,31 @@ public class OSSUtil {
 
 
     /**
+     * 文件删除
+     * @param bucket   存储空间名称
+     * @param endpoint 存储空间所属地域的访问域名
+     * @param osskey   文件完整名称（若本身文件就是不存在的，也不会报错）
+     * Comment by 玄玉<https://jadyer.cn/> on 2023-02-18 23:07.
+     */
+    public static void delete(String bucket, String endpoint, String accessKeyId, String accessKeySecret, String osskey) {
+        OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+        try {
+            ossClient.deleteObject(bucket, osskey);
+        } catch (OSSException oe) {
+            throw new SeedException("文件删除，OSS服务端异常，RequestID="+oe.getRequestId() + "，HostID="+oe.getHostId() + "，ErrorCode="+oe.getErrorCode() + "，Message="+oe.getMessage());
+        } catch (ClientException ce) {
+            throw new SeedException("文件删除，OSS客户端异常，RequestID="+ce.getRequestId() + "，ErrorCode="+ce.getErrorCode() + "，Message="+ce.getMessage());
+        } catch (Throwable e) {
+            throw new SeedException("文件删除，OSS未知异常：" + e.getMessage());
+        } finally {
+            if(null != ossClient){
+                ossClient.shutdown();
+            }
+        }
+    }
+
+
+    /**
      * 文件下载
      * @param bucket   存储空间名称
      * @param endpoint 存储空间所属地域的访问域名
