@@ -82,6 +82,9 @@ public class OSSUtil {
      * Comment by 玄玉<https://jadyer.cn/> on 2018/4/9 17:24.
      */
     public static void upload(String bucket, String endpoint, String key, String accessKeyId, String accessKeySecret, InputStream is) {
+        // ClientBuilderConfiguration config = new ClientBuilderConfiguration();
+        // config.setProtocol(Protocol.HTTPS);
+        // OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret, config);
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
         try {
             ossClient.putObject(bucket, key, is);

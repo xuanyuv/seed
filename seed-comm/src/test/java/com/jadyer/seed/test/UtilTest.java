@@ -105,7 +105,7 @@ public class UtilTest {
      */
     @Test
     public void imageUtilTest(){
-        ImageUtil.resize("C:/Users/Jadyer/Desktop/IMG_1007.JPG", "C:/Users/Jadyer/Desktop/image2233.jpg", 100);
+        ImageUtil.resize("C:/Users/Jadyer/Desktop/11.jpg", "C:/Users/Jadyer/Desktop/22.jpg", 10);
     }
 
 
