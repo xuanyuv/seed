@@ -46,18 +46,18 @@ public class OSSUtil {
      * @return 返回文件的完整地址（浏览器可直接访问）
      * Comment by 玄玉<https://jadyer.cn/> on 2018/4/9 17:23.
      */
-    public static String getFileURL(String endpoint, String accessKeyId, String accessKeySecret, String bucket, String key, boolean isImg, String process, int timeout) {
-        LogUtil.getLogger().info("获取文件临时URL，请求ossKey=[{}]，process=[{}], timeout=[{}]min", key, process, timeout);
+    public static String getFileURL(String bucket, String endpoint, String accessKeyId, String accessKeySecret, String osskey, boolean isImg, String process, int timeout) {
+        LogUtil.getLogger().info("获取文件临时URL，请求ossKey=[{}]，process=[{}], timeout=[{}]min", osskey, process, timeout);
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
         try {
-            GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(bucket, key, HttpMethod.GET);
+            GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(bucket, osskey, HttpMethod.GET);
             req.setExpiration(DateUtils.addMinutes(new Date(), timeout));
             if(isImg){
                 req.setProcess(StringUtils.isNotBlank(process) ? process : "image/resize,p_100");
             }
             String imgURL = ossClient.generatePresignedUrl(req).toString();
             imgURL = imgURL.startsWith("http://") ? imgURL.replace("http://", "https://") : imgURL;
-            LogUtil.getLogger().info("获取文件临时URL，请求ossKey=[{}]，应答fileUrl=[{}]", key, imgURL);
+            LogUtil.getLogger().info("获取文件临时URL，请求ossKey=[{}]，应答fileUrl=[{}]", osskey, imgURL);
             return imgURL;
         } catch (OSSException oe) {
             throw new SeedException("获取文件临时URL，OSS服务端异常，RequestID="+oe.getRequestId() + "，HostID="+oe.getHostId() + "，Code="+oe.getErrorCode() + "，Message="+oe.getMessage());
@@ -77,17 +77,17 @@ public class OSSUtil {
      * 文件上传
      * @param bucket   存储空间名称
      * @param endpoint 存储空间所属地域的访问域名
-     * @param key      文件完整名称（建议含后缀）
+     * @param osskey   文件完整名称（建议含后缀）
      * @param is       文件流
      * Comment by 玄玉<https://jadyer.cn/> on 2018/4/9 17:24.
      */
-    public static void upload(String bucket, String endpoint, String key, String accessKeyId, String accessKeySecret, InputStream is) {
+    public static void upload(String bucket, String endpoint, String accessKeyId, String accessKeySecret, String osskey, InputStream is) {
         // ClientBuilderConfiguration config = new ClientBuilderConfiguration();
         // config.setProtocol(Protocol.HTTPS);
         // OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret, config);
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
         try {
-            ossClient.putObject(bucket, key, is);
+            ossClient.putObject(bucket, osskey, is);
         } catch (OSSException oe) {
             throw new SeedException("文件上传，OSS服务端异常，RequestID="+oe.getRequestId() + "，HostID="+oe.getHostId() + "，Code="+oe.getErrorCode() + "，Message="+oe.getMessage());
         } catch (ClientException ce) {
@@ -117,22 +117,22 @@ public class OSSUtil {
      * @return localURL（若文件不存在则返回OSSUtil.NO_FILE）
      * Comment by 玄玉<https://jadyer.cn/> on 2018/4/9 17:24.
      */
-    public static String download(String bucket, String endpoint, String key, String accessKeyId, String accessKeySecret, String localURL) {
+    public static String download(String bucket, String endpoint, String accessKeyId, String accessKeySecret, String osskey, String localURL) {
         if(StringUtils.isBlank(localURL)){
             //若未传localURL，则把下载到的文件放到Java临时目录
-            localURL = System.getProperty("java.io.tmpdir") + "/ossutil-download/" + key;
+            localURL = System.getProperty("java.io.tmpdir") + "/ossutil-download/" + osskey;
             ////若文件名称不含后缀，那就主动添加后缀
-            //if("".equals(FilenameUtils.getExtension(key))){
+            //if("".equals(FilenameUtils.getExtension(osskey))){
             //    localURL += ".txt";
             //}
         }
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
         try {
-            if(!ossClient.doesObjectExist(bucket, key)){
+            if(!ossClient.doesObjectExist(bucket, osskey)){
                 return OSSUtil.NO_FILE;
             }
-            //ossClient.getObject(new GetObjectRequest(bucket, key), new File(localURL));
-            InputStream is = ossClient.getObject(bucket, key).getObjectContent();
+            //ossClient.getObject(new GetObjectRequest(bucket, osskey), new File(localURL));
+            InputStream is = ossClient.getObject(bucket, osskey).getObjectContent();
             FileUtils.copyInputStreamToFile(is, new File(localURL));
             return localURL;
         } catch (OSSException oe) {
