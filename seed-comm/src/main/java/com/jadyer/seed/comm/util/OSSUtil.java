@@ -47,7 +47,7 @@ public class OSSUtil {
      * Comment by 玄玉<https://jadyer.cn/> on 2018/4/9 17:23.
      */
     public static String getFileURL(String bucket, String endpoint, String accessKeyId, String accessKeySecret, String osskey, boolean isImg, String process, int timeout) {
-        LogUtil.getLogger().info("获取文件临时URL，请求ossKey=[{}]，process=[{}], timeout=[{}]min", osskey, process, timeout);
+        LogUtil.getLogger().info("获取文件临时URL，请求osskey=[{}]，isImg=[{}]，process=[{}]，timeout=[{}]min", osskey, isImg, process, timeout);
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
         try {
             GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(bucket, osskey, HttpMethod.GET);
@@ -57,12 +57,12 @@ public class OSSUtil {
             }
             String imgURL = ossClient.generatePresignedUrl(req).toString();
             imgURL = imgURL.startsWith("http://") ? imgURL.replace("http://", "https://") : imgURL;
-            LogUtil.getLogger().info("获取文件临时URL，请求ossKey=[{}]，应答fileUrl=[{}]", osskey, imgURL);
+            LogUtil.getLogger().info("获取文件临时URL，请求osskey=[{}]，应答imgURL=[{}]", osskey, imgURL);
             return imgURL;
         } catch (OSSException oe) {
-            throw new SeedException("获取文件临时URL，OSS服务端异常，RequestID="+oe.getRequestId() + "，HostID="+oe.getHostId() + "，Code="+oe.getErrorCode() + "，Message="+oe.getMessage());
+            throw new SeedException("获取文件临时URL，OSS服务端异常，RequestID="+oe.getRequestId() + "，HostID="+oe.getHostId() + "，ErrorCode="+oe.getErrorCode() + "，Message="+oe.getMessage());
         } catch (ClientException ce) {
-            throw new SeedException("获取文件临时URL，OSS客户端异常，RequestID="+ce.getRequestId() + "，Code="+ce.getErrorCode() + "，Message="+ce.getMessage());
+            throw new SeedException("获取文件临时URL，OSS客户端异常，RequestID="+ce.getRequestId() + "，ErrorCode="+ce.getErrorCode() + "，Message="+ce.getMessage());
         } catch (Throwable e) {
             throw new SeedException("获取文件临时URL，OSS未知异常：" + e.getMessage());
         } finally {
@@ -89,9 +89,9 @@ public class OSSUtil {
         try {
             ossClient.putObject(bucket, osskey, is);
         } catch (OSSException oe) {
-            throw new SeedException("文件上传，OSS服务端异常，RequestID="+oe.getRequestId() + "，HostID="+oe.getHostId() + "，Code="+oe.getErrorCode() + "，Message="+oe.getMessage());
+            throw new SeedException("文件上传，OSS服务端异常，RequestID="+oe.getRequestId() + "，HostID="+oe.getHostId() + "，ErrorCode="+oe.getErrorCode() + "，Message="+oe.getMessage());
         } catch (ClientException ce) {
-            throw new SeedException("文件上传，OSS客户端异常，RequestID="+ce.getRequestId() + "，Code="+ce.getErrorCode() + "，Message="+ce.getMessage());
+            throw new SeedException("文件上传，OSS客户端异常，RequestID="+ce.getRequestId() + "，ErrorCode="+ce.getErrorCode() + "，Message="+ce.getMessage());
         } catch (Throwable e) {
             throw new SeedException("文件上传，OSS未知异常：" + e.getMessage());
         } finally {
@@ -136,9 +136,9 @@ public class OSSUtil {
             FileUtils.copyInputStreamToFile(is, new File(localURL));
             return localURL;
         } catch (OSSException oe) {
-            throw new SeedException("文件下载，OSS服务端异常，RequestID="+oe.getRequestId() + "，HostID="+oe.getHostId() + "，Code="+oe.getErrorCode() + "，Message="+oe.getMessage());
+            throw new SeedException("文件下载，OSS服务端异常，RequestID="+oe.getRequestId() + "，HostID="+oe.getHostId() + "，ErrorCode="+oe.getErrorCode() + "，Message="+oe.getMessage());
         } catch (ClientException ce) {
-            throw new SeedException("文件下载，OSS客户端异常，RequestID="+ce.getRequestId() + "，Code="+ce.getErrorCode() + "，Message="+ce.getMessage());
+            throw new SeedException("文件下载，OSS客户端异常，RequestID="+ce.getRequestId() + "，ErrorCode="+ce.getErrorCode() + "，Message="+ce.getMessage());
         } catch (Throwable e) {
             throw new SeedException("文件下载，OSS未知异常：" + e.getMessage());
         } finally {
