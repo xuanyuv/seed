@@ -2,7 +2,10 @@ package com.jadyer.seed.comm.constant;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 操作码
@@ -95,5 +98,14 @@ public enum CodeEnum {
             dataList.add(codeEnum.getCode());
         }
         return dataList;
+    }
+    
+    
+    public Map<Integer, String> getEnumMap(){
+        HashMap<Integer, String> map = new HashMap<>();
+        for (CodeEnum codeEnum : EnumSet.allOf(CodeEnum.class)) {
+            map.put(codeEnum.code, codeEnum.msg);
+        }
+        return map;
     }
 }
