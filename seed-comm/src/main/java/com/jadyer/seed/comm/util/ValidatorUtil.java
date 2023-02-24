@@ -144,8 +144,13 @@ public final class ValidatorUtil {
             if(null != msgPrefix){
                 sb.append(msgPrefix);
             }
-            // name不能为空, id最小不能小于1
-            sb.append(field).append(message);
+            if(constraintViolation.getMessageTemplate().startsWith("{")){
+                // name不能为空, id最小不能小于1
+                sb.append(field).append(message);
+            }else{
+                // 说明用户自定义了message：@NotBlank(message="请填写：商品名称")
+                sb.append(message);
+            }
         }
         return sb.toString();
     }
