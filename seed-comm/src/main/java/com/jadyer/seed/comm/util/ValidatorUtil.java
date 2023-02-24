@@ -141,15 +141,15 @@ public final class ValidatorUtil {
             String field = constraintViolation.getPropertyPath().toString();
             String message = constraintViolation.getMessage();
             sb.append(", ");
-            // List.object[0].name不能为空, List.object[0].id最小不能小于1, List.object[1].name不能为空
-            if(null != msgPrefix){
-                sb.append(msgPrefix);
-            }
             if(constraintViolation.getMessageTemplate().startsWith("{")){
+                // List.object[0].name不能为空, List.object[0].id最小不能小于1, List.object[1].name不能为空
+                if(null != msgPrefix){
+                    sb.append(msgPrefix);
+                }
                 // name不能为空, id最小不能小于1
                 sb.append(field).append(message);
             }else{
-                // 说明用户自定义了message：@NotBlank(message="请填写：商品名称")
+                // 说明用户自定义了message：@NotBlank(message="请填写商品名称")
                 sb.append(message);
             }
         }
