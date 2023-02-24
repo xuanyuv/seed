@@ -1,5 +1,7 @@
 package com.jadyer.seed.comm.util;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -81,7 +83,7 @@ import java.util.Set;
  * 本工具类最下方的注释部分是一个例子（也可参考此文http://haohaoxuexi.iteye.com/blog/1812584）
  * -------------------------------------------------------------------------------------------
  * @version v1.8
- * @version v1.8-->若用户自定义message=""，则优先显式用户自定义的提示信息
+ * @version v1.8-->优先显式用户自定义的提示信息，并，支持自定义信息前缀
  * @version v1.7-->优化校验不通过时的提示信息的格式
  * @version v1.6-->移除返回值为Map的验证方法，增加对java.util.List对象的验证支持
  * @history v1.5-->被验证对象若为空对象，由于没什么可验证的，故直接返回验证通过
@@ -98,6 +100,9 @@ public final class ValidatorUtil {
 
     private ValidatorUtil() {}
 
+    public static String validate(Object obj){
+        return validate(obj, null);
+    }
 
     /**
      * 验证对象中的属性的值是否符合注解定义
@@ -107,16 +112,20 @@ public final class ValidatorUtil {
      * @param obj 需要验证的对象，若其父类的属性也有验证注解则会一并验证
      * @return 返回空字符串""表示验证通过，否则返回错误信息
      */
-    public static String validate(Object obj){
+    public static String validate(Object obj, String msgAllPrefix){
         StringBuilder sb = new StringBuilder();
         if(obj instanceof List){
             for (int i=0,len=((List<?>)obj).size(); i<len; i++) {
-                sb.append(validate(((List<?>)obj).get(i), "List.object["+i+"]."));
+                sb.append(doValidate(((List<?>)obj).get(i), "List.object["+i+"]."));
             }
         }else{
-            sb.append(validate(obj, null));
+            sb.append(doValidate(obj, null));
         }
         sb.delete(0, 2);
+        if(sb.length()>0 && StringUtils.isNotBlank(msgAllPrefix)){
+            sb.insert(0, "：");
+            sb.insert(0, msgAllPrefix);
+        }
         return sb.toString();
     }
 
@@ -131,7 +140,7 @@ public final class ValidatorUtil {
      * @param exceptFieldName 不需要验证的属性
      * @return 返回空字符串""表示验证通过，否则返回错误信息
      */
-    private static String validate(Object obj, String msgPrefix){
+    private static String doValidate(Object obj, String msgPrefix){
         if(null == obj){
             return "";
         }
