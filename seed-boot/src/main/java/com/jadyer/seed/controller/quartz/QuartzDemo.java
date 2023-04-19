@@ -21,6 +21,7 @@ public class QuartzDemo {
         String quartzName = "DEMO";
         LogUtil.getLogger().info("定时任务：{}-->启动--------------------------------------------------->", quartzName);
         List<String> dataList = Arrays.asList("1", "2", "3", "4", "5", "6");
+        LogUtil.getLogger().info("定时任务：{}-->待处理数据=[{}]条", quartzName, dataList.size());
         for(int i=0,len=dataList.size(); i<len; i++){
             String idx = ByteUtil.leftPadUseZero(i+1+"", (len+"").length());
             LogUtil.getLogger().info("定时任务：{}-->[{}-{}]-->开始处理，读到数据={}", quartzName, len, idx, ReflectionToStringBuilder.toString(dataList.get(i)));
