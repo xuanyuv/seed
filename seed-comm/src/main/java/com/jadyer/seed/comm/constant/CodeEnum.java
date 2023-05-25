@@ -70,12 +70,7 @@ public enum CodeEnum {
      * 通过枚举code获取对应的msg
      */
     public static String getMsgByCode(int code){
-        for(CodeEnum codeEnum : values()){
-            if(codeEnum.getCode() == code){
-                return codeEnum.getMsg();
-            }
-        }
-        throw new IllegalArgumentException("无法识别的Code=[" + code + "]");
+        return getByCode(code).getMsg();
     }
 
 
