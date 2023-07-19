@@ -8,13 +8,15 @@ import java.math.BigDecimal;
 public class Java8StreamInfo {
     private int loanTerm;
     private BigDecimal loanAmt;
+    private Long loanCount;
 
     public Java8StreamInfo() {
     }
 
-    public Java8StreamInfo(int loanTerm, BigDecimal loanAmt) {
+    public Java8StreamInfo(int loanTerm, BigDecimal loanAmt, Long loanCount) {
         this.loanTerm = loanTerm;
         this.loanAmt = loanAmt;
+        this.loanCount = loanCount;
     }
 
     public int getLoanTerm() {
@@ -31,5 +33,13 @@ public class Java8StreamInfo {
 
     public void setLoanAmt(BigDecimal loanAmt) {
         this.loanAmt = loanAmt;
+    }
+
+    public Long getLoanCount() {
+        return loanCount;
+    }
+
+    public void setLoanCount(Long loanCount) {
+        this.loanCount = loanCount;
     }
 }

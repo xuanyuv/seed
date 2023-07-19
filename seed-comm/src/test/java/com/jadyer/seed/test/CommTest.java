@@ -12,6 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -115,9 +116,9 @@ public class CommTest {
 
     @Test
     public void java8StreamTest(){
-        Java8StreamInfo info01 = new Java8StreamInfo(3, new BigDecimal("20.56"));
-        Java8StreamInfo info02 = new Java8StreamInfo(6, new BigDecimal("29.44"));
-        Java8StreamInfo info03 = new Java8StreamInfo(3, new BigDecimal("38.88"));
+        Java8StreamInfo info01 = new Java8StreamInfo(3, new BigDecimal("20.56"), 23L);
+        Java8StreamInfo info02 = new Java8StreamInfo(6, new BigDecimal("29.44"), 26L);
+        Java8StreamInfo info03 = new Java8StreamInfo(3, new BigDecimal("38.88"), 33L);
         List<Java8StreamInfo> dataList = Arrays.asList(info03, info01, info02);
         System.out.println("-----------------------------------------------------------------------------------------");
         //降序排列
@@ -141,6 +142,14 @@ public class CommTest {
         //根据期数分组后转Map
         Map<Integer, List<Java8StreamInfo>> dataMap = dataList.stream().collect(Collectors.groupingBy(Java8StreamInfo::getLoanTerm));
         dataMap.forEach((key, value) -> System.out.println("分组后得到数据：key=" + key + "，value=" + JSON.toJSONString(value)));
+        Map<Long, BigDecimal> dataMap01 = dataList.stream().collect(Collectors.toMap(Java8StreamInfo::getLoanCount, Java8StreamInfo::getLoanAmt));
+        System.out.println("分组后得到数据（value是对象的某个属性）：" + JSON.toJSONString(dataMap01));
+        Map<Integer, BigDecimal> dataMap02 = dataList.stream().collect(Collectors.toMap(Java8StreamInfo::getLoanTerm, Java8StreamInfo::getLoanAmt, (key1, key2)->key2));
+        System.out.println("分组后得到数据（value是对象的某个属性：key冲突时第二个覆盖第一个）：" + JSON.toJSONString(dataMap02));
+        Map<Long, Java8StreamInfo> dataMap03 = dataList.stream().collect(Collectors.toMap(Java8StreamInfo::getLoanCount, Java8StreamInfo->Java8StreamInfo));
+        System.out.println("分组后得到数据（value是对象本身：Java8StreamInfo->Java8StreamInfo是一个返回本身的lambda表达式）：" + JSON.toJSONString(dataMap03));
+        Map<Long, Java8StreamInfo> dataMap04 = dataList.stream().collect(Collectors.toMap(Java8StreamInfo::getLoanCount, Function.identity()));
+        System.out.println("分组后得到数据（value是对象本身：Function.identity()是简洁写法，也是返回对象本身）：" + JSON.toJSONString(dataMap03));
         System.out.println("-----------------------------------------------------------------------------------------");
         //获取某个字段的列表（注：若源List是一个空List，那么得到的也是空List，不是null）
         List<Integer> loanTermList = dataList.stream().map(Java8StreamInfo::getLoanTerm).collect(Collectors.toList());
@@ -152,6 +161,7 @@ public class CommTest {
         System.out.println("-----------------------------------------------------------------------------------------");
         //求和
         System.out.println("所有期数之和为：" + dataList.stream().mapToInt(Java8StreamInfo::getLoanTerm).sum());
+        System.out.println("所有次数之和为：" + dataList.stream().mapToLong(x -> null==x.getLoanCount() ? 0L : x.getLoanCount()).sum());
         System.out.println("所有金额之和为：" + dataList.stream().map(Java8StreamInfo::getLoanAmt).reduce(BigDecimal.ZERO, BigDecimal::add));
         System.out.println("同期金额之和为：" + dataList.stream().filter(x -> x.getLoanTerm()==3).map(Java8StreamInfo::getLoanAmt).reduce(BigDecimal.ZERO, BigDecimal::add));
         System.out.println("-----------------------------------------------------------------------------------------");
@@ -159,9 +169,5 @@ public class CommTest {
         Optional<Java8StreamInfo> infoOptional = dataList.stream().max(Comparator.comparing(Java8StreamInfo::getLoanAmt));
         System.out.println("金额最大的数据：" + JSON.toJSONString(infoOptional.orElseThrow(RuntimeException::new)));
         System.out.println("-----------------------------------------------------------------------------------------");
-
-
-        // long userCount = shopUserList.stream().mapToLong(ManageByMonthAndShopDto::getUserCount).sum();
-
     }
 }
