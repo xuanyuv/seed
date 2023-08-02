@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 /**
  * 日志工具类
  * -----------------------------------------------------------------------------------------------------------
+ * springboot-data-jpa打印带参数的SQL：https://juejin.cn/post/7123926524725559326
+ * -----------------------------------------------------------------------------------------------------------
  * http://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-log4j2
  * Log4j2.x升级的详细流程---http://tech.lede.com/2017/08/28/rd/server/Log4j2Update/
  * Log4j2.x比Logback好----http://donlianli.iteye.com/blog/1921735
