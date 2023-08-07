@@ -1,9 +1,6 @@
 package com.jadyer.seed.test;
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.test.model.Java8StreamInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -172,18 +169,5 @@ public class CommTest {
         Optional<Java8StreamInfo> infoOptional = dataList.stream().max(Comparator.comparing(Java8StreamInfo::getLoanAmt));
         System.out.println("金额最大的数据：" + JSON.toJSONString(infoOptional.orElseThrow(RuntimeException::new)));
         System.out.println("-----------------------------------------------------------------------------------------");
-    }
-
-
-
-
-
-    @Test
-    public void testda(){
-        QueryWrapper<Java8StreamInfo> queryWrapper =  new QueryWrapper<>();
-        queryWrapper.like("loanTerm", 2);
-
-        LambdaQueryWrapper<Java8StreamInfo> userLambdaQueryWrapper = Wrappers.lambdaQuery();
-        userLambdaQueryWrapper.like(Java8StreamInfo::getLoanTerm , 2);
     }
 }
