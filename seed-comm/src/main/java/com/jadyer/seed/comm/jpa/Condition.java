@@ -15,6 +15,16 @@ import java.util.List;
 
 /**
  * ---------------------------------------------------------------------------------------------------------------
+ * JPA扩展文件
+ * https://github.com/blinkfox/fenix
+ * https://github.com/blinkfox/fenix-example
+ * https://github.com/blinkfox/fenix-spring-boot-starter
+ * https://github.com/slyak/spring-data-jpa-extra/tree/3.3.0-RELEASE
+ * https://github.com/slyak/spring-boot-starter-jpa-extra/tree/3.3.0.RELEASE
+ * spring-data-jpa-extra的用法：https://www.cnblogs.com/qiaozhuangshi/p/11148885.html
+ * spring-data-jpa-extra的用法：https://blog.csdn.net/qq_27384769/article/details/79283391
+ * 扩展阅读之jpa+freemarker生成动态SQL：https://blog.csdn.net/dashuaigege642/article/details/82800652
+ * ---------------------------------------------------------------------------------------------------------------
  * 用法如下：通过or()或者and()方法来创建实例，然后调用各个查询条件，即可
  * Condition<User> spec = Condition.or();
  * Condition<User> spec = Condition.and();
