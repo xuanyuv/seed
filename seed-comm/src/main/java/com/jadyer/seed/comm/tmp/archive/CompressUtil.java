@@ -97,6 +97,9 @@ public class CompressUtil {
     }
 
 
+    /**
+     * 注：这个方法不太可靠，有时候它得到的密码，实际解不开压缩包
+     */
     public static boolean unRAR22(String rootPath, String sourceRarPath, String destDirPath, String password){
         String rarFilePath = rootPath + sourceRarPath;
         String destinationPath = rootPath + destDirPath + File.separator;
@@ -179,6 +182,7 @@ public class CompressUtil {
         //         }
         //     });
         // }
+        // fixedThreadPool.shutdown();
 
         ExecutorService fixedThreadPool = Executors.newFixedThreadPool(6);
         for (int i=0; i<6; i++) {
@@ -204,5 +208,6 @@ public class CompressUtil {
                 }
             });
         }
+        fixedThreadPool.shutdown();
     }
 }
