@@ -18,8 +18,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class CompressUtil {
     private static boolean unRAR(String rootPath, String sourceRarPath, String destDirPath, String password) {
@@ -75,12 +73,14 @@ public class CompressUtil {
                         System.out.println("解压rar成功......" + String.format("%9X | %10s | %s", hash[0], sizeArray[0], item.getPath()));
                     } else if (StringUtils.isNotBlank(password)) {
                         System.out.println("密码错误或者其他错误......" + result);
+                        return false;
                     } else {
                         System.out.println("rar error......");
+                        return false;
                     }
                 }
             }
-
+            return true;
         } catch (Exception e) {
             // System.out.println("unRAR error!......");
             // e.printStackTrace();
@@ -93,7 +93,6 @@ public class CompressUtil {
                 // e.printStackTrace();
             }
         }
-        return false;
     }
 
 
@@ -184,30 +183,30 @@ public class CompressUtil {
         // }
         // fixedThreadPool.shutdown();
 
-        ExecutorService fixedThreadPool = Executors.newFixedThreadPool(6);
-        for (int i=0; i<6; i++) {
-            int j = i;
-            fixedThreadPool.execute(() -> {
-                if(j == 0){
-                    unpackMyFile(Collections.singletonList("aa"), "aa.rar", "my_aa.txt");
-                }
-                if(j == 1){
-                    unpackMyFile(Collections.singletonList("bb"), "bb.rar", "my_bb.txt");
-                }
-                if(j == 2){
-                    unpackMyFile(Collections.singletonList("cc"), "cc.rar", "my_cc.txt");
-                }
-                if(j == 3){
-                    unpackMyFile(Collections.singletonList("dd"), "dd.rar", "my_dd.txt");
-                }
-                if(j == 4){
-                    unpackMyFile(Collections.singletonList("ee"), "ee.rar", "my_ee.txt");
-                }
-                if(j == 5){
-                    unpackMyFile(Collections.singletonList("ff"), "ff.rar", "my_ff.txt");
-                }
-            });
-        }
-        fixedThreadPool.shutdown();
+        // ExecutorService fixedThreadPool = Executors.newFixedThreadPool(6);
+        // for (int i=0; i<6; i++) {
+        //     int j = i;
+        //     fixedThreadPool.execute(() -> {
+        //         if(j == 0){
+        //             unpackMyFile(Collections.singletonList("aa"), "aa.rar", "my_aa.txt");
+        //         }
+        //         if(j == 1){
+        //             unpackMyFile(Collections.singletonList("bb"), "bb.rar", "my_bb.txt");
+        //         }
+        //         if(j == 2){
+        //             unpackMyFile(Collections.singletonList("cc"), "cc.rar", "my_cc.txt");
+        //         }
+        //         if(j == 3){
+        //             unpackMyFile(Collections.singletonList("dd"), "dd.rar", "my_dd.txt");
+        //         }
+        //         if(j == 4){
+        //             unpackMyFile(Collections.singletonList("ee"), "ee.rar", "my_ee.txt");
+        //         }
+        //         if(j == 5){
+        //             unpackMyFile(Collections.singletonList("ff"), "ff.rar", "my_ff.txt");
+        //         }
+        //     });
+        // }
+        // fixedThreadPool.shutdown();
     }
 }
