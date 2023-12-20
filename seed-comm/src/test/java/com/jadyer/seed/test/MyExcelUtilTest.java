@@ -43,9 +43,9 @@ public class MyExcelUtilTest {
     private static class MyExcelWriterUser{
         @ExcelColumn(order=1, title="序号", convertToString=true)
         private int id;
-        @ExcelColumn(order=2, title="姓名", width=8)
+        @ExcelColumn(order=2, title="信息(用户)->姓名", width=8)
         private String username;
-        @ExcelColumn(order=3, title="生日", format="yyyy-MM-dd HH:mm:ss", width=11)
+        @ExcelColumn(order=3, title="信息(用户)->生日", format="yyyy-MM-dd HH:mm:ss", width=11)
         private LocalDateTime birthday;
         MyExcelWriterUser(int id, String username, LocalDateTime birthday) {
             this.id = id;
