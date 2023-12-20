@@ -39,7 +39,15 @@ public class MyExcelUtilTest {
     }
 
 
-    @ExcelModel(sheetName="测试数据", style={"text-align:left", "title->text-align:center; vertical-align:center; color:red; font-weight:bold", "odd->background-color:#DDEBF7; border-style:dotted"})
+    /**
+     * 自定义样式（使用 -> 分隔符）
+     * title：标明该样式针对标题
+     * cell：标明该样式针对内容行
+     * odd：标明该样式针对奇数内容行
+     * even：标明该样式针对偶数内容行
+     * https://gitee.com/liaochong/myexcel/wikis/Style-customize
+     */
+    @ExcelModel(sheetName="测试数据", style={"text-align:left", "title->text-align:center; vertical-align:center; color:red; font-weight:bold; border-style:thin", "odd->background-color:#DDEBF7; border-style:dotted"})
     private static class MyExcelWriterUser{
         @ExcelColumn(order=1, title="序号", convertToString=true)
         private int id;
