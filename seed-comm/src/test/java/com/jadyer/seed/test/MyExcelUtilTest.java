@@ -23,7 +23,7 @@ public class MyExcelUtilTest {
     public void write() {
         List<MyExcelWriterUser> dataList = new ArrayList<>();
         dataList.add(new MyExcelWriterUser(2, "方子敬", new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()));
-        dataList.add(new MyExcelWriterUser(6, "宁不凡", new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()));
+        dataList.add(new MyExcelWriterUser(6, "宁不凡", new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(), 1));
         dataList.add(new MyExcelWriterUser(9, "卓凌昭", new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()));
         MyExcelUtil.writeToFile(dataList, MyExcelWriterUser.class, EXCEL_FILE_PATHNAME);
     }
@@ -55,10 +55,18 @@ public class MyExcelUtilTest {
         private String username;
         @ExcelColumn(order=3, title="信息(用户)->生日", format="yyyy-MM-dd HH:mm:ss", width=11)
         private LocalDateTime birthday;
+        @ExcelColumn(order=4, title="性别", mapping="0:女,1:男")
+        private Integer gender;
         MyExcelWriterUser(int id, String username, LocalDateTime birthday) {
             this.id = id;
             this.username = username;
             this.birthday = birthday;
+        }
+        MyExcelWriterUser(int id, String username, LocalDateTime birthday, Integer gender) {
+            this.id = id;
+            this.username = username;
+            this.birthday = birthday;
+            this.gender = gender;
         }
     }
 
