@@ -169,6 +169,7 @@ public class CommTest {
         System.out.println("所有次数之和为：" + dataList.stream().mapToLong(x -> null==x.getLoanCount() ? 0L : x.getLoanCount()).sum());
         System.out.println("所有金额之和为：" + dataList.stream().map(Java8StreamInfo::getLoanAmt).reduce(BigDecimal.ZERO, BigDecimal::add));
         System.out.println("同期金额之和为：" + dataList.stream().filter(x -> x.getLoanTerm()==3).map(Java8StreamInfo::getLoanAmt).reduce(BigDecimal.ZERO, BigDecimal::add));
+        System.out.println("同期记录之和为：" + dataList.stream().filter(x -> x.getLoanTerm()==3).count());
         System.out.println("-----------------------------------------------------------------------------------------");
         // 最大值
         Optional<Java8StreamInfo> infoOptional = dataList.stream().max(Comparator.comparing(Java8StreamInfo::getLoanAmt));

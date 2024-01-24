@@ -49,13 +49,13 @@ public class MyExcelUtilTest {
      */
     @ExcelModel(sheetName="测试数据", style={"text-align:left", "title->text-align:center; vertical-align:center; color:red; font-weight:bold; border-style:thin", "odd->background-color:#DDEBF7; border-style:dotted"})
     private static class MyExcelWriterUser{
-        @ExcelColumn(order=1, title="序号", convertToString=true)
+        @ExcelColumn(title="序号", convertToString=true)
         private int id;
-        @ExcelColumn(order=2, title="信息(用户)->姓名", width=8/*, style = "width: 15px"*/)
+        @ExcelColumn(title="信息(用户)->姓名", width=8/*, style = "width: 15px"*/)
         private String username;
-        @ExcelColumn(order=3, title="信息(用户)->生日", format="yyyy-MM-dd HH:mm:ss", width=11)
+        @ExcelColumn(title="信息(用户)->生日", format="yyyy-MM-dd HH:mm:ss", width=11)
         private LocalDateTime birthday;
-        @ExcelColumn(order=4, title="性别", mapping="0:女,1:男")
+        @ExcelColumn(title="性别", mapping="0:女,1:男")
         private Integer gender;
         MyExcelWriterUser(int id, String username, LocalDateTime birthday) {
             this.id = id;
