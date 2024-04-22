@@ -1,10 +1,10 @@
 package com.jadyer.seed.comm.util;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
 import java.util.List;
 import java.util.Set;
 

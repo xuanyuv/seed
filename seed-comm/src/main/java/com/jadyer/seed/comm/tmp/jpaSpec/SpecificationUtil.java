@@ -1,13 +1,12 @@
 package com.jadyer.seed.comm.tmp.jpaSpec;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.Assert;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Predicate.BooleanOperator;
-import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,18 +34,18 @@ public final class SpecificationUtil {
     private SpecificationUtil() {}
 
     public static <T> SpecificationBuilder<T> and() {
-        return new SpecificationBuilder<>(BooleanOperator.AND);
+        return new SpecificationBuilder<>(Predicate.BooleanOperator.AND);
     }
 
     public static <T> SpecificationBuilder<T> or() {
-        return new SpecificationBuilder<>(BooleanOperator.OR);
+        return new SpecificationBuilder<>(Predicate.BooleanOperator.OR);
     }
 
     public static final class SpecificationBuilder<T> {
-        private final BooleanOperator operator;
+        private final Predicate.BooleanOperator operator;
         private final List<Specification<T>> specificationList;
 
-        public SpecificationBuilder(BooleanOperator operator) {
+        public SpecificationBuilder(Predicate.BooleanOperator operator) {
             this.operator = operator;
             this.specificationList = new ArrayList<>();
         }
@@ -173,7 +172,7 @@ public final class SpecificationUtil {
                     return cb.conjunction();
                 }
                 Predicate[] predicates = specificationList.stream().map(s -> s.toPredicate(root, query, cb)).collect(Collectors.toList()).toArray(new Predicate[specificationList.size()]);
-                return BooleanOperator.AND.equals(operator) ? cb.and(predicates) : cb.or(predicates);
+                return Predicate.BooleanOperator.AND.equals(operator) ? cb.and(predicates) : cb.or(predicates);
             };
         }
     }
