@@ -165,6 +165,8 @@ public class CommTest {
         System.out.println("拼接List中的对象的某个属性为一个字符串：" + loanAmtJoins);
         System.out.println("-----------------------------------------------------------------------------------------");
         // 求和
+        Map<String, Integer> sumDataMap = Map.of("aa", 11, "bb", 22, "cc", 33);
+        System.out.println("Map.value之和为：" + sumDataMap.values().stream().mapToInt(Integer::intValue).sum());
         System.out.println("所有期数之和为：" + dataList.stream().mapToInt(Java8StreamInfo::getLoanTerm).sum());
         System.out.println("所有次数之和为：" + dataList.stream().mapToLong(x -> null==x.getLoanCount() ? 0L : x.getLoanCount()).sum());
         System.out.println("所有金额之和为：" + dataList.stream().map(Java8StreamInfo::getLoanAmt).reduce(BigDecimal.ZERO, BigDecimal::add));
