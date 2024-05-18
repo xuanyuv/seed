@@ -6,23 +6,15 @@ import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.constant.CommResult;
 import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.exception.SeedException;
-import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.open.model.ReqData;
-import org.apache.commons.io.FileUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.swing.filechooser.FileSystemView;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -45,44 +37,46 @@ public class RouterService {
      */
     @OpenMethod(SeedConstants.OPEN_METHOD_boot_file_upload)
     public CommResult<Map<String, Integer>> fileupload(ReqData reqData, HttpServletRequest request) {
-        Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<Map<String, String>>(){});
-        String partnerApplyNo = reqMap.get("partnerApplyNo");
-        if(StringUtils.isBlank(partnerApplyNo)){
-            return CommResult.fail(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "partnerApplyNo is blank");
-        }
-        //接收并处理上传过来的文件
-        MultipartFile fileData = null;
-        CommonsMultipartResolver mutilpartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
-        if(mutilpartResolver.isMultipart(request)){
-            MultipartHttpServletRequest multipartFile = (MultipartHttpServletRequest) request;
-            fileData = multipartFile.getFile("fileData");
-        }
-        if(null==fileData || fileData.getSize()==0){
-            return CommResult.fail(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "未传输文件流");
-        }
-        InputStream is;
-        try {
-            is = fileData.getInputStream();
-        } catch (IOException e) {
-            return CommResult.fail(CodeEnum.SYSTEM_BUSY.getCode(), "文件流获取失败-->"+e.getMessage());
-        }
-        LogUtil.getLogger().info("文件名称：" + fileData.getName());             //fileData
-        LogUtil.getLogger().info("文件原名：" + fileData.getOriginalFilename()); //观海云远.jpg
-        LogUtil.getLogger().info("文件类型：" + fileData.getContentType());      //application/octet-stream
-        LogUtil.getLogger().info("文件大小：" + fileData.getSize());             //2667993=2,667,993字节=2.54MB
-        try {
-            String desktop = FileSystemView.getFileSystemView().getHomeDirectory().getPath() + System.getProperty("file.separator");
-            String separator = System.getProperty("file.separator");
-            FileUtils.copyInputStreamToFile(is, new File(desktop + separator + fileData.getOriginalFilename()));
-        } catch (IOException e) {
-            throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "文件流保存失败-->"+e.getMessage(), e);
-        }
-        return CommResult.success(new HashMap<String, Integer>(){
-            private static final long serialVersionUID = 8673982917114045418L;
-            {
-                put("fileId", 33);
-            }
-        });
+        // Map<String, String> reqMap = JSON.parseObject(reqData.getData(), new TypeReference<>() {});
+        // String partnerApplyNo = reqMap.get("partnerApplyNo");
+        // if(StringUtils.isBlank(partnerApplyNo)){
+        //     return CommResult.fail(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "partnerApplyNo is blank");
+        // }
+        // //接收并处理上传过来的文件
+        // MultipartFile fileData = null;
+        // CommonsMultipartResolver mutilpartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+        // if(mutilpartResolver.isMultipart(request)){
+        //     MultipartHttpServletRequest multipartFile = (MultipartHttpServletRequest) request;
+        //     fileData = multipartFile.getFile("fileData");
+        // }
+        // if(null==fileData || fileData.getSize()==0){
+        //     return CommResult.fail(CodeEnum.OPEN_FORM_ILLEGAL.getCode(), "未传输文件流");
+        // }
+        // InputStream is;
+        // try {
+        //     is = fileData.getInputStream();
+        // } catch (IOException e) {
+        //     return CommResult.fail(CodeEnum.SYSTEM_BUSY.getCode(), "文件流获取失败-->"+e.getMessage());
+        // }
+        // LogUtil.getLogger().info("文件名称：" + fileData.getName());             //fileData
+        // LogUtil.getLogger().info("文件原名：" + fileData.getOriginalFilename()); //观海云远.jpg
+        // LogUtil.getLogger().info("文件类型：" + fileData.getContentType());      //application/octet-stream
+        // LogUtil.getLogger().info("文件大小：" + fileData.getSize());             //2667993=2,667,993字节=2.54MB
+        // try {
+        //     String desktop = FileSystemView.getFileSystemView().getHomeDirectory().getPath() + System.getProperty("file.separator");
+        //     String separator = System.getProperty("file.separator");
+        //     FileUtils.copyInputStreamToFile(is, new File(desktop + separator + fileData.getOriginalFilename()));
+        // } catch (IOException e) {
+        //     throw new SeedException(CodeEnum.SYSTEM_BUSY.getCode(), "文件流保存失败-->"+e.getMessage(), e);
+        // }
+        // return CommResult.success(new HashMap<>() {
+        //     private static final long serialVersionUID = 8673982917114045418L;
+        //
+        //     {
+        //         put("fileId", 33);
+        //     }
+        // });
+        return null;
     }
 
 

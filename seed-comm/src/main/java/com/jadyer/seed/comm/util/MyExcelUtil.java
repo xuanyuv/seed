@@ -3,10 +3,11 @@ package com.jadyer.seed.comm.util;
 import com.github.liaochong.myexcel.core.DefaultExcelBuilder;
 import com.github.liaochong.myexcel.core.DefaultStreamExcelBuilder;
 import com.github.liaochong.myexcel.core.SaxExcelReader;
-import com.github.liaochong.myexcel.utils.AttachmentExportUtil;
+import com.github.liaochong.myexcel.utils.AttachmentV2ExportUtil;
 import com.github.liaochong.myexcel.utils.FileExportUtil;
 import com.jadyer.seed.comm.constant.CodeEnum;
 import com.jadyer.seed.comm.exception.SeedException;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -14,7 +15,6 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -134,7 +134,7 @@ public class MyExcelUtil {
         try(DefaultStreamExcelBuilder<T> streamExcelBuilder = DefaultStreamExcelBuilder.of(modelClass).start()){
             streamExcelBuilder.append(dataList);
             Workbook workbook = streamExcelBuilder.build();
-            AttachmentExportUtil.export(workbook, fileName, response);
+            AttachmentV2ExportUtil.export(workbook, fileName, response);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -2,7 +2,7 @@ package com.jadyer.seed.test;
 
 import com.jadyer.seed.comm.util.HTTPUtil;
 import com.jadyer.seed.comm.util.MinaUtil;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 

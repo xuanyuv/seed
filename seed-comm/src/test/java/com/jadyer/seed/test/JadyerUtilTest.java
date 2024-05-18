@@ -1,8 +1,8 @@
 package com.jadyer.seed.test;
 
 import com.jadyer.seed.comm.util.DateUtil;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class JadyerUtilTest {
     /**
@@ -10,6 +10,6 @@ public class JadyerUtilTest {
      */
     @Test
     public void getDetailDateTest(){
-        Assert.assertEquals("2016-05-13", DateUtil.getDetailDate("20160513"));
+        Assertions.assertEquals("2016-05-13", DateUtil.getDetailDate("20160513"));
     }
 }

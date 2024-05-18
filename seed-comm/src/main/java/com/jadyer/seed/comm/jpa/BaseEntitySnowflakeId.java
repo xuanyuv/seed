@@ -5,7 +5,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IncrementGenerator;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class BaseEntitySnowflakeId extends IncrementGenerator {
     };
 
     @Override
-    public synchronized Serializable generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
+    public synchronized Object generate(SharedSessionContractImplementor session, Object object) throws HibernateException {
         // 对于ID是int自增的，单独判断一下，还是走默认的
         if(IntegerModelNameList.contains(object.getClass().getSimpleName())){
             return super.generate(session, object);

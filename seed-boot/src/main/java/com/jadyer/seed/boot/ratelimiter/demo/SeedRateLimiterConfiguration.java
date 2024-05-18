@@ -9,7 +9,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.redisson.api.RedissonClient;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.core.StandardReflectionParameterNameDiscoverer;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -41,49 +41,51 @@ public class SeedRateLimiterConfiguration {
     private String luaScriptSHA1;
     private static final String RATELIMITER_PREFIX = SeedRateLimiter.class.getSimpleName() + ":";
     private ExpressionParser parser = new SpelExpressionParser();
-    private LocalVariableTableParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
+    private StandardReflectionParameterNameDiscoverer discoverer = new StandardReflectionParameterNameDiscoverer();
 
     static {
-        luaScript = "local key = KEYS[1]\n" +
-                "local limit, interval, intervalPerPermit, refillTime = tonumber(ARGV[1]), tonumber(ARGV[2]), tonumber(ARGV[3]), tonumber(ARGV[4])\n" +
-                "\n" +
-                "local currentTokens\n" +
-                "local bucket = redis.call('hgetall', key)\n" +
-                "\n" +
-                "if table.maxn(bucket) == 0 then\n" +
-                "    currentTokens = limit\n" +
-                "    redis.call('hset', key, 'lastRefillTime', refillTime)\n" +
-                "elseif table.maxn(bucket) == 4 then\n" +
-                "    local lastRefillTime, tokensRemaining = tonumber(bucket[2]), tonumber(bucket[4])\n" +
-                "    if refillTime > lastRefillTime then\n" +
-                "        local intervalSinceLast = refillTime - lastRefillTime\n" +
-                "        if intervalSinceLast > interval then\n" +
-                "            currentTokens = limit\n" +
-                "            redis.call('hset', key, 'lastRefillTime', refillTime)\n" +
-                "        else\n" +
-                "            local grantedTokens = math.floor(intervalSinceLast / intervalPerPermit)\n" +
-                "            if grantedTokens > 0 then\n" +
-                "                local padMillis = math.fmod(intervalSinceLast, intervalPerPermit)\n" +
-                "                redis.call('hset', key, 'lastRefillTime', refillTime - padMillis)\n" +
-                "            end\n" +
-                "            currentTokens = math.min(grantedTokens + tokensRemaining, limit)\n" +
-                "        end\n" +
-                "    else\n" +
-                "        currentTokens = tokensRemaining\n" +
-                "    end\n" +
-                "else\n" +
-                "    error(\"Size of bucket is \" .. table.maxn(bucket) .. \", Should Be 0 or 4.\")\n" +
-                "end\n" +
-                "\n" +
-                "assert(currentTokens >= 0)\n" +
-                "\n" +
-                "if currentTokens == 0 then\n" +
-                "    redis.call('hset', key, 'tokensRemaining', currentTokens)\n" +
-                "    return 0\n" +
-                "else\n" +
-                "    redis.call('hset', key, 'tokensRemaining', currentTokens - 1)\n" +
-                "    return 1\n" +
-                "end";
+        luaScript = """
+                local key = KEYS[1]
+                local limit, interval, intervalPerPermit, refillTime = tonumber(ARGV[1]), tonumber(ARGV[2]), tonumber(ARGV[3]), tonumber(ARGV[4])
+                                
+                local currentTokens
+                local bucket = redis.call('hgetall', key)
+                                
+                if table.maxn(bucket) == 0 then
+                    currentTokens = limit
+                    redis.call('hset', key, 'lastRefillTime', refillTime)
+                elseif table.maxn(bucket) == 4 then
+                    local lastRefillTime, tokensRemaining = tonumber(bucket[2]), tonumber(bucket[4])
+                    if refillTime > lastRefillTime then
+                        local intervalSinceLast = refillTime - lastRefillTime
+                        if intervalSinceLast > interval then
+                            currentTokens = limit
+                            redis.call('hset', key, 'lastRefillTime', refillTime)
+                        else
+                            local grantedTokens = math.floor(intervalSinceLast / intervalPerPermit)
+                            if grantedTokens > 0 then
+                                local padMillis = math.fmod(intervalSinceLast, intervalPerPermit)
+                                redis.call('hset', key, 'lastRefillTime', refillTime - padMillis)
+                            end
+                            currentTokens = math.min(grantedTokens + tokensRemaining, limit)
+                        end
+                    else
+                        currentTokens = tokensRemaining
+                    end
+                else
+                    error("Size of bucket is " .. table.maxn(bucket) .. ", Should Be 0 or 4.")
+                end
+                                
+                assert(currentTokens >= 0)
+                                
+                if currentTokens == 0 then
+                    redis.call('hset', key, 'tokensRemaining', currentTokens)
+                    return 0
+                else
+                    redis.call('hset', key, 'tokensRemaining', currentTokens - 1)
+                    return 1
+                end
+                """;
     }
 
 

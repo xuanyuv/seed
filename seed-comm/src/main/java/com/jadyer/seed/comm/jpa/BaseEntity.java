@@ -1,14 +1,14 @@
 package com.jadyer.seed.comm.jpa;
 
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
 import org.springframework.data.domain.Persistable;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -54,7 +54,7 @@ public abstract class BaseEntity<ID extends Serializable> implements Serializabl
     // @GeneratedValue(generator="baseEntitySnowflakeId")
     // @GenericGenerator(name="baseEntitySnowflakeId", strategy="com.jadyer.seed.comm.jpa.BaseEntitySnowflakeId")
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private ID id;
 
     /**

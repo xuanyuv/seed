@@ -1,8 +1,8 @@
 package com.jadyer.seed.comm.boot;
 
 import org.beetl.core.resource.ClasspathResourceLoader;
-import org.beetl.ext.spring.BeetlGroupUtilConfiguration;
-import org.beetl.ext.spring.BeetlSpringViewResolver;
+import org.beetl.ext.spring6.BeetlGroupUtilConfiguration;
+import org.beetl.ext.spring6.BeetlSpringViewResolver;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

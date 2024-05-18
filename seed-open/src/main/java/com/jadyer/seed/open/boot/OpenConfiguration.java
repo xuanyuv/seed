@@ -1,11 +1,11 @@
 package com.jadyer.seed.open.boot;
 
 import com.jadyer.seed.comm.constant.SeedConstants;
+import jakarta.servlet.Filter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
-import javax.servlet.Filter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

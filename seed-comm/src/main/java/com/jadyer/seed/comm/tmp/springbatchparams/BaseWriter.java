@@ -16,7 +16,6 @@ public abstract class BaseWriter<T> implements ItemWriter<T> {
 		this.stepExecution = stepExecution;
 	}
 
-	@Override
 	public void write(List<? extends T> items) throws Exception {
 		JobParameters params = stepExecution.getJobParameters();
 		ExecutionContext stepContext = stepExecution.getExecutionContext();

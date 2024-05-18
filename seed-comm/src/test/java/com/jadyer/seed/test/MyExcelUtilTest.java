@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.github.liaochong.myexcel.core.annotation.ExcelColumn;
 import com.github.liaochong.myexcel.core.annotation.ExcelModel;
 import com.jadyer.seed.comm.util.MyExcelUtil;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.time.LocalDateTime;

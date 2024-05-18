@@ -14,8 +14,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -191,7 +191,7 @@ public class UtilTest {
         //FTPUtil.logout();
         InputStream is = FileUtils.openInputStream(new File("F:\\Tool\\Enterprise_Architect_8.0.858.zip"));
         String remoteURL = "/mytest/02/03/" + DateFormatUtils.format(new Date(), "yyyyMMddHHmmss") + ".jpg";
-        Assert.assertTrue(FTPUtil.uploadAndLogout("192.168.2.60", "ftpupload", "HUvueMGWg92y8SSN", remoteURL, is));
+        Assertions.assertTrue(FTPUtil.uploadAndLogout("192.168.2.60", "ftpupload", "HUvueMGWg92y8SSN", remoteURL, is));
     }
 
 
@@ -215,7 +215,7 @@ public class UtilTest {
     @Test
     public void FTPUtilForDeleteFileTest(){
         String remoteURL = "/mytest/02/03/20151006151054_test.jpg";
-        Assert.assertTrue("文件不存在", FTPUtil.deleteFileAndLogout("192.168.2.60", "ftpupload", "HUvueMGWg92y8SSN", remoteURL));
+        Assertions.assertTrue(FTPUtil.deleteFileAndLogout("192.168.2.60", "ftpupload", "HUvueMGWg92y8SSN", remoteURL));
     }
 
 
@@ -226,7 +226,7 @@ public class UtilTest {
     public void FTPUtilForUploadViaSFTPTest() throws IOException{
         InputStream is = FileUtils.openInputStream(new File("F:\\Tool\\Wireshark-win32-1.4.9中文版.exe"));
         String remoteURL = "/upload/test/sf/" + DateFormatUtils.format(new Date(), "yyyyMMddHHmmss") + ".exe";
-        Assert.assertTrue(FTPUtil.uploadAndLogoutViaSFTP("192.168.2.41", 22, "yizhifu", "YMQwcUZh2LvhmR87d7tjmqoRbj6ST1", remoteURL, is));
+        Assertions.assertTrue(FTPUtil.uploadAndLogoutViaSFTP("192.168.2.41", 22, "yizhifu", "YMQwcUZh2LvhmR87d7tjmqoRbj6ST1", remoteURL, is));
     }
 
 
@@ -247,7 +247,7 @@ public class UtilTest {
     @Test
     public void FTPUtilForDeleteFileViaSFTPTest(){
         String remoteURL = "/upload/test/sf/20151022151451.exe";
-        Assert.assertTrue("文件不存在", FTPUtil.deleteFileAndLogoutViaSFTP("192.168.2.41", 22, "yizhifu", "YMQwcUZh2LvhmR87d7tjmqoRbj6ST1", remoteURL));
+        Assertions.assertTrue(FTPUtil.deleteFileAndLogoutViaSFTP("192.168.2.41", 22, "yizhifu", "YMQwcUZh2LvhmR87d7tjmqoRbj6ST1", remoteURL));
     }
 
 
@@ -272,6 +272,6 @@ public class UtilTest {
         System.out.println(MoneyUtil.toChinese("1.01"));
         System.out.println(MoneyUtil.toChinese("1.00"));
         System.out.println(MoneyUtil.toChinese("987654321.00"));
-        Assert.assertEquals("玖仟玖佰玖拾玖万伍仟陆佰柒拾捌亿玖仟零壹拾贰万叁仟肆佰伍拾陆元柒角捌分玖厘", MoneyUtil.toChinese("9999567890123456.7899"));
+        Assertions.assertEquals("玖仟玖佰玖拾玖万伍仟陆佰柒拾捌亿玖仟零壹拾贰万叁仟肆佰伍拾陆元柒角捌分玖厘", MoneyUtil.toChinese("9999567890123456.7899"));
     }
 }

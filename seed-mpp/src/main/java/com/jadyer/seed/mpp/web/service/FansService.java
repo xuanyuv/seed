@@ -62,7 +62,7 @@ public class FansService {
      */
     public Page<MppFansInfo> listViaPage(long uid, String pageNo){
         //排序
-        Sort sort = new Sort(Sort.Direction.DESC, "id");
+        Sort sort = Sort.by(Sort.Direction.DESC, "id");
         //分页
         Pageable pageable = PageRequest.of(StringUtils.isBlank(pageNo)?0:Integer.parseInt(pageNo), 10, sort);
         //条件

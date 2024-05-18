@@ -6,12 +6,10 @@ import com.jadyer.seed.boot.ratelimiter.RateLimiterLuaV2;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
-import org.springframework.test.context.junit4.SpringRunner;
 import redis.clients.jedis.JedisCluster;
 
 import javax.annotation.Resource;
@@ -25,7 +23,6 @@ import java.util.concurrent.TimeUnit;
  * 演示spring-boot-starter-test的几个用法
  */
 @Profile("local")
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes=BootRun.class)
 public class BootTest {
     @Resource
@@ -51,7 +48,7 @@ public class BootTest {
         String encryptStr = encryptor.encrypt("xuanyu");
         System.out.println("encryptStr=" + encryptStr);
         String decryptStr = encryptor.decrypt(encryptStr);
-        Assert.assertEquals("xuanyu", decryptStr);
+        Assertions.assertEquals("xuanyu", decryptStr);
     }
 
 

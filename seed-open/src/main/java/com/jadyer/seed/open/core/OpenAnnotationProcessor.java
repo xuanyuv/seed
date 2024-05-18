@@ -9,11 +9,11 @@ import com.jadyer.seed.comm.exception.SeedException;
 import com.jadyer.seed.comm.util.BeanUtil;
 import com.jadyer.seed.comm.util.ValidatorUtil;
 import com.jadyer.seed.open.model.ReqData;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,21 +1,12 @@
 package com.jadyer.seed.comm.boot;
 
 import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
-
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * RestTemplate配置
@@ -107,45 +98,47 @@ public class RestTemplateConfiguration {
     private int maxIdleTime;
 
     private ClientHttpRequestFactory createFactory(){
-        if(this.maxTotalConnect <= 0){
-            SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-            factory.setConnectTimeout(this.connectTimeout);
-            factory.setReadTimeout(this.readTimeout);
-            return factory;
-        }
-        HttpClient httpClient = HttpClientBuilder.create()
-                .setMaxConnTotal(this.maxTotalConnect)
-                .setMaxConnPerRoute(this.maxConnectPerRoute)
-                .evictExpiredConnections().evictIdleConnections(this.maxIdleTime, TimeUnit.MILLISECONDS)
-                .build();
-        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory(httpClient);
-        factory.setConnectTimeout(this.connectTimeout);
-        factory.setReadTimeout(this.readTimeout);
-        return factory;
+        // if(this.maxTotalConnect <= 0){
+        //     SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        //     factory.setConnectTimeout(this.connectTimeout);
+        //     factory.setReadTimeout(this.readTimeout);
+        //     return factory;
+        // }
+        // HttpClient httpClient = HttpClientBuilder.create()
+        //         .setMaxConnTotal(this.maxTotalConnect)
+        //         .setMaxConnPerRoute(this.maxConnectPerRoute)
+        //         .evictExpiredConnections().evictIdleConnections(this.maxIdleTime, TimeUnit.MILLISECONDS)
+        //         .build();
+        // HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory(httpClient);
+        // factory.setConnectTimeout(this.connectTimeout);
+        // factory.setReadTimeout(this.readTimeout);
+        // return factory;
+        return null;
     }
 
 
     @Bean
     @ConditionalOnMissingBean(RestTemplate.class)
     public RestTemplate getRestTemplate(){
-        RestTemplate restTemplate = new RestTemplate(this.createFactory());
-        //解决中文乱码问题
-        //由于RestTemplate.postForObject()使用的StringHttpMessageConverter默认编码是ISO-8859-1，所以中文会乱码
-        //所以我们要移除默认的StringHttpMessageConverter，再添加新的由UTF-8编码的StringHttpMessageConverter
-        List<HttpMessageConverter<?>> converterList = restTemplate.getMessageConverters();
-        HttpMessageConverter<?> converterTarget = null;
-        for(HttpMessageConverter<?> item : converterList){
-            if(StringHttpMessageConverter.class == item.getClass()){
-                converterTarget = item;
-                break;
-            }
-        }
-        if(null != converterTarget){
-            converterList.remove(converterTarget);
-        }
-        converterList.add(1, new StringHttpMessageConverter(StandardCharsets.UTF_8));
-        //由于converterList是restTemplate对象的全局变量的引用
-        //所以不用restTemplate.setMessageConverters(converterList);
-        return restTemplate;
+        // RestTemplate restTemplate = new RestTemplate(this.createFactory());
+        // //解决中文乱码问题
+        // //由于RestTemplate.postForObject()使用的StringHttpMessageConverter默认编码是ISO-8859-1，所以中文会乱码
+        // //所以我们要移除默认的StringHttpMessageConverter，再添加新的由UTF-8编码的StringHttpMessageConverter
+        // List<HttpMessageConverter<?>> converterList = restTemplate.getMessageConverters();
+        // HttpMessageConverter<?> converterTarget = null;
+        // for(HttpMessageConverter<?> item : converterList){
+        //     if(StringHttpMessageConverter.class == item.getClass()){
+        //         converterTarget = item;
+        //         break;
+        //     }
+        // }
+        // if(null != converterTarget){
+        //     converterList.remove(converterTarget);
+        // }
+        // converterList.add(1, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+        // //由于converterList是restTemplate对象的全局变量的引用
+        // //所以不用restTemplate.setMessageConverters(converterList);
+        // return restTemplate;
+        return null;
     }
 }

@@ -1,11 +1,11 @@
 package com.jadyer.seed.qss;
 
 import com.jadyer.seed.qss.repository.ScheduleTaskRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by 玄玉<https://jadyer.cn/> on 2017/9/24 15:40.

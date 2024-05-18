@@ -40,6 +40,7 @@
         <alibaba.fastjson.version>1.2.74</alibaba.fastjson.version>
         <beetl.version>3.15.13.RELEASE</beetl.version>
         <jsch.version>0.1.55</jsch.version>
+        <dom4j.version>2.1.4</dom4j.version>
         <hutool.version>5.8.23</hutool.version>
         <myexcel.version>4.5.1</myexcel.version>
         <jedis.version>2.9.0</jedis.version>
@@ -236,6 +237,11 @@
             <groupId>com.jcraft</groupId>
             <artifactId>jsch</artifactId>
             <version>${jsch.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>${dom4j.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>

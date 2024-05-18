@@ -2,7 +2,7 @@ package com.jadyer.seed.test;
 
 import com.jadyer.seed.comm.util.BeanUtil;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;

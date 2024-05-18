@@ -16,6 +16,8 @@ import com.jadyer.seed.mpp.web.service.MppMenuService;
 import com.jadyer.seed.mpp.web.service.MppReplyService;
 import com.jadyer.seed.mpp.web.service.MppUserService;
 import com.jadyer.seed.mpp.web.service.async.AppidAsync;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -27,8 +29,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
  * Created by 玄玉<https://jadyer.cn/> on 2017/7/15 12:45.

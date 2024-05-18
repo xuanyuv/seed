@@ -2,12 +2,12 @@ package com.jadyer.seed.qss.model;
 
 import com.jadyer.seed.comm.constant.SeedConstants;
 import com.jadyer.seed.comm.jpa.BaseEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.util.Date;
 
 /**

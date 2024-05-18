@@ -76,7 +76,8 @@ public class RabbitMQConfiguration {
         template.setMandatory(true);
         //消息成功到达exchange，但没有queue与之绑定时触发的回调（即消息发送不到任何一个队列中）
         //也可以在生产者发送消息的类上实现org.springframework.amqp.rabbit.core.RabbitTemplate.ConfirmCallback和RabbitTemplate.ReturnCallback两个接口（本例中即为SendController.java）
-        template.setReturnCallback((message, replyCode, replyText, exchange, routingKey) -> LogUtil.getLogger().error("消息发送失败，replyCode={}，replyText={}，exchange={}，routingKey={}，消息体=[{}]", replyCode, replyText, exchange, routingKey, JSON.toJSONString(message.getBody())));
+        // template.setReturnCallback((message, replyCode, replyText, exchange, routingKey) -> LogUtil.getLogger().error("消息发送失败，replyCode={}，replyText={}，exchange={}，routingKey={}，消息体=[{}]", replyCode, replyText, exchange, routingKey, JSON.toJSONString(message.getBody())));
+        template.setReturnsCallback(returned -> LogUtil.getLogger().error("消息发送失败，replyCode={}，replyText={}，exchange={}，routingKey={}，消息体=[{}]", returned.getReplyCode(), returned.getReplyText(), returned.getExchange(), returned.getRoutingKey(), JSON.toJSONString(returned.getMessage())));
         //消息成功到达exchange后触发的ack回调（需要spring.rabbitmq.publisherConfirms=true）
         template.setConfirmCallback((correlationData, ack, cause) -> {
             if(ack){

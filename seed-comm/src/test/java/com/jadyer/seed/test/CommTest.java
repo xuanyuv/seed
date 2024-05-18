@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.test.model.Java8StreamInfo;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.Arrays;

@@ -30,6 +30,7 @@ public abstract class BasePageItemReader<T> extends AbstractPagingItemReader<T> 
 	 * 
 	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
 	 */
+	@Override
 	public void afterPropertiesSet() throws Exception {
 		super.afterPropertiesSet();
 		this.setPageSize(defaultPageSize);
@@ -50,7 +51,6 @@ public abstract class BasePageItemReader<T> extends AbstractPagingItemReader<T> 
 
 	public abstract List<T> doRead(JobParameters params, ExecutionContext stepContext);
 
-	@Override
 	protected void doJumpToPage(int itemIndex) {
 		log.info("record index:" + itemIndex);
 	}
