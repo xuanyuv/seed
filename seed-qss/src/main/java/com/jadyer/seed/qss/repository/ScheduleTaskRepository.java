@@ -34,9 +34,9 @@ public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Lon
 
     /**
      * 通过SQL的IN()函数批量查询定时任务
-     * <p>
-     *     若SQL返回的是st，而不是st的个别字段，则该方法返回值便可写成List<ScheduleTask>
-     * </p>
+     * ---------------------------------------------------------------------------
+     * 若SQL返回的是st，而不是st的个别字段，则该方法返回值便可写成List<ScheduleTask>
+     * ---------------------------------------------------------------------------
      */
     @Query("SELECT st.name, st.url FROM ScheduleTask st WHERE st.id IN (?1)")
     Object[] selectByIds(List<Long> idList);
@@ -48,14 +48,16 @@ public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Lon
 
     /**
      * 更新定时任务的状态
-     * <p>
-     *     对于这类操作，Spring在执行时如果发现它没有声明事务，那么会报告下面的异常
-     *     javax.persistence.TransactionRequiredException: Executing an update/delete query
-     * </p>
+     * -----------------------------------------------------------------------------------
+     * 1. 对于 UPDATE 或 DELETE 操作，需要使用 @Modifying 告诉 springdatajpa
+     * 2. 对于这类操作，Spring在执行时如果发现它没有声明事务，那么会报告下面的异常
+     *    javax.persistence.TransactionRequiredException: Executing an update/delete query
+     *    此时需要在Service类或方法上，或者repository方法上，添加事务注解
+     * -----------------------------------------------------------------------------------
      * @return UPDATE所影响的记录行数
      */
     @Modifying
-    @Transactional(timeout=10)
+    @Transactional
     @Query("UPDATE ScheduleTask SET status=?1 WHERE id=?2")
     int updateStatusById(int status, long id);
 
@@ -64,7 +66,7 @@ public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Lon
      * @return UPDATE所影响的记录行数
      */
     @Modifying
-    @Transactional(timeout=10)
+    @Transactional
     @Query(value="UPDATE t_schedule_task SET cron=?1 WHERE id=?2", nativeQuery=true)
     int updateCronById(String cron, long id);
 
