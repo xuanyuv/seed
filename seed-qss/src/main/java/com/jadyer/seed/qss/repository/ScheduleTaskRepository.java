@@ -19,13 +19,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 /**
- * -----------------------------------------------------------------------------------------------------------
- * 1.Spring-Data-JPA实现的方法默认都使用了事务
- *   针对查询类的方法，其等价于@Transactional(readOnly=true)
- *   针对增删改类型的方法，等价于@Transactional
- * 2.有人说：也可以在接口上使用@Transactional显式指定事务属性，它将覆盖Spring-Data-JPA提供的默认值
- *   但经过我的试验，发现save()/delete()方法还是使用了@Transactional，而非@Transactional(readOnly=true)
- * -----------------------------------------------------------------------------------------------------------
  * Created by 玄玉<https://jadyer.cn/> on 2015/08/29 18:04.
  */
 public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Long> {
@@ -48,12 +41,15 @@ public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Lon
 
     /**
      * 更新定时任务的状态
-     * -----------------------------------------------------------------------------------
-     * 1. 对于 UPDATE 或 DELETE 操作，需要使用 @Modifying 告诉 springdatajpa
-     * 2. 对于这类操作，Spring在执行时如果发现它没有声明事务，那么会报告下面的异常
+     * ----------------------------------------------------------------------------------------------------
+     * 1. springdatajpa实现的方法默认都使用了事务，且是只读事务
+     * 2. 对于更新或删除操作，如果使用的是 @Query 注解，那么还要结合 @Modifying 来声明这是一个修改操作
+     *    但如果没有使用 @Query，而是类似这样void deleteByName(String name)则不需要 @Modifying 注解
+     * 3. 对于更新或删除操作，如果Spring在执行时发现它没有声明事务，那么会报告类似下面的异常
      *    javax.persistence.TransactionRequiredException: Executing an update/delete query
-     *    此时需要在Service类或方法上，或者repository方法上，添加事务注解
-     * -----------------------------------------------------------------------------------
+     *    jakarta.persistence.TransactionRequiredException: No EntityManager with actual transaction
+     *    此时需要在Service类或方法上，或者repository方法上，添加@Transactional注解（否则会被当成只读事务去执行）
+     * ----------------------------------------------------------------------------------------------------
      * @return UPDATE所影响的记录行数
      */
     @Modifying
