@@ -46,7 +46,7 @@ public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Lon
      * 2. 对于更新或删除操作，如果使用的是 @Query 注解，那么还要结合 @Modifying 来声明这是一个修改操作
      *    但如果没有使用 @Query，而是类似这样void deleteByName(String name)则不需要 @Modifying 注解
      * 3. 对于更新或删除操作，如果Spring在执行时发现它没有声明事务，那么会报告类似下面的异常
-     *    javax.persistence.TransactionRequiredException: Executing an update/delete query
+     *    jakarta.persistence.TransactionRequiredException: Executing an update/delete query
      *    jakarta.persistence.TransactionRequiredException: No EntityManager with actual transaction
      *    此时需要在Service类或方法上，或者repository方法上，添加@Transactional注解（否则会被当成只读事务去执行）
      * ----------------------------------------------------------------------------------------------------
