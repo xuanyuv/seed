@@ -71,12 +71,13 @@ function deleteTask(id){
 }
 
 /**
- * 立即执行定时任务
+ * 更新定时任务Cron表达式
  */
-function triggerJob(id){
+function updateCron(id, cron){
     if(inputDynamicPassword()){
-        if(confirm("确定立即执行此任务么？")){
-            $.get("${ctxPath}/qss/triggerJob/"+id+"/"+dynamicPassword,function(data){
+        var cron = prompt("请输入CronExpression", cron);
+        if(cron){
+            $.get("${ctxPath}/qss/updateCron?id="+id+"&cron="+cron+"&dynamicPassword="+dynamicPassword,function(data){
                 if(0 == data.code){
                     location.reload();
                 }else{
@@ -88,7 +89,7 @@ function triggerJob(id){
 }
 
 /**
- * 停止0/启动1/挂起2/恢复3定时任务
+ * 0停止/1启动/2挂起/3恢复定时任务
  */
 function updateStatus(id, status){
     if(inputDynamicPassword()){
@@ -103,13 +104,12 @@ function updateStatus(id, status){
 }
 
 /**
- * 更新定时任务Cron表达式
+ * 立即执行定时任务
  */
-function updateCron(id, cron){
+function triggerJob(id){
     if(inputDynamicPassword()){
-        var cron = prompt("请输入CronExpression", cron);
-        if(cron){
-            $.get("${ctxPath}/qss/updateCron?id="+id+"&cron="+cron+"&dynamicPassword="+dynamicPassword,function(data){
+        if(confirm("确定立即执行此任务么？")){
+            $.get("${ctxPath}/qss/triggerJob/"+id+"/"+dynamicPassword,function(data){
                 if(0 == data.code){
                     location.reload();
                 }else{
