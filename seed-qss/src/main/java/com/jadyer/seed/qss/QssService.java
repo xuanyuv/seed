@@ -55,6 +55,21 @@ public class QssService {
 
 
     /**
+     * 更新CronExpression
+     */
+    @Transactional(rollbackFor=Exception.class)
+    void updateCron(long taskId, String cron){
+        if(!CronExpression.isValidExpression(cron)){
+            throw new IllegalArgumentException("CronExpression不正确");
+        }
+        ScheduleTask task = this.get(taskId);
+        task.setCron(cron);
+        scheduleTaskRepository.updateCronById(cron, taskId);
+        jobComponent.upsertJob(task);
+    }
+
+
+    /**
      * 更改QuartzJob和数据库任务状态
      */
     @Transactional(rollbackFor=Exception.class)
@@ -69,20 +84,5 @@ public class QssService {
             case SeedConstants.QSS_STATUS_RESUME : jobComponent.resumeJob(task); break;
             default: throw new IllegalArgumentException("无法识别的status=[" + status + "]");
         }
-    }
-
-
-    /**
-     * 更新CronExpression
-     */
-    @Transactional(rollbackFor=Exception.class)
-    void updateCron(long taskId, String cron){
-        if(!CronExpression.isValidExpression(cron)){
-            throw new IllegalArgumentException("CronExpression不正确");
-        }
-        ScheduleTask task = this.get(taskId);
-        task.setCron(cron);
-        scheduleTaskRepository.updateCronById(cron, taskId);
-        jobComponent.upsertJob(task);
     }
 }

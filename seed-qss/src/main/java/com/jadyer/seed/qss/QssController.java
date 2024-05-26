@@ -88,18 +88,18 @@ public class QssController {
     }
 
 
-    @GetMapping("/updateStatus")
-    public CommResult<Void> updateStatus(long id, int status, String dynamicPassword){
-        this.verifyDynamicPassword(dynamicPassword);
-        qssService.updateStatus(id, status);
-        return CommResult.success();
-    }
-
-
     @GetMapping("/updateCron")
     public CommResult<Void> updateCron(long id, String cron, String dynamicPassword){
         this.verifyDynamicPassword(dynamicPassword);
         qssService.updateCron(id, cron);
+        return CommResult.success();
+    }
+
+
+    @GetMapping("/updateStatus")
+    public CommResult<Void> updateStatus(long id, int status, String dynamicPassword){
+        this.verifyDynamicPassword(dynamicPassword);
+        qssService.updateStatus(id, status);
         return CommResult.success();
     }
 
