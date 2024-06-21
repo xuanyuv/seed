@@ -138,7 +138,7 @@ public class CompressUtil {
 
 
     public static void unpackMyFile(List<String> prefixList, String rarFilename, String passwordFilename) {
-        File file = new File("C:\\Users\\Jadyer\\Desktop\\" + passwordFilename);
+        File file = new File("C:\\Users\\xuanyu\\Desktop\\" + passwordFilename);
         try {
             FileUtils.writeLines(file, Collections.singletonList(passwordFilename), true);
             List<String> middleList = Arrays.asList("!", "@");
@@ -148,7 +148,7 @@ public class CompressUtil {
                 for (String middle : middleList) {
                     for (int i=suffixMin,len=suffixMax+1; i<len; i++) {
                         String password = prefix + middle + i;
-                        if(unRAR("C:\\Users\\Jadyer\\Desktop\\", rarFilename, "", password)){
+                        if(unRAR("C:\\Users\\xuanyu\\Desktop\\", rarFilename, "", password)){
                             System.out.println("password=[" + password + "]");
                             FileUtils.writeLines(file, Collections.singletonList(password), true);
                             break;
@@ -163,8 +163,8 @@ public class CompressUtil {
 
 
     public static void main(String[] args) throws IOException {
-        // System.out.println(unRAR("C:\\Users\\Jadyer\\Desktop\\", "22.rar", "", "22@123"));
-        // System.out.println(unRAR22("C:\\Users\\Jadyer\\Desktop\\", "22.rar", "", "22@123"));
+        // System.out.println(unRAR("C:\\Users\\xuanyu\\Desktop\\", "22.rar", "", "22@123"));
+        // System.out.println(unRAR22("C:\\Users\\xuanyu\\Desktop\\", "22.rar", "", "22@123"));
 
         // ExecutorService fixedThreadPool = Executors.newFixedThreadPool(3);
         // for (int i=0; i<3; i++) {

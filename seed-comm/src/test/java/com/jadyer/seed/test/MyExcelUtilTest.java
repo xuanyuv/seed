@@ -17,7 +17,7 @@ import java.util.List;
  * Created by 玄玉<https://jadyer.cn/> on 2019/8/26 12:08.
  */
 public class MyExcelUtilTest {
-    private static final String EXCEL_FILE_PATHNAME = "C:\\Users\\Jadyer\\Desktop\\myexcel_test.xlsx";
+    private static final String EXCEL_FILE_PATHNAME = "C:\\Users\\xuanyu\\Desktop\\myexcel_test.xlsx";
 
     @Test
     public void write() {
@@ -47,7 +47,7 @@ public class MyExcelUtilTest {
      * even：标明该样式针对偶数内容行
      * https://gitee.com/liaochong/myexcel/wikis/Style-customize
      */
-    @ExcelModel(sheetName="测试数据", style={"text-align:left", "title->text-align:center; vertical-align:center; color:red; font-weight:bold; border-style:thin", "odd->background-color:#DDEBF7; border-style:dotted"})
+    @ExcelModel(sheetName="测试数据", style={"text-align:left", "title->text-align:center; vertical-align:center; color:red; font-weight:bold; border-style:thin", "odd->background-color:#DDEBF7; border-style:thin"})
     private static class MyExcelWriterUser{
         @ExcelColumn(title="序号", convertToString=true)
         private int id;
