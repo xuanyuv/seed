@@ -19,7 +19,7 @@ public class QuartzDemo {
     // @Scheduled(cron="0 */2 * * * ?")
     void justDoIt(){
         String quartzName = "DEMO";
-        LogUtil.getLogger().info("定时任务：{}-->启动--------------------------------------------------->", quartzName);
+        LogUtil.getLogger().info("\n定时任务：{}-->启动--------------------------------------------------->", quartzName);
         List<String> dataList = Arrays.asList("1", "2", "3", "4", "5", "6");
         LogUtil.getLogger().info("定时任务：{}-->待处理数据=[{}]条", quartzName, dataList.size());
         for(int i=0,len=dataList.size(); i<len; i++){
