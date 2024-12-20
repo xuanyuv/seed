@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by 玄玉<https://jadyer.cn/> on 2017/3/14 16:57.
@@ -71,7 +72,7 @@ public class CommTest {
                         }
                         if((sum_i + sum_k + j + m + preSum) % 10 == 0){
                             //if(i==j && i!=4 && m!=4){
-                                System.out.print("  " + i + "" + j + "" + k + "" + m);
+                                System.out.print("  " + i + j + k + m);
                                 printCountFlag++;
                                 if(printCountFlag > printCountMax - 1){
                                     System.out.println();
@@ -131,7 +132,7 @@ public class CommTest {
         // 过滤（注：过滤后得到List时，若空值，那么得到的会是空List，不是null）
         Java8StreamInfo newData = dataList.stream().filter(x -> new BigDecimal("22").compareTo(x.getLoanAmt())>0).findFirst().orElseThrow(NullPointerException::new);
         System.out.println("过滤后得到对象：" + JSON.toJSONString(newData));
-        List<Java8StreamInfo> newDataList = dataList.stream().filter(x -> new BigDecimal("3").compareTo(x.getLoanAmt())>0).collect(Collectors.toList());
+        List<Java8StreamInfo> newDataList = dataList.stream().filter(x -> new BigDecimal("3").compareTo(x.getLoanAmt())>0).toList();
         newDataList.forEach(info -> System.out.println("过滤后得到数据：" + JSON.toJSONString(info)));
         newDataList.forEach(info -> {
             if(new BigDecimal("25").compareTo(info.getLoanAmt()) > 0){
@@ -152,7 +153,7 @@ public class CommTest {
         System.out.println("分组后得到数据（value是对象本身：Function.identity()是简洁写法，也是返回对象本身）：" + JSON.toJSONString(dataMap03));
         System.out.println("-----------------------------------------------------------------------------------------");
         // 获取某个字段的列表（注：若源List是一个空List，那么得到的也是空List，不是null）
-        List<Integer> loanTermList = dataList.stream().map(Java8StreamInfo::getLoanTerm).collect(Collectors.toList());
+        List<Integer> loanTermList = dataList.stream().map(Java8StreamInfo::getLoanTerm).toList();
         loanTermList.forEach(loanTerm -> System.out.println("期数列表的数据（未去重）：" + loanTerm));
         List<Integer> loanTermDistinctList = dataList.stream().map(Java8StreamInfo::getLoanTerm).distinct().collect(Collectors.toList());
         System.out.println("期数列表的数据（去重后）：" + JSON.toJSONString(loanTermDistinctList));
@@ -176,6 +177,35 @@ public class CommTest {
         // 最大值
         Optional<Java8StreamInfo> infoOptional = dataList.stream().max(Comparator.comparing(Java8StreamInfo::getLoanAmt));
         System.out.println("金额最大的数据：" + JSON.toJSONString(infoOptional.orElseThrow(RuntimeException::new)));
+        System.out.println("-----------------------------------------------------------------------------------------");
+        // 字符串数组转List（得到的数组不能增删操作）
+        String[] strArray = new String[]{"a","b","c"};
+        List<String> strList = Stream.of(strArray).toList();
+        System.out.println("字符串数组转List：" + JSON.toJSONString(strList));
+        System.out.println("-----------------------------------------------------------------------------------------");
+        /*
+         * 数据分页（排序后，从第2行开始，查询10条数据）
+         */
+        List<Integer> numberArray = Arrays.asList(1, 2, 2, 3, 7, 3, 5, 10, 6, 20, 30, 40, 50, 60, 100);
+        // 数据分页：从大到小排序
+        List<Integer> numberList_01 = numberArray.stream().sorted(Comparator.reverseOrder()).skip(1).limit(10).toList();
+        // 数据分页：从小到大排序
+        // noinspection Convert2MethodRef,ComparatorCombinators
+        List<Integer> numberList_02 = numberArray.stream().sorted((x, y) -> x.compareTo(y)).skip(0).limit(10).toList();
+        System.out.println(numberList_02);
+        System.out.println("-----------------------------------------------------------------------------------------");
+        /*
+         * 并行操作
+         * 并行：指多个任务在同一时间点发生，并由不同的CPU进行处理，不互相抢占资源
+         * 并发：指多个任务在同一时间点同时发生，但由同一个CPU进行处理，互相抢占资源
+         * 实际：并行操作不一定比串行快！
+         * 实际：对于简单操作，数量非常大，同时服务器是多核的话，建议使用Stream并行。反之，采用串行操作更可靠
+         */
+        List<String> stringList = Arrays.asList("abc", "", "bc", "efg", "abcd","", "jkl");
+        // 采用并行计算方法，获取空字符串的数量
+        //noinspection Convert2MethodRef
+        long count = stringList.parallelStream().filter(string -> string.isEmpty()).count();
+        System.out.println("并行计算出空字符串数量：" + count);
         System.out.println("-----------------------------------------------------------------------------------------");
     }
 }
