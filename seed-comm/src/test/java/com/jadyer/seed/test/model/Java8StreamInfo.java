@@ -13,6 +13,11 @@ public class Java8StreamInfo {
     public Java8StreamInfo() {
     }
 
+    public Java8StreamInfo(int loanTerm, BigDecimal loanAmt) {
+        this.loanTerm = loanTerm;
+        this.loanAmt = loanAmt;
+    }
+
     public Java8StreamInfo(int loanTerm, BigDecimal loanAmt, Long loanCount) {
         this.loanTerm = loanTerm;
         this.loanAmt = loanAmt;

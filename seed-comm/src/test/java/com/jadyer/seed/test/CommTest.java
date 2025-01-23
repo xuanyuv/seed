@@ -207,5 +207,10 @@ public class CommTest {
         long count = stringList.parallelStream().filter(string -> string.isEmpty()).count();
         System.out.println("并行计算出空字符串数量：" + count);
         System.out.println("-----------------------------------------------------------------------------------------");
+        // Map to List
+        Map<Integer, BigDecimal> itemMap = Map.of(9, BigDecimal.ONE, 12, BigDecimal.TEN);
+        List<Java8StreamInfo> itemList = itemMap.entrySet().parallelStream().map(x -> new Java8StreamInfo(x.getKey(), x.getValue())).toList();
+        System.out.println("并行Map转List：" + JSON.toJSONString(itemList));
+        System.out.println("-----------------------------------------------------------------------------------------");
     }
 }
