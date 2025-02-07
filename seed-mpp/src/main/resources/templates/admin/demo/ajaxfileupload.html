@@ -181,17 +181,21 @@ public void fileGet(String path, HttpServletRequest request, HttpServletResponse
     headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
     return new ResponseEntity<>(FileUtils.readFileToByteArray(new File("")), headers, status);
     */
+    response.setCharacterEncoding(StandardCharsets.UTF_8.name());
     response.setContentType("application/octet-stream");
-    response.setHeader("Content-disposition", "attachment; filename=" + new String(filename.getBytes(StandardCharsets.UTF_8), "ISO8859-1"));
-    OutputStream os = new BufferedOutputStream(response.getOutputStream());
-    byte[] buff = new byte[1024];
-    int len;
-    while((len=is.read(buff)) > -1){
-        os.write(buff, 0, len);
+    response.addHeader("Access-Control-Expose-Headers", "Content-Disposition");
+    response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(filename, StandardCharsets.UTF_8).replace("+", "%20"));
+    try (InputStream is = FileUtils.openInputStream(new File(filepath));
+         OutputStream os = new BufferedOutputStream(response.getOutputStream())){
+        byte[] buff = new byte[1024];
+        int len;
+        while((len=is.read(buff)) > -1){
+            os.write(buff, 0, len);
+        }
+        os.flush();
+    } catch (IOException e) {
+        throw new XYException(CodeEnum.SYSTEM_BUSY, e);
     }
-    os.flush();
-    is.close();
-    os.close();
 }
 
 
