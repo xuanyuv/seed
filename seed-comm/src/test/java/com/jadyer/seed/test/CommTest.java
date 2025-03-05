@@ -126,6 +126,7 @@ public class CommTest {
         dataList.sort((o1, o2) -> o2.getLoanTerm() - o1.getLoanTerm());
         System.out.println("降序排序后得到数据：" + JSON.toJSONString(dataList));
         // 升序排序
+        // dataList.sort(Comparator.comparingInt(x -> Integer.parseInt(x.getLoanTerm())));
         dataList.sort(Comparator.comparingInt(Java8StreamInfo::getLoanTerm));
         System.out.println("升序排序后得到数据：" + JSON.toJSONString(dataList));
         System.out.println("-----------------------------------------------------------------------------------------");
