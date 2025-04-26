@@ -118,8 +118,11 @@
     </bean>
 
     <bean id="reader102" class="com.jadyer.seed.controller.batch.xmlconfig.SeedMultiResourceItemReader">
-        <!--<property name="resources" value="file:/data/seedboot-batch-2-*.txt"/>-->
+        <!--
+        <property name="resources" value="file:/data/seedboot-batch-2-*.txt"/>
         <property name="resourcesLocationPattern" value="file:/data/seedboot-batch-2-*.txt"/>
+        -->
+        <property name="resourcesLocationPattern" value="file:/Develop/Code/xuanyu/seed/seed-boot/src/main/java/com/jadyer/seed/controller/batch/model/seedboot-batch-2-*.txt"/>
         <property name="delegate">
             <bean class="org.springframework.batch.item.file.FlatFileItemReader">
                 <property name="linesToSkip" value="1"/>
@@ -158,7 +161,7 @@
     -->
     <bean id="writer102" class="org.springframework.batch.item.file.FlatFileItemWriter" scope="step">
         <property name="resource" value="file:#{jobParameters['filePath']}all"/>
-        <property name="appendAllowed" value="true"/>
+        <property name="appendAllowed" value="false"/>
         <!--
         <property name="shouldDeleteIfEmpty" value="true"/>
         <property name="shouldDeleteIfExists" value="true"/>
