@@ -93,6 +93,9 @@ public interface ScheduleTaskRepository extends BaseRepository<ScheduleTask, Lon
     //如果能确认name和cron联合条件只会查到一条结果，那么可以用一个实体接收
     ScheduleTask findByNameAndCron(String name, String cron);
 
+    //WHERE name LIKE %?%（注意前后的百分号，它会自动加上，不需要传入的时候手动加）
+    List<ScheduleTask> findByNameContaining(String name);
+
     //WHERE name LIKE ?（注意不是“%?%”，前后的百分号需要传参数的时候自己加，比如“%5%”）
     List<ScheduleTask> getByNameLike(String name);
 
