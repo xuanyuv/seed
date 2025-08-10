@@ -10,8 +10,6 @@
 * [x] seed-open：开放平台
 * [x] seed-qss：定时系统（Quartz Scheduler System）
 * [x] seed-server：Mina实现的服务器
-* [x] seed-simcoder：简版的代码生成器
-* [x] seed-simulator：Swing实现的模拟器
 
 ## 依赖关系
 * .
@@ -26,10 +24,6 @@
 * │   └── seed-comm
 * ├── seed-server
 * │   └── seed-comm
-* ├── seed-simcoder
-* │   └── seed-comm
-* └── seed-simulator
-*  　　└── seed-comm
 
 ## 版本迭代
 > ### version 2.1.RELEASE

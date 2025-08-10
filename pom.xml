@@ -14,8 +14,6 @@
         <module>seed-open</module>
         <module>seed-qss</module>
         <module>seed-server</module>
-        <module>seed-simcoder</module>
-        <module>seed-simulator</module>
     </modules>
 
     <properties>
