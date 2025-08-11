@@ -9,7 +9,6 @@
 * [x] seed-mpp：公众平台
 * [x] seed-open：开放平台
 * [x] seed-qss：定时系统（Quartz Scheduler System）
-* [x] seed-server：Mina实现的服务器
 
 ## 依赖关系
 * .

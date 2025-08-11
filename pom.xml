@@ -13,7 +13,6 @@
         <module>seed-mpp</module>
         <module>seed-open</module>
         <module>seed-qss</module>
-        <module>seed-server</module>
     </modules>
 
     <properties>
