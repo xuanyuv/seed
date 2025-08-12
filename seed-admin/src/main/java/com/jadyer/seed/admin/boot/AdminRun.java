@@ -9,6 +9,9 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 
 /**
  * -----------------------------------------------------------------------------------------------------------
+ * https://juejin.cn/post/7052857798530433031
+ * https://juejin.cn/post/7127175924587429896
+ * -----------------------------------------------------------------------------------------------------------
  * 集成SpringBootAdmin之服务端配置
  * 1. 引入三个包：spring-boot-admin-starter-server、spring-boot-admin-server-ui、spring-boot-starter-web
  * 2. 直接启动，访问：http://127.0.0.1:8080/即可

@@ -7,17 +7,6 @@
 * [x] seed-boot：SpringBoot个人实践
 * [x] seed-comm：工具包
 * [x] seed-mpp：公众平台
-* [x] seed-qss：定时系统（Quartz Scheduler System）
-
-## 依赖关系
-* .
-* ├── seed-admin
-* ├── seed-boot
-* │   └── seed-comm
-* ├── seed-mpp
-* │   └── seed-comm
-* ├── seed-qss
-* │   └── seed-comm
 
 ## 版本迭代
 > ### version 2.1.RELEASE
