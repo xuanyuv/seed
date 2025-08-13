@@ -37,10 +37,6 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <!--
-                    addResources配置之后，通过spring-boot:run启动
-                    这样html静态文件就会直接从resources目录读取，而不是编译之后的target目录了
-                    -->
                     <addResources>true</addResources>
                     <mainClass>com.jadyer.seed.admin.boot.AdminRun</mainClass>
                 </configuration>

@@ -1,6 +1,0 @@
-# http://jjdai.zhupiter.com/2011/10/架站-為什麼網站的根目錄最好有-favicon-ico-和robots-txt-存在/
-# robots.txt生成:http://tool.chinaz.com/robots/
-# robots.txt用法:该文件应该放在网站根目录下，并且可以通过互联网访问
-#               比如http://www.jadyer.com/，则该文件必须能够通过http://www.jadyer.com/robots.txt打开并看到里面的内容
-User-agent: *
-Allow: /

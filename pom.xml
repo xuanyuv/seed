@@ -10,7 +10,6 @@
         <module>seed-admin</module>
         <module>seed-boot</module>
         <module>seed-comm</module>
-        <module>seed-mpp</module>
     </modules>
 
     <properties>
