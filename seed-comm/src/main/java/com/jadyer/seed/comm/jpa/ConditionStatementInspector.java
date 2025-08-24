@@ -1,12 +1,12 @@
 package com.jadyer.seed.comm.jpa;
 
 import com.jadyer.seed.comm.util.LogUtil;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.resource.jdbc.spi.StatementInspector;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;

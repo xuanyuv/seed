@@ -1,8 +1,8 @@
 package com.jadyer.seed.comm.annotation.lock.single;
 
+import jakarta.annotation.Resource;
 import redis.clients.jedis.JedisCluster;
 
-import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 

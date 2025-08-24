@@ -1,6 +1,8 @@
 package com.jadyer.seed.boot.ratelimiter.demo;
 
 import com.jadyer.seed.comm.util.LogUtil;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
 import org.apache.commons.lang3.ObjectUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -20,8 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.exceptions.JedisNoScriptException;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;

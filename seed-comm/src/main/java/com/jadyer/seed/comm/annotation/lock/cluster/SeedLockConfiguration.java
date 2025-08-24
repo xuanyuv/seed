@@ -2,6 +2,7 @@ package com.jadyer.seed.comm.annotation.lock.cluster;
 
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
+import jakarta.annotation.PostConstruct;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -25,7 +26,6 @@ import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
-import javax.annotation.PostConstruct;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;

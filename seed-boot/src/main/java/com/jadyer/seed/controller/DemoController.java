@@ -10,10 +10,9 @@ import com.jadyer.seed.comm.util.HTTPUtil;
 import com.jadyer.seed.comm.util.JadyerUtil;
 import com.jadyer.seed.comm.util.LogUtil;
 import com.jadyer.seed.comm.util.RequestUtil;
-import com.jadyer.seed.controller.rabbitmq.UserMsg;
+import jakarta.annotation.Resource;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,18 +53,12 @@ public class DemoController {
     @Resource
     private BootProperties bootProperties;
 
-    public void propLockFail(Integer id, UserMsg userMsg){
-        System.out.println("加锁失败，收到回调-->>id=" + id + ", userMsg=" + ReflectionToStringBuilder.toString(userMsg));
-    }
-
-
     /**
      * 读取配置文件中的属性
      */
     @GetMapping("/prop")
-    //@SeedLock(key="#userMsg.name", appname="seedboot", fallbackMethod="propLockFail")
     @SeedLog(action= ActionEnum.LIST, value="读取配置文件中的属性")
-    public CommResult<Map<String, Object>> prop(Integer id, UserMsg userMsg){
+    public CommResult<Map<String, Object>> prop(Integer id){
         Map<String, Object> map = new HashMap<>(13);
         map.put("weight", this.weight);
         map.put("height", this.height);

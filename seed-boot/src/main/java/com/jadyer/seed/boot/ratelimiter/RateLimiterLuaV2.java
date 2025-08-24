@@ -1,10 +1,10 @@
 package com.jadyer.seed.boot.ratelimiter;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
 import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.exceptions.JedisNoScriptException;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 

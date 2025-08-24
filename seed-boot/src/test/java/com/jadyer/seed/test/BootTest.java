@@ -3,6 +3,7 @@ package com.jadyer.seed.test;
 import com.jadyer.seed.boot.BootRun;
 import com.jadyer.seed.boot.ratelimiter.RateLimiterLua;
 import com.jadyer.seed.boot.ratelimiter.RateLimiterLuaV2;
+import jakarta.annotation.Resource;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
@@ -12,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
 import redis.clients.jedis.JedisCluster;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

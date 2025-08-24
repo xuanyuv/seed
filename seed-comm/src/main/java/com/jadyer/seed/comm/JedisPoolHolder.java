@@ -1,10 +1,10 @@
 package com.jadyer.seed.comm;
 
+import jakarta.annotation.Resource;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPubSub;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 

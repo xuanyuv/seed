@@ -2,6 +2,7 @@ package com.jadyer.seed.comm.boot;
 
 import com.alibaba.fastjson.JSON;
 import com.jadyer.seed.comm.util.LogUtil;
+import jakarta.annotation.Resource;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.boot.autoconfigure.task.TaskExecutionProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -11,7 +12,6 @@ import org.springframework.scheduling.annotation.AsyncConfigurerSupport;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import javax.annotation.Resource;
 import java.lang.reflect.Method;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
